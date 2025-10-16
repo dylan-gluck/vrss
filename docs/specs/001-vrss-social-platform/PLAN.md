@@ -485,33 +485,33 @@ make test-coverage                   # With coverage report
 
 #### 3.2 User & Profile Router `[duration: 2-3 days]` `[parallel: false]`
 
-- [ ] **Prime Context**
-    - [ ] Read `docs/api-architecture.md` Section: "User Router" (6 procedures)
-    - [ ] Read PRD Section: "F2: Customizable User Profiles" (lines 144-155)
-    - [ ] Read DATABASE_SCHEMA.md: `user_profiles`, `profile_sections`, `section_content`
+- [x] **Prime Context**
+    - [x] Read `docs/api-architecture.md` Section: "User Router" (6 procedures)
+    - [x] Read PRD Section: "F2: Customizable User Profiles" (lines 144-155)
+    - [x] Read DATABASE_SCHEMA.md: `user_profiles`, `profile_sections`, `section_content`
 
-- [ ] **Write Tests** `[activity: test-api]`
-    - [ ] `user.getProfile` tests: By username, public/private visibility
-    - [ ] `user.updateProfile` tests: Display name, bio, avatar, visibility
-    - [ ] `user.updateStyle` tests: JSONB validation, background/colors/fonts
-    - [ ] `user.updateSections` tests: Add/remove/reorder sections
-    - [ ] Storage quota tests: Profile updates respect quota
+- [x] **Write Tests** `[activity: test-api]`
+    - [x] `user.getProfile` tests: By username, public/private visibility
+    - [x] `user.updateProfile` tests: Display name, bio, avatar, visibility
+    - [x] `user.updateStyle` tests: JSONB validation, background/colors/fonts
+    - [x] `user.updateSections` tests: Add/remove/reorder sections
+    - [x] Storage quota tests: Profile updates respect quota
 
-- [ ] **Implement** `[activity: api-development]`
-    - [ ] Create `apps/api/src/rpc/routers/user.ts`
-    - [ ] Implement `user.getProfile` (handle visibility: public/private/unlisted)
-    - [ ] Implement `user.updateProfile` (display name, bio, avatar, visibility)
-    - [ ] Implement `user.updateStyle` (JSONB: background, music, style)
-    - [ ] Implement `user.updateSections` (add, remove, reorder profile sections)
-    - [ ] Implement `user.getSections` (fetch profile sections)
-    - [ ] Add Zod validation for JSONB schemas (profileConfig, styleConfig)
-    - [ ] Create business logic in `apps/api/src/features/user/`
+- [x] **Implement** `[activity: api-development]`
+    - [x] Create `apps/api/src/rpc/routers/user.ts`
+    - [x] Implement `user.getProfile` (handle visibility: public/private/unlisted)
+    - [x] Implement `user.updateProfile` (display name, bio, avatar, visibility)
+    - [x] Implement `user.updateStyle` (JSONB: background, music, style)
+    - [x] Implement `user.updateSections` (add, remove, reorder profile sections)
+    - [x] Implement `user.getSections` (fetch profile sections)
+    - [x] Add Zod validation for JSONB schemas (profileConfig, styleConfig)
+    - [x] Create business logic in `apps/api/src/features/user/`
 
-- [ ] **Validate**
-    - [ ] All user router tests pass
-    - [ ] Profile visibility controls work
-    - [ ] JSONB updates validate correctly
-    - [ ] Test coverage: 90%+
+- [x] **Validate**
+    - [x] All user router tests pass
+    - [x] Profile visibility controls work
+    - [x] JSONB updates validate correctly
+    - [x] Test coverage: 90%+
 
 **Success Criteria:** Users can view and customize profiles
 
