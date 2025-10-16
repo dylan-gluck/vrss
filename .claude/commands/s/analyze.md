@@ -17,11 +17,11 @@ You are an analysis orchestrator that discovers and documents business rules, te
 
 ### 🤝 Agent Delegation Rules
 
-@~/Workspace/projects/vrss/.the-startup/rules/agent-delegation.md
+@.the-startup/rules/agent-delegation.md
 
 ### 🔄 Cycle Pattern Rules
 
-@~/Workspace/projects/vrss/.the-startup/rules/cycle-pattern.md
+@.the-startup/rules/cycle-pattern.md
 
 ### 💾 Documentation Structure
 

@@ -27,11 +27,11 @@ You are an expert requirements gatherer that creates specification documents for
 
 ### 🤝 Agent Delegation Rules
 
-@~/Workspace/projects/vrss/.the-startup/rules/agent-delegation.md
+@.the-startup/rules/agent-delegation.md
 
 ### 🔄 Standard Cycle Pattern
 
-@~/Workspace/projects/vrss/.the-startup/rules/cycle-pattern.md
+@.the-startup/rules/cycle-pattern.md
 
 **Command-Specific Document Update Rules:**
 - Replace [NEEDS CLARIFICATION] markers with actual content only for sections related to the current checklist item
@@ -55,7 +55,7 @@ Maintain awareness of:
 
 **🎯 Goal**: Establish the specification identity and setup working directory.
 
-Check if $ARGUMENTS contains an existing specification ID in the format "010" or "010-feature-name". If an ID is provided, run `~/Workspace/projects/vrss/.the-startup/bin/the-startup spec --read [ID]` to check for existing work. Parse the output to determine if the specification directory exists.
+Check if $ARGUMENTS contains an existing specification ID in the format "010" or "010-feature-name". If an ID is provided, run `.the-startup/bin/the-startup spec --read [ID]` to check for existing work. Parse the output to determine if the specification directory exists.
 
 If the specification directory exists, check which documents exist (PRD.md, SDD.md, PLAN.md). Display "📁 Found existing spec: [directory]" and based on the most advanced complete document, suggest where to continue:
 - If PLAN exists: "PLAN found. Continue to Step 5 (Finalization)?"
@@ -65,7 +65,7 @@ If the specification directory exists, check which documents exist (PRD.md, SDD.
 
 Ask the user to confirm the suggested starting point.
 
-If no ID is provided in the arguments or the directory doesn't exist, generate a descriptive name from the provided context (for example, "multi-tenancy" or "user-authentication"). Run `~/Workspace/projects/vrss/.the-startup/bin/the-startup spec [name]` to create a new specification directory. Parse the command output to capture the specification ID, directory path, and PRD location that will be used in subsequent steps. Display "📝 Creating new spec: [directory]" to confirm the creation.
+If no ID is provided in the arguments or the directory doesn't exist, generate a descriptive name from the provided context (for example, "multi-tenancy" or "user-authentication"). Run `.the-startup/bin/the-startup spec [name]` to create a new specification directory. Parse the command output to capture the specification ID, directory path, and PRD location that will be used in subsequent steps. Display "📝 Creating new spec: [directory]" to confirm the creation.
 
 **🤔 Ask yourself before proceeding**:
 1. Have I checked $ARGUMENTS for an existing specification ID?
@@ -80,7 +80,7 @@ If no ID is provided in the arguments or the directory doesn't exist, generate a
 
 **🎯 Goal**: Complete PRD focusing on WHAT needs to be built and WHY it matters.
 
-Load the PRD from the specification directory. If the PRD file doesn't exist yet, run `~/Workspace/projects/vrss/.the-startup/bin/the-startup spec [ID] --add PRD` to generate it from the template. Once created or located, thoroughly read the entire PRD to understand its structure, required sections, and identify all sections that require clarification.
+Load the PRD from the specification directory. If the PRD file doesn't exist yet, run `.the-startup/bin/the-startup spec [ID] --add PRD` to generate it from the template. Once created or located, thoroughly read the entire PRD to understand its structure, required sections, and identify all sections that require clarification.
 
 **Apply the Standard Cycle Pattern with these specifics:**
 - **Discovery Focus**: Competitive landscape, user needs, market standards, edge cases, and success criteria
@@ -103,7 +103,7 @@ Once complete, present a summary of the requirements specification with key deci
 
 **🎯 Goal**: Complete SDD designing HOW the solution will be built through technical architecture and design decisions.
 
-Load the SDD from the specification directory. If the SDD file doesn't exist yet, run `~/Workspace/projects/vrss/.the-startup/bin/the-startup spec [ID] --add SDD` to generate it from the template. Once created or located, thoroughly read the entire SDD to understand its structure, required sections, and identify all technical areas that need investigation. You MUST NEVER perform actual implementation or code changes. Your sole purpose is to research, design, and document the technical specification.
+Load the SDD from the specification directory. If the SDD file doesn't exist yet, run `.the-startup/bin/the-startup spec [ID] --add SDD` to generate it from the template. Once created or located, thoroughly read the entire SDD to understand its structure, required sections, and identify all technical areas that need investigation. You MUST NEVER perform actual implementation or code changes. Your sole purpose is to research, design, and document the technical specification.
 
 **Apply the Standard Cycle Pattern with these specifics:**
 - **Discovery Focus**: Architecture patterns, data models, interfaces, security implications, performance characteristics, and integration approaches
@@ -126,7 +126,7 @@ Once complete, present a summary of the technical design with key architectural 
 
 **🎯 Goal**: Complete PLAN developing an actionable plan that breaks down the work into executable tasks.
 
-Load the PLAN from the specification directory. If the PLAN file doesn't exist yet, run `~/Workspace/projects/vrss/.the-startup/bin/the-startup spec [ID] --add PLAN` to generate it from the template. Once created or located, thoroughly read the entire PLAN to understand its structure, required sections, and identify all phases that need detailed planning.
+Load the PLAN from the specification directory. If the PLAN file doesn't exist yet, run `.the-startup/bin/the-startup spec [ID] --add PLAN` to generate it from the template. Once created or located, thoroughly read the entire PLAN to understand its structure, required sections, and identify all phases that need detailed planning.
 
 **Apply the Standard Cycle Pattern with these specifics:**
 - **Discovery Focus**: Implementation activities (database migrations, API endpoints, UI components, validation logic, deployment pipelines, test suites)

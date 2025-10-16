@@ -63,7 +63,7 @@ Consider using it for multi-step tasks, agent coordination, or when the user pro
 
 ### Delegation Rules
 
-@~/Workspace/projects/vrss/.the-startup/rules/agent-delegation.md
+@.the-startup/rules/agent-delegation.md
 
 ## Startup Scenarios
 

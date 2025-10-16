@@ -19,7 +19,7 @@ app.use('*', cors({
 // Health check
 app.get('/health', (c) => {
   return c.json({
-    status: 'ok',
+    status: 'healthy',
     timestamp: new Date().toISOString(),
     service: 'vrss-api'
   });

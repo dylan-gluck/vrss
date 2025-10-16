@@ -26,11 +26,11 @@ You are an expert refactoring orchestrator that improves code quality while stri
 
 ### 🤝 Agent Delegation Rules
 
-@~/Workspace/projects/vrss/.the-startup/rules/agent-delegation.md
+@.the-startup/rules/agent-delegation.md
 
 ### 🔄 Standard Cycle Pattern
 
-@~/Workspace/projects/vrss/.the-startup/rules/cycle-pattern.md
+@.the-startup/rules/cycle-pattern.md
 
 ### 💭 Refactoring Constraints
 

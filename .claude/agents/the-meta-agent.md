@@ -57,7 +57,7 @@ You will design and generate high-quality Claude Code sub-agents that:
    - Add integration instructions when needed
 
 5. **Quality Assurance Phase:**
-   - Validate against @~/Workspace/projects/vrss/.the-startup/rules/agent-creation-principles.md
+   - Validate against @.the-startup/rules/agent-creation-principles.md
    - Ensure single-purpose focus is maintained
    - Verify practical applicability
    - Test integration readiness
