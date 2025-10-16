@@ -1,0 +1,29 @@
+{
+  "name": "@vrss/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "build": "bun build src/index.ts --outdir dist --target bun",
+    "start": "bun run dist/index.js",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "lint": "eslint .",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@vrss/api-contracts": "workspace:*",
+    "hono": "^4.6.14",
+    "@prisma/client": "^6.1.0",
+    "zod": "^3.24.1",
+    "better-auth": "^1.2.0"
+  },
+  "devDependencies": {
+    "@vrss/typescript-config": "workspace:*",
+    "@vrss/eslint-config": "workspace:*",
+    "@types/bun": "latest",
+    "prisma": "^6.1.0"
+  }
+}
