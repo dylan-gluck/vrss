@@ -1,0 +1,242 @@
+version: '3.9'
+
+# VRSS Social Platform - Docker Compose Configuration
+# Local development environment with hot reload, database, and supporting services
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    container_name: vrss_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-vrss}
+      POSTGRES_USER: ${DB_USER:-vrss_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-vrss_dev_password}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+      # Performance tuning for development
+      POSTGRES_SHARED_BUFFERS: ${DB_SHARED_BUFFERS:-256MB}
+      POSTGRES_EFFECTIVE_CACHE_SIZE: ${DB_CACHE_SIZE:-1GB}
+    volumes:
+      # Persistent database storage
+      - postgres_data:/var/lib/postgresql/data
+      # Initialization scripts
+      - ./docker/db/init:/docker-entrypoint-initdb.d:ro
+      # Custom PostgreSQL configuration
+      - ./docker/db/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    networks:
+      - vrss_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-vrss_user} -d ${DB_NAME:-vrss}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+
+  # Backend API (Bun + Hono)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development
+      args:
+        BUN_VERSION: ${BUN_VERSION:-1.1}
+    container_name: vrss_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Application environment
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: ${BACKEND_PORT:-3000}
+
+      # Database configuration
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-vrss}
+      DB_USER: ${DB_USER:-vrss_user}
+      DB_PASSWORD: ${DB_PASSWORD:-vrss_dev_password}
+      DB_POOL_MIN: ${DB_POOL_MIN:-2}
+      DB_POOL_MAX: ${DB_POOL_MAX:-10}
+
+      # JWT and security
+      JWT_SECRET: ${JWT_SECRET:-dev_jwt_secret_change_in_production}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+
+      # Storage configuration
+      STORAGE_TYPE: ${STORAGE_TYPE:-local}
+      STORAGE_LOCAL_PATH: /app/storage/media
+      STORAGE_MAX_SIZE_MB: ${STORAGE_MAX_SIZE_MB:-50}
+
+      # S3 configuration (for production)
+      S3_ENDPOINT: ${S3_ENDPOINT:-}
+      S3_BUCKET: ${S3_BUCKET:-}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-}
+      S3_REGION: ${S3_REGION:-us-east-1}
+
+      # CORS and frontend URL
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://localhost:4173}
+
+      # Rate limiting
+      RATE_LIMIT_WINDOW_MS: ${RATE_LIMIT_WINDOW_MS:-900000}
+      RATE_LIMIT_MAX_REQUESTS: ${RATE_LIMIT_MAX_REQUESTS:-100}
+
+      # Logging
+      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      LOG_FORMAT: ${LOG_FORMAT:-pretty}
+    volumes:
+      # Hot reload for development
+      - ./backend/src:/app/src:ro
+      - ./backend/package.json:/app/package.json:ro
+      - ./backend/bun.lockb:/app/bun.lockb:ro
+      # Local media storage
+      - media_storage:/app/storage/media
+      # Logs
+      - backend_logs:/app/logs
+    ports:
+      - "${BACKEND_PORT:-3000}:3000"
+    networks:
+      - vrss_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # Run with --watch for hot reload in development
+    command: ["bun", "run", "dev"]
+
+  # Frontend PWA (Vite + React/Vue/Svelte)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+      args:
+        NODE_VERSION: ${NODE_VERSION:-20}
+    container_name: vrss_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      # Vite configuration
+      NODE_ENV: ${NODE_ENV:-development}
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+      VITE_WS_URL: ${VITE_WS_URL:-ws://localhost:3000}
+
+      # PWA configuration
+      VITE_APP_NAME: ${VITE_APP_NAME:-VRSS}
+      VITE_APP_SHORT_NAME: ${VITE_APP_SHORT_NAME:-VRSS}
+      VITE_APP_DESCRIPTION: ${VITE_APP_DESCRIPTION:-A customizable social media platform}
+
+      # Storage limits
+      VITE_FREE_STORAGE_MB: ${VITE_FREE_STORAGE_MB:-50}
+      VITE_PAID_STORAGE_MB: ${VITE_PAID_STORAGE_MB:-1024}
+
+      # Feature flags
+      VITE_ENABLE_ANALYTICS: ${VITE_ENABLE_ANALYTICS:-false}
+      VITE_ENABLE_DEBUG: ${VITE_ENABLE_DEBUG:-true}
+    volumes:
+      # Hot reload for development
+      - ./frontend/src:/app/src:ro
+      - ./frontend/public:/app/public:ro
+      - ./frontend/index.html:/app/index.html:ro
+      - ./frontend/package.json:/app/package.json:ro
+      - ./frontend/vite.config.js:/app/vite.config.js:ro
+      # Node modules (avoid mounting from host)
+      - frontend_node_modules:/app/node_modules
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    networks:
+      - vrss_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5173"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+  # Nginx reverse proxy (optional, for production-like local testing)
+  nginx:
+    image: nginx:alpine
+    container_name: vrss_nginx
+    restart: unless-stopped
+    depends_on:
+      - backend
+      - frontend
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      - nginx_logs:/var/log/nginx
+    ports:
+      - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
+    networks:
+      - vrss_network
+    profiles:
+      - production
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Database backup service (optional)
+  db_backup:
+    image: postgres:16-alpine
+    container_name: vrss_db_backup
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: ${DB_NAME:-vrss}
+      POSTGRES_USER: ${DB_USER:-vrss_user}
+      PGPASSWORD: ${DB_PASSWORD:-vrss_dev_password}
+    volumes:
+      - ./docker/db/backup:/backup
+      - ./docker/db/scripts:/scripts:ro
+    networks:
+      - vrss_network
+    profiles:
+      - backup
+    command: >
+      sh -c "
+        while true; do
+          pg_dump -h db -U ${DB_USER:-vrss_user} ${DB_NAME:-vrss} > /backup/vrss_$(date +%Y%m%d_%H%M%S).sql &&
+          find /backup -name '*.sql' -mtime +7 -delete &&
+          sleep 86400
+        done
+      "
+
+networks:
+  vrss_network:
+    driver: bridge
+    name: vrss_network
+
+volumes:
+  # Database persistent storage
+  postgres_data:
+    name: vrss_postgres_data
+
+  # Media storage (local development)
+  media_storage:
+    name: vrss_media_storage
+
+  # Application logs
+  backend_logs:
+    name: vrss_backend_logs
+
+  nginx_logs:
+    name: vrss_nginx_logs
+
+  # Node modules (avoid host mount)
+  frontend_node_modules:
+    name: vrss_frontend_node_modules

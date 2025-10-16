@@ -1,0 +1,270 @@
+{
+  "version": "1.0.0",
+  "install_date": "2025-10-16T01:58:00-04:00",
+  "install_path": "/Users/dylan/Workspace/projects/vrss/.the-startup",
+  "claude_path": "/Users/dylan/Workspace/projects/vrss/.claude",
+  "tool": "claude-code",
+  "components": [
+    "agents",
+    "commands",
+    "templates",
+    "rules"
+  ],
+  "files": {
+    "agents/the-analyst/feature-prioritization.md": {
+      "size": 5823,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "8864026c7879e70400d4096fbdbe413e06d562ca09b7f58a74f2ab5332232d1d"
+    },
+    "agents/the-analyst/project-coordination.md": {
+      "size": 6295,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "b547d839e6af783d7d7fe5d564e6d0e08d1c3b6b027e8c8dbf8e7938c0417651"
+    },
+    "agents/the-analyst/requirements-analysis.md": {
+      "size": 4980,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "3a6572289ad6d6a18d5fcc8919772ad84410de996829dbeb5d305c99a4276ea8"
+    },
+    "agents/the-architect/quality-review.md": {
+      "size": 4749,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "e188672892b3492ce58924ac14d89b273f212248cd82635904d064e688bad3c2"
+    },
+    "agents/the-architect/system-architecture.md": {
+      "size": 4914,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "d512d834f0a9745696b4ef333f1e25f0db469fe4b5d0f198e5c9a7381adf0a5f"
+    },
+    "agents/the-architect/system-documentation.md": {
+      "size": 6268,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "a62882244119564a2f1027c35e86cabc6c4c9c552784b2e8d97a48ba247b6925"
+    },
+    "agents/the-architect/technology-research.md": {
+      "size": 4967,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "8365a699d26bdec52f60a4fd91f7c95aae5aa27b15e689fa1e9fed39603c54ea"
+    },
+    "agents/the-architect/technology-standards.md": {
+      "size": 6436,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "1c3d78e8d902e338361f8bbea3ce62a42e81b0dd6bf0043e18f67f2fa0fa6698"
+    },
+    "agents/the-chief.md": {
+      "size": 4717,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "9ae582fc13fc99d7361d0c19d4f32db1c5b7909b0826d0e5a0e15c6806cbce82"
+    },
+    "agents/the-designer/accessibility-implementation.md": {
+      "size": 6268,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "8ee6de57aeb890ad7697c92f3213695c2a13abb51b8b89926420d5f04e21b346"
+    },
+    "agents/the-designer/design-foundation.md": {
+      "size": 4651,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "b0f85ea18c56686be54a20049edf0d42977e3c462229ce268e9816df131c8db6"
+    },
+    "agents/the-designer/interaction-architecture.md": {
+      "size": 4610,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "e8e42f107e0bc1613acf5335c6857a7756ae91c0483d7c187c99a82e63067bbf"
+    },
+    "agents/the-designer/user-research.md": {
+      "size": 6449,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "c7ea9bf3c89b6c9201ce36f93663356ad5d11ffc1deaf77f1d5cc07a90d6740e"
+    },
+    "agents/the-meta-agent.md": {
+      "size": 7626,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "19a049e16f6388b7d084f71a8211731818e1db82da7d69c426438c0c3748d300"
+    },
+    "agents/the-ml-engineer/context-management.md": {
+      "size": 6173,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "0ff02be71c6fa39597322de3b36be7b17a48bfaa12106cd4173c58761e7fe9ab"
+    },
+    "agents/the-ml-engineer/feature-operations.md": {
+      "size": 4454,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "b7d61443031a9e1ad7df34302f87143e8ecec7ffa18278313ce554bd0c291396"
+    },
+    "agents/the-ml-engineer/ml-operations.md": {
+      "size": 4634,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "99938ca3a123426b65ca94a8217a3bac9e56d5e3ff5cbb3cf649a59991d613c5"
+    },
+    "agents/the-ml-engineer/prompt-optimization.md": {
+      "size": 5356,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "e13dda2b4d6c8245963d0065490d5606824f3816c53f061ec45ca15fa70c3e35"
+    },
+    "agents/the-mobile-engineer/mobile-data-persistence.md": {
+      "size": 6647,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "4c9926b9651a3f5fa47c800d70dd041edf82dbeffc4c7014f7d8d6faddab7772"
+    },
+    "agents/the-mobile-engineer/mobile-development.md": {
+      "size": 4525,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "531f12568cfc12225a70c6d0f7fab5b7e0730d4de6a9c1c324f30a45d6ce77bb"
+    },
+    "agents/the-mobile-engineer/mobile-operations.md": {
+      "size": 4421,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "47fee38839ca6ec10248a13c4501c37582b23a7b7516f600c74d47e7e62c9fa8"
+    },
+    "agents/the-platform-engineer/containerization.md": {
+      "size": 6095,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "acd75801e0d50f4310a2ec7375e3a2d6d8d08655b86595b3c8155e00d904ee78"
+    },
+    "agents/the-platform-engineer/data-architecture.md": {
+      "size": 4920,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "ee9f2a39edc26d0eed14c1df243ae998fbd09fc8c84abeb56d3ee9471fd6a97f"
+    },
+    "agents/the-platform-engineer/deployment-automation.md": {
+      "size": 5151,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "65ca69c20d6c9f92f095cad8e1947f38bd133ba54e07fca253435fee131b5420"
+    },
+    "agents/the-platform-engineer/infrastructure-as-code.md": {
+      "size": 6719,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "1e205f81cdb4ed0e1759b5fcfc5775bdb8858e9351d4d07c4bfabfab154e5f5a"
+    },
+    "agents/the-platform-engineer/performance-tuning.md": {
+      "size": 4808,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "97fa5207adfd017b1a6bf1da2137a21cd12c780500f488623bdd982cc27031c5"
+    },
+    "agents/the-platform-engineer/pipeline-engineering.md": {
+      "size": 6608,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "49c610bdec52709d2fea1dd5b0db3c541dbf338daeda2ae3625a0216c029222c"
+    },
+    "agents/the-platform-engineer/production-monitoring.md": {
+      "size": 4924,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "cc10fbdf552954a71839b4a9bd313442c2d7d17ed4f9b476d8c48b5cdb19114b"
+    },
+    "agents/the-qa-engineer/exploratory-testing.md": {
+      "size": 6412,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "f8f0156c557df35e3cbdd8de9579709a53e3ccc491cae84ff52d6659701b3df8"
+    },
+    "agents/the-qa-engineer/performance-testing.md": {
+      "size": 4947,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "a7670e7125afd680e6a42be5ee5cd9b041b4611bf87610d5f9e20cc5fecc9e05"
+    },
+    "agents/the-qa-engineer/test-execution.md": {
+      "size": 4624,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "142866bb660763bf893c4e053dfae24369bc4a2e4ec02e59df215252bc1fe6d6"
+    },
+    "agents/the-security-engineer/security-assessment.md": {
+      "size": 4732,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "50f49fef2382414eb02e12f38ccae769c68efe767e4bc0f77c93d8d437b47cdb"
+    },
+    "agents/the-security-engineer/security-implementation.md": {
+      "size": 4493,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "867e3103c2e4e7d60d2b4fddff4acc258bf18e6bee843b3911de045e30a72066"
+    },
+    "agents/the-security-engineer/security-incident-response.md": {
+      "size": 7292,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "d95b597e69bf6eb8954bfb91642aa87a1dcad6ec651de3c3a9d9b4d029a1d20a"
+    },
+    "agents/the-software-engineer/api-development.md": {
+      "size": 5630,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "f92fae46381688bd66a4df14ae0f93445184909213769e4d9f0ff04d3909e4f3"
+    },
+    "agents/the-software-engineer/component-development.md": {
+      "size": 5356,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "46613e2c78e22239744d562f975d7c180e39f9c955d1e4366fe8256ac4084371"
+    },
+    "agents/the-software-engineer/domain-modeling.md": {
+      "size": 5370,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "3361168a95b1b1de619137855a1bb3022175f7d412ee980c6849aced6955777d"
+    },
+    "agents/the-software-engineer/performance-optimization.md": {
+      "size": 6621,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "e699bf7e9c43082de294d03933e81aeccea0eb3188ea5c1726546c96f9951ecb"
+    },
+    "agents/the-software-engineer/service-resilience.md": {
+      "size": 5570,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "9d06345e9b1d8a1cde0721cd3de479a921c00c4c08906054b7aa96860da4454f"
+    },
+    "bin/the-startup": {
+      "size": 9811154,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "ed203ea3a51940d07f49bc6e0aab68c2266c4c85e1edf903e9cedbd68b76dadb"
+    },
+    "commands/s/analyze.md": {
+      "size": 4596,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "0d01e4ee19497dc351f988a494b650ea930ae708804613705fd675a6ceec3d15"
+    },
+    "commands/s/implement.md": {
+      "size": 9427,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "988bf818324ca6e90c45e6276dd00d5c9ce7f02d407579de9c4609927ec23d05"
+    },
+    "commands/s/refactor.md": {
+      "size": 6956,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "66c351a76d23a03131af2d472142201386b1337f7d1d241cfa7639f5cf38994f"
+    },
+    "commands/s/specify.md": {
+      "size": 14331,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "ea61c182da46a55516f1520b90c9158e8dcddf5a4c388d49907e637c49af49f4"
+    },
+    "output-styles/the-startup.md": {
+      "size": 7411,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "6d8e5c8658624c5c72e025cab55d3f6f970f76cdd1f2cae49d9046f651a7abea"
+    },
+    "startup/rules/agent-creation-principles.md": {
+      "size": 8847,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "3c4713aec5fe649779bf0c7d4f2d11d9f0a485de247119bece05d51a99cdddbb"
+    },
+    "startup/rules/agent-delegation.md": {
+      "size": 8142,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "7b51e89481f1e44fe94db8081f1eb83ad4681fbb77b709e0c42c31fe4e471fa3"
+    },
+    "startup/rules/cycle-pattern.md": {
+      "size": 2691,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "326c4ce57745607a5f0529960b9f5a55825b708b990bce6285ca6e74fc0f6f7e"
+    },
+    "startup/templates/PLAN.md": {
+      "size": 4702,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "8f4183e893aba1b620302ceb85e5b703f057b09f3f0253e7c2a933b54f8ba3c4"
+    },
+    "startup/templates/PRD.md": {
+      "size": 5596,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "3ccfd957be313b3e68256bb12b179b8a031793957552d747fbac4170a3f0a755"
+    },
+    "startup/templates/SDD.md": {
+      "size": 29382,
+      "last_modified": "2025-10-16T01:58:00-04:00",
+      "checksum": "234d1908aaae90efea59628e8c67687bf0079bb4ed69072c25ff0a1934c67e3f"
+    }
+  }
+}
