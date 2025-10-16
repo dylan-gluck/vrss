@@ -61,7 +61,7 @@ export class PostBuilder {
    * Create a text post
    */
   asText(): this {
-    this.data.type = "text";
+    this.data.type = "text_short";
     return this;
   }
 
@@ -264,7 +264,7 @@ export class PostBuilder {
     content: string;
   } {
     return {
-      type: "text",
+      type: "text_short",
       status: "published",
       content: "Test post content",
     };

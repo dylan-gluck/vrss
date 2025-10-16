@@ -1,6 +1,6 @@
 ---
 description: "Executes the implementation plan from a specification"
-argument-hint: "spec ID to implement (e.g., S001, R002, or full name like S001-user-auth)"
+argument-hint: "spec ID to implement (e.g., 001, or full name like 001-user-auth)"
 allowed-tools: ["Task", "TodoWrite", "Bash", "Write", "Edit", "Read", "LS", "Glob", "Grep", "MultiEdit"]
 ---
 

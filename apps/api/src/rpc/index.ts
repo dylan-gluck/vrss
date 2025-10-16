@@ -25,6 +25,7 @@ import { authRouter } from "./routers/auth";
 import { userRouter } from "./routers/user";
 import { postRouter } from "./routers/post";
 import { socialRouter } from "./routers/social";
+import { feedRouter } from "./routers/feed";
 
 // =============================================================================
 // PUBLIC PROCEDURES
@@ -70,9 +71,9 @@ const PROCEDURE_REGISTRY: Record<string, any> = {
   ...userRouter,
   ...postRouter,
   ...socialRouter,
+  ...feedRouter,
   // Additional routers will be added here in future phases:
   // ...discoveryRouter,
-  // ...feedRouter,
   // etc.
 };
 

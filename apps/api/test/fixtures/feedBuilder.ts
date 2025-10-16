@@ -122,7 +122,7 @@ export class FeedBuilder {
    */
   filterByHashtag(hashtags: string[], operator: FilterOperator = "contains"): this {
     return this.addFilter({
-      type: "hashtag",
+      type: "tag",
       operator,
       value: hashtags,
     });
@@ -144,7 +144,7 @@ export class FeedBuilder {
    */
   filterByDateRange(startDate: Date, endDate: Date): this {
     return this.addFilter({
-      type: "date",
+      type: "date_range",
       operator: "in_range",
       value: {
         start: startDate.toISOString(),

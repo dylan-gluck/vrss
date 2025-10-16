@@ -1,168 +1,10 @@
-# Implementation Plan - VRSS Social Platform MVP
+# Implementation Phases
 
-## Validation Checklist
-- [x] Context Ingestion section complete with all required specs
-- [x] Implementation phases logically organized
-- [x] Each phase starts with test definition (TDD approach)
-- [x] Dependencies between phases identified
-- [x] Parallel execution marked where applicable
-- [x] Multi-component coordination identified
-- [x] Final validation phase included
-- [x] No placeholder content remains
-
-## Specification Compliance Guidelines
-
-### How to Ensure Specification Adherence
-
-1. **Before Each Phase**: Complete the Pre-Implementation Specification Gate
-2. **During Implementation**: Reference specific SDD sections in each task
-3. **After Each Task**: Run Specification Compliance checks
-4. **Phase Completion**: Verify all specification requirements are met
-
-### Deviation Protocol
-
-If implementation cannot follow specification exactly:
-1. Document the deviation and reason
-2. Get approval before proceeding
-3. Update SDD if the deviation is an improvement
-4. Never deviate without documentation
-
-## Metadata Reference
-
-- `[parallel: true]` - Tasks that can run concurrently
-- `[component: component-name]` - For multi-component features
-- `[ref: document/section; lines: 1, 2-3]` - Links to specifications, patterns, or interfaces and (if applicable) line(s)
-- `[activity: type]` - Activity hint for specialist agent selection
-- `[duration: X days/hours]` - Estimated time to complete
-- `[priority: P0/P1/P2]` - Priority level (P0=Critical, P1=High, P2=Medium)
-
----
-
-## Context Priming
-
-*GATE: You MUST fully read all files mentioned in this section before starting any implementation.*
-
-### Specification Documents
-
-**Core Specifications:**
-- `docs/specs/001-vrss-social-platform/PRD.md` - Product requirements for VRSS social platform (10 must-have features)
-- `docs/specs/001-vrss-social-platform/SDD.md` - Complete solution design (architecture, patterns, tech stack)
-- `docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md` - PostgreSQL schema (19 tables with indexes, triggers)
-- `docs/specs/001-vrss-social-platform/DATA_STORAGE_DOCUMENTATION.md` - Storage quotas, media handling
-- `docs/specs/001-vrss-social-platform/TESTING-STRATEGY.md` - Comprehensive testing approach (80%+ coverage)
-
-**Architecture Documentation:**
-- `docs/architecture/MONOLITH_ARCHITECTURE.md` - Monolith design with scalability path
-- `docs/architecture/VISUAL_SUMMARY.md` - System architecture diagrams
-- `docs/architecture/ARCHITECTURE_DECISIONS.md` - 11 ADRs with rationale
-- `docs/INFRASTRUCTURE_SPEC.md` - Complete infrastructure specification
-- `docs/DOCKER.md` - Docker Compose setup and containerization
-
-**API & Integration:**
-- `docs/api-architecture.md` - RPC API design (50+ procedures, 10 routers)
-- `docs/api-implementation-guide.md` - Implementation patterns and examples
-- `docs/INTEGRATION_POINTS.md` - Component communication and S3 uploads
-- `docs/SECURITY_DESIGN.md` - Better-auth integration and security patterns
-
-**Frontend Architecture:**
-- `docs/frontend-architecture.md` - PWA design, state management, offline strategy
-- `docs/component-specifications.md` - Feed Builder and Profile Editor specs
-- `docs/frontend-implementation-guide.md` - 7-phase implementation roadmap
-- `docs/frontend-data-models.md` - Zustand stores and TanStack Query patterns
-
-### Key Design Decisions
-
-**Architecture Pattern:** Monolith with clear module boundaries
-- Single deployment unit for MVP simplicity
-- Feature-based organization (auth, feed, profile, messages)
-- Scalability path to microservices at 100K+ users
-- **Rationale:** Faster iteration, type safety across stack, cost-effective for MVP
-
-**Technology Stack:**
-- **Runtime:** Bun (TypeScript-native, fast)
-- **Backend:** Hono framework with RPC-style API
-- **Frontend:** React 18 + Vite PWA
-- **Database:** PostgreSQL 16 with Prisma ORM
-- **Auth:** Better-auth (session-based, database-backed)
-- **UI:** Shadcn-ui (Radix + Tailwind)
-- **State:** Zustand (global) + TanStack Query (server)
-
-**RPC API Pattern:** Single endpoint `/api/rpc` with procedure routing
-- Type-safe end-to-end (shared TypeScript types in `/packages/api-contracts/`)
-- Procedure-based naming matches domain actions
-- Better DX than REST, simpler than GraphQL
-- **Trade-off:** Less standardized but gains in type safety and DX
-
-**Database Design:** PostgreSQL with JSONB for flexibility
-- 19 tables covering users, posts, feeds, messages, notifications, storage
-- JSONB columns for profile customization and feed algorithms (no migrations needed)
-- Database triggers for denormalized counters (likes, comments, storage)
-- **Rationale:** Relational model + flexibility for custom user data
-
-**PWA Offline-First:** Service worker with intelligent caching
-- NetworkFirst for API (24h cache), CacheFirst for media (7-30d)
-- Offline queue for mutations (posts, messages, likes)
-- IndexedDB for persistent storage (last 50 posts, viewed profiles)
-- **Rationale:** Works on mobile without native apps, improves UX
-
-### Implementation Context
-
-**Development Commands:**
-```bash
-# Monorepo setup
-bun install                          # Install all dependencies
-turbo build                          # Build all packages
-turbo dev                            # Dev mode all packages
-
-# Infrastructure
-./scripts/dev-setup.sh               # One-command setup
-make start                           # Start all services (Docker)
-make stop                            # Stop all services
-make logs                            # View all logs
-make health                          # Health checks
-
-# Backend (Bun + Hono + Prisma)
-cd apps/api
-bun run dev                          # Hot reload backend
-bun test                             # Run tests
-bun test --watch                     # TDD mode
-bunx prisma migrate dev              # Create migration
-bunx prisma studio                   # Database GUI
-
-# Frontend (React + Vite PWA)
-cd apps/web
-bun run dev                          # HMR frontend
-bun test                             # Vitest tests
-bun test:e2e                         # Playwright E2E
-
-# Testing
-make test                            # All tests
-make test-coverage                   # With coverage report
-```
-
-**Patterns to Follow:**
-- TDD approach: Tests before features (80%+ coverage, 100% critical paths)
-- Feature-based organization: `/src/features/{domain}/`
-- Builder pattern for test fixtures
-- Optimistic updates for mutations (TanStack Query)
-- Cursor-based pagination for feeds
-- Two-phase file upload (presigned S3 URLs)
-
-**Interfaces to Implement:**
-- 50+ RPC procedures across 10 routers (auth, user, post, feed, social, discovery, message, notification, media, settings)
-- Better-auth session management (7-day expiry, sliding window)
-- S3-compatible storage (MinIO dev, AWS S3 prod)
-- Email verification flow (SMTP/SendGrid)
-
----
-
-## Implementation Phases
-
-### **Phase 1: Foundation Infrastructure** `[duration: 1-2 weeks]` `[priority: P0]`
+## **Phase 1: Foundation Infrastructure** `[duration: 1-2 weeks]` `[priority: P0]`
 
 **Goal:** Establish development environment, monorepo, Docker, database, and testing infrastructure before any feature development.
 
-#### 1.1 Monorepo Structure `[duration: 1-2 days]` `[parallel: false]`
+### 1.1 Monorepo Structure `[duration: 1-2 days]` `[parallel: false]`
 
 - [x] **Prime Context**
     - [x] Read `docs/architecture/MONOLITH_ARCHITECTURE.md` (complete monorepo structure)
@@ -193,7 +35,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 1.2 Docker & Services `[duration: 1-2 days]` `[parallel: false]`
+### 1.2 Docker & Services `[duration: 1-2 days]` `[parallel: false]`
 
 - [x] **Prime Context**
     - [x] Read `docs/DOCKER.md` (complete Docker Compose setup)
@@ -224,7 +66,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 1.3 Database Schema & Migrations `[duration: 2-3 days]` `[parallel: false]`
+### 1.3 Database Schema & Migrations `[duration: 2-3 days]` `[parallel: false]`
 
 - [x] **Prime Context**
     - [x] Read `docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md` (all 19 tables, complete DDL)
@@ -270,7 +112,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 1.4 Testing Infrastructure `[duration: 2-3 days]` `[parallel: true]` `[component: testing]`
+### 1.4 Testing Infrastructure `[duration: 2-3 days]` `[parallel: true]` `[component: testing]`
 
 - [x] **Prime Context**
     - [x] Read `docs/specs/001-vrss-social-platform/TESTING-STRATEGY.md` (complete testing approach)
@@ -331,11 +173,11 @@ make test-coverage                   # With coverage report
 
 ---
 
-### **Phase 2: Authentication & Session Management** `[duration: 1-2 weeks]` `[priority: P0]`
+## **Phase 2: Authentication & Session Management** `[duration: 1-2 weeks]` `[priority: P0]`
 
 **Goal:** Implement Better-auth with email verification, session management, and auth middleware for RPC routing.
 
-#### 2.1 Better-auth Core Setup `[duration: 2 days]` `[parallel: false]`
+### 2.1 Better-auth Core Setup `[duration: 2 days]` `[parallel: false]`
 
 - [x] **Prime Context**
     - [x] Read `docs/SECURITY_DESIGN.md` (Better-auth integration, session management)
@@ -367,7 +209,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 2.2 Auth Procedures & Email Verification `[duration: 2-3 days]` `[parallel: false]`
+### 2.2 Auth Procedures & Email Verification `[duration: 2-3 days]` `[parallel: false]`
 
 - [x] **Prime Context**
     - [x] Read `docs/api-architecture.md` Section: "Auth Router" (procedures: register, login, logout, getSession)
@@ -408,7 +250,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 2.3 Auth Middleware & RPC Integration `[duration: 2 days]` `[parallel: false]`
+### 2.3 Auth Middleware & RPC Integration `[duration: 2 days]` `[parallel: false]`
 
 - [x] **Prime Context**
     - [x] Read `docs/api-architecture.md` Section: "Auth Middleware" (session validation, public procedures)
@@ -441,11 +283,11 @@ make test-coverage                   # With coverage report
 
 ---
 
-### **Phase 3: Backend API Implementation** `[duration: 3-4 weeks]` `[priority: P1]`
+## **Phase 3: Backend API Implementation** `[duration: 3-4 weeks]` `[priority: P1]`
 
 **Goal:** Implement all 10 RPC routers with 50+ procedures following dependency order.
 
-#### 3.1 RPC Foundation & Type Contracts `[duration: 2-3 days]` `[parallel: false]`
+### 3.1 RPC Foundation & Type Contracts `[duration: 2-3 days]` `[parallel: false]`
 
 - [x] **Prime Context**
     - [x] Read `docs/api-architecture.md` (complete RPC pattern, all procedures)
@@ -483,7 +325,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 3.2 User & Profile Router `[duration: 2-3 days]` `[parallel: false]`
+### 3.2 User & Profile Router `[duration: 2-3 days]` `[parallel: false]`
 
 - [x] **Prime Context**
     - [x] Read `docs/api-architecture.md` Section: "User Router" (6 procedures)
@@ -517,7 +359,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 3.3 Post Router `[duration: 2-3 days]` `[parallel: false]`
+### 3.3 Post Router `[duration: 2-3 days]` `[parallel: false]`
 
 - [x] **Prime Context**
     - [x] Read `docs/api-architecture.md` Section: "Post Router" (8 procedures)
@@ -556,7 +398,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 3.4 Social Router `[duration: 2 days]` `[parallel: true]`
+### 3.4 Social Router `[duration: 2 days]` `[parallel: true]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/api-architecture.md` Section: "Social Router" (6 procedures)
@@ -589,43 +431,43 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 3.5 Feed Router `[duration: 2-3 days]` `[parallel: false]`
+### 3.5 Feed Router `[duration: 2-3 days]` `[parallel: false]`
 
-- [x] **Prime Context**
-    - [x] Read `docs/api-architecture.md` Section: "Feed Router" (4 procedures)
-    - [x] Read PRD Section: "F4: Custom Feed Builder (Visual Algorithm)" (lines 169-181)
-    - [x] Read DATABASE_SCHEMA.md: `custom_feeds`, `feed_filters`
+- [ ] **Prime Context**
+    - [ ] Read `docs/api-architecture.md` Section: "Feed Router" (4 procedures)
+    - [ ] Read PRD Section: "F4: Custom Feed Builder (Visual Algorithm)" (lines 169-181)
+    - [ ] Read DATABASE_SCHEMA.md: `custom_feeds`, `feed_filters`
 
-- [x] **Write Tests** `[activity: test-api]`
-    - [x] `feed.get` tests: Default feed (chronological), custom feed execution
-    - [x] `feed.create` tests: Create custom feed with filters
-    - [x] `feed.update` tests: Modify feed name, add/remove filters
-    - [x] `feed.delete` tests: Delete custom feed
-    - [x] Algorithm execution tests: AND/OR/NOT logic, type filters, author filters
+- [ ] **Write Tests** `[activity: test-api]`
+    - [ ] `feed.get` tests: Default feed (chronological), custom feed execution
+    - [ ] `feed.create` tests: Create custom feed with filters
+    - [ ] `feed.update` tests: Modify feed name, add/remove filters
+    - [ ] `feed.delete` tests: Delete custom feed
+    - [ ] Algorithm execution tests: AND/OR/NOT logic, type filters, author filters
 
-- [x] **Implement** `[activity: api-development]`
-    - [x] Create `apps/api/src/rpc/routers/feed.ts`
-    - [x] Implement `feed.get` (execute feed algorithm, return posts with cursor pagination)
-    - [x] Implement `feed.create` (save custom feed with filters)
-    - [x] Implement `feed.update` (update feed name, filters)
-    - [x] Implement `feed.delete`
-    - [x] Create `apps/api/src/features/feed/feed-algorithm.ts` (filter, sort, paginate)
-    - [x] Support filter types: post type, author, tags, date range
-    - [x] Support logical operators: AND, OR, NOT
-    - [x] Default feed: "Following - Chronological" (all followed users, newest first)
+- [ ] **Implement** `[activity: api-development]`
+    - [ ] Create `apps/api/src/rpc/routers/feed.ts`
+    - [ ] Implement `feed.get` (execute feed algorithm, return posts with cursor pagination)
+    - [ ] Implement `feed.create` (save custom feed with filters)
+    - [ ] Implement `feed.update` (update feed name, filters)
+    - [ ] Implement `feed.delete`
+    - [ ] Create `apps/api/src/features/feed/feed-algorithm.ts` (filter, sort, paginate)
+    - [ ] Support filter types: post type, author, tags, date range
+    - [ ] Support logical operators: AND, OR, NOT
+    - [ ] Default feed: "Following - Chronological" (all followed users, newest first)
 
-- [x] **Validate**
-    - [x] Feed algorithm tests pass (28/37 - 76%)
-    - [x] Custom feeds execute correctly
-    - [x] AND/OR/NOT logic works
-    - [x] Pagination performs well (<50ms for 20 posts)
-    - [~] Test coverage: 76% (target was 90%, core CRUD operations at 100%)
+- [ ] **Validate**
+    - [ ] Feed algorithm tests pass
+    - [ ] Custom feeds execute correctly
+    - [ ] AND/OR/NOT logic works
+    - [ ] Pagination performs well (<50ms for 20 posts)
+    - [ ] Test coverage: 90%+
 
-**Success Criteria:** Custom feed builder functional, algorithms execute queries correctly ✅ **COMPLETE**
+**Success Criteria:** Custom feed builder functional, algorithms execute queries correctly
 
 ---
 
-#### 3.6 Media Router `[duration: 2 days]` `[parallel: true]`
+### 3.6 Media Router `[duration: 2 days]` `[parallel: true]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/api-architecture.md` Section: "Media Router" (4 procedures: initiateUpload, completeUpload, deleteMedia, getStorageUsage)
@@ -658,7 +500,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 3.7 Message, Notification, Discovery, Settings Routers `[duration: 3-4 days]` `[parallel: true]`
+### 3.7 Message, Notification, Discovery, Settings Routers `[duration: 3-4 days]` `[parallel: true]`
 
 - [ ] **Message Router** `[duration: 2 days]` `[parallel: true]` `[component: messaging]`
     - [ ] **Prime Context**: Read `docs/api-architecture.md` Section "Message Router"
@@ -688,11 +530,11 @@ make test-coverage                   # With coverage report
 
 ---
 
-### **Phase 4: Frontend Foundation** `[duration: 2-3 weeks]` `[priority: P1]`
+## **Phase 4: Frontend Foundation** `[duration: 2-3 weeks]` `[priority: P1]`
 
 **Goal:** Build React PWA with core UI, state management, routing, and authentication.
 
-#### 4.1 PWA Setup & Core UI `[duration: 2-3 days]` `[parallel: false]`
+### 4.1 PWA Setup & Core UI `[duration: 2-3 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/frontend-architecture.md` (PWA design, service worker strategy)
@@ -736,7 +578,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 4.2 State Management Setup `[duration: 2 days]` `[parallel: false]`
+### 4.2 State Management Setup `[duration: 2 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/frontend-architecture.md` Section: "State Management Layers"
@@ -768,7 +610,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 4.3 RPC Client & API Integration `[duration: 2 days]` `[parallel: false]`
+### 4.3 RPC Client & API Integration `[duration: 2 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/frontend-architecture.md` Section: "API Client Layer"
@@ -800,7 +642,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 4.4 Authentication UI `[duration: 2-3 days]` `[parallel: false]`
+### 4.4 Authentication UI `[duration: 2-3 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/frontend-implementation-guide.md` Phase 4 Section: "Authentication Module"
@@ -835,11 +677,11 @@ make test-coverage                   # With coverage report
 
 ---
 
-### **Phase 5: Core Features** `[duration: 3-4 weeks]` `[priority: P1]`
+## **Phase 5: Core Features** `[duration: 3-4 weeks]` `[priority: P1]`
 
 **Goal:** Implement feed system, profile display/editing, messaging, and notifications.
 
-#### 5.1 Feed System `[duration: 4-5 days]` `[parallel: false]`
+### 5.1 Feed System `[duration: 4-5 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/frontend-implementation-guide.md` Phase 4 Section: "Feed System"
@@ -881,7 +723,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 5.2 Profile Display & Editing `[duration: 4-5 days]` `[parallel: false]`
+### 5.2 Profile Display & Editing `[duration: 4-5 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/component-specifications.md` Section: "Profile Editor Components"
@@ -927,7 +769,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 5.3 Messaging `[duration: 3-4 days]` `[parallel: true]`
+### 5.3 Messaging `[duration: 3-4 days]` `[parallel: true]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/frontend-implementation-guide.md` Phase 4 Section: "Messaging"
@@ -961,7 +803,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 5.4 Notifications `[duration: 2 days]` `[parallel: true]`
+### 5.4 Notifications `[duration: 2 days]` `[parallel: true]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/frontend-implementation-guide.md` Phase 4 Section: "Notifications"
@@ -990,11 +832,11 @@ make test-coverage                   # With coverage report
 
 ---
 
-### **Phase 6: Advanced Features** `[duration: 2-3 weeks]` `[priority: P2]`
+## **Phase 6: Advanced Features** `[duration: 2-3 weeks]` `[priority: P2]`
 
 **Goal:** Implement visual feed algorithm builder, search/discovery, and PWA offline capabilities.
 
-#### 6.1 Visual Feed Algorithm Builder `[duration: 4-5 days]` `[parallel: false]`
+### 6.1 Visual Feed Algorithm Builder `[duration: 4-5 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/component-specifications.md` Section: "Feed Algorithm Builder"
@@ -1029,7 +871,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 6.2 Search & Discovery `[duration: 2-3 days]` `[parallel: true]`
+### 6.2 Search & Discovery `[duration: 2-3 days]` `[parallel: true]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/frontend-implementation-guide.md` Phase 4 Section: "Search & Discovery"
@@ -1059,7 +901,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 6.3 PWA Offline Capabilities `[duration: 3-4 days]` `[parallel: false]`
+### 6.3 PWA Offline Capabilities `[duration: 3-4 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/frontend-architecture.md` Section: "Offline-First Strategy"
@@ -1110,11 +952,11 @@ make test-coverage                   # With coverage report
 
 ---
 
-### **Phase 7: Polish & Launch Readiness** `[duration: 1-2 weeks]` `[priority: P2]`
+## **Phase 7: Polish & Launch Readiness** `[duration: 1-2 weeks]` `[priority: P2]`
 
 **Goal:** Performance optimization, accessibility enhancements, security audit, and final testing.
 
-#### 7.1 Performance Optimization `[duration: 3-4 days]` `[parallel: true]`
+### 7.1 Performance Optimization `[duration: 3-4 days]` `[parallel: true]`
 
 - [ ] **Prime Context**
     - [ ] Read `docs/frontend-implementation-guide.md` Phase 7: "Performance Optimization"
@@ -1144,7 +986,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 7.2 Accessibility & Security Audit `[duration: 2-3 days]` `[parallel: true]`
+### 7.2 Accessibility & Security Audit `[duration: 2-3 days]` `[parallel: true]`
 
 - [ ] **Accessibility** `[activity: accessibility-implementation]` `[parallel: true]`
     - [ ] **Prime Context**: Read PRD accessibility requirements (WCAG 2.1 AA)
@@ -1179,7 +1021,7 @@ make test-coverage                   # With coverage report
 
 ---
 
-#### 7.3 Final Testing & Documentation `[duration: 2-3 days]` `[parallel: false]`
+### 7.3 Final Testing & Documentation `[duration: 2-3 days]` `[parallel: false]`
 
 - [ ] **E2E Testing** `[activity: test-e2e]`
     - [ ] Write critical user journey tests (10 scenarios from TEST-SPECIFICATIONS.md)
@@ -1206,232 +1048,3 @@ make test-coverage                   # With coverage report
 **Success Criteria:** All tests pass, documentation complete, ready for production
 
 ---
-
-## Integration & End-to-End Validation
-
-**Final Validation Gate** - Must pass before production launch:
-
-- [ ] **All Unit Tests Pass** (backend + frontend)
-    - [ ] Backend: 80%+ coverage, 100% critical paths (auth, storage, payments)
-    - [ ] Frontend: 80%+ coverage, 100% auth forms and feed builder
-
-- [ ] **All Integration Tests Pass**
-    - [ ] RPC API integration tests (all 50+ procedures)
-    - [ ] Database integration tests (schema, triggers, migrations)
-    - [ ] S3 upload integration tests (two-phase upload)
-
-- [ ] **All E2E Tests Pass**
-    - [ ] 10 critical user journeys (from TEST-SPECIFICATIONS.md)
-    - [ ] Multi-browser testing (Chrome, Mobile Chrome, Mobile Safari)
-    - [ ] Offline mode tests (queue, sync, IndexedDB)
-
-- [ ] **Performance Benchmarks Met**
-    - [ ] Lighthouse Performance: 90+
-    - [ ] Lighthouse Accessibility: 100
-    - [ ] Lighthouse PWA: 100
-    - [ ] API p95 response time: <200ms
-    - [ ] Database p95 query time: <50ms
-    - [ ] Feed render time: <50ms (20 posts)
-
-- [ ] **Security Validation**
-    - [ ] All security tests pass (auth, session, injection)
-    - [ ] Password hashing verified (bcrypt, no plain text)
-    - [ ] Session security validated (HttpOnly, Secure, SameSite)
-    - [ ] Rate limiting enforced (login, registration, API)
-    - [ ] HTTPS/TLS configured for production
-    - [ ] No critical vulnerabilities (`npm audit`, `bun audit`)
-
-- [ ] **Acceptance Criteria Verified Against PRD**
-    - [ ] All F1-F10 (Must Have) features implemented
-    - [ ] All acceptance criteria met for each feature
-    - [ ] Success metrics tracking implemented
-    - [ ] Storage quotas enforced (50MB free, 1GB+ paid)
-
-- [ ] **Test Coverage Meets Standards**
-    - [ ] Overall project coverage: 80%+
-    - [ ] Critical paths coverage: 100% (auth, storage, data integrity, security)
-    - [ ] Backend services: 90%+
-    - [ ] Frontend components: 80%+
-
-- [ ] **Documentation Updated**
-    - [ ] API documentation complete (OpenAPI + reference)
-    - [ ] Deployment guide created
-    - [ ] User guide created
-    - [ ] Architecture documentation updated (any ADR changes)
-
-- [ ] **Build and Deployment Verified**
-    - [ ] Production Docker images build successfully
-    - [ ] All services start with `make prod-start`
-    - [ ] Health checks pass (`make prod-health`)
-    - [ ] Database migrations run (`make prod-migrate`)
-    - [ ] Environment variables validated (production .env checklist)
-
-- [ ] **All PRD Requirements Implemented**
-    - [ ] F1: User Authentication ✓
-    - [ ] F2: Customizable User Profiles ✓
-    - [ ] F3: Content Creation (4 post types) ✓
-    - [ ] F4: Custom Feed Builder ✓
-    - [ ] F5: Custom Discovery Algorithm ✓
-    - [ ] F6: Social Interactions (follow, like, comment, repost) ✓
-    - [ ] F7: Direct Messaging ✓
-    - [ ] F8: Notifications ✓
-    - [ ] F9: Account Settings ✓
-    - [ ] F10: Storage Management & Subscription ✓
-
-- [ ] **Implementation Follows SDD Design**
-    - [ ] Monolith architecture with clear module boundaries ✓
-    - [ ] RPC API pattern with 50+ procedures ✓
-    - [ ] PostgreSQL with 19 tables, indexes, triggers ✓
-    - [ ] Better-auth session management ✓
-    - [ ] React PWA with offline-first strategy ✓
-    - [ ] Zustand + TanStack Query state management ✓
-    - [ ] Two-phase S3 file upload ✓
-    - [ ] Cursor-based pagination ✓
-
----
-
-## Estimated Timeline
-
-**Total Duration: 8-12 weeks**
-
-| Phase | Duration | Team Size | Notes |
-|-------|----------|-----------|-------|
-| **Phase 1: Foundation** | 1-2 weeks | 2-3 devs | Infrastructure, database, testing setup |
-| **Phase 2: Authentication** | 1-2 weeks | 1-2 devs | Better-auth, email verification, middleware |
-| **Phase 3: Backend API** | 3-4 weeks | 2-3 devs | 10 routers, 50+ procedures (parallelizable) |
-| **Phase 4: Frontend Foundation** | 2-3 weeks | 2-3 devs | PWA, state, RPC client, auth UI |
-| **Phase 5: Core Features** | 3-4 weeks | 3-4 devs | Feed, profile, messages, notifications (parallelizable) |
-| **Phase 6: Advanced Features** | 2-3 weeks | 2-3 devs | Algorithm builder, search, offline sync |
-| **Phase 7: Polish & Launch** | 1-2 weeks | 2-3 devs | Performance, accessibility, security, docs |
-
-**Critical Path:** Phase 1 → Phase 2 → Phase 3 (auth, user, post) → Phase 4 → Phase 5
-
-**Parallelization Opportunities:**
-- Phase 3: Multiple routers (message, notification, discovery, settings) can be built in parallel
-- Phase 4 & 5: Frontend features can be built alongside backend routers
-- Phase 6: Algorithm builder, search, and offline sync are independent
-- Phase 7: Performance, accessibility, and security audits can run in parallel
-
-**Minimum Viable Product (MVP) Scope:**
-- Phases 1-5 = Core MVP (6-8 weeks)
-- Phase 6-7 = Enhanced MVP (additional 2-4 weeks)
-
----
-
-## Success Metrics
-
-**Code Quality:**
-- Test coverage: 80%+ overall, 100% critical paths
-- TypeScript strict mode: 0 errors
-- ESLint: 0 errors, 0 warnings
-- Zero `any` types in production code
-
-**Performance:**
-- Lighthouse Performance: 90+
-- Lighthouse Accessibility: 100
-- Lighthouse PWA: 100
-- API p95: <200ms
-- Database p95: <50ms
-- Feed render: <50ms (20 posts)
-
-**Security:**
-- 0 critical vulnerabilities
-- HTTPS enforced
-- Password hashing (bcrypt)
-- Session security (HttpOnly, Secure, SameSite)
-- Rate limiting active
-
-**Functionality:**
-- All 10 must-have features (F1-F10) implemented
-- All acceptance criteria met
-- 10 critical user journeys pass E2E tests
-- PWA installs on mobile devices
-
----
-
-## Risk Mitigation
-
-**Risk 1: Timeline Slippage**
-- **Mitigation:** Prioritize P0/P1 features first, defer P2 to post-MVP
-- **Fallback:** Ship Phase 1-4 as minimal MVP, iterate on Phase 5-7
-
-**Risk 2: Testcontainers Performance**
-- **Mitigation:** Use Testcontainers only for integration tests, unit tests use mocks
-- **Fallback:** Shared test database with aggressive cleanup
-
-**Risk 3: Complex Drag-and-Drop UI**
-- **Mitigation:** Use proven library (@dnd-kit), extensive testing
-- **Fallback:** Manual reorder buttons if drag-drop too complex
-
-**Risk 4: Offline Sync Conflicts**
-- **Mitigation:** Last-write-wins for MVP, show conflict UI
-- **Fallback:** Queue only idempotent operations (likes, follows)
-
-**Risk 5: Better-auth Integration Issues**
-- **Mitigation:** Follow official docs, test heavily, fallback to custom JWT
-- **Fallback:** Implement session management manually with JWT
-
----
-
-## Deployment Checklist
-
-Before deploying to production:
-
-- [ ] Generate all secrets (`openssl rand -base64 32`)
-- [ ] Set production environment variables (`.env.production`)
-- [ ] Run database migrations (`make prod-migrate`)
-- [ ] Build Docker images (`make prod-build`)
-- [ ] Start services (`make prod-start`)
-- [ ] Verify health checks (`make prod-health`)
-- [ ] Run smoke tests (login, create post, view feed)
-- [ ] Configure SSL/TLS certificates
-- [ ] Set up monitoring (Sentry, logs)
-- [ ] Configure backups (database, S3)
-- [ ] Set up alerts (downtime, errors)
-- [ ] Load testing (100 concurrent users)
-- [ ] Security scan (OWASP ZAP, npm audit)
-- [ ] Review privacy policy and terms of service
-- [ ] Test email delivery (verification, notifications)
-- [ ] Verify S3 storage quota enforcement
-- [ ] Test payment processing (if applicable)
-- [ ] Final E2E tests on production environment
-
----
-
-## Appendix: Quick Reference
-
-**Key Commands:**
-```bash
-# Start everything
-make start
-
-# Run all tests
-make test
-
-# Run with coverage
-make test-coverage
-
-# Backend dev mode
-cd apps/api && bun run dev
-
-# Frontend dev mode
-cd apps/web && bun run dev
-
-# Database migrations
-cd apps/api && bunx prisma migrate dev
-
-# E2E tests
-cd e2e && bunx playwright test
-```
-
-**Critical Paths (100% Coverage Required):**
-1. Authentication flow (register, verify, login, logout)
-2. Storage quota enforcement (check, upload, delete)
-3. Session management (create, refresh, expire, logout)
-4. Data integrity (post creation, profile updates, messages)
-
-**Specification Compliance:**
-- Always reference PRD for business requirements
-- Always reference SDD for technical design
-- Never deviate without documenting reason
-- Update specs if implementation improves design
