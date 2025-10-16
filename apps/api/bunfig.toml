@@ -2,5 +2,8 @@
 # This file configures Bun's test runner and coverage reporting
 
 [test]
+# Preload test setup file (starts database container)
+preload = ["./test/setup.ts"]
+
 # Timeout for each test (in milliseconds)
 timeout = 60000

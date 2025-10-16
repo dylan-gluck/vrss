@@ -13,7 +13,7 @@ const app = new Hono();
 // Middleware
 app.use('*', logger());
 app.use('*', cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: process.env.FRONTEND_URL || 'http://localhost:5050',
   credentials: true
 }));
 
@@ -39,7 +39,7 @@ app.get('/', (c) => {
 app.route('/api/rpc', createRPCRouter());
 
 // Start server
-const port = parseInt(process.env.PORT || '3001', 10);
+const port = parseInt(process.env.PORT || '3030', 10);
 
 export default {
   port,

@@ -6,12 +6,23 @@
 # Default target
 .DEFAULT_GOAL := help
 
+# Load environment variables from .env file
+ifneq (,$(wildcard ./.env))
+    include .env
+    export
+endif
+
 # Colors for output
 BLUE := \033[0;34m
 GREEN := \033[0;32m
 YELLOW := \033[0;33m
 RED := \033[0;31m
 NC := \033[0m # No Color
+
+# Default port values (fallback if .env not present)
+FRONTEND_PORT ?= 5050
+BACKEND_PORT ?= 3030
+DB_PORT ?= 5555
 
 ##@ General
 
@@ -42,9 +53,9 @@ start: ## Start all services in development mode
 	@echo "$(BLUE)Starting VRSS services...$(NC)"
 	docker-compose up -d
 	@echo "$(GREEN)Services started!$(NC)"
-	@echo "$(YELLOW)Frontend:$(NC) http://localhost:5173"
-	@echo "$(YELLOW)Backend API:$(NC) http://localhost:3000"
-	@echo "$(YELLOW)Database:$(NC) localhost:5432"
+	@echo "$(YELLOW)Frontend:$(NC) http://localhost:$(FRONTEND_PORT)"
+	@echo "$(YELLOW)Backend API:$(NC) http://localhost:$(BACKEND_PORT)"
+	@echo "$(YELLOW)Database:$(NC) localhost:$(DB_PORT)"
 	@echo ""
 	@echo "Run 'make logs' to view logs"
 

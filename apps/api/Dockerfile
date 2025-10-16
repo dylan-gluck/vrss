@@ -26,12 +26,29 @@ WORKDIR /app
 # ------------------------------------------------------------------------------
 FROM base AS dependencies
 
-# Copy package files
-COPY --chown=bunuser:nobody package.json ./
-COPY --chown=bunuser:nobody bun.lockb* ./
+# Copy root package.json for workspace configuration
+COPY --chown=bunuser:nobody ./package.json ./bun.lockb* ./
 
-# Install dependencies
+# Copy workspace packages
+COPY --chown=bunuser:nobody ./packages ./packages/
+
+# Copy backend app package.json
+COPY --chown=bunuser:nobody ./apps/api/package.json ./apps/api/
+
+# Copy Prisma schema (needed for prisma generate)
+COPY --chown=bunuser:nobody ./apps/api/prisma ./apps/api/prisma
+
+# Create minimal e2e directory to satisfy workspace config
+RUN mkdir -p ./e2e && echo '{"name":"e2e","private":true}' > ./e2e/package.json
+
+# Install all workspace dependencies
 RUN bun install
+
+# Set working directory to backend app
+WORKDIR /app/apps/api
+
+# Generate Prisma client
+RUN bunx prisma generate
 
 # ------------------------------------------------------------------------------
 # Stage 3: Development - Hot reload with all dev tools
@@ -40,16 +57,17 @@ FROM dependencies AS development
 
 USER bunuser
 
-# Copy source code (will be overridden by volume mount in development)
-COPY --chown=bunuser:nobody src ./src
-COPY --chown=bunuser:nobody tsconfig.json ./
+# Copy source code from apps/api (will be overridden by volume mount in development)
+COPY --chown=bunuser:nobody ./apps/api/src ./src
+COPY --chown=bunuser:nobody ./apps/api/tsconfig.json ./
+COPY --chown=bunuser:nobody ./apps/api/prisma ./prisma
 
 # Expose backend port
-EXPOSE 3000
+EXPOSE 3030
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 --start-period=40s \
-    CMD curl -f http://localhost:3000/health || exit 1
+    CMD sh -c 'curl -f http://localhost:${BACKEND_PORT:-3030}/health || exit 1'
 
 # Run with --watch for hot reload
 CMD ["bun", "run", "dev"]
@@ -61,9 +79,10 @@ FROM dependencies AS builder
 
 USER bunuser
 
-# Copy source code
-COPY --chown=bunuser:nobody src ./src
-COPY --chown=bunuser:nobody tsconfig.json ./
+# Copy source code from apps/api
+COPY --chown=bunuser:nobody ./apps/api/src ./src
+COPY --chown=bunuser:nobody ./apps/api/tsconfig.json ./
+COPY --chown=bunuser:nobody ./apps/api/prisma ./prisma
 
 # Build application
 RUN bun run build
@@ -75,19 +94,22 @@ FROM base AS production
 
 USER bunuser
 
+# Set working directory
+WORKDIR /app/apps/api
+
 # Copy only production dependencies
 COPY --from=dependencies --chown=bunuser:nobody /app/node_modules ./node_modules
-COPY --from=dependencies --chown=bunuser:nobody /app/package.json ./package.json
+COPY --from=dependencies --chown=bunuser:nobody /app/apps/api/package.json ./package.json
 
 # Copy built application
-COPY --from=builder --chown=bunuser:nobody /app/dist ./dist
+COPY --from=builder --chown=bunuser:nobody /app/apps/api/dist ./dist
 
 # Expose backend port
-EXPOSE 3000
+EXPOSE 3030
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 --start-period=20s \
-    CMD curl -f http://localhost:3000/health || exit 1
+    CMD sh -c 'curl -f http://localhost:${BACKEND_PORT:-3030}/health || exit 1'
 
 # Run production build
 CMD ["bun", "run", "start"]
@@ -99,9 +121,11 @@ FROM dependencies AS test
 
 USER bunuser
 
-# Copy source code and test files
-COPY --chown=bunuser:nobody src ./src
-COPY --chown=bunuser:nobody tsconfig.json ./
+# Copy source code and test files from apps/api
+COPY --chown=bunuser:nobody ./apps/api/src ./src
+COPY --chown=bunuser:nobody ./apps/api/test ./test
+COPY --chown=bunuser:nobody ./apps/api/tsconfig.json ./
+COPY --chown=bunuser:nobody ./apps/api/prisma ./prisma
 
 # Run tests
 CMD ["bun", "test"]

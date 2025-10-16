@@ -2,130 +2,89 @@
  * Test Setup and Global Configuration
  *
  * This file is preloaded by Bun test (configured in bunfig.toml).
- * It manages the Testcontainers PostgreSQL lifecycle for all tests.
+ * Tests use the dev database (from docker-compose) instead of spinning up containers.
+ *
+ * Prerequisites:
+ * - Run `docker compose up -d db` before running tests
+ * - Database should be at localhost:5432 (vrss database)
  *
  * Lifecycle:
- * - beforeAll: Start PostgreSQL container and run migrations
+ * - beforeAll: Connect to dev database and verify
  * - afterEach: Clean up test data (optional)
- * - afterAll: Stop container and cleanup
+ * - afterAll: Disconnect
  */
 
-import { beforeAll, afterAll, afterEach } from "bun:test";
-import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
+import { beforeAll, afterAll } from "bun:test";
 import { PrismaClient } from "@prisma/client";
-import { execSync } from "child_process";
 
 // Global test state
-let container: StartedPostgreSqlContainer | null = null;
 let prisma: PrismaClient | null = null;
 
 /**
  * Get the Prisma client for testing
- * This is initialized after the container starts
+ * This connects to the dev database using DB_PORT from environment
  */
 export function getTestDatabase(): PrismaClient {
   if (!prisma) {
-    throw new Error("Test database not initialized. Make sure tests run after setup.");
+    // Initialize lazily if not done in beforeAll
+    console.log("⚠️ Initializing database connection...");
+
+    // Build DATABASE_URL from environment variables
+    const dbHost = process.env.DB_HOST || 'localhost';
+    const dbPort = process.env.DB_PORT || '6969';
+    const dbName = process.env.DB_NAME || 'vrss';
+    const dbUser = process.env.DB_USER || 'vrss_user';
+    const dbPassword = process.env.DB_PASSWORD || 'vrss_dev_password';
+    const databaseUrl = process.env.DATABASE_URL || `postgresql://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}?schema=public`;
+
+    prisma = new PrismaClient({
+      datasourceUrl: databaseUrl,
+    });
   }
   return prisma;
 }
 
 /**
- * Get the database connection URL
- */
-export function getTestDatabaseUrl(): string {
-  if (!container) {
-    throw new Error("Test container not started.");
-  }
-  return container.getConnectionUri();
-}
-
-/**
- * Start PostgreSQL container and run migrations
+ * Connect to dev database and verify
  * This runs once before all tests
  */
 beforeAll(async () => {
-  console.log("🐳 Starting PostgreSQL test container...");
+  console.log("🔌 Connecting to dev database...");
 
-  // Start PostgreSQL 16 container
-  container = await new PostgreSqlContainer("postgres:16-alpine")
-    .withExposedPorts(5432)
-    .withStartupTimeout(120000) // 2 minutes timeout
-    .start();
+  // Build DATABASE_URL from environment variables
+  const dbHost = process.env.DB_HOST || 'localhost';
+  const dbPort = process.env.DB_PORT || '6969';
+  const dbName = process.env.DB_NAME || 'vrss';
+  const dbUser = process.env.DB_USER || 'vrss_user';
+  const dbPassword = process.env.DB_PASSWORD || 'vrss_dev_password';
+  const databaseUrl = process.env.DATABASE_URL || `postgresql://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}?schema=public`;
 
-  const connectionUri = container.getConnectionUri();
-  console.log("✅ PostgreSQL container started");
-
-  // Set DATABASE_URL for Prisma
-  process.env.DATABASE_URL = connectionUri;
-
-  // Initialize Prisma client
+  // Initialize Prisma client for dev database
   prisma = new PrismaClient({
-    datasourceUrl: connectionUri,
+    datasourceUrl: databaseUrl,
   });
 
-  // Run Prisma migrations
-  console.log("🔄 Running Prisma migrations...");
+  // Verify connection
   try {
-    execSync("bunx prisma migrate deploy", {
-      cwd: process.cwd(),
-      env: { ...process.env, DATABASE_URL: connectionUri },
-      stdio: "pipe",
-    });
-    console.log("✅ Migrations completed");
+    await prisma.$connect();
+    console.log(`✅ Connected to dev database at ${dbHost}:${dbPort}`);
   } catch (error) {
-    console.error("❌ Migration failed:", error);
+    console.error("❌ Failed to connect to dev database. Make sure docker-compose is running!");
+    console.error("   Run: docker compose up -d db");
     throw error;
   }
-
-  // Verify connection
-  await prisma.$connect();
-  console.log("✅ Database connection verified");
-}, 180000); // 3 minutes timeout for setup
+}, 30000); // 30 second timeout
 
 /**
- * Clean up test data after each test (optional)
- * Comment out if you want to keep data between tests
- */
-afterEach(async () => {
-  if (!prisma) return;
-
-  // Optionally clean up data after each test
-  // Uncomment the sections below if you want automatic cleanup
-
-  /*
-  console.log("🧹 Cleaning up test data...");
-
-  // Delete in reverse order to respect foreign key constraints
-  await prisma.sessionActivity.deleteMany();
-  await prisma.session.deleteMany();
-  await prisma.postMedia.deleteMany();
-  await prisma.post.deleteMany();
-  await prisma.customFeedRule.deleteMany();
-  await prisma.customFeed.deleteMany();
-  await prisma.storageQuota.deleteMany();
-  await prisma.profile.deleteMany();
-  await prisma.user.deleteMany();
-
-  console.log("✅ Test data cleaned");
-  */
-});
-
-/**
- * Stop container and disconnect
+ * Disconnect from database
  * This runs once after all tests
  */
 afterAll(async () => {
-  console.log("🧹 Cleaning up test environment...");
+  console.log("🧹 Disconnecting from database...");
 
   if (prisma) {
     await prisma.$disconnect();
-    console.log("✅ Prisma disconnected");
-  }
-
-  if (container) {
-    await container.stop();
-    console.log("✅ PostgreSQL container stopped");
+    console.log("✅ Disconnected");
   }
 });
 

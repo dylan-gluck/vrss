@@ -22,6 +22,8 @@ import { ErrorCode } from "@vrss/api-contracts";
 import { authMiddleware } from "../middleware/auth";
 import { ProcedureContext } from "./types";
 import { authRouter } from "./routers/auth";
+import { userRouter } from "./routers/user";
+import { postRouter } from "./routers/post";
 
 // =============================================================================
 // PUBLIC PROCEDURES
@@ -64,10 +66,12 @@ export const PUBLIC_PROCEDURES = new Set([
  */
 const PROCEDURE_REGISTRY: Record<string, any> = {
   ...authRouter,
+  ...userRouter,
+  ...postRouter,
   // Additional routers will be added here in future phases:
-  // ...userRouter,
-  // ...postRouter,
   // ...discoveryRouter,
+  // ...socialRouter,
+  // ...feedRouter,
   // etc.
 };
 
@@ -349,7 +353,7 @@ export function createRPCRouter(): Hono {
             error.details,
             requestId
           ),
-          httpStatus
+          httpStatus as any
         );
       }
 
