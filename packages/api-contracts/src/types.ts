@@ -17,28 +17,52 @@ export interface User {
 
 // Post types
 export type PostType = 'text_short' | 'text_long' | 'image_single' | 'image_gallery' | 'video' | 'song';
+export type PostVisibility = 'public' | 'private' | 'followers_only' | 'friends_only';
+
+export interface PostStats {
+  likeCount: number;
+  commentCount: number;
+  repostCount: number;
+  viewCount: number;
+}
 
 export interface Post {
   id: string;
   authorId: string;
   type: PostType;
   content: string | null;
-  mediaUrls: string[] | null;
-  metadata: Record<string, unknown> | null;
-  isPublic: boolean;
-  likeCount: number;
-  commentCount: number;
-  repostCount: number;
+  mediaIds: string[];
+  tags?: string[];
+  visibility: PostVisibility;
+  stats: PostStats;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Comment {
+  id: string;
+  postId: string;
+  authorId: string;
+  content: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 // Feed types
+export type FeedFilterType = 'user' | 'post_type' | 'tag' | 'date';
+export type FeedFilterOperator = 'include' | 'exclude';
+
+export interface FeedFilter {
+  type: FeedFilterType;
+  operator: FeedFilterOperator;
+  value: string[];
+}
+
 export interface CustomFeed {
   id: string;
   userId: string;
   name: string;
-  algorithm: FeedAlgorithm;
+  filters: FeedFilter[];
   isDefault: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -85,6 +109,92 @@ export interface ProfileStyles {
     url: string;
     autoplay: boolean;
   };
+}
+
+// Social types
+export type FriendshipStatus = 'pending' | 'accepted' | 'rejected' | 'blocked';
+
+export interface Friendship {
+  id: string;
+  requesterId: string;
+  addresseeId: string;
+  status: FriendshipStatus;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Follow {
+  id: string;
+  followerId: string;
+  followingId: string;
+  createdAt: Date;
+}
+
+// Media types
+export type MediaType = 'image' | 'video' | 'audio';
+export type MediaStatus = 'pending' | 'processing' | 'ready' | 'failed';
+
+export interface Media {
+  id: string;
+  userId: string;
+  type: MediaType;
+  url: string;
+  thumbnailUrl?: string;
+  filename: string;
+  size: number;
+  mimeType: string;
+  status: MediaStatus;
+  metadata?: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Message types
+export interface Message {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  content: string;
+  mediaIds?: string[];
+  readAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Conversation {
+  id: string;
+  participants: string[];
+  lastMessageAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Notification types
+export type NotificationType = 'like' | 'comment' | 'follow' | 'friend_request' | 'mention' | 'repost';
+
+export interface Notification {
+  id: string;
+  userId: string;
+  type: NotificationType;
+  actorId: string;
+  targetId?: string;
+  content: string;
+  isRead: boolean;
+  createdAt: Date;
+}
+
+// Settings types
+export interface AccountSettings {
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  marketingEmails: boolean;
+}
+
+export interface PrivacySettings {
+  profileVisibility: ProfileVisibility;
+  allowMessagesFrom: 'everyone' | 'followers' | 'friends' | 'nobody';
+  allowTagging: boolean;
+  showOnlineStatus: boolean;
 }
 
 // Pagination

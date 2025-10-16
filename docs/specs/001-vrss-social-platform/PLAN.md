@@ -337,31 +337,31 @@ make test-coverage                   # With coverage report
 
 #### 2.1 Better-auth Core Setup `[duration: 2 days]` `[parallel: false]`
 
-- [ ] **Prime Context**
-    - [ ] Read `docs/SECURITY_DESIGN.md` (Better-auth integration, session management)
-    - [ ] Read SDD Section: "Security & Compliance Constraints" (lines 50-67)
-    - [ ] Review Better-auth docs: https://www.better-auth.com/docs
+- [x] **Prime Context**
+    - [x] Read `docs/SECURITY_DESIGN.md` (Better-auth integration, session management)
+    - [x] Read SDD Section: "Security & Compliance Constraints" (lines 50-67)
+    - [x] Review Better-auth docs: https://www.better-auth.com/docs
 
-- [ ] **Write Tests** `[activity: test-auth]`
-    - [ ] Better-auth initialization test
-    - [ ] Prisma adapter connection test
-    - [ ] Session table creation test
-    - [ ] Configuration validation test
+- [x] **Write Tests** `[activity: test-auth]`
+    - [x] Better-auth initialization test
+    - [x] Prisma adapter connection test
+    - [x] Session table creation test
+    - [x] Configuration validation test
 
-- [ ] **Implement** `[activity: security-implementation]`
-    - [ ] Install Better-auth and Prisma adapter
-    - [ ] Create `apps/api/src/lib/auth.ts` (Better-auth config)
-    - [ ] Update Prisma schema with auth tables (`sessions`, `verification_tokens`)
-    - [ ] Generate migration: `bunx prisma migrate dev --name better-auth`
-    - [ ] Configure email verification handler (placeholder for now)
-    - [ ] Set environment variables (`BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`)
-    - [ ] Generate secure secret: `openssl rand -base64 32`
+- [x] **Implement** `[activity: security-implementation]`
+    - [x] Install Better-auth and Prisma adapter
+    - [x] Create `apps/api/src/lib/auth.ts` (Better-auth config)
+    - [x] Update Prisma schema with auth tables (`sessions`, `verification_tokens`)
+    - [x] Generate migration: `bunx prisma migrate dev --name better-auth`
+    - [x] Configure email verification handler (placeholder for now)
+    - [x] Set environment variables (`BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`)
+    - [x] Generate secure secret: `openssl rand -base64 32`
 
-- [ ] **Validate**
-    - [ ] Better-auth config loads without errors
-    - [ ] Sessions table exists in database
-    - [ ] Environment variables validated
-    - [ ] Test coverage: 100% (critical path)
+- [x] **Validate**
+    - [x] Better-auth config loads without errors
+    - [x] Sessions table exists in database
+    - [x] Environment variables validated
+    - [x] Test coverage: 100% (critical path)
 
 **Success Criteria:** Better-auth configured, session tables created, ready for procedures
 
@@ -369,40 +369,40 @@ make test-coverage                   # With coverage report
 
 #### 2.2 Auth Procedures & Email Verification `[duration: 2-3 days]` `[parallel: false]`
 
-- [ ] **Prime Context**
-    - [ ] Read `docs/api-architecture.md` Section: "Auth Router" (procedures: register, login, logout, getSession)
-    - [ ] Read PRD Section: "F1: User Authentication and Registration" (lines 133-142)
+- [x] **Prime Context**
+    - [x] Read `docs/api-architecture.md` Section: "Auth Router" (procedures: register, login, logout, getSession)
+    - [x] Read PRD Section: "F1: User Authentication and Registration" (lines 133-142)
 
-- [ ] **Write Tests** `[activity: test-auth]`
-    - [ ] Registration tests: Valid input, weak password, duplicate username/email
-    - [ ] Login tests: Valid credentials, unverified email, invalid credentials
-    - [ ] Email verification tests: Valid token, expired token, invalid token
-    - [ ] Session tests: Get session, expired session, invalid token
-    - [ ] Logout tests: Valid logout, no session
+- [x] **Write Tests** `[activity: test-auth]`
+    - [x] Registration tests: Valid input, weak password, duplicate username/email
+    - [x] Login tests: Valid credentials, unverified email, invalid credentials
+    - [x] Email verification tests: Valid token, expired token, invalid token
+    - [x] Session tests: Get session, expired session, invalid token
+    - [x] Logout tests: Valid logout, no session
 
-- [ ] **Implement - Auth Procedures** `[activity: api-development]`
-    - [ ] Create `apps/api/src/rpc/routers/auth.ts`
-    - [ ] Implement `auth.register` procedure (with username uniqueness check)
-    - [ ] Implement `auth.login` procedure (with email verification check)
-    - [ ] Implement `auth.logout` procedure
-    - [ ] Implement `auth.getSession` procedure
-    - [ ] Add Zod validation schemas for all procedures
-    - [ ] Create RPC error responses with proper codes (1000-1099)
+- [x] **Implement - Auth Procedures** `[activity: api-development]`
+    - [x] Create `apps/api/src/rpc/routers/auth.ts`
+    - [x] Implement `auth.register` procedure (with username uniqueness check)
+    - [x] Implement `auth.login` procedure (with email verification check)
+    - [x] Implement `auth.logout` procedure
+    - [x] Implement `auth.getSession` procedure
+    - [x] Add Zod validation schemas for all procedures
+    - [x] Create RPC error responses with proper codes (1000-1099)
 
-- [ ] **Implement - Email Service** `[activity: security-implementation]`
-    - [ ] Create `apps/api/src/lib/email.ts` (Nodemailer or SendGrid)
-    - [ ] Implement `sendVerificationEmail` function
-    - [ ] Create HTML email template for verification
-    - [ ] Implement `auth.resendVerification` procedure
-    - [ ] Implement `auth.verifyEmail` procedure
-    - [ ] Configure SMTP in `.env` (`SMTP_HOST`, `SMTP_USER`, `SMTP_PASSWORD`)
+- [x] **Implement - Email Service** `[activity: security-implementation]`
+    - [x] Create `apps/api/src/lib/email.ts` (Nodemailer or SendGrid)
+    - [x] Implement `sendVerificationEmail` function
+    - [x] Create HTML email template for verification
+    - [x] Implement `auth.resendVerification` procedure
+    - [x] Implement `auth.verifyEmail` procedure
+    - [x] Configure SMTP in `.env` (`SMTP_HOST`, `SMTP_USER`, `SMTP_PASSWORD`)
 
-- [ ] **Validate**
-    - [ ] All auth procedure tests pass
-    - [ ] Email verification flow works end-to-end
-    - [ ] Password complexity enforced
-    - [ ] Sessions created on successful login
-    - [ ] Test coverage: 100% (auth is critical)
+- [x] **Validate**
+    - [x] All auth procedure tests pass
+    - [x] Email verification flow works end-to-end
+    - [x] Password complexity enforced
+    - [x] Sessions created on successful login
+    - [x] Test coverage: 100% (auth is critical)
 
 **Success Criteria:** Complete auth flow (register → verify → login → logout) functional
 
@@ -447,37 +447,37 @@ make test-coverage                   # With coverage report
 
 #### 3.1 RPC Foundation & Type Contracts `[duration: 2-3 days]` `[parallel: false]`
 
-- [ ] **Prime Context**
-    - [ ] Read `docs/api-architecture.md` (complete RPC pattern, all procedures)
-    - [ ] Read `docs/api-implementation-guide.md` (implementation examples)
-    - [ ] Read SDD Section: "Internal API Changes" (lines 1185-1285)
+- [x] **Prime Context**
+    - [x] Read `docs/api-architecture.md` (complete RPC pattern, all procedures)
+    - [x] Read `docs/api-implementation-guide.md` (implementation examples)
+    - [x] Read SDD Section: "Internal API Changes" (lines 1185-1285)
 
-- [ ] **Write Tests** `[activity: test-api]`
-    - [ ] RPC router setup test: POST /api/rpc works
-    - [ ] Error handling test: Invalid procedure returns error
-    - [ ] Type contract test: Procedure types match implementation
-    - [ ] Validation middleware test: Zod schemas validate input
+- [x] **Write Tests** `[activity: test-api]`
+    - [x] RPC router setup test: POST /api/rpc works
+    - [x] Error handling test: Invalid procedure returns error
+    - [x] Type contract test: Procedure types match implementation
+    - [x] Validation middleware test: Zod schemas validate input
 
-- [ ] **Implement - Type Contracts** `[activity: api-development]`
-    - [ ] Create `packages/api-contracts/src/index.ts` (main export)
-    - [ ] Create `packages/api-contracts/src/rpc.ts` (RPCRequest, RPCResponse types)
-    - [ ] Create `packages/api-contracts/src/errors.ts` (ErrorCode enum 1000-1999)
-    - [ ] Create `packages/api-contracts/src/types.ts` (shared domain types: User, Post, Feed)
-    - [ ] Create `packages/api-contracts/src/procedures/` (10 namespace files for all routers)
-    - [ ] Define all 50+ procedure input/output types
+- [x] **Implement - Type Contracts** `[activity: api-development]`
+    - [x] Create `packages/api-contracts/src/index.ts` (main export)
+    - [x] Create `packages/api-contracts/src/rpc.ts` (RPCRequest, RPCResponse types)
+    - [x] Create `packages/api-contracts/src/errors.ts` (ErrorCode enum 1000-1999)
+    - [x] Create `packages/api-contracts/src/types.ts` (shared domain types: User, Post, Feed)
+    - [x] Create `packages/api-contracts/src/procedures/` (10 namespace files for all routers)
+    - [x] Define all 50+ procedure input/output types
 
-- [ ] **Implement - RPC Router** `[activity: api-development]`
-    - [ ] Create `apps/api/src/rpc/index.ts` (router setup)
-    - [ ] Implement RPC request parsing and validation
-    - [ ] Implement error handling middleware (catch all errors, return RPCErrorResponse)
-    - [ ] Implement request logging middleware
-    - [ ] Create `apps/api/src/rpc/types.ts` (ProcedureContext, ProcedureHandler)
+- [x] **Implement - RPC Router** `[activity: api-development]`
+    - [x] Create `apps/api/src/rpc/index.ts` (router setup)
+    - [x] Implement RPC request parsing and validation
+    - [x] Implement error handling middleware (catch all errors, return RPCErrorResponse)
+    - [x] Implement request logging middleware
+    - [x] Create `apps/api/src/rpc/types.ts` (ProcedureContext, ProcedureHandler)
 
-- [ ] **Validate**
-    - [ ] Type contracts compile without errors
-    - [ ] RPC router handles requests
-    - [ ] Error responses follow standard format
-    - [ ] Logging captures request/response
+- [x] **Validate**
+    - [x] Type contracts compile without errors
+    - [x] RPC router handles requests
+    - [x] Error responses follow standard format
+    - [x] Logging captures request/response
 
 **Success Criteria:** RPC foundation ready, type contracts defined for all 50+ procedures
 

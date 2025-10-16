@@ -39,7 +39,7 @@ app.get('/', (c) => {
 app.route('/api/rpc', createRPCRouter());
 
 // Start server
-const port = process.env.PORT || 3000;
+const port = parseInt(process.env.PORT || '3001', 10);
 
 export default {
   port,

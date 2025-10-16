@@ -1,24 +1,25 @@
 /**
- * RPC Router - Phase 2.3
+ * RPC Router - Phase 3.1
  *
  * Central RPC router that handles all procedure calls for the VRSS Social Platform.
- * Implements public/protected procedure routing with auth middleware integration.
+ * Implements standardized RPC pattern with proper error codes, metadata, and validation.
  *
  * Flow:
- * 1. Apply authMiddleware to all RPC requests (sets user/session in context)
- * 2. Parse and validate RPC request format: { procedure: string, input?: any }
- * 3. Extract router and procedure name (e.g., "auth.login" → router="auth", proc="login")
- * 4. Check if procedure is in PUBLIC_PROCEDURES set
- * 5. Apply requireAuth middleware if procedure is protected
+ * 1. Validate HTTP method (POST only)
+ * 2. Validate Content-Type (application/json only)
+ * 3. Parse and validate RPC request format: { procedure: string, input: any, context?: object }
+ * 4. Apply auth middleware (sets user/session in context)
+ * 5. Check if procedure is in PUBLIC_PROCEDURES set
  * 6. Route to appropriate procedure handler
- * 7. Return standardized response: { data: any } or { error: { code: number, message: string } }
+ * 7. Return standardized response with metadata
  *
  * @see docs/api-architecture.md for RPC patterns
- * @see docs/specs/001-vrss-social-platform/PLAN.md Phase 2.3
+ * @see docs/specs/001-vrss-social-platform/SDD.md for error codes
  */
 
 import { Hono } from "hono";
-import { authMiddleware, requireAuth } from "../middleware/auth";
+import { ErrorCode } from "@vrss/api-contracts";
+import { authMiddleware } from "../middleware/auth";
 import { ProcedureContext } from "./types";
 import { authRouter } from "./routers/auth";
 
@@ -30,13 +31,7 @@ import { authRouter } from "./routers/auth";
  * PUBLIC_PROCEDURES - Set of procedures accessible without authentication
  *
  * These procedures can be called by unauthenticated users. All other
- * procedures require authentication (enforced by requireAuth middleware).
- *
- * Public procedures:
- * - auth.* (all auth procedures - register, login, verify, etc.)
- * - user.getProfile (view public user profiles)
- * - post.getById (view individual posts)
- * - discovery.* (all discovery procedures - search, explore)
+ * procedures require authentication.
  */
 export const PUBLIC_PROCEDURES = new Set([
   // Auth procedures (all public)
@@ -77,41 +72,54 @@ const PROCEDURE_REGISTRY: Record<string, any> = {
 };
 
 // =============================================================================
-// ERROR CODES
-// =============================================================================
-
-enum RPCErrorCode {
-  // RPC framework errors (0-99)
-  RPC_PARSE_ERROR = 1,
-  RPC_INVALID_REQUEST = 2,
-  RPC_PROCEDURE_NOT_FOUND = 3,
-  RPC_INTERNAL_ERROR = 4,
-  RPC_UNAUTHORIZED = 5,
-}
-
-// =============================================================================
 // HELPER FUNCTIONS
 // =============================================================================
 
 /**
+ * Generate unique request ID
+ */
+function generateRequestId(): string {
+  return `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+}
+
+/**
  * Create standardized RPC error response
  */
-function createErrorResponse(code: number, message: string, details?: any) {
-  return {
+function createErrorResponse(
+  code: number,
+  message: string,
+  details?: any,
+  requestId?: string
+) {
+  const response: any = {
+    success: false,
     error: {
       code,
       message,
       ...(details && { details }),
+      ...(process.env.NODE_ENV === "development" &&
+        details?.stack && { stack: details.stack }),
+    },
+    metadata: {
+      timestamp: Date.now(),
+      requestId: requestId || generateRequestId(),
     },
   };
+
+  return response;
 }
 
 /**
  * Create standardized RPC success response
  */
-function createSuccessResponse(data: any) {
+function createSuccessResponse(data: any, requestId: string) {
   return {
+    success: true,
     data,
+    metadata: {
+      timestamp: Date.now(),
+      requestId,
+    },
   };
 }
 
@@ -149,8 +157,8 @@ function getUserAgent(c: any): string {
  * - RPC request parsing and validation
  * - Procedure routing
  * - Public/protected procedure handling
- * - Error handling
- * - Request logging
+ * - Error handling with proper error codes
+ * - Request logging with unique request IDs
  */
 export function createRPCRouter(): Hono {
   const rpc = new Hono();
@@ -159,9 +167,34 @@ export function createRPCRouter(): Hono {
   // This populates c.get("user") and c.get("session") for all requests
   rpc.use("*", authMiddleware);
 
+  // Reject non-POST requests
+  rpc.on(["GET", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"], "/", (c) => {
+    return c.json(
+      { error: "Method Not Allowed", message: "Only POST requests are allowed" },
+      405
+    );
+  });
+
   // RPC endpoint - all procedures called via POST to this endpoint
   rpc.post("/", async (c) => {
+    const requestId = generateRequestId();
+    const startTime = Date.now();
+
     try {
+      // Validate Content-Type
+      const contentType = c.req.header("Content-Type");
+      if (!contentType || !contentType.includes("application/json")) {
+        return c.json(
+          createErrorResponse(
+            ErrorCode.VALIDATION_ERROR,
+            "Content-Type must be application/json",
+            undefined,
+            requestId
+          ),
+          415
+        );
+      }
+
       // Parse request body
       let body: any;
       try {
@@ -169,8 +202,10 @@ export function createRPCRouter(): Hono {
       } catch (error) {
         return c.json(
           createErrorResponse(
-            RPCErrorCode.RPC_PARSE_ERROR,
-            "Invalid JSON in request body"
+            ErrorCode.VALIDATION_ERROR,
+            "Invalid JSON in request body",
+            undefined,
+            requestId
           ),
           400
         );
@@ -180,8 +215,10 @@ export function createRPCRouter(): Hono {
       if (!body || typeof body !== "object") {
         return c.json(
           createErrorResponse(
-            RPCErrorCode.RPC_INVALID_REQUEST,
-            "Request must be a JSON object"
+            ErrorCode.VALIDATION_ERROR,
+            "Request must be a JSON object",
+            undefined,
+            requestId
           ),
           400
         );
@@ -190,30 +227,40 @@ export function createRPCRouter(): Hono {
       if (typeof body.procedure !== "string" || !body.procedure) {
         return c.json(
           createErrorResponse(
-            RPCErrorCode.RPC_INVALID_REQUEST,
-            "Missing or invalid 'procedure' field"
+            ErrorCode.VALIDATION_ERROR,
+            "Missing or invalid 'procedure' field",
+            undefined,
+            requestId
           ),
           400
         );
       }
 
-      const { procedure, input } = body;
+      const { procedure, input, context } = body;
 
       // Log procedure call
-      console.log(`[RPC] ${procedure}`, {
+      console.log(`[RPC] ${requestId} ${procedure}`, {
         hasInput: input !== undefined,
         authenticated: c.get("user") !== null,
+        correlationId: context?.correlationId,
       });
 
       // Check if procedure exists in registry
       const handler = PROCEDURE_REGISTRY[procedure];
       if (!handler) {
+        const duration = Date.now() - startTime;
+        console.log(
+          `[RPC] ${requestId} ${procedure} - NOT_FOUND (${duration}ms)`
+        );
+
         return c.json(
           createErrorResponse(
-            RPCErrorCode.RPC_PROCEDURE_NOT_FOUND,
-            `Procedure '${procedure}' not found`
+            ErrorCode.NOT_FOUND,
+            `Procedure '${procedure}' not found`,
+            undefined,
+            requestId
           ),
-          404
+          400
         );
       }
 
@@ -222,67 +269,99 @@ export function createRPCRouter(): Hono {
       const user = c.get("user");
 
       if (!isPublicProcedure && !user) {
+        const duration = Date.now() - startTime;
+        console.log(
+          `[RPC] ${requestId} ${procedure} - UNAUTHORIZED (${duration}ms)`
+        );
+
         return c.json(
           createErrorResponse(
-            RPCErrorCode.RPC_UNAUTHORIZED,
-            "Authentication required"
+            ErrorCode.UNAUTHORIZED,
+            "Authentication required",
+            undefined,
+            requestId
           ),
           401
         );
       }
 
       // Build procedure context
-      // Note: The context structure matches what procedure handlers expect
-      // The handlers access input via ctx.input, user via ctx.user, etc.
       const ctx: any = {
         c,
         user: c.get("user"),
         session: c.get("session"),
         ip: getClientIP(c),
         userAgent: getUserAgent(c),
-        input, // Embed input in context for backward compatibility
+        input: input || {},
+        requestId,
+        correlationId: context?.correlationId,
       };
 
       // Execute procedure handler
       const result = await handler(ctx);
 
+      // Log success
+      const duration = Date.now() - startTime;
+      console.log(`[RPC] ${requestId} ${procedure} - SUCCESS (${duration}ms)`);
+
       // Return success response
-      return c.json(createSuccessResponse(result), 200);
+      return c.json(createSuccessResponse(result, requestId), 200);
     } catch (error: any) {
+      const duration = Date.now() - startTime;
+
       // Log error for debugging
-      console.error("[RPC Error]", error);
+      console.error(`[RPC] ${requestId} ERROR (${duration}ms)`, error);
 
       // Check if this is an RPC error with a code (from procedure handler)
       if (error.code && typeof error.code === "number") {
+        // Map error codes to HTTP status codes
+        let httpStatus = 400;
+        if (error.code >= 1900) {
+          // Server errors
+          httpStatus = 500;
+        } else if (error.code >= 1600) {
+          // Storage errors
+          httpStatus = 400;
+        } else if (error.code >= 1500) {
+          // Rate limiting
+          httpStatus = 429;
+        } else if (error.code >= 1400) {
+          // Conflicts
+          httpStatus = 409;
+        } else if (error.code >= 1300) {
+          // Not found
+          httpStatus = 400;
+        } else if (error.code >= 1200) {
+          // Validation errors
+          httpStatus = 400;
+        } else if (error.code >= 1100) {
+          // Authorization errors
+          httpStatus = 403;
+        } else if (error.code >= 1000) {
+          // Authentication errors
+          httpStatus = 401;
+        }
+
         return c.json(
           createErrorResponse(
             error.code,
             error.message || "An error occurred",
-            error.details
+            error.details,
+            requestId
           ),
-          // Map error codes to HTTP status codes
-          // 1000-1099: Auth errors → 400/401
-          // 2000-2099: Validation errors → 400
-          // 3000-3099: Resource errors → 404
-          // 4000-4099: Permission errors → 403
-          // 5000+: Server errors → 500
-          error.code >= 5000
-            ? 500
-            : error.code >= 4000
-            ? 403
-            : error.code >= 3000
-            ? 404
-            : error.code >= 1030
-            ? 401
-            : 400
+          httpStatus
         );
       }
 
       // Generic internal error
       return c.json(
         createErrorResponse(
-          RPCErrorCode.RPC_INTERNAL_ERROR,
-          "Internal server error"
+          ErrorCode.INTERNAL_SERVER_ERROR,
+          "Internal server error",
+          process.env.NODE_ENV === "development"
+            ? { message: error.message, stack: error.stack }
+            : undefined,
+          requestId
         ),
         500
       );
