@@ -1,0 +1,6 @@
+# Bun Test Configuration for VRSS API
+# This file configures Bun's test runner and coverage reporting
+
+[test]
+# Timeout for each test (in milliseconds)
+timeout = 60000

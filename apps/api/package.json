@@ -9,9 +9,21 @@
     "start": "bun run dist/index.js",
     "test": "bun test",
     "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage",
+    "test:ui": "bun test --watch",
     "lint": "eslint .",
     "type-check": "tsc --noEmit",
-    "clean": "rm -rf dist .turbo"
+    "clean": "rm -rf dist .turbo coverage",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:push": "prisma db push",
+    "db:seed": "bun run prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset"
+  },
+  "prisma": {
+    "seed": "bun run prisma/seed.ts"
   },
   "dependencies": {
     "@vrss/api-contracts": "workspace:*",
@@ -21,9 +33,12 @@
     "better-auth": "^1.2.0"
   },
   "devDependencies": {
-    "@vrss/typescript-config": "workspace:*",
-    "@vrss/eslint-config": "workspace:*",
+    "@testcontainers/postgresql": "^11.7.1",
     "@types/bun": "latest",
-    "prisma": "^6.1.0"
+    "@types/node": "^24.8.0",
+    "@vrss/eslint-config": "workspace:*",
+    "@vrss/typescript-config": "workspace:*",
+    "prisma": "^6.1.0",
+    "testcontainers": "^11.7.1"
   }
 }

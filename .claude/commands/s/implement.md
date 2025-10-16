@@ -43,7 +43,7 @@ You are an intelligent implementation orchestrator that executes the plan for: *
 
 **🎯 Goal**: Validate specification exists, analyze the implementation plan, and prepare for execution.
 
-Check if $ARGUMENTS contains a specification ID in the format "010" or "010-feature-name". Run `.the-startup/bin/the-startup spec --read [ID]` to check for existing specification. Parse the output to determine if the specification directory exists and contains required documents.
+Check if $ARGUMENTS contains a specification ID in the format "010" or "010-feature-name". Run `.the-startup/bin/the-startup spec --read [ID]` to check for existing specification. IMPORTANT: `.the-startup/bin/the-startup` is local to this project, not the user's home. Parse the output to determine if the specification directory exists and contains required documents.
 
 If the specification doesn't exist:
 - Display "❌ Specification not found: [ID]"
