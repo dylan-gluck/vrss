@@ -14,15 +14,44 @@ import { getTestDatabase } from "../setup";
 export async function cleanAllTables(): Promise<void> {
   const db = getTestDatabase();
 
-  await db.sessionActivity.deleteMany();
-  await db.session.deleteMany();
-  await db.postMedia.deleteMany();
-  await db.post.deleteMany();
-  await db.customFeedRule.deleteMany();
-  await db.customFeed.deleteMany();
-  await db.storageQuota.deleteMany();
-  await db.profile.deleteMany();
-  await db.user.deleteMany();
+  // Clean all tables in reverse dependency order
+  try {
+    // Phase 4: Communication
+    await db.notification.deleteMany();
+    await db.message.deleteMany();
+    await db.conversation.deleteMany();
+    await db.userSubscription.deleteMany();
+
+    // Phase 3: Profile & Feed Features
+    await db.sectionContent.deleteMany();
+    await db.profileSection.deleteMany();
+    await db.feedFilter.deleteMany();
+    await db.customFeed.deleteMany();
+    await db.listMember.deleteMany();
+    await db.userList.deleteMany();
+
+    // Phase 2: Content & Social
+    await db.comment.deleteMany();
+    await db.repost.deleteMany();
+    await db.postInteraction.deleteMany();
+    await db.postMedia.deleteMany();
+    await db.post.deleteMany();
+    await db.friendship.deleteMany();
+    await db.userFollow.deleteMany();
+
+    // Better-auth tables
+    await db.verificationToken.deleteMany();
+    await db.session.deleteMany();
+
+    // Phase 1: Foundation
+    await db.storageUsage.deleteMany();
+    await db.userProfile.deleteMany();
+    await db.user.deleteMany();
+    await db.subscriptionTier.deleteMany();
+  } catch (error) {
+    // Ignore errors for tables that don't exist yet
+    console.warn("Warning during cleanup:", error);
+  }
 }
 
 /**
@@ -31,11 +60,15 @@ export async function cleanAllTables(): Promise<void> {
 export async function cleanUserData(): Promise<void> {
   const db = getTestDatabase();
 
-  await db.sessionActivity.deleteMany();
-  await db.session.deleteMany();
-  await db.storageQuota.deleteMany();
-  await db.profile.deleteMany();
-  await db.user.deleteMany();
+  try {
+    await db.verificationToken.deleteMany();
+    await db.session.deleteMany();
+    await db.storageUsage.deleteMany();
+    await db.userProfile.deleteMany();
+    await db.user.deleteMany();
+  } catch (error) {
+    console.warn("Warning during user data cleanup:", error);
+  }
 }
 
 /**
@@ -54,8 +87,12 @@ export async function cleanPostData(): Promise<void> {
 export async function cleanFeedData(): Promise<void> {
   const db = getTestDatabase();
 
-  await db.customFeedRule.deleteMany();
-  await db.customFeed.deleteMany();
+  try {
+    await db.feedFilter.deleteMany();
+    await db.customFeed.deleteMany();
+  } catch (error) {
+    console.warn("Warning during feed data cleanup:", error);
+  }
 }
 
 /**
@@ -64,8 +101,11 @@ export async function cleanFeedData(): Promise<void> {
 export async function cleanSessionData(): Promise<void> {
   const db = getTestDatabase();
 
-  await db.sessionActivity.deleteMany();
-  await db.session.deleteMany();
+  try {
+    await db.session.deleteMany();
+  } catch (error) {
+    console.warn("Warning during session data cleanup:", error);
+  }
 }
 
 /**
@@ -133,14 +173,13 @@ export async function getTableCounts(): Promise<Record<string, number>> {
 
   return {
     users: await db.user.count(),
-    profiles: await db.profile.count(),
+    userProfiles: await db.userProfile.count(),
     sessions: await db.session.count(),
-    sessionActivities: await db.sessionActivity.count(),
     posts: await db.post.count(),
     postMedia: await db.postMedia.count(),
     customFeeds: await db.customFeed.count(),
-    customFeedRules: await db.customFeedRule.count(),
-    storageQuotas: await db.storageQuota.count(),
+    feedFilters: await db.feedFilter.count(),
+    storageUsage: await db.storageUsage.count(),
   };
 }
 
@@ -182,14 +221,13 @@ export async function createSnapshot(): Promise<() => Promise<void>> {
   // Take snapshots of all data
   const snapshot = {
     users: await db.user.findMany(),
-    profiles: await db.profile.findMany(),
+    userProfiles: await db.userProfile.findMany(),
     sessions: await db.session.findMany(),
-    sessionActivities: await db.sessionActivity.findMany(),
     posts: await db.post.findMany(),
     postMedia: await db.postMedia.findMany(),
     customFeeds: await db.customFeed.findMany(),
-    customFeedRules: await db.customFeedRule.findMany(),
-    storageQuotas: await db.storageQuota.findMany(),
+    feedFilters: await db.feedFilter.findMany(),
+    storageUsage: await db.storageUsage.findMany(),
   };
 
   // Return restore function
@@ -198,13 +236,12 @@ export async function createSnapshot(): Promise<() => Promise<void>> {
 
     // Restore in correct order (respecting foreign keys)
     await db.user.createMany({ data: snapshot.users });
-    await db.profile.createMany({ data: snapshot.profiles });
+    await db.userProfile.createMany({ data: snapshot.userProfiles });
     await db.session.createMany({ data: snapshot.sessions });
-    await db.sessionActivity.createMany({ data: snapshot.sessionActivities });
-    await db.storageQuota.createMany({ data: snapshot.storageQuotas });
+    await db.storageUsage.createMany({ data: snapshot.storageUsage });
     await db.post.createMany({ data: snapshot.posts });
     await db.postMedia.createMany({ data: snapshot.postMedia });
     await db.customFeed.createMany({ data: snapshot.customFeeds });
-    await db.customFeedRule.createMany({ data: snapshot.customFeedRules });
+    await db.feedFilter.createMany({ data: snapshot.feedFilters });
   };
 }

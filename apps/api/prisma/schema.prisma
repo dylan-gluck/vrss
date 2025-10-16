@@ -51,6 +51,7 @@ model User {
   // Relations - Phase 1
   profile      UserProfile?
   storageUsage StorageUsage?
+  sessions     Session[]
 
   // Relations - Phase 2 (Content & Social)
   posts            Post[]
@@ -153,6 +154,40 @@ model StorageUsage {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("storage_usage")
+}
+
+// Better-auth Session Management
+model Session {
+  id               BigInt    @id @default(autoincrement())
+  userId           BigInt    @map("user_id")
+  token            String    @unique @db.VarChar(255)
+  expiresAt        DateTime  @map("expires_at") @db.Timestamptz(6)
+  ipAddress        String?   @map("ip_address") @db.VarChar(45)
+  userAgent        String?   @map("user_agent") @db.Text
+  lastActivityAt   DateTime  @default(now()) @map("last_activity_at") @db.Timestamptz(6)
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "idx_sessions_user")
+  @@index([token], map: "idx_sessions_token")
+  @@index([expiresAt], map: "idx_sessions_expires_at")
+  @@map("sessions")
+}
+
+// Email Verification Tokens
+model VerificationToken {
+  id         BigInt   @id @default(autoincrement())
+  identifier String   @db.VarChar(255)
+  token      String   @unique @db.VarChar(255)
+  expires    DateTime @db.Timestamptz(6)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([identifier, token], map: "verification_token_unique")
+  @@index([token], map: "idx_verification_tokens_token")
+  @@map("verification_tokens")
 }
 
 // ============================================

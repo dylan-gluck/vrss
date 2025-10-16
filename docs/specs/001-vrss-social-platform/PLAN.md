@@ -164,30 +164,30 @@ make test-coverage                   # With coverage report
 
 #### 1.1 Monorepo Structure `[duration: 1-2 days]` `[parallel: false]`
 
-- [ ] **Prime Context**
-    - [ ] Read `docs/architecture/MONOLITH_ARCHITECTURE.md` (complete monorepo structure)
-    - [ ] Read `docs/INFRASTRUCTURE_SPEC.md` (directory organization)
-    - [ ] Read SDD Section: "Building Block View - Directory Map" (lines 795-1000)
+- [x] **Prime Context**
+    - [x] Read `docs/architecture/MONOLITH_ARCHITECTURE.md` (complete monorepo structure)
+    - [x] Read `docs/INFRASTRUCTURE_SPEC.md` (directory organization)
+    - [x] Read SDD Section: "Building Block View - Directory Map" (lines 795-1000)
 
-- [ ] **Write Tests** `[activity: test-infrastructure]`
-    - [ ] Workspace configuration test: `bun install` works
-    - [ ] Turborepo pipeline test: `turbo build` executes
-    - [ ] Path alias test: TypeScript resolves `@/*` correctly
+- [x] **Write Tests** `[activity: test-infrastructure]`
+    - [x] Workspace configuration test: `bun install` works
+    - [x] Turborepo pipeline test: `turbo build` executes
+    - [x] Path alias test: TypeScript resolves `@/*` correctly
 
-- [ ] **Implement** `[activity: infrastructure]`
-    - [ ] Initialize root `package.json` with Bun workspaces
-    - [ ] Configure Turborepo (`turbo.json`) with build pipeline
-    - [ ] Create shared TypeScript configs (`packages/config/typescript-config/`)
-    - [ ] Set up ESLint/Prettier shared configs
-    - [ ] Create `/apps/api/` and `/apps/web/` directories
-    - [ ] Create `/packages/api-contracts/` for shared types
-    - [ ] Configure path aliases in all `tsconfig.json` files
+- [x] **Implement** `[activity: infrastructure]`
+    - [x] Initialize root `package.json` with Bun workspaces
+    - [x] Configure Turborepo (`turbo.json`) with build pipeline
+    - [x] Create shared TypeScript configs (`packages/config/typescript-config/`)
+    - [x] Set up ESLint/Prettier shared configs
+    - [x] Create `/apps/api/` and `/apps/web/` directories
+    - [x] Create `/packages/api-contracts/` for shared types
+    - [x] Configure path aliases in all `tsconfig.json` files
 
-- [ ] **Validate**
-    - [ ] `bun install` completes without errors
-    - [ ] `turbo build` runs (empty builds initially)
-    - [ ] TypeScript compilation works in all workspaces
-    - [ ] ESLint rules apply across packages
+- [x] **Validate**
+    - [x] `bun install` completes without errors
+    - [x] `turbo build` runs (empty builds initially)
+    - [x] TypeScript compilation works in all workspaces
+    - [x] ESLint rules apply across packages
 
 **Success Criteria:** Monorepo fully functional, workspaces communicate via shared packages
 
@@ -195,30 +195,30 @@ make test-coverage                   # With coverage report
 
 #### 1.2 Docker & Services `[duration: 1-2 days]` `[parallel: false]`
 
-- [ ] **Prime Context**
-    - [ ] Read `docs/DOCKER.md` (complete Docker Compose setup)
-    - [ ] Read `scripts/dev-setup.sh` (automated setup script)
-    - [ ] Read `Makefile` (all development commands)
+- [x] **Prime Context**
+    - [x] Read `docs/DOCKER.md` (complete Docker Compose setup)
+    - [x] Read `scripts/dev-setup.sh` (automated setup script)
+    - [x] Read `Makefile` (all development commands)
 
-- [ ] **Write Tests** `[activity: test-infrastructure]`
-    - [ ] Service health check tests: PostgreSQL, backend, frontend reachable
-    - [ ] Volume persistence test: Database survives container restart
-    - [ ] Network connectivity test: Services can communicate
+- [x] **Write Tests** `[activity: test-infrastructure]`
+    - [x] Service health check tests: PostgreSQL, backend, frontend reachable
+    - [x] Volume persistence test: Database survives container restart
+    - [x] Network connectivity test: Services can communicate
 
-- [ ] **Implement** `[activity: infrastructure]`
-    - [ ] Verify `docker-compose.yml` configuration (already exists)
-    - [ ] Create PostgreSQL initialization scripts (`docker/db/init/`)
-    - [ ] Configure environment variables (`.env.example` → `.env`)
-    - [ ] Update Dockerfiles for backend and frontend (hot reload)
-    - [ ] Run `./scripts/dev-setup.sh` to generate secrets
-    - [ ] Start services with `make start`
+- [x] **Implement** `[activity: infrastructure]`
+    - [x] Verify `docker-compose.yml` configuration (already exists)
+    - [x] Create PostgreSQL initialization scripts (`docker/db/init/`)
+    - [x] Configure environment variables (`.env.example` → `.env`)
+    - [x] Update Dockerfiles for backend and frontend (hot reload)
+    - [x] Run `./scripts/dev-setup.sh` to generate secrets
+    - [x] Start services with `make start`
 
-- [ ] **Validate**
-    - [ ] `make start` brings up all services
-    - [ ] `make health` shows all services healthy
-    - [ ] `make logs` displays structured logs
-    - [ ] Hot reload works for backend and frontend
-    - [ ] Database persists data across restarts
+- [x] **Validate**
+    - [x] `make start` brings up all services
+    - [x] `make health` shows all services healthy
+    - [x] `make logs` displays structured logs
+    - [x] Hot reload works for backend and frontend
+    - [x] Database persists data across restarts
 
 **Success Criteria:** Full Docker stack running, services communicate, hot reload functional
 
@@ -226,45 +226,45 @@ make test-coverage                   # With coverage report
 
 #### 1.3 Database Schema & Migrations `[duration: 2-3 days]` `[parallel: false]`
 
-- [ ] **Prime Context**
-    - [ ] Read `docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md` (all 19 tables, complete DDL)
-    - [ ] Read `docs/specs/001-vrss-social-platform/DATA_STORAGE_DOCUMENTATION.md` (storage quotas, triggers)
-    - [ ] Read SDD Section: "Data Storage Changes" (lines 1059-1183)
+- [x] **Prime Context**
+    - [x] Read `docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md` (all 19 tables, complete DDL)
+    - [x] Read `docs/specs/001-vrss-social-platform/DATA_STORAGE_DOCUMENTATION.md` (storage quotas, triggers)
+    - [x] Read SDD Section: "Data Storage Changes" (lines 1059-1183)
 
-- [ ] **Write Tests** `[activity: test-database]`
-    - [ ] Schema validation tests: All 19 tables exist with correct columns
-    - [ ] Constraint tests: Foreign keys, unique constraints, check constraints
-    - [ ] Index tests: All 30+ indexes created
-    - [ ] Trigger tests: Counter updates, storage tracking work
+- [x] **Write Tests** `[activity: test-database]`
+    - [x] Schema validation tests: All 19 tables exist with correct columns
+    - [x] Constraint tests: Foreign keys, unique constraints, check constraints
+    - [x] Index tests: All 30+ indexes created
+    - [x] Trigger tests: Counter updates, storage tracking work
 
-- [ ] **Implement - Phase 1: Foundation Tables** `[activity: database-migration]`
-    - [ ] Create Prisma schema: `users`, `user_profiles`, `subscription_tiers`, `storage_usage`
-    - [ ] Generate migration: `bunx prisma migrate dev --name foundation-tables`
-    - [ ] Create timestamp update trigger
-    - [ ] Seed subscription tiers (Free 50MB, Basic 1GB, Pro 5GB, Premium 10GB)
+- [x] **Implement - Phase 1: Foundation Tables** `[activity: database-migration]`
+    - [x] Create Prisma schema: `users`, `user_profiles`, `subscription_tiers`, `storage_usage`
+    - [x] Generate migration: `bunx prisma migrate dev --name foundation-tables`
+    - [x] Create timestamp update trigger
+    - [x] Seed subscription tiers (Free 50MB, Basic 1GB, Pro 5GB, Premium 10GB)
 
-- [ ] **Implement - Phase 2: Content & Social** `[activity: database-migration]`
-    - [ ] Add tables: `posts`, `post_media`, `user_follows`, `friendships`, `post_interactions`, `comments`, `reposts`
-    - [ ] Generate migration: `bunx prisma migrate dev --name content-social`
-    - [ ] Create counter triggers: `update_post_likes_count`, `update_post_comments_count`, `update_post_reposts_count`
-    - [ ] Create friendship trigger: `create_friendship_on_mutual_follow`
+- [x] **Implement - Phase 2: Content & Social** `[activity: database-migration]`
+    - [x] Add tables: `posts`, `post_media`, `user_follows`, `friendships`, `post_interactions`, `comments`, `reposts`
+    - [x] Generate migration: `bunx prisma migrate dev --name content-social`
+    - [x] Create counter triggers: `update_post_likes_count`, `update_post_comments_count`, `update_post_reposts_count`
+    - [x] Create friendship trigger: `create_friendship_on_mutual_follow`
 
-- [ ] **Implement - Phase 3: Features** `[activity: database-migration]`
-    - [ ] Add tables: `profile_sections`, `section_content`, `custom_feeds`, `feed_filters`, `user_lists`, `list_members`
-    - [ ] Generate migration: `bunx prisma migrate dev --name profile-feed-features`
-    - [ ] Create Tier 1 indexes (8 critical indexes for feeds, social graph)
+- [x] **Implement - Phase 3: Features** `[activity: database-migration]`
+    - [x] Add tables: `profile_sections`, `section_content`, `custom_feeds`, `feed_filters`, `user_lists`, `list_members`
+    - [x] Generate migration: `bunx prisma migrate dev --name profile-feed-features`
+    - [x] Create Tier 1 indexes (8 critical indexes for feeds, social graph)
 
-- [ ] **Implement - Phase 4: Communication** `[activity: database-migration]`
-    - [ ] Add tables: `conversations`, `messages`, `notifications`, `user_subscriptions`
-    - [ ] Generate migration: `bunx prisma migrate dev --name messaging-notifications`
-    - [ ] Create storage triggers: `update_storage_on_media_insert`, `update_storage_on_media_delete`
+- [x] **Implement - Phase 4: Communication** `[activity: database-migration]`
+    - [x] Add tables: `conversations`, `messages`, `notifications`, `user_subscriptions`
+    - [x] Generate migration: `bunx prisma migrate dev --name messaging-notifications`
+    - [x] Create storage triggers: `update_storage_on_media_insert`, `update_storage_on_media_delete`
 
-- [ ] **Validate**
-    - [ ] All migration tests pass
-    - [ ] `bunx prisma studio` opens and shows all tables
-    - [ ] Triggers fire correctly (test with sample data)
-    - [ ] Indexes exist: `SELECT * FROM pg_indexes WHERE tablename = 'posts'`
-    - [ ] Test coverage: 80%+ on database layer
+- [x] **Validate**
+    - [x] All migration tests pass
+    - [x] `bunx prisma studio` opens and shows all tables
+    - [x] Triggers fire correctly (test with sample data)
+    - [x] Indexes exist: `SELECT * FROM pg_indexes WHERE tablename = 'posts'`
+    - [x] Test coverage: 80%+ on database layer
 
 **Success Criteria:** Complete 19-table schema with indexes, triggers, seeded data
 
@@ -272,60 +272,60 @@ make test-coverage                   # With coverage report
 
 #### 1.4 Testing Infrastructure `[duration: 2-3 days]` `[parallel: true]` `[component: testing]`
 
-- [ ] **Prime Context**
-    - [ ] Read `docs/specs/001-vrss-social-platform/TESTING-STRATEGY.md` (complete testing approach)
-    - [ ] Read `docs/specs/001-vrss-social-platform/TEST-SPECIFICATIONS.md` (10 critical scenarios)
-    - [ ] Read `docs/SECURITY_TESTING.md` (security test cases)
+- [x] **Prime Context**
+    - [x] Read `docs/specs/001-vrss-social-platform/TESTING-STRATEGY.md` (complete testing approach)
+    - [x] Read `docs/specs/001-vrss-social-platform/TEST-SPECIFICATIONS.md` (10 critical scenarios)
+    - [x] Read `docs/SECURITY_TESTING.md` (security test cases)
 
-- [ ] **Backend Testing Setup** `[activity: test-infrastructure]`
-    - [ ] **Write Tests**: Verify test infrastructure works
-        - [ ] Testcontainers starts PostgreSQL
-        - [ ] Database cleanup between tests
-        - [ ] Test fixtures create valid data
-    - [ ] **Implement**:
-        - [ ] Configure Bun Test (`bunfig.toml` with coverage)
-        - [ ] Install Testcontainers for PostgreSQL
-        - [ ] Create `test/setup.ts` (database lifecycle)
-        - [ ] Create `test/helpers/` (auth, request, database helpers)
-        - [ ] Create `test/fixtures/` (user, post, feed builders)
-        - [ ] Add test scripts to `package.json`
-    - [ ] **Validate**:
-        - [ ] `bun test` runs without errors
-        - [ ] Testcontainers starts/stops cleanly
-        - [ ] Coverage reports generate (`bun test --coverage`)
+- [x] **Backend Testing Setup** `[activity: test-infrastructure]`
+    - [x] **Write Tests**: Verify test infrastructure works
+        - [x] Testcontainers starts PostgreSQL
+        - [x] Database cleanup between tests
+        - [x] Test fixtures create valid data
+    - [x] **Implement**:
+        - [x] Configure Bun Test (`bunfig.toml` with coverage)
+        - [x] Install Testcontainers for PostgreSQL
+        - [x] Create `test/setup.ts` (database lifecycle)
+        - [x] Create `test/helpers/` (auth, request, database helpers)
+        - [x] Create `test/fixtures/` (user, post, feed builders)
+        - [x] Add test scripts to `package.json`
+    - [x] **Validate**:
+        - [x] `bun test` runs without errors
+        - [x] Testcontainers starts/stops cleanly
+        - [x] Coverage reports generate (`bun test --coverage`)
 
-- [ ] **Frontend Testing Setup** `[activity: test-infrastructure]` `[parallel: true]`
-    - [ ] **Write Tests**: Verify frontend test infrastructure
-        - [ ] Vitest runs component tests
-        - [ ] MSW mocks API calls
-        - [ ] React Testing Library renders components
-    - [ ] **Implement**:
-        - [ ] Configure Vitest (`vitest.config.ts` with coverage)
-        - [ ] Install React Testing Library, MSW, happy-dom
-        - [ ] Create `test/setup.ts` (MSW server, global mocks)
-        - [ ] Create `test/mocks/handlers.ts` (API mock handlers)
-        - [ ] Create `test/utils/render.tsx` (custom render with providers)
-        - [ ] Add test scripts to `package.json`
-    - [ ] **Validate**:
-        - [ ] `bun test` runs Vitest
-        - [ ] MSW intercepts API calls
-        - [ ] Coverage thresholds configured (80%+)
+- [x] **Frontend Testing Setup** `[activity: test-infrastructure]` `[parallel: true]`
+    - [x] **Write Tests**: Verify frontend test infrastructure
+        - [x] Vitest runs component tests
+        - [x] MSW mocks API calls
+        - [x] React Testing Library renders components
+    - [x] **Implement**:
+        - [x] Configure Vitest (`vitest.config.ts` with coverage)
+        - [x] Install React Testing Library, MSW, happy-dom
+        - [x] Create `test/setup.ts` (MSW server, global mocks)
+        - [x] Create `test/mocks/handlers.ts` (API mock handlers)
+        - [x] Create `test/utils/render.tsx` (custom render with providers)
+        - [x] Add test scripts to `package.json`
+    - [x] **Validate**:
+        - [x] `bun test` runs Vitest
+        - [x] MSW intercepts API calls
+        - [x] Coverage thresholds configured (80%+)
 
-- [ ] **E2E Testing Setup** `[activity: test-infrastructure]` `[parallel: true]`
-    - [ ] **Write Tests**: Verify E2E infrastructure
-        - [ ] Playwright launches browsers
-        - [ ] Can navigate to localhost:3000
-        - [ ] Screenshot capture works
-    - [ ] **Implement**:
-        - [ ] Create `/e2e/` package with Playwright
-        - [ ] Configure `playwright.config.ts` (multi-browser)
-        - [ ] Create `helpers/auth-helper.ts` (login utilities)
-        - [ ] Create `fixtures/` (test users, test data)
-        - [ ] Install Playwright browsers
-    - [ ] **Validate**:
-        - [ ] `bunx playwright test` runs
-        - [ ] Screenshots/videos captured on failure
-        - [ ] Tests run on Chromium, Mobile Chrome, Mobile Safari
+- [x] **E2E Testing Setup** `[activity: test-infrastructure]` `[parallel: true]`
+    - [x] **Write Tests**: Verify E2E infrastructure
+        - [x] Playwright launches browsers
+        - [x] Can navigate to localhost:3000
+        - [x] Screenshot capture works
+    - [x] **Implement**:
+        - [x] Create `/e2e/` package with Playwright
+        - [x] Configure `playwright.config.ts` (multi-browser)
+        - [x] Create `helpers/auth-helper.ts` (login utilities)
+        - [x] Create `fixtures/` (test users, test data)
+        - [x] Install Playwright browsers
+    - [x] **Validate**:
+        - [x] `bunx playwright test` runs
+        - [x] Screenshots/videos captured on failure
+        - [x] Tests run on Chromium, Mobile Chrome, Mobile Safari
 
 **Success Criteria:** Complete testing infrastructure ready for TDD workflow
 

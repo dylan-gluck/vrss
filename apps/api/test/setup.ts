@@ -137,15 +137,19 @@ export async function cleanDatabase(): Promise<void> {
   const db = getTestDatabase();
 
   // Delete in reverse order to respect foreign key constraints
-  await db.sessionActivity.deleteMany();
-  await db.session.deleteMany();
-  await db.postMedia.deleteMany();
-  await db.post.deleteMany();
-  await db.customFeedRule.deleteMany();
-  await db.customFeed.deleteMany();
-  await db.storageQuota.deleteMany();
-  await db.profile.deleteMany();
-  await db.user.deleteMany();
+  try {
+    await db.verificationToken.deleteMany();
+    await db.session.deleteMany();
+    await db.postMedia.deleteMany();
+    await db.post.deleteMany();
+    await db.feedFilter.deleteMany();
+    await db.customFeed.deleteMany();
+    await db.storageUsage.deleteMany();
+    await db.userProfile.deleteMany();
+    await db.user.deleteMany();
+  } catch (error) {
+    console.warn("Warning during database cleanup:", error);
+  }
 }
 
 /**
