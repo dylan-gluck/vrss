@@ -24,6 +24,7 @@ import { ProcedureContext } from "./types";
 import { authRouter } from "./routers/auth";
 import { userRouter } from "./routers/user";
 import { postRouter } from "./routers/post";
+import { socialRouter } from "./routers/social";
 
 // =============================================================================
 // PUBLIC PROCEDURES
@@ -68,9 +69,9 @@ const PROCEDURE_REGISTRY: Record<string, any> = {
   ...authRouter,
   ...userRouter,
   ...postRouter,
+  ...socialRouter,
   // Additional routers will be added here in future phases:
   // ...discoveryRouter,
-  // ...socialRouter,
   // ...feedRouter,
   // etc.
 };
