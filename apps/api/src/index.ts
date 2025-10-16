@@ -6,6 +6,7 @@
 import { Hono } from 'hono';
 import { logger } from 'hono/logger';
 import { cors } from 'hono/cors';
+import { createRPCRouter } from './rpc';
 
 const app = new Hono();
 
@@ -33,6 +34,9 @@ app.get('/', (c) => {
     description: 'RPC-style API for VRSS Social Platform'
   });
 });
+
+// Mount RPC router
+app.route('/api/rpc', createRPCRouter());
 
 // Start server
 const port = process.env.PORT || 3000;

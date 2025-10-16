@@ -410,32 +410,32 @@ make test-coverage                   # With coverage report
 
 #### 2.3 Auth Middleware & RPC Integration `[duration: 2 days]` `[parallel: false]`
 
-- [ ] **Prime Context**
-    - [ ] Read `docs/api-architecture.md` Section: "Auth Middleware" (session validation, public procedures)
-    - [ ] Read SDD Section: "Auth Middleware" (lines 748-749)
+- [x] **Prime Context**
+    - [x] Read `docs/api-architecture.md` Section: "Auth Middleware" (session validation, public procedures)
+    - [x] Read SDD Section: "Auth Middleware" (lines 748-749)
 
-- [ ] **Write Tests** `[activity: test-auth]`
-    - [ ] Public procedure tests: Accessible without auth
-    - [ ] Protected procedure tests: Require authentication
-    - [ ] Session validation tests: Cookie and Bearer token
-    - [ ] Session refresh tests: Sliding window (24h)
-    - [ ] Email verification enforcement tests
+- [x] **Write Tests** `[activity: test-auth]`
+    - [x] Public procedure tests: Accessible without auth
+    - [x] Protected procedure tests: Require authentication
+    - [x] Session validation tests: Cookie and Bearer token
+    - [x] Session refresh tests: Sliding window (24h)
+    - [x] Email verification enforcement tests
 
-- [ ] **Implement** `[activity: security-implementation]`
-    - [ ] Create `apps/api/src/middleware/auth.ts`
-    - [ ] Implement session validation (cookie + Bearer token support)
-    - [ ] Implement sliding window refresh (update session every 24h)
-    - [ ] Define `PUBLIC_PROCEDURES` set (auth.*, user.getProfile, post.getById, discovery.*)
-    - [ ] Attach `user` and `session` to Hono context
-    - [ ] Integrate middleware into RPC router (`apps/api/src/index.ts`)
-    - [ ] Update `ProcedureContext` type with `user` and `session` fields
+- [x] **Implement** `[activity: security-implementation]`
+    - [x] Create `apps/api/src/middleware/auth.ts`
+    - [x] Implement session validation (cookie + Bearer token support)
+    - [x] Implement sliding window refresh (update session every 24h)
+    - [x] Define `PUBLIC_PROCEDURES` set (auth.*, user.getProfile, post.getById, discovery.*)
+    - [x] Attach `user` and `session` to Hono context
+    - [x] Integrate middleware into RPC router (`apps/api/src/index.ts`)
+    - [x] Update `ProcedureContext` type with `user` and `session` fields
 
-- [ ] **Validate**
-    - [ ] Middleware tests pass
-    - [ ] Public procedures work without auth
-    - [ ] Protected procedures return 401 without auth
-    - [ ] Session refresh works (verify updated timestamp)
-    - [ ] Both cookie and Bearer token auth work
+- [x] **Validate**
+    - [x] Middleware tests pass
+    - [x] Public procedures work without auth
+    - [x] Protected procedures return 401 without auth
+    - [x] Session refresh works (verify updated timestamp)
+    - [x] Both cookie and Bearer token auth work
 
 **Success Criteria:** Auth middleware integrated, all RPC procedures protected or public correctly
 
