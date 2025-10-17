@@ -3,6 +3,8 @@ description: "Consolidate implementation specs into optimied task-specific conte
 argument-hint: "[PHASE_DOCUMENT] [TASK_ID]"
 ---
 
+@agent-context-prime
+
 Follow the `Workflow` to create a hyper-optimized `TASK_CONTEXT` for a coding agent
 
 ## Variables

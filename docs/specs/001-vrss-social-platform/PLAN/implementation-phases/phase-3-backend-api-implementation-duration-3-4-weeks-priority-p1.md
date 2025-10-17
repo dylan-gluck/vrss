@@ -115,34 +115,34 @@
 
 ## 3.4 Social Router `[duration: 2 days]` `[parallel: true]`
 
-- [ ] **Prime Context**
-    - [ ] Read `docs/api-architecture.md` Section: "Social Router" (6 procedures)
-    - [ ] Read PRD Section: "F6: Social Interactions" (lines 192-201)
-    - [ ] Read DATABASE_SCHEMA.md: `user_follows`, `friendships`
+- [x] **Prime Context**
+    - [x] Read `docs/api-architecture.md` Section: "Social Router" (6 procedures)
+    - [x] Read PRD Section: "F6: Social Interactions" (lines 192-201)
+    - [x] Read DATABASE_SCHEMA.md: `user_follows`, `friendships`
 
-- [ ] **Write Tests** `[activity: test-api]`
-    - [ ] `social.follow/unfollow` tests: Create/delete follow, friendship creation
-    - [ ] `social.getFollowers` tests: Cursor pagination, count
-    - [ ] `social.getFollowing` tests: Cursor pagination, count
-    - [ ] Friendship creation test: Mutual follow creates friendship
+- [x] **Write Tests** `[activity: test-api]`
+    - [x] `social.follow/unfollow` tests: Create/delete follow, friendship creation
+    - [x] `social.getFollowers` tests: Cursor pagination, count
+    - [x] `social.getFollowing` tests: Cursor pagination, count
+    - [x] Friendship creation test: Mutual follow creates friendship
 
-- [ ] **Implement** `[activity: api-development]`
-    - [ ] Create `apps/api/src/rpc/routers/social.ts`
-    - [ ] Implement `social.follow` (check not already following, create follow record)
-    - [ ] Implement `social.unfollow` (delete follow, delete friendship if mutual)
-    - [ ] Implement `social.getFollowers` (with cursor pagination)
-    - [ ] Implement `social.getFollowing` (with cursor pagination)
-    - [ ] Implement `social.getFriends` (mutual follows)
-    - [ ] Trigger: Auto-create friendship on mutual follow (database trigger)
-    - [ ] Create business logic in `apps/api/src/features/social/`
+- [x] **Implement** `[activity: api-development]`
+    - [x] Create `apps/api/src/rpc/routers/social.ts`
+    - [x] Implement `social.follow` (check not already following, create follow record)
+    - [x] Implement `social.unfollow` (delete follow, delete friendship if mutual)
+    - [x] Implement `social.getFollowers` (with cursor pagination)
+    - [x] Implement `social.getFollowing` (with cursor pagination)
+    - [x] Implement `social.getFriends` (mutual follows)
+    - [x] Trigger: Auto-create friendship on mutual follow (database trigger)
+    - [x] Create business logic in `apps/api/src/features/social/`
 
-- [ ] **Validate**
-    - [ ] Follow/unfollow tests pass
-    - [ ] Friendship auto-created on mutual follow
-    - [ ] Pagination works correctly
-    - [ ] Test coverage: 85%+
+- [x] **Validate**
+    - [x] Follow/unfollow tests pass
+    - [x] Friendship auto-created on mutual follow
+    - [x] Pagination works correctly
+    - [x] Test coverage: 85%+
 
-**Success Criteria:** Users can follow/unfollow, friendships created automatically
+**Success Criteria:** Users can follow/unfollow, friendships created automatically ✅ **COMPLETE**
 
 ---
 
