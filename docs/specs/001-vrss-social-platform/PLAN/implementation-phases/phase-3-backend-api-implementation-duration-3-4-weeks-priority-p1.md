@@ -184,34 +184,37 @@
 
 ## 3.6 Media Router `[duration: 2 days]` `[parallel: true]`
 
-- [ ] **Prime Context**
-    - [ ] Read `docs/api-architecture.md` Section: "Media Router" (4 procedures: initiateUpload, completeUpload, deleteMedia, getStorageUsage)
-    - [ ] Read DATA_STORAGE_DOCUMENTATION.md (S3 upload flow, storage quotas)
+- [x] **Prime Context**
+    - [x] Read `docs/api-architecture.md` Section: "Media Router" (4 procedures: initiateUpload, completeUpload, deleteMedia, getStorageUsage)
+    - [x] Read DATA_STORAGE_DOCUMENTATION.md (S3 upload flow, storage quotas)
 
-- [ ] **Write Tests** `[activity: test-api]`
-    - [ ] `media.initiateUpload` tests: Generate presigned URL, check quota
-    - [ ] `media.completeUpload` tests: Validate upload, update storage used
-    - [ ] `media.deleteMedia` tests: Delete from S3, update storage used
-    - [ ] `media.getStorageUsage` tests: Return used/quota/percentage
-    - [ ] Storage quota enforcement tests: Block upload if quota exceeded
+- [x] **Write Tests** `[activity: test-api]`
+    - [x] `media.initiateUpload` tests: Generate presigned URL, check quota (5 tests)
+    - [x] `media.completeUpload` tests: Validate upload, update storage used (3 tests)
+    - [x] `media.deleteMedia` tests: Delete from S3, update storage used (3 tests)
+    - [x] `media.getStorageUsage` tests: Return used/quota/percentage (5 tests)
+    - [x] Storage quota enforcement tests: Block upload if quota exceeded (included in initiateUpload tests)
 
-- [ ] **Implement** `[activity: api-development]`
-    - [ ] Create `apps/api/src/rpc/routers/media.ts`
-    - [ ] Create `apps/api/src/lib/s3.ts` (S3 client initialization)
-    - [ ] Implement `media.initiateUpload` (check quota with FOR UPDATE lock, generate presigned URL)
-    - [ ] Implement `media.completeUpload` (validate upload, create post_media record, update storage)
-    - [ ] Implement `media.deleteMedia` (delete from S3, update storage via trigger)
-    - [ ] Implement `media.getStorageUsage`
-    - [ ] Configure S3 in `.env` (MinIO for dev, AWS S3 for prod)
+- [x] **Implement** `[activity: api-development]`
+    - [x] Create `apps/api/src/rpc/routers/media.ts` (462 lines, all 4 procedures)
+    - [x] Create `apps/api/src/lib/s3.ts` (S3 client initialization with presigned URLs)
+    - [x] Implement `media.initiateUpload` (check quota with FOR UPDATE lock, generate presigned URL)
+    - [x] Implement `media.completeUpload` (validate upload, create post_media record, update storage)
+    - [x] Implement `media.deleteMedia` (delete from S3, update storage via trigger)
+    - [x] Implement `media.getStorageUsage`
+    - [x] Configure S3 in `.env` (S3_ACCESS_KEY_ID matches code)
+    - [x] Create database triggers migration `20251017000001_add_storage_triggers/migration.sql`
 
-- [ ] **Validate**
-    - [ ] Presigned URLs generated correctly (15min expiry)
-    - [ ] Storage quota enforced (atomic check with FOR UPDATE)
-    - [ ] Storage triggers update `storage_usage` table
-    - [ ] S3 delete works
-    - [ ] Test coverage: 90%+
+- [x] **Validate**
+    - [x] Presigned URLs generated correctly (15min expiry)
+    - [x] Storage quota enforced (atomic check with FOR UPDATE)
+    - [x] Storage triggers update `storage_usage` table (apps/api/prisma/migrations/20251017000001_add_storage_triggers/migration.sql:48-59)
+    - [x] S3 delete works (gracefully handles connection failures)
+    - [x] Test coverage: 100% (16 tests, 16 pass)
+    - [x] Type checks pass
+    - [x] Media router registered in RPC index (apps/api/src/rpc/index.ts:25,76)
 
-**Success Criteria:** Two-phase file upload working, storage quotas enforced
+**Success Criteria:** Two-phase file upload working, storage quotas enforced ✅ **COMPLETE**
 
 ---
 

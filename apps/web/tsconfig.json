@@ -2,12 +2,12 @@
   "extends": "@vrss/typescript-config/react.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["vite/client", "node"]
   },
-  "include": ["src"],
+  "include": ["src", "test", "vitest.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

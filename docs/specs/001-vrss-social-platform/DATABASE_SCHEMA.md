@@ -170,6 +170,66 @@ COMMENT ON COLUMN user_profiles.style_config IS 'JSONB config for fonts, colors,
 COMMENT ON COLUMN user_profiles.layout_config IS 'JSONB config for profile section layout';
 ```
 
+#### `sessions`
+
+Tracks active user sessions with security metadata.
+
+```sql
+CREATE TABLE sessions (
+    id                  BIGSERIAL PRIMARY KEY,
+    user_id             BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    token               VARCHAR(255) NOT NULL UNIQUE,
+    expires_at          TIMESTAMPTZ(6) NOT NULL,
+    ip_address          VARCHAR(45),
+    user_agent          TEXT,
+    last_activity_at    TIMESTAMPTZ(6) NOT NULL DEFAULT NOW(),
+    created_at          TIMESTAMPTZ(6) NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMPTZ(6) NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_sessions_user ON sessions(user_id);
+CREATE INDEX idx_sessions_token ON sessions(token);
+CREATE INDEX idx_sessions_expires_at ON sessions(expires_at);
+
+COMMENT ON TABLE sessions IS 'User authentication sessions (managed by better-auth)';
+COMMENT ON COLUMN sessions.token IS 'Session token (hashed, not raw JWT)';
+COMMENT ON COLUMN sessions.expires_at IS 'Session expiration (7 days from creation)';
+COMMENT ON COLUMN sessions.last_activity_at IS 'Last request timestamp for idle timeout';
+```
+
+**Session Cleanup:**
+```sql
+-- Delete expired sessions (run daily via cron)
+DELETE FROM sessions WHERE expires_at < NOW();
+```
+
+#### `verification_tokens`
+
+Stores email verification tokens for new user registration.
+
+```sql
+CREATE TABLE verification_tokens (
+    id                  BIGSERIAL PRIMARY KEY,
+    identifier          VARCHAR(255) NOT NULL,
+    token               VARCHAR(255) NOT NULL UNIQUE,
+    expires             TIMESTAMPTZ(6) NOT NULL,
+    created_at          TIMESTAMPTZ(6) NOT NULL DEFAULT NOW()
+);
+
+CREATE UNIQUE INDEX verification_token_unique ON verification_tokens(identifier, token);
+CREATE INDEX idx_verification_tokens_token ON verification_tokens(token);
+
+COMMENT ON TABLE verification_tokens IS 'Email verification tokens (managed by better-auth)';
+COMMENT ON COLUMN verification_tokens.identifier IS 'Email address being verified';
+COMMENT ON COLUMN verification_tokens.token IS 'Random token (UUID v4, 1-hour expiry)';
+```
+
+**Token Cleanup:**
+```sql
+-- Delete expired tokens (run hourly via cron)
+DELETE FROM verification_tokens WHERE expires < NOW();
+```
+
 ---
 
 ### 2. Posts & Content
@@ -188,6 +248,11 @@ CREATE TABLE posts (
     -- Post metadata
     type                post_type NOT NULL,
     status              post_status NOT NULL DEFAULT 'published',
+    visibility          profile_visibility NOT NULL DEFAULT 'public',
+        -- Values: 'public', 'followers', 'private' (reuses enum from user_profiles)
+        -- 'public': Visible to everyone
+        -- 'followers': Visible only to followers
+        -- 'private': Visible only to post author
 
     -- Content
     title               VARCHAR(200),
@@ -268,6 +333,42 @@ CREATE TABLE post_media (
 COMMENT ON TABLE post_media IS 'Detailed media file tracking for storage quota management';
 COMMENT ON COLUMN post_media.file_size_bytes IS 'File size in bytes for storage quota calculation';
 ```
+
+#### `pending_uploads`
+
+Temporary tracking for media uploads before post creation (Phase 3.6 Media Router).
+
+```sql
+CREATE TABLE pending_uploads (
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id             BIGINT NOT NULL,
+    s3_key              VARCHAR(500) NOT NULL,
+    filename            VARCHAR(255) NOT NULL,
+    content_type        VARCHAR(100) NOT NULL,
+    size                BIGINT NOT NULL,
+    expires_at          TIMESTAMPTZ(6) NOT NULL,
+    created_at          TIMESTAMPTZ(6) NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_pending_uploads_user_expires ON pending_uploads(user_id, expires_at);
+
+COMMENT ON TABLE pending_uploads IS 'Temporary uploads awaiting post creation';
+COMMENT ON COLUMN pending_uploads.s3_key IS 'S3 object key (users/{userId}/posts/{id}_{filename})';
+COMMENT ON COLUMN pending_uploads.expires_at IS '24-hour expiry for orphaned uploads';
+```
+
+**Cleanup Strategy:**
+```sql
+-- Delete expired uploads (run hourly via cron)
+-- Also delete corresponding S3 objects
+DELETE FROM pending_uploads WHERE expires_at < NOW();
+```
+
+**Business Logic:**
+1. User initiates upload via `media.initiateUpload` → Creates pending_uploads row
+2. User uploads to S3 presigned URL (15-minute expiry)
+3. User completes upload via `media.completeUpload` → Creates post_media row, deletes pending_uploads row
+4. If user never completes: Cron job deletes expired pending_uploads + S3 objects after 24 hours
 
 ---
 

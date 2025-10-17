@@ -6,7 +6,7 @@
 
 - [ ] **Prime Context**
     - [ ] Read `docs/frontend-architecture.md` (PWA design, service worker strategy)
-    - [ ] Read `docs/frontend-implementation-guide.tribes` Phase 1 & 2
+    - [ ] Read `docs/frontend-architecture.md` Phase 1 & 2
     - [ ] Read SDD Section: "Frontend PWA" directory structure
 
 - [ ] **Write Tests** `[activity: test-frontend]`
@@ -24,7 +24,18 @@
 
 - [ ] **Implement - Shadcn-ui & Tailwind** `[activity: component-development]`
     - [ ] Run `npx shadcn-ui@latest init`
-    - [ ] Install core components: button, input, card, dialog, dropdown, tabs, toast, avatar, badge
+    - [ ] Install core components:
+      ```bash
+      # Core components (already listed)
+      npx shadcn-ui@latest add button card input label dialog toast avatar badge
+
+      # Additional components needed
+      npx shadcn-ui@latest add select checkbox radio-group switch
+      npx shadcn-ui@latest add popover tooltip separator scroll-area
+      npx shadcn-ui@latest add sheet skeleton progress tabs
+      npx shadcn-ui@latest add dropdown-menu alert alert-dialog
+      npx shadcn-ui@latest add form textarea slider toggle
+      ```
     - [ ] Configure Tailwind CSS (`tailwind.config.js`)
     - [ ] Create `src/styles/globals.css` (CSS variables for light/dark themes)
 

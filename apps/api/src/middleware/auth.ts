@@ -98,18 +98,25 @@ function extractBearerToken(c: Context): string | null {
 }
 
 /**
- * Update session lastActivityAt timestamp
+ * Update session lastActivityAt timestamp and extend expiry
  *
- * Uses Prisma to update the session's lastActivityAt field to the current time.
+ * Uses Prisma to update the session's lastActivityAt field to the current time
+ * and extends the expiresAt to maintain a sliding window (7 days from now).
  * This maintains the sliding window for session expiry.
  *
  * @param sessionId - Database session ID (bigint)
  */
 async function updateSessionActivity(sessionId: string): Promise<void> {
   try {
+    const now = new Date();
+    const newExpiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
+
     await prisma.session.update({
       where: { id: BigInt(sessionId) },
-      data: { lastActivityAt: new Date() },
+      data: {
+        lastActivityAt: now,
+        expiresAt: newExpiresAt,
+      },
     });
   } catch (error) {
     // Log error but don't throw - session refresh is not critical

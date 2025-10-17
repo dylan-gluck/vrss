@@ -277,7 +277,7 @@ model Post {
 // Post Media Files
 model PostMedia {
   id     BigInt @id @default(autoincrement())
-  postId BigInt @map("post_id")
+  postId BigInt? @map("post_id")
   userId BigInt @map("user_id")
 
   // Media metadata
@@ -301,11 +301,26 @@ model PostMedia {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Relations
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  post Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([postId, displayOrder], map: "idx_post_media_post_order")
   @@map("post_media")
+}
+
+// Pending Uploads - Phase 3.6 Media Router
+model PendingUpload {
+  id          String   @id @db.Uuid
+  userId      BigInt   @map("user_id")
+  s3Key       String   @map("s3_key") @db.VarChar(500)
+  filename    String   @db.VarChar(255)
+  contentType String   @map("content_type") @db.VarChar(100)
+  size        BigInt
+  expiresAt   DateTime @map("expires_at") @db.Timestamptz(6)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([userId, expiresAt], map: "idx_pending_uploads_user_expires")
+  @@map("pending_uploads")
 }
 
 // User Follows

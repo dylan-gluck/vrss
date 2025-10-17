@@ -278,15 +278,9 @@ describe("User Router", () => {
     });
 
     it("should allow anonymous users to view public profiles only", async () => {
-      await buildUser()
-        .username("public")
-        .withProfile({ visibility: "public" })
-        .build();
+      await buildUser().username("public").withProfile({ visibility: "public" }).build();
 
-      await buildUser()
-        .username("private")
-        .withProfile({ visibility: "private" })
-        .build();
+      await buildUser().username("private").withProfile({ visibility: "private" }).build();
 
       // Anonymous context
       const anonCtx = createMockContext<{ username: string }>({

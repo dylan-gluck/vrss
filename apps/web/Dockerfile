@@ -59,15 +59,21 @@ WORKDIR /app/apps/web
 # ------------------------------------------------------------------------------
 FROM dependencies AS development
 
-USER nodeuser
-
 # Copy source code from apps/web (will be overridden by volume mount in development)
 COPY --chown=nodeuser:nobody ./apps/web/src ./src
+COPY --chown=nodeuser:nobody ./apps/web/test ./test
 COPY --chown=nodeuser:nobody ./apps/web/public ./public/
 COPY --chown=nodeuser:nobody ./apps/web/index.html ./
 COPY --chown=nodeuser:nobody ./apps/web/vite.config.ts ./
+COPY --chown=nodeuser:nobody ./apps/web/vitest.config.ts ./
 COPY --chown=nodeuser:nobody ./apps/web/tsconfig.json ./
 COPY --chown=nodeuser:nobody ./apps/web/tsconfig.node.json* ./
+
+# Reinstall to fix any broken symlinks after copying files (as root for permissions)
+RUN bun install && chown -R nodeuser:nobody /app/node_modules /app/apps/web/node_modules 2>/dev/null || true
+
+# Switch to non-root user
+USER nodeuser
 
 # Expose Vite dev server port (dynamic from env)
 EXPOSE 5050
@@ -140,13 +146,19 @@ CMD ["nginx", "-g", "daemon off;"]
 # ------------------------------------------------------------------------------
 FROM dependencies AS test
 
-USER nodeuser
-
 # Copy source code and test files from apps/web
 COPY --chown=nodeuser:nobody ./apps/web/src ./src
+COPY --chown=nodeuser:nobody ./apps/web/test ./test
 COPY --chown=nodeuser:nobody ./apps/web/tsconfig.json ./
 COPY --chown=nodeuser:nobody ./apps/web/vite.config.ts ./
+COPY --chown=nodeuser:nobody ./apps/web/vitest.config.ts ./
 COPY --chown=nodeuser:nobody ./apps/web/tsconfig.node.json* ./
+
+# Reinstall to fix any broken symlinks after copying files (as root for permissions)
+RUN bun install && chown -R nodeuser:nobody /app/node_modules /app/apps/web/node_modules 2>/dev/null || true
+
+# Switch to non-root user
+USER nodeuser
 
 # Run tests using Bun
 CMD ["bun", "test"]

@@ -15,6 +15,9 @@ import type {
 import { hashPassword } from "../helpers/auth";
 import { getTestDatabase } from "../setup";
 
+// Global counter to ensure uniqueness across all test runs
+let uniqueCounter = 0;
+
 /**
  * User builder with fluent interface
  */
@@ -178,9 +181,15 @@ export class UserBuilder {
     emailVerified: boolean;
     status: UserStatus;
   } {
-    const timestamp = Date.now();
-    const random = Math.floor(Math.random() * 10000);
-    const defaultUsername = `testuser_${timestamp}_${random}`;
+    // Use multiple sources of uniqueness:
+    // 1. Compact timestamp (last 8 digits of milliseconds)
+    // 2. Global counter (for same-process sequential calls)
+    // 3. Random component (for additional entropy)
+    // Username max length is 30 chars, so format: "t_{timestamp}_{counter}_{random}"
+    const timestamp = Date.now().toString().slice(-8); // Last 8 digits
+    const counter = uniqueCounter++;
+    const random = Math.floor(Math.random() * 1000); // Smaller random for shorter string
+    const defaultUsername = `t_${timestamp}_${counter}_${random}`;
 
     return {
       username: defaultUsername,
@@ -202,10 +211,21 @@ export class UserBuilder {
     const db = getTestDatabase();
     const defaults = this.getDefaults();
 
+    // Determine final username
+    const finalUsername = this.data.username ?? defaults.username;
+
+    // Generate email from username if not explicitly provided
+    // This ensures email matches username when custom username is used
+    // Use compact format to avoid exceeding email length limit (255 chars)
+    const finalEmail = this.data.email ??
+      (this.data.username ?
+        `${finalUsername}_${uniqueCounter++}@test.com` :
+        defaults.email);
+
     // Merge defaults with provided data
     const userData = {
-      username: this.data.username ?? defaults.username,
-      email: this.data.email ?? defaults.email,
+      username: finalUsername,
+      email: finalEmail,
       emailVerified: this.data.emailVerified ?? defaults.emailVerified,
       status: this.data.status ?? defaults.status,
       passwordHash: await hashPassword(this.data.password ?? defaults.password),
@@ -276,15 +296,25 @@ export class UserBuilder {
       builder.shouldCreateStorage = this.shouldCreateStorage;
 
       // Override username/email to ensure uniqueness
+      // Using counter ensures uniqueness even when created rapidly
+      // Keep format compact to fit within database constraints
       if (!this.data.username) {
-        builder.username(`testuser_${Date.now()}_${i}`);
+        const counter = uniqueCounter++;
+        // Format: t_{timestamp}_{counter}_{index} - fits within 30 char limit
+        const timestamp = Date.now().toString().slice(-8);
+        builder.username(`t_${timestamp}_${counter}_${i}`);
       } else {
-        builder.username(`${this.data.username}_${i}`);
+        const counter = uniqueCounter++;
+        // Append counter and index to provided username
+        builder.username(`${this.data.username}_${counter}_${i}`);
       }
       if (!this.data.email) {
-        builder.email(`testuser_${Date.now()}_${i}@test.com`);
+        const counter = uniqueCounter++;
+        const timestamp = Date.now().toString().slice(-8);
+        builder.email(`t_${timestamp}_${counter}_${i}@test.com`);
       } else {
-        builder.email(this.data.email.replace("@", `_${i}@`));
+        const counter = uniqueCounter++;
+        builder.email(this.data.email.replace("@", `_${counter}_${i}@`));
       }
 
       users.push(await builder.build());
@@ -338,7 +368,9 @@ export async function createUserWithProfile(overrides?: {
 
   const result = await builder.build();
   if (!result.profile) {
-    throw new Error("Profile creation failed - this should never happen when withProfile() is called");
+    throw new Error(
+      "Profile creation failed - this should never happen when withProfile() is called"
+    );
   }
   return { user: result.user, profile: result.profile };
 }

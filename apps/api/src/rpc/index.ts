@@ -22,6 +22,7 @@ import { Hono } from "hono";
 import { authMiddleware } from "../middleware/auth";
 import { authRouter } from "./routers/auth";
 import { feedRouter } from "./routers/feed";
+import { mediaRouter } from "./routers/media";
 import { postRouter } from "./routers/post";
 import { socialRouter } from "./routers/social";
 import { userRouter } from "./routers/user";
@@ -72,6 +73,7 @@ const PROCEDURE_REGISTRY: Record<string, any> = {
   ...postRouter,
   ...socialRouter,
   ...feedRouter,
+  ...mediaRouter,
   // Additional routers will be added here in future phases:
   // ...discoveryRouter,
   // etc.

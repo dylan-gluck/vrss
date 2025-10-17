@@ -3,7 +3,7 @@ description: "Validate feature completeness against spec"
 argument-hint: "[PHASE_DOCUMENT] [TASK_ID]"
 ---
 
-@agent-the-architect-quality-review
+@agent-validator
 
 Follow `Workflow` to validate the status of `TASK_ID` in `PHASE_DOCUMENT`
 

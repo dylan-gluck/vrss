@@ -26,5 +26,9 @@
     "node": ">=20.0.0",
     "bun": ">=1.0.0"
   },
-  "packageManager": "bun@1.1.0"
+  "packageManager": "bun@1.1.0",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.911.0",
+    "@aws-sdk/s3-request-presigner": "^3.911.0"
+  }
 }

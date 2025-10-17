@@ -400,70 +400,70 @@
 
 ### 3.4 Social Router `[duration: 2 days]` `[parallel: true]`
 
-- [ ] **Prime Context**
-    - [ ] Read `docs/api-architecture.md` Section: "Social Router" (6 procedures)
-    - [ ] Read PRD Section: "F6: Social Interactions" (lines 192-201)
-    - [ ] Read DATABASE_SCHEMA.md: `user_follows`, `friendships`
+- [x] **Prime Context**
+    - [x] Read `docs/api-architecture.md` Section: "Social Router" (6 procedures)
+    - [x] Read PRD Section: "F6: Social Interactions" (lines 192-201)
+    - [x] Read DATABASE_SCHEMA.md: `user_follows`, `friendships`
 
-- [ ] **Write Tests** `[activity: test-api]`
-    - [ ] `social.follow/unfollow` tests: Create/delete follow, friendship creation
-    - [ ] `social.getFollowers` tests: Cursor pagination, count
-    - [ ] `social.getFollowing` tests: Cursor pagination, count
-    - [ ] Friendship creation test: Mutual follow creates friendship
+- [x] **Write Tests** `[activity: test-api]`
+    - [x] `social.follow/unfollow` tests: Create/delete follow, friendship creation
+    - [x] `social.getFollowers` tests: Cursor pagination, count
+    - [x] `social.getFollowing` tests: Cursor pagination, count
+    - [x] Friendship creation test: Mutual follow creates friendship
 
-- [ ] **Implement** `[activity: api-development]`
-    - [ ] Create `apps/api/src/rpc/routers/social.ts`
-    - [ ] Implement `social.follow` (check not already following, create follow record)
-    - [ ] Implement `social.unfollow` (delete follow, delete friendship if mutual)
-    - [ ] Implement `social.getFollowers` (with cursor pagination)
-    - [ ] Implement `social.getFollowing` (with cursor pagination)
-    - [ ] Implement `social.getFriends` (mutual follows)
-    - [ ] Trigger: Auto-create friendship on mutual follow (database trigger)
-    - [ ] Create business logic in `apps/api/src/features/social/`
+- [x] **Implement** `[activity: api-development]`
+    - [x] Create `apps/api/src/rpc/routers/social.ts`
+    - [x] Implement `social.follow` (check not already following, create follow record)
+    - [x] Implement `social.unfollow` (delete follow, delete friendship if mutual)
+    - [x] Implement `social.getFollowers` (with cursor pagination)
+    - [x] Implement `social.getFollowing` (with cursor pagination)
+    - [x] Implement `social.getFriends` (mutual follows)
+    - [x] Trigger: Auto-create friendship on mutual follow (database trigger)
+    - [x] Create business logic in `apps/api/src/features/social/`
 
-- [ ] **Validate**
-    - [ ] Follow/unfollow tests pass
-    - [ ] Friendship auto-created on mutual follow
-    - [ ] Pagination works correctly
-    - [ ] Test coverage: 85%+
+- [x] **Validate**
+    - [x] Follow/unfollow tests pass
+    - [x] Friendship auto-created on mutual follow
+    - [x] Pagination works correctly
+    - [x] Test coverage: 85%+
 
-**Success Criteria:** Users can follow/unfollow, friendships created automatically
+**Success Criteria:** Users can follow/unfollow, friendships created automatically ✅ **COMPLETE**
 
 ---
 
 ### 3.5 Feed Router `[duration: 2-3 days]` `[parallel: false]`
 
-- [ ] **Prime Context**
-    - [ ] Read `docs/api-architecture.md` Section: "Feed Router" (4 procedures)
-    - [ ] Read PRD Section: "F4: Custom Feed Builder (Visual Algorithm)" (lines 169-181)
-    - [ ] Read DATABASE_SCHEMA.md: `custom_feeds`, `feed_filters`
+- [x] **Prime Context**
+    - [x] Read `docs/api-architecture.md` Section: "Feed Router" (4 procedures)
+    - [x] Read PRD Section: "F4: Custom Feed Builder (Visual Algorithm)" (lines 169-181)
+    - [x] Read DATABASE_SCHEMA.md: `custom_feeds`, `feed_filters`
 
-- [ ] **Write Tests** `[activity: test-api]`
-    - [ ] `feed.get` tests: Default feed (chronological), custom feed execution
-    - [ ] `feed.create` tests: Create custom feed with filters
-    - [ ] `feed.update` tests: Modify feed name, add/remove filters
-    - [ ] `feed.delete` tests: Delete custom feed
-    - [ ] Algorithm execution tests: AND/OR/NOT logic, type filters, author filters
+- [x] **Write Tests** `[activity: test-api]`
+    - [x] `feed.get` tests: Default feed (chronological), custom feed execution
+    - [x] `feed.create` tests: Create custom feed with filters
+    - [x] `feed.update` tests: Modify feed name, add/remove filters
+    - [x] `feed.delete` tests: Delete custom feed
+    - [x] Algorithm execution tests: AND/OR/NOT logic, type filters, author filters
 
-- [ ] **Implement** `[activity: api-development]`
-    - [ ] Create `apps/api/src/rpc/routers/feed.ts`
-    - [ ] Implement `feed.get` (execute feed algorithm, return posts with cursor pagination)
-    - [ ] Implement `feed.create` (save custom feed with filters)
-    - [ ] Implement `feed.update` (update feed name, filters)
-    - [ ] Implement `feed.delete`
-    - [ ] Create `apps/api/src/features/feed/feed-algorithm.ts` (filter, sort, paginate)
-    - [ ] Support filter types: post type, author, tags, date range
-    - [ ] Support logical operators: AND, OR, NOT
-    - [ ] Default feed: "Following - Chronological" (all followed users, newest first)
+- [x] **Implement** `[activity: api-development]`
+    - [x] Create `apps/api/src/rpc/routers/feed.ts`
+    - [x] Implement `feed.get` (execute feed algorithm, return posts with cursor pagination)
+    - [x] Implement `feed.create` (save custom feed with filters)
+    - [x] Implement `feed.update` (update feed name, filters)
+    - [x] Implement `feed.delete`
+    - [x] Create `apps/api/src/features/feed/feed-algorithm.ts` (filter, sort, paginate)
+    - [x] Support filter types: post type, author, tags, date range
+    - [x] Support logical operators: AND, OR, NOT
+    - [x] Default feed: "Following - Chronological" (all followed users, newest first)
 
-- [ ] **Validate**
-    - [ ] Feed algorithm tests pass
-    - [ ] Custom feeds execute correctly
-    - [ ] AND/OR/NOT logic works
-    - [ ] Pagination performs well (<50ms for 20 posts)
-    - [ ] Test coverage: 90%+
+- [x] **Validate**
+    - [x] Feed algorithm tests pass
+    - [x] Custom feeds execute correctly
+    - [x] AND/OR/NOT logic works
+    - [x] Pagination performs well (<50ms for 20 posts)
+    - [x] Test coverage: 90%+
 
-**Success Criteria:** Custom feed builder functional, algorithms execute queries correctly
+**Success Criteria:** Custom feed builder functional, algorithms execute queries correctly ✅ **COMPLETE**
 
 ---
 

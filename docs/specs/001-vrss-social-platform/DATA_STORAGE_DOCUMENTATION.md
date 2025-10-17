@@ -92,10 +92,10 @@ User uploads file → Check storage_usage.used_bytes vs quota_bytes
 ### Summary of All Tables
 
 ```yaml
-Total Tables: 19
+Total Tables: 23 (sessions, verification_tokens, pending_uploads added in implementation)
 Categories:
-  - Users & Authentication: 2 tables (users, user_profiles)
-  - Content: 2 tables (posts, post_media)
+  - Users & Authentication: 4 tables (users, user_profiles, sessions, verification_tokens)
+  - Content: 3 tables (posts, post_media, pending_uploads)
   - Social Interactions: 5 tables (user_follows, friendships, post_interactions, comments, reposts)
   - Profile Customization: 2 tables (profile_sections, section_content)
   - Custom Feeds: 2 tables (custom_feeds, feed_filters)
@@ -255,6 +255,41 @@ Triggers:
   - trigger_update_storage_insert: Updates storage_usage on INSERT
   - trigger_update_storage_delete: Updates storage_usage on DELETE
 ```
+
+**Post Visibility Rules**
+
+Posts inherit the `profile_visibility` enum from user profiles:
+
+| Visibility | Who Can See | Feed Inclusion | Direct Link Access |
+|------------|-------------|----------------|-------------------|
+| `public` | Everyone | All feeds | Yes |
+| `followers` | Author + Followers | Follower feeds only | Only if follower |
+| `private` | Author only | Author's feed only | No |
+
+**Database Implementation:**
+
+```sql
+ALTER TABLE posts ADD COLUMN visibility profile_visibility NOT NULL DEFAULT 'public';
+
+-- Query: Get user feed (respects visibility)
+SELECT p.* FROM posts p
+WHERE p.status = 'published'
+  AND p.deleted_at IS NULL
+  AND (
+    p.visibility = 'public'
+    OR (p.visibility = 'followers' AND EXISTS (
+      SELECT 1 FROM user_follows uf WHERE uf.following_id = p.user_id AND uf.follower_id = $currentUserId
+    ))
+    OR (p.visibility = 'private' AND p.user_id = $currentUserId)
+  );
+```
+
+**API Behavior:**
+
+- **post.create**: Accepts `visibility` parameter (defaults to 'public')
+- **post.update**: Can change visibility (author only)
+- **post.list**: Filters by visibility rules automatically
+- **post.getById**: Returns 403 if user cannot view
 
 #### 3. Social Interaction Tables
 
@@ -1518,6 +1553,59 @@ async function cleanupOrphanedMedia(): Promise<void> {
   }
 }
 ```
+
+### Pending Upload Workflow
+
+#### Purpose
+Decouples file upload from post creation, allowing users to:
+1. Upload files to S3 first (better UX - progress bar)
+2. Create post with already-uploaded media second (faster)
+
+#### Flow
+1. **Initiate Upload** (Client → API)
+   ```typescript
+   const result = await trpc.media.initiateUpload.mutate({
+     filename: 'vacation.jpg',
+     contentType: 'image/jpeg',
+     size: 2048576 // 2MB
+   });
+   // result = { uploadId, uploadUrl, expiresAt }
+   ```
+
+2. **Upload to S3** (Client → S3)
+   ```typescript
+   await fetch(result.uploadUrl, {
+     method: 'PUT',
+     body: file,
+     headers: { 'Content-Type': 'image/jpeg' }
+   });
+   ```
+
+3. **Complete Upload** (Client → API)
+   ```typescript
+   await trpc.media.completeUpload.mutate({
+     uploadId: result.uploadId,
+     postId: null // or postId if attaching to existing post
+   });
+   ```
+
+4. **Create Post** (Client → API)
+   ```typescript
+   await trpc.post.create.mutate({
+     content: 'Check out my vacation!',
+     mediaIds: [mediaId] // from completeUpload response
+   });
+   ```
+
+#### Cleanup Strategy
+- **Hourly cron job** deletes pending_uploads WHERE expires_at < NOW()
+- **Also deletes corresponding S3 objects** to prevent orphaned files
+- **Expiry:** 24 hours from creation (gives users time to recover from errors)
+
+#### Storage Quota
+- Quota checked in `media.initiateUpload` (prevents upload if would exceed)
+- Quota updated in `media.completeUpload` via database triggers
+- If user never completes upload, quota remains unchanged (pending uploads don't count)
 
 ---
 

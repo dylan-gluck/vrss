@@ -97,6 +97,50 @@
     - [ ] Detect online/offline: `navigator.onLine` + `window.addEventListener('online')`
     - [ ] Queue failed mutations (CREATE_POST, SEND_MESSAGE, LIKE_POST, etc.)
     - [ ] Process queue on reconnect (exponential backoff, max 3 retries)
+    - [ ] Retry strategy implementation:
+      ```typescript
+      // Offline queue retry strategy
+      const RETRY_STRATEGY = {
+        initialDelay: 1000,      // 1 second
+        maxDelay: 30000,         // 30 seconds
+        multiplier: 2,           // Double each time
+        maxAttempts: 3,          // Give up after 3 tries
+        jitter: 0.1              // ±10% randomization
+      };
+
+      function getRetryDelay(attempt: number): number {
+        const delay = Math.min(
+          RETRY_STRATEGY.initialDelay * Math.pow(RETRY_STRATEGY.multiplier, attempt),
+          RETRY_STRATEGY.maxDelay
+        );
+
+        // Add jitter to prevent thundering herd
+        const jitter = delay * RETRY_STRATEGY.jitter * (Math.random() - 0.5);
+        return delay + jitter;
+      }
+
+      // Example usage
+      async function retryWithBackoff<T>(
+        fn: () => Promise<T>,
+        context: string
+      ): Promise<T> {
+        for (let attempt = 0; attempt < RETRY_STRATEGY.maxAttempts; attempt++) {
+          try {
+            return await fn();
+          } catch (error) {
+            if (attempt === RETRY_STRATEGY.maxAttempts - 1) {
+              // Last attempt failed, give up
+              await offlineQueue.markFailed(context, error);
+              throw error;
+            }
+
+            const delay = getRetryDelay(attempt);
+            console.log(`Retry ${attempt + 1}/${RETRY_STRATEGY.maxAttempts} after ${delay}ms`);
+            await sleep(delay);
+          }
+        }
+      }
+      ```
     - [ ] Show toast notifications for queue status
 
 - [ ] **Implement - PWA Install Prompt** `[activity: component-development]`

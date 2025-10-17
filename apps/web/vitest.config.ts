@@ -30,7 +30,7 @@ export default defineConfig({
         statements: 80,
       },
     },
-    include: ["**/*.{test,spec}.{ts,tsx}"],
+    include: ["**/*.{test,spec}.{ts,tsx}", "test/**/*.{test,spec}.{ts,tsx}"],
   },
   resolve: {
     alias: {

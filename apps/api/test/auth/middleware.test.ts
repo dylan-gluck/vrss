@@ -477,6 +477,9 @@ describe("Auth Middleware - Session Refresh", () => {
     const expectedInitialExpiry = Date.now() + 7 * 24 * 60 * 60 * 1000;
     expect(Math.abs(initialExpiresAt.getTime() - expectedInitialExpiry)).toBeLessThan(1000);
 
+    // Wait a small amount to ensure timestamp difference
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
     // Simulate session refresh after 24 hours of activity
     const newExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     const refreshedSession = await prisma.session.update({

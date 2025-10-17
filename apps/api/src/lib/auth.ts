@@ -14,9 +14,11 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 const prisma = new PrismaClient();
 
 // Export secret for testing/verification (better-auth may not expose it in options)
-const authSecret = process.env.BETTER_AUTH_SECRET || (() => {
-  throw new Error("BETTER_AUTH_SECRET environment variable is required");
-})();
+const authSecret =
+  process.env.BETTER_AUTH_SECRET ||
+  (() => {
+    throw new Error("BETTER_AUTH_SECRET environment variable is required");
+  })();
 
 const baseAuth = betterAuth({
   // Database adapter

@@ -12,7 +12,7 @@
 
 ## Executive Summary
 
-This document provides a phased implementation strategy for the VRSS PostgreSQL database, covering **19 tables**, **30+ indexes**, **8 database triggers**, and **seed data** for MVP development. The strategy follows Prisma ORM best practices and ensures zero-downtime migration paths for future production deployment.
+This document provides a phased implementation strategy for the VRSS PostgreSQL database, covering **23 tables** (sessions, verification_tokens, pending_uploads added in implementation), **30+ indexes**, **8 database triggers**, and **seed data** for MVP development. The strategy follows Prisma ORM best practices and ensures zero-downtime migration paths for future production deployment.
 
 **Key Deliverables:**
 1. **4 Migration Phases** - Logical table grouping respecting foreign key dependencies
@@ -121,11 +121,13 @@ graph TB
 
 **Purpose**: Establish user identity, authentication, and storage infrastructure
 
-**Tables** (4):
+**Tables** (6):
 1. `users` - Core user accounts
 2. `user_profiles` - Extended profile data
 3. `subscription_tiers` - Tier definitions (seed data)
 4. `storage_usage` - Per-user quota tracking
+5. `sessions` - User authentication sessions (better-auth)
+6. `verification_tokens` - Email verification tokens (better-auth)
 
 **Dependencies**: None (foundation layer)
 
@@ -208,6 +210,35 @@ CREATE TABLE storage_usage (
     CONSTRAINT storage_usage_positive CHECK (used_bytes >= 0),
     CONSTRAINT storage_usage_quota_positive CHECK (quota_bytes > 0)
 );
+
+-- Step 6: Create sessions (depends on users, managed by better-auth)
+CREATE TABLE sessions (
+    id                  BIGSERIAL PRIMARY KEY,
+    user_id             BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    token               VARCHAR(255) NOT NULL UNIQUE,
+    expires_at          TIMESTAMPTZ(6) NOT NULL,
+    ip_address          VARCHAR(45),
+    user_agent          TEXT,
+    last_activity_at    TIMESTAMPTZ(6) NOT NULL DEFAULT NOW(),
+    created_at          TIMESTAMPTZ(6) NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMPTZ(6) NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_sessions_user ON sessions(user_id);
+CREATE INDEX idx_sessions_token ON sessions(token);
+CREATE INDEX idx_sessions_expires_at ON sessions(expires_at);
+
+-- Step 7: Create verification_tokens (managed by better-auth)
+CREATE TABLE verification_tokens (
+    id                  BIGSERIAL PRIMARY KEY,
+    identifier          VARCHAR(255) NOT NULL,
+    token               VARCHAR(255) NOT NULL UNIQUE,
+    expires             TIMESTAMPTZ(6) NOT NULL,
+    created_at          TIMESTAMPTZ(6) NOT NULL DEFAULT NOW()
+);
+
+CREATE UNIQUE INDEX verification_token_unique ON verification_tokens(identifier, token);
+CREATE INDEX idx_verification_tokens_token ON verification_tokens(token);
 ```
 
 ### Phase 1 Indexes (Critical Only)
@@ -282,14 +313,15 @@ psql $DATABASE_URL -c "INSERT INTO user_profiles (user_id, display_name) VALUES 
 
 **Purpose**: Enable core social platform functionality (posts, follows, interactions)
 
-**Tables** (7):
+**Tables** (8):
 1. `posts` - All user content
 2. `post_media` - Media file metadata
-3. `user_follows` - Follower relationships
-4. `friendships` - Friend relationships
-5. `post_interactions` - Likes, bookmarks
-6. `comments` - Post comments
-7. `reposts` - Reposts
+3. `pending_uploads` - Temporary upload tracking
+4. `user_follows` - Follower relationships
+5. `friendships` - Friend relationships
+6. `post_interactions` - Likes, bookmarks
+7. `comments` - Post comments
+8. `reposts` - Reposts
 
 **Dependencies**: `users`, `posts`
 
@@ -350,6 +382,20 @@ CREATE TABLE post_media (
 
     CONSTRAINT post_media_file_size_positive CHECK (file_size_bytes > 0)
 );
+
+-- Step 3b: Create pending_uploads (temporary upload tracking)
+CREATE TABLE pending_uploads (
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id             BIGINT NOT NULL,
+    s3_key              VARCHAR(500) NOT NULL,
+    filename            VARCHAR(255) NOT NULL,
+    content_type        VARCHAR(100) NOT NULL,
+    size                BIGINT NOT NULL,
+    expires_at          TIMESTAMPTZ(6) NOT NULL,
+    created_at          TIMESTAMPTZ(6) NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_pending_uploads_user_expires ON pending_uploads(user_id, expires_at);
 
 -- Step 4: Create social relationship tables (depend on users)
 CREATE TABLE user_follows (
@@ -2462,7 +2508,7 @@ EXPLAIN ANALYZE SELECT ...  # Query plan
 
 ## Summary
 
-This implementation strategy provides a **production-ready roadmap** for deploying the VRSS PostgreSQL database with **19 tables**, **30+ indexes**, **8 triggers**, and **comprehensive testing**.
+This implementation strategy provides a **production-ready roadmap** for deploying the VRSS PostgreSQL database with **23 tables** (sessions, verification_tokens, pending_uploads added in implementation), **30+ indexes**, **8 triggers**, and **comprehensive testing**.
 
 **Key Takeaways**:
 1. **4 Migration Phases** - Logical grouping respecting dependencies
