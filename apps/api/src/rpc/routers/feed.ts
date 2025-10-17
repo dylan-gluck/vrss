@@ -15,21 +15,21 @@
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md (custom_feeds, feed_filters)
  */
 
-import { z } from "zod";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { type Prisma, PrismaClient } from "@prisma/client";
 import { ErrorCode } from "@vrss/api-contracts";
-import { ProcedureContext } from "../types";
+import type { z } from "zod";
 import {
-  getFeedSchema,
-  createFeedSchema,
-  updateFeedSchema,
-  deleteFeedSchema,
-} from "./schemas/feed";
-import {
+  type AlgorithmConfig,
   executeFeedAlgorithm,
   getDefaultFeed,
-  AlgorithmConfig,
 } from "../../features/feed/feed-algorithm";
+import type { ProcedureContext } from "../types";
+import {
+  createFeedSchema,
+  deleteFeedSchema,
+  getFeedSchema,
+  updateFeedSchema,
+} from "./schemas/feed";
 
 // Initialize Prisma client
 const prisma = new PrismaClient();
@@ -56,7 +56,11 @@ class RPCError extends Error {
 /**
  * Get validation error message safely
  */
-function getValidationError(validationResult: any): { message: string; field: string; errors: any[] } {
+function getValidationError(validationResult: any): {
+  message: string;
+  field: string;
+  errors: any[];
+} {
   const errors = validationResult.error?.errors || [];
   const firstError = errors[0];
   return {
@@ -69,10 +73,7 @@ function getValidationError(validationResult: any): { message: string; field: st
 /**
  * Check if user owns a custom feed
  */
-async function checkFeedOwnership(
-  feedId: string,
-  userId: bigint
-): Promise<any> {
+async function checkFeedOwnership(feedId: string, userId: bigint): Promise<any> {
   const feed = await prisma.customFeed.findFirst({
     where: {
       id: BigInt(feedId),
@@ -80,18 +81,11 @@ async function checkFeedOwnership(
   });
 
   if (!feed) {
-    throw new RPCError(
-      ErrorCode.FEED_NOT_FOUND,
-      "Feed not found",
-      { feedId }
-    );
+    throw new RPCError(ErrorCode.FEED_NOT_FOUND, "Feed not found", { feedId });
   }
 
   if (feed.userId !== userId) {
-    throw new RPCError(
-      ErrorCode.FORBIDDEN,
-      "You do not have permission to modify this feed"
-    );
+    throw new RPCError(ErrorCode.FORBIDDEN, "You do not have permission to modify this feed");
   }
 
   return feed;
@@ -117,11 +111,7 @@ async function checkFeedNameUnique(
   });
 
   if (existingFeed) {
-    throw new RPCError(
-      ErrorCode.CONFLICT,
-      "A feed with this name already exists",
-      { name }
-    );
+    throw new RPCError(ErrorCode.CONFLICT, "A feed with this name already exists", { name });
   }
 }
 
@@ -143,18 +133,15 @@ export const feedRouter = {
    * @throws {RPCError} FEED_NOT_FOUND - Custom feed does not exist
    * @throws {RPCError} VALIDATION_ERROR - Invalid input
    */
-  "feed.get": async (
-    ctx: ProcedureContext<z.infer<typeof getFeedSchema>>
-  ) => {
+  "feed.get": async (ctx: ProcedureContext<z.infer<typeof getFeedSchema>>) => {
     // Validate input
     const validationResult = getFeedSchema.safeParse(ctx.input);
     if (!validationResult.success) {
       const error = getValidationError(validationResult);
-      throw new RPCError(
-        ErrorCode.VALIDATION_ERROR,
-        error.message,
-        { field: error.field, errors: error.errors }
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, error.message, {
+        field: error.field,
+        errors: error.errors,
+      });
     }
 
     const { feedId, limit, cursor } = validationResult.data;
@@ -163,10 +150,7 @@ export const feedRouter = {
     if (!feedId) {
       // Default feed requires authentication
       if (!ctx.user) {
-        throw new RPCError(
-          ErrorCode.UNAUTHORIZED,
-          "Authentication required"
-        );
+        throw new RPCError(ErrorCode.UNAUTHORIZED, "Authentication required");
       }
 
       const result = await getDefaultFeed(ctx.user.id, { limit, cursor });
@@ -180,37 +164,37 @@ export const feedRouter = {
 
     // Custom feed: Requires authentication
     if (!ctx.user) {
-      throw new RPCError(
-        ErrorCode.UNAUTHORIZED,
-        "Authentication required"
-      );
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "Authentication required");
     }
 
-    // Fetch custom feed
+    // Fetch custom feed with filters
     const feed = await prisma.customFeed.findFirst({
       where: {
         id: BigInt(feedId),
         userId: BigInt(ctx.user.id),
       },
+      include: {
+        filters: true,
+      },
     });
 
     if (!feed) {
-      throw new RPCError(
-        ErrorCode.FEED_NOT_FOUND,
-        "Feed not found",
-        { feedId }
-      );
+      throw new RPCError(ErrorCode.FEED_NOT_FOUND, "Feed not found", { feedId });
     }
 
-    // Extract algorithm config from feed
-    const algorithmConfig = feed.algorithmConfig as unknown as AlgorithmConfig;
+    // Build algorithm config from feed filters
+    const algorithmConfig: AlgorithmConfig = {
+      filters: feed.filters.map((f) => ({
+        type: f.type as any,
+        operator: f.operator as any,
+        value: f.value,
+      })),
+      logic: "AND",
+      sort: "recent",
+    };
 
     // Execute feed algorithm
-    const result = await executeFeedAlgorithm(
-      ctx.user.id,
-      algorithmConfig,
-      { limit, cursor }
-    );
+    const result = await executeFeedAlgorithm(ctx.user.id, algorithmConfig, { limit, cursor });
 
     return {
       posts: result.posts,
@@ -229,26 +213,20 @@ export const feedRouter = {
    * @throws {RPCError} VALIDATION_ERROR - Invalid input
    * @throws {RPCError} CONFLICT - Feed name already exists
    */
-  "feed.create": async (
-    ctx: ProcedureContext<z.infer<typeof createFeedSchema>>
-  ) => {
+  "feed.create": async (ctx: ProcedureContext<z.infer<typeof createFeedSchema>>) => {
     // Check authentication
     if (!ctx.user) {
-      throw new RPCError(
-        ErrorCode.UNAUTHORIZED,
-        "Authentication required"
-      );
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "Authentication required");
     }
 
     // Validate input
     const validationResult = createFeedSchema.safeParse(ctx.input);
     if (!validationResult.success) {
       const error = getValidationError(validationResult);
-      throw new RPCError(
-        ErrorCode.VALIDATION_ERROR,
-        error.message,
-        { field: error.field, errors: error.errors }
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, error.message, {
+        field: error.field,
+        errors: error.errors,
+      });
     }
 
     const { name, filters, isDefault } = validationResult.data;
@@ -331,33 +309,27 @@ export const feedRouter = {
    * @throws {RPCError} VALIDATION_ERROR - Invalid input
    * @throws {RPCError} CONFLICT - Feed name already exists
    */
-  "feed.update": async (
-    ctx: ProcedureContext<z.infer<typeof updateFeedSchema>>
-  ) => {
+  "feed.update": async (ctx: ProcedureContext<z.infer<typeof updateFeedSchema>>) => {
     // Check authentication
     if (!ctx.user) {
-      throw new RPCError(
-        ErrorCode.UNAUTHORIZED,
-        "Authentication required"
-      );
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "Authentication required");
     }
 
     // Validate input
     const validationResult = updateFeedSchema.safeParse(ctx.input);
     if (!validationResult.success) {
       const error = getValidationError(validationResult);
-      throw new RPCError(
-        ErrorCode.VALIDATION_ERROR,
-        error.message,
-        { field: error.field, errors: error.errors }
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, error.message, {
+        field: error.field,
+        errors: error.errors,
+      });
     }
 
     const { feedId, name, filters, isDefault } = validationResult.data;
     const userId = BigInt(ctx.user.id);
 
     // Check ownership
-    const existingFeed = await checkFeedOwnership(feedId, userId);
+    const _existingFeed = await checkFeedOwnership(feedId, userId);
 
     // Check name uniqueness if name is being updated
     if (name !== undefined) {
@@ -453,26 +425,17 @@ export const feedRouter = {
    * @throws {RPCError} FEED_NOT_FOUND - Feed does not exist
    * @throws {RPCError} FORBIDDEN - User does not own feed
    */
-  "feed.delete": async (
-    ctx: ProcedureContext<z.infer<typeof deleteFeedSchema>>
-  ) => {
+  "feed.delete": async (ctx: ProcedureContext<z.infer<typeof deleteFeedSchema>>) => {
     // Check authentication
     if (!ctx.user) {
-      throw new RPCError(
-        ErrorCode.UNAUTHORIZED,
-        "Authentication required"
-      );
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "Authentication required");
     }
 
     // Validate input
     const validationResult = deleteFeedSchema.safeParse(ctx.input);
     if (!validationResult.success) {
       const error = getValidationError(validationResult);
-      throw new RPCError(
-        ErrorCode.VALIDATION_ERROR,
-        error.message,
-        { field: error.field }
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, error.message, { field: error.field });
     }
 
     const { feedId } = validationResult.data;

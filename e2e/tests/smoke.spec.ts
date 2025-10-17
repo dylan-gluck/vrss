@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
-import { AuthHelper } from '../helpers/auth-helper';
-import { MAYA_MUSIC, MARCUS_CONSUMER, generateUniqueTestUser } from '../fixtures/test-users';
+import { expect, test } from "@playwright/test";
+import { MARCUS_CONSUMER, MAYA_MUSIC, generateUniqueTestUser } from "../fixtures/test-users";
+import { AuthHelper } from "../helpers/auth-helper";
 
 /**
  * Smoke Tests - Infrastructure Validation
@@ -14,22 +14,22 @@ import { MAYA_MUSIC, MARCUS_CONSUMER, generateUniqueTestUser } from '../fixtures
  * These tests ensure the foundation is solid before implementing comprehensive scenarios
  */
 
-test.describe('Smoke Tests - Infrastructure Validation', () => {
-  test('should load the application home page', async ({ page }) => {
-    await page.goto('/');
+test.describe("Smoke Tests - Infrastructure Validation", () => {
+  test("should load the application home page", async ({ page }) => {
+    await page.goto("/");
 
     // Wait for page to be fully loaded
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState("networkidle");
 
     // Check that we can access the page (status 200)
-    expect(page.url()).toContain('localhost:5173');
+    expect(page.url()).toContain("localhost:5173");
 
     // Take screenshot for visual verification
-    await page.screenshot({ path: 'test-results/smoke-home-page.png' });
+    await page.screenshot({ path: "test-results/smoke-home-page.png" });
   });
 
-  test('should navigate to login page', async ({ page }) => {
-    await page.goto('/');
+  test("should navigate to login page", async ({ page }) => {
+    await page.goto("/");
 
     // Click login link/button (adjust selector based on your UI)
     await page.click('a[href="/login"], button:has-text("Login"), a:has-text("Login")');
@@ -43,8 +43,8 @@ test.describe('Smoke Tests - Infrastructure Validation', () => {
     await expect(page.locator('button[type="submit"]')).toBeVisible();
   });
 
-  test('should navigate to registration page', async ({ page }) => {
-    await page.goto('/');
+  test("should navigate to registration page", async ({ page }) => {
+    await page.goto("/");
 
     // Click register link/button (adjust selector based on your UI)
     await page.click('a[href="/register"], button:has-text("Sign Up"), a:has-text("Sign Up")');
@@ -58,14 +58,16 @@ test.describe('Smoke Tests - Infrastructure Validation', () => {
     await expect(page.locator('button[type="submit"]')).toBeVisible();
   });
 
-  test('should display form validation on empty login', async ({ page }) => {
-    await page.goto('/login');
+  test("should display form validation on empty login", async ({ page }) => {
+    await page.goto("/login");
 
     // Try to submit empty form
     await page.click('button[type="submit"]');
 
     // Check for validation messages (adjust based on your validation UI)
-    const hasValidationMessage = await page.locator('text=/required|Required|cannot be empty/i').count();
+    const hasValidationMessage = await page
+      .locator("text=/required|Required|cannot be empty/i")
+      .count();
 
     // Or check for HTML5 validation
     const emailInput = page.locator('input[name="email"], input[type="email"]');
@@ -74,24 +76,24 @@ test.describe('Smoke Tests - Infrastructure Validation', () => {
     expect(hasValidationMessage > 0 || isInvalid).toBeTruthy();
   });
 
-  test('should check API health endpoint', async ({ page }) => {
-    const response = await page.request.get('http://localhost:3000/health');
+  test("should check API health endpoint", async ({ page }) => {
+    const response = await page.request.get("http://localhost:3000/health");
 
     expect(response.ok()).toBeTruthy();
     expect(response.status()).toBe(200);
   });
 
-  test('should register a new user via auth helper', async ({ page }) => {
+  test("should register a new user via auth helper", async ({ page }) => {
     const authHelper = new AuthHelper(page);
-    const uniqueUser = generateUniqueTestUser('smoke_test_user');
+    const uniqueUser = generateUniqueTestUser("smoke_test_user");
 
     // Test registration via API (faster)
-    await test.step('Register user via API', async () => {
+    await test.step("Register user via API", async () => {
       await authHelper.registerViaAPI(uniqueUser);
     });
 
     // Verify we can login with the new user
-    await test.step('Login with new user', async () => {
+    await test.step("Login with new user", async () => {
       await authHelper.loginViaAPI({
         email: uniqueUser.email,
         password: uniqueUser.password,
@@ -99,15 +101,15 @@ test.describe('Smoke Tests - Infrastructure Validation', () => {
     });
 
     // Verify session is established
-    await test.step('Verify session', async () => {
+    await test.step("Verify session", async () => {
       const isAuth = await authHelper.isAuthenticated();
       expect(isAuth).toBeTruthy();
     });
   });
 
-  test('should handle authentication flow', async ({ page }) => {
+  test("should handle authentication flow", async ({ page }) => {
     const authHelper = new AuthHelper(page);
-    const uniqueUser = generateUniqueTestUser('smoke_auth_test');
+    const uniqueUser = generateUniqueTestUser("smoke_auth_test");
 
     // Setup authenticated session
     await authHelper.setupAuthenticatedSession(uniqueUser);
@@ -118,14 +120,14 @@ test.describe('Smoke Tests - Infrastructure Validation', () => {
       page.locator('[data-testid="user-menu"]'),
       page.locator('button:has-text("Logout")'),
       page.locator('[data-testid="profile-link"]'),
-      page.locator('text=/Welcome|Dashboard|Feed/i'),
+      page.locator("text=/Welcome|Dashboard|Feed/i"),
     ];
 
     // At least one authenticated indicator should be visible
     let foundIndicator = false;
     for (const indicator of authenticatedIndicators) {
       try {
-        await indicator.waitFor({ timeout: 2000, state: 'visible' });
+        await indicator.waitFor({ timeout: 2000, state: "visible" });
         foundIndicator = true;
         break;
       } catch {
@@ -140,26 +142,26 @@ test.describe('Smoke Tests - Infrastructure Validation', () => {
     }
   });
 
-  test('should work on mobile viewport', async ({ page }) => {
+  test("should work on mobile viewport", async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
 
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
 
     // Verify page loads correctly on mobile
-    expect(page.url()).toContain('localhost:5173');
+    expect(page.url()).toContain("localhost:5173");
 
     // Take mobile screenshot
-    await page.screenshot({ path: 'test-results/smoke-mobile.png' });
+    await page.screenshot({ path: "test-results/smoke-mobile.png" });
   });
 
-  test('should handle network errors gracefully', async ({ page }) => {
+  test("should handle network errors gracefully", async ({ page }) => {
     // Try to navigate with offline simulation
     await page.context().setOffline(true);
 
     // Navigate to a page
-    await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 5000 }).catch(() => {
+    await page.goto("/", { waitUntil: "domcontentloaded", timeout: 5000 }).catch(() => {
       // Expected to fail when offline
     });
 
@@ -167,15 +169,15 @@ test.describe('Smoke Tests - Infrastructure Validation', () => {
     await page.context().setOffline(false);
 
     // Should recover and load the page
-    await page.goto('/', { waitUntil: 'networkidle' });
-    expect(page.url()).toContain('localhost:5173');
+    await page.goto("/", { waitUntil: "networkidle" });
+    expect(page.url()).toContain("localhost:5173");
   });
 
-  test('should measure page load performance', async ({ page }) => {
+  test("should measure page load performance", async ({ page }) => {
     const startTime = Date.now();
 
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
 
     const loadTime = Date.now() - startTime;
 
@@ -186,12 +188,12 @@ test.describe('Smoke Tests - Infrastructure Validation', () => {
   });
 });
 
-test.describe('Multi-Browser Validation', () => {
-  test('should work across different browsers', async ({ page, browserName }) => {
-    await page.goto('/');
+test.describe("Multi-Browser Validation", () => {
+  test("should work across different browsers", async ({ page, browserName }) => {
+    await page.goto("/");
 
     // Verify page loads on all configured browsers
-    expect(page.url()).toContain('localhost:5173');
+    expect(page.url()).toContain("localhost:5173");
 
     // Log which browser is being tested
     console.log(`Testing on: ${browserName}`);
@@ -202,7 +204,7 @@ test.describe('Multi-Browser Validation', () => {
     });
   });
 
-  test('should handle authentication on all browsers', async ({ page, browserName }) => {
+  test("should handle authentication on all browsers", async ({ page, browserName }) => {
     const authHelper = new AuthHelper(page);
     const uniqueUser = generateUniqueTestUser(`smoke_${browserName}`);
 
@@ -217,24 +219,26 @@ test.describe('Multi-Browser Validation', () => {
   });
 });
 
-test.describe('Basic UI Interactions', () => {
-  test('should support keyboard navigation', async ({ page }) => {
-    await page.goto('/login');
+test.describe("Basic UI Interactions", () => {
+  test("should support keyboard navigation", async ({ page }) => {
+    await page.goto("/login");
 
     // Tab through form fields
-    await page.keyboard.press('Tab');
-    await page.keyboard.press('Tab');
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
 
     // Should be able to focus on submit button
     const focusedElement = await page.evaluate(() => document.activeElement?.tagName);
-    expect(['INPUT', 'BUTTON']).toContain(focusedElement);
+    expect(["INPUT", "BUTTON"]).toContain(focusedElement);
   });
 
-  test('should support screen reader attributes', async ({ page }) => {
-    await page.goto('/login');
+  test("should support screen reader attributes", async ({ page }) => {
+    await page.goto("/login");
 
     // Check for ARIA labels
-    const inputsWithLabels = await page.locator('input[aria-label], input[aria-labelledby]').count();
+    const inputsWithLabels = await page
+      .locator("input[aria-label], input[aria-labelledby]")
+      .count();
 
     // At least some inputs should have accessibility attributes
     expect(inputsWithLabels).toBeGreaterThan(0);

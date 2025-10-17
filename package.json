@@ -3,30 +3,24 @@
   "version": "0.1.0",
   "description": "VRSS Social Platform - Customizable social network with algorithmic feeds and profile builders",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "e2e"
-  ],
+  "workspaces": ["apps/*", "packages/*", "e2e"],
   "scripts": {
     "dev": "turbo run dev --parallel",
     "build": "turbo run build",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",
     "test:e2e": "turbo run test:e2e",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "lint": "biome lint --write .",
+    "lint:check": "biome check .",
+    "format": "biome format --write .",
     "type-check": "turbo run type-check",
     "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@types/bun": "latest",
     "turbo": "^2.3.0",
-    "typescript": "^5.7.0",
-    "prettier": "^3.4.2",
-    "eslint": "^9.17.0",
-    "@typescript-eslint/eslint-plugin": "^8.19.0",
-    "@typescript-eslint/parser": "^8.19.0"
+    "typescript": "^5.7.0"
   },
   "engines": {
     "node": ">=20.0.0",

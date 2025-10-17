@@ -16,8 +16,14 @@ export interface User {
 }
 
 // Post types
-export type PostType = 'text_short' | 'text_long' | 'image_single' | 'image_gallery' | 'video' | 'song';
-export type PostVisibility = 'public' | 'private' | 'followers_only' | 'friends_only';
+export type PostType =
+  | "text_short"
+  | "text_long"
+  | "image_single"
+  | "image_gallery"
+  | "video"
+  | "song";
+export type PostVisibility = "public" | "private" | "followers_only" | "friends_only";
 
 export interface PostStats {
   likeCount: number;
@@ -49,8 +55,8 @@ export interface Comment {
 }
 
 // Feed types
-export type FeedFilterType = 'user' | 'post_type' | 'tag' | 'date';
-export type FeedFilterOperator = 'include' | 'exclude';
+export type FeedFilterType = "user" | "post_type" | "tag" | "date";
+export type FeedFilterOperator = "include" | "exclude";
 
 export interface FeedFilter {
   type: FeedFilterType;
@@ -74,13 +80,13 @@ export interface FeedAlgorithm {
 
 export interface FeedBlock {
   id: string;
-  type: 'filter' | 'sort' | 'limit';
+  type: "filter" | "sort" | "limit";
   config: Record<string, unknown>;
   order: number;
 }
 
 // Profile types
-export type ProfileVisibility = 'public' | 'private' | 'followers_only';
+export type ProfileVisibility = "public" | "private" | "followers_only";
 
 export interface UserProfile {
   userId: string;
@@ -93,7 +99,7 @@ export interface UserProfile {
 
 export interface ProfileStyles {
   background?: {
-    type: 'color' | 'gradient' | 'image';
+    type: "color" | "gradient" | "image";
     value: string;
   };
   colors?: {
@@ -112,7 +118,7 @@ export interface ProfileStyles {
 }
 
 // Social types
-export type FriendshipStatus = 'pending' | 'accepted' | 'rejected' | 'blocked';
+export type FriendshipStatus = "pending" | "accepted" | "rejected" | "blocked";
 
 export interface Friendship {
   id: string;
@@ -131,8 +137,8 @@ export interface Follow {
 }
 
 // Media types
-export type MediaType = 'image' | 'video' | 'audio';
-export type MediaStatus = 'pending' | 'processing' | 'ready' | 'failed';
+export type MediaType = "image" | "video" | "audio";
+export type MediaStatus = "pending" | "processing" | "ready" | "failed";
 
 export interface Media {
   id: string;
@@ -170,7 +176,13 @@ export interface Conversation {
 }
 
 // Notification types
-export type NotificationType = 'like' | 'comment' | 'follow' | 'friend_request' | 'mention' | 'repost';
+export type NotificationType =
+  | "like"
+  | "comment"
+  | "follow"
+  | "friend_request"
+  | "mention"
+  | "repost";
 
 export interface Notification {
   id: string;
@@ -192,7 +204,7 @@ export interface AccountSettings {
 
 export interface PrivacySettings {
   profileVisibility: ProfileVisibility;
-  allowMessagesFrom: 'everyone' | 'followers' | 'friends' | 'nobody';
+  allowMessagesFrom: "everyone" | "followers" | "friends" | "nobody";
   allowTagging: boolean;
   showOnlineStatus: boolean;
 }

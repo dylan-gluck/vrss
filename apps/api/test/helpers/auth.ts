@@ -5,7 +5,7 @@
  * and managing test sessions.
  */
 
-import { User, Session } from "@prisma/client";
+import type { Session, User } from "@prisma/client";
 import { getTestDatabase } from "../setup";
 
 /**
@@ -33,13 +33,15 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
  * @param overrides Optional user properties to override defaults
  * @returns Object containing user, session, and token
  */
-export async function createAuthenticatedUser(overrides?: Partial<{
-  username: string;
-  email: string;
-  password: string;
-  emailVerified: boolean;
-  status: "active" | "suspended" | "deleted";
-}>): Promise<{
+export async function createAuthenticatedUser(
+  overrides?: Partial<{
+    username: string;
+    email: string;
+    password: string;
+    emailVerified: boolean;
+    status: "active" | "suspended" | "deleted";
+  }>
+): Promise<{
   user: User;
   session: Session;
   token: string;
@@ -63,9 +65,9 @@ export async function createAuthenticatedUser(overrides?: Partial<{
     },
   });
 
-  // Create session
+  // Create session with 7-day expiry (matches production)
   const token = generateSessionToken();
-  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
 
   const session = await db.session.create({
     data: {
@@ -99,7 +101,7 @@ export async function createSession(
   const db = getTestDatabase();
 
   const token = generateSessionToken();
-  const expiresAt = overrides?.expiresAt ?? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+  const expiresAt = overrides?.expiresAt ?? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
 
   const session = await db.session.create({
     data: {
@@ -168,12 +170,14 @@ export async function invalidateSession(token: string): Promise<void> {
  */
 export async function createMultipleUsers(
   count: number,
-  baseUsername: string = "testuser"
-): Promise<Array<{
-  user: User;
-  session: Session;
-  token: string;
-}>> {
+  baseUsername = "testuser"
+): Promise<
+  Array<{
+    user: User;
+    session: Session;
+    token: string;
+  }>
+> {
   const users = [];
 
   for (let i = 0; i < count; i++) {
@@ -190,7 +194,9 @@ export async function createMultipleUsers(
 /**
  * Get an expired session token (for testing expired session handling)
  */
-export async function createExpiredSession(userId: bigint): Promise<{ session: Session; token: string }> {
+export async function createExpiredSession(
+  userId: bigint
+): Promise<{ session: Session; token: string }> {
   const db = getTestDatabase();
 
   const token = generateSessionToken();

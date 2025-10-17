@@ -16,12 +16,12 @@
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md lines 130-171 (user_profiles schema)
  */
 
-import { describe, it, expect, beforeEach, afterEach } from "bun:test";
-import { getTestDatabase } from "../setup";
-import { cleanAllTables } from "../helpers/database";
-import { buildUser } from "../fixtures/userBuilder";
-import { ProcedureContext } from "../../src/rpc/types";
+import { afterEach, beforeEach, describe, expect, it } from "bun:test";
 import { ErrorCode } from "@vrss/api-contracts";
+import type { ProcedureContext } from "../../src/rpc/types";
+import { buildUser } from "../fixtures/userBuilder";
+import { cleanAllTables } from "../helpers/database";
+import { getTestDatabase } from "../setup";
 
 // Test utilities
 function createMockContext<T>(overrides?: Partial<ProcedureContext<T>>): ProcedureContext<T> {
@@ -58,7 +58,7 @@ describe("User Router", () => {
   describe("user.getProfile", () => {
     it("should get profile by username successfully", async () => {
       // Create user with profile
-      const { user, profile } = await buildUser()
+      const { user } = await buildUser()
         .username("testuser")
         .withProfile({
           displayName: "Test User",
@@ -68,7 +68,7 @@ describe("User Router", () => {
         .build();
 
       // Create profile sections
-      const section = await db.profileSection.create({
+      const _section = await db.profileSection.create({
         data: {
           userId: user.id,
           type: "feed",
@@ -81,7 +81,7 @@ describe("User Router", () => {
       });
 
       // Mock procedure context
-      const ctx = createMockContext<{ username: string }>({
+      const _ctx = createMockContext<{ username: string }>({
         input: { username: "testuser" },
       });
 
@@ -122,7 +122,7 @@ describe("User Router", () => {
     });
 
     it("should return user, style, and sections in response", async () => {
-      const { user, profile } = await buildUser()
+      const { profile } = await buildUser()
         .username("testuser")
         .withProfile({
           displayName: "Test User",
@@ -153,7 +153,7 @@ describe("User Router", () => {
     });
 
     it("should throw USER_NOT_FOUND error for non-existent username", async () => {
-      const ctx = createMockContext<{ username: string }>({
+      const _ctx = createMockContext<{ username: string }>({
         input: { username: "nonexistent" },
       });
 
@@ -165,7 +165,7 @@ describe("User Router", () => {
     });
 
     it("should allow anyone to view public profile", async () => {
-      const { user, profile } = await buildUser()
+      await buildUser()
         .username("publicuser")
         .withProfile({
           displayName: "Public User",
@@ -192,13 +192,9 @@ describe("User Router", () => {
         })
         .build();
 
-      const { user: follower } = await buildUser()
-        .username("follower")
-        .build();
+      const { user: follower } = await buildUser().username("follower").build();
 
-      const { user: stranger } = await buildUser()
-        .username("stranger")
-        .build();
+      const { user: stranger } = await buildUser().username("stranger").build();
 
       // Create follow relationship
       await db.userFollow.create({
@@ -248,9 +244,7 @@ describe("User Router", () => {
         })
         .build();
 
-      const { user: stranger } = await buildUser()
-        .username("stranger")
-        .build();
+      const { user: stranger } = await buildUser().username("stranger").build();
 
       // Owner viewing their own profile
       const ownerCtx = createMockContext<{ username: string }>({
@@ -266,7 +260,7 @@ describe("User Router", () => {
       });
 
       // Stranger trying to view
-      const strangerCtx = createMockContext<{ username: string }>({
+      const _strangerCtx = createMockContext<{ username: string }>({
         input: { username: "privateuser" },
         user: {
           id: stranger.id.toString(),
@@ -284,12 +278,12 @@ describe("User Router", () => {
     });
 
     it("should allow anonymous users to view public profiles only", async () => {
-      const { user: publicUser } = await buildUser()
+      await buildUser()
         .username("public")
         .withProfile({ visibility: "public" })
         .build();
 
-      const { user: privateUser } = await buildUser()
+      await buildUser()
         .username("private")
         .withProfile({ visibility: "private" })
         .build();
@@ -316,7 +310,7 @@ describe("User Router", () => {
 
   describe("user.updateProfile", () => {
     it("should update display name successfully", async () => {
-      const { user, profile } = await buildUser()
+      const { user } = await buildUser()
         .username("testuser")
         .withProfile({ displayName: "Old Name" })
         .build();
@@ -338,7 +332,7 @@ describe("User Router", () => {
     });
 
     it("should update bio successfully", async () => {
-      const { user, profile } = await buildUser()
+      const { user } = await buildUser()
         .username("testuser")
         .withProfile({ bio: "Old bio" })
         .build();
@@ -359,10 +353,7 @@ describe("User Router", () => {
     });
 
     it("should update avatar URL successfully", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext<{ avatarUrl: string }>({
         input: { avatarUrl: "https://example.com/avatar.jpg" },
@@ -380,7 +371,7 @@ describe("User Router", () => {
     });
 
     it("should update profile visibility", async () => {
-      const { user, profile } = await buildUser()
+      const { user } = await buildUser()
         .username("testuser")
         .withProfile({ visibility: "public" })
         .build();
@@ -402,7 +393,7 @@ describe("User Router", () => {
     });
 
     it("should update multiple fields atomically", async () => {
-      const { user, profile } = await buildUser()
+      const { user } = await buildUser()
         .username("testuser")
         .withProfile({
           displayName: "Old Name",
@@ -446,16 +437,11 @@ describe("User Router", () => {
     });
 
     it("should only allow owner to update their profile (throw FORBIDDEN)", async () => {
-      const { user: owner } = await buildUser()
-        .username("owner")
-        .withProfile()
-        .build();
+      await buildUser().username("owner").withProfile().build();
 
-      const { user: stranger } = await buildUser()
-        .username("stranger")
-        .build();
+      const { user: stranger } = await buildUser().username("stranger").build();
 
-      const ctx = createMockContext<{ displayName: string }>({
+      const _ctx = createMockContext<{ displayName: string }>({
         input: { displayName: "Hacked Name" },
         user: {
           id: stranger.id.toString(),
@@ -472,10 +458,7 @@ describe("User Router", () => {
     });
 
     it("should validate display name length (1-100 chars)", async () => {
-      const { user } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext({
         user: {
@@ -505,10 +488,7 @@ describe("User Router", () => {
     });
 
     it("should validate bio length (max 500 chars)", async () => {
-      const { user } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext({
         user: {
@@ -543,10 +523,7 @@ describe("User Router", () => {
 
   describe("user.updateStyle", () => {
     it("should update background config (color, image, position)", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext({
         input: {
@@ -572,10 +549,7 @@ describe("User Router", () => {
     });
 
     it("should update music config (url, autoplay, volume)", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext({
         input: {
@@ -602,10 +576,7 @@ describe("User Router", () => {
     });
 
     it("should update style config (fonts, colors)", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext({
         input: {
@@ -631,10 +602,7 @@ describe("User Router", () => {
     });
 
     it("should validate JSONB structure with Zod schemas", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext({
         user: {
@@ -660,10 +628,7 @@ describe("User Router", () => {
     });
 
     it("should reject invalid color hex codes", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext({
         user: {
@@ -689,10 +654,7 @@ describe("User Router", () => {
     });
 
     it("should reject invalid URLs for background/music", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext({
         user: {
@@ -718,10 +680,7 @@ describe("User Router", () => {
     });
 
     it("should handle partial updates (merge with existing)", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user, profile } = await buildUser().username("testuser").withProfile().build();
 
       // Set initial style config
       if (profile) {
@@ -769,16 +728,11 @@ describe("User Router", () => {
     });
 
     it("should only allow owner to update style", async () => {
-      const { user: owner } = await buildUser()
-        .username("owner")
-        .withProfile()
-        .build();
+      await buildUser().username("owner").withProfile().build();
 
-      const { user: stranger } = await buildUser()
-        .username("stranger")
-        .build();
+      const { user: stranger } = await buildUser().username("stranger").build();
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         input: { styleConfig: { primaryColor: "#ff0000" } },
         user: {
           id: stranger.id.toString(),
@@ -800,10 +754,7 @@ describe("User Router", () => {
 
   describe("user.updateSections", () => {
     it("should add new profile section", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext({
         input: {
@@ -833,13 +784,10 @@ describe("User Router", () => {
     });
 
     it("should remove existing section", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       // Create existing section
-      const existingSection = await db.profileSection.create({
+      const _existingSection = await db.profileSection.create({
         data: {
           userId: user.id,
           type: "feed",
@@ -867,10 +815,7 @@ describe("User Router", () => {
     });
 
     it("should reorder sections (change display_order)", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       // Create existing sections
       await db.profileSection.create({
@@ -915,10 +860,7 @@ describe("User Router", () => {
     });
 
     it("should update section config", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext({
         input: {
@@ -946,10 +888,7 @@ describe("User Router", () => {
     });
 
     it("should validate section types", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext({
         user: {
@@ -989,10 +928,7 @@ describe("User Router", () => {
     });
 
     it("should preserve section IDs when reordering", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       // Create sections with IDs
       const section1 = await db.profileSection.create({
@@ -1049,16 +985,11 @@ describe("User Router", () => {
     });
 
     it("should only allow owner to update sections", async () => {
-      const { user: owner } = await buildUser()
-        .username("owner")
-        .withProfile()
-        .build();
+      await buildUser().username("owner").withProfile().build();
 
-      const { user: stranger } = await buildUser()
-        .username("stranger")
-        .build();
+      const { user: stranger } = await buildUser().username("stranger").build();
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         input: { sections: [] },
         user: {
           id: stranger.id.toString(),
@@ -1080,10 +1011,7 @@ describe("User Router", () => {
 
   describe("user.getSections", () => {
     it("should get all sections for user", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       // Create multiple sections
       await db.profileSection.create({
@@ -1117,10 +1045,7 @@ describe("User Router", () => {
     });
 
     it("should return sections ordered by display_order", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       // Create sections in reverse order
       await db.profileSection.create({
@@ -1162,14 +1087,9 @@ describe("User Router", () => {
     });
 
     it("should filter out non-visible sections for non-owners", async () => {
-      const { user: owner } = await buildUser()
-        .username("owner")
-        .withProfile()
-        .build();
+      const { user: owner } = await buildUser().username("owner").withProfile().build();
 
-      const { user: stranger } = await buildUser()
-        .username("stranger")
-        .build();
+      const { user: stranger } = await buildUser().username("stranger").build();
 
       // Create visible and hidden sections
       await db.profileSection.create({
@@ -1212,10 +1132,7 @@ describe("User Router", () => {
     });
 
     it("should include all sections (visible + hidden) for owner", async () => {
-      const { user: owner } = await buildUser()
-        .username("owner")
-        .withProfile()
-        .build();
+      const { user: owner } = await buildUser().username("owner").withProfile().build();
 
       // Create visible and hidden sections
       await db.profileSection.create({
@@ -1258,10 +1175,7 @@ describe("User Router", () => {
     });
 
     it("should handle user with no sections (return empty array)", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext({
         input: { username: "testuser" },
@@ -1278,7 +1192,7 @@ describe("User Router", () => {
 
   describe("Storage Quota (related to profile updates)", () => {
     it("should check quota before allowing avatar upload", async () => {
-      const { user, storage } = await buildUser()
+      const { user } = await buildUser()
         .username("testuser")
         .withProfile()
         .withStorage({
@@ -1308,7 +1222,7 @@ describe("User Router", () => {
     });
 
     it("should reject avatar upload if quota exceeded", async () => {
-      const { user, storage } = await buildUser()
+      const { user } = await buildUser()
         .username("testuser")
         .withProfile()
         .withStorage({
@@ -1317,7 +1231,7 @@ describe("User Router", () => {
         })
         .build();
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         input: {
           avatarUrl: "https://cdn.example.com/avatar.jpg",
           avatarSize: 5 * 1024 * 1024, // 5MB avatar (would exceed quota)
@@ -1337,7 +1251,7 @@ describe("User Router", () => {
     });
 
     it("should update storage_usage when avatar uploaded", async () => {
-      const { user, storage } = await buildUser()
+      const { user } = await buildUser()
         .username("testuser")
         .withProfile()
         .withStorage({
@@ -1367,10 +1281,7 @@ describe("User Router", () => {
     });
 
     it("should track avatar file size in post_media table", async () => {
-      const { user, profile } = await buildUser()
-        .username("testuser")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("testuser").withProfile().build();
 
       const ctx = createMockContext({
         input: {

@@ -17,16 +17,16 @@
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md lines 394-425 (profile_sections)
  */
 
-import { z } from "zod";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { ErrorCode } from "@vrss/api-contracts";
-import { ProcedureContext } from "../types";
+import type { z } from "zod";
+import type { ProcedureContext } from "../types";
 import {
   getProfileSchema,
-  updateProfileSchema,
-  updateStyleSchema,
-  updateSectionsSchema,
   getSectionsSchema,
+  updateProfileSchema,
+  updateSectionsSchema,
+  updateStyleSchema,
 } from "./schemas/user";
 
 // Initialize Prisma client
@@ -98,32 +98,22 @@ async function checkProfileVisibility(
 /**
  * Check storage quota before allowing upload
  */
-async function checkStorageQuota(
-  userId: bigint,
-  additionalBytes: bigint
-): Promise<void> {
+async function checkStorageQuota(userId: bigint, additionalBytes: bigint): Promise<void> {
   const storage = await prisma.storageUsage.findUnique({
     where: { userId },
   });
 
   if (!storage) {
-    throw new RPCError(
-      ErrorCode.INTERNAL_SERVER_ERROR,
-      "Storage record not found"
-    );
+    throw new RPCError(ErrorCode.INTERNAL_SERVER_ERROR, "Storage record not found");
   }
 
   const newUsedBytes = storage.usedBytes + additionalBytes;
   if (newUsedBytes > storage.quotaBytes) {
-    throw new RPCError(
-      ErrorCode.STORAGE_QUOTA_EXCEEDED,
-      "Storage quota exceeded",
-      {
-        used: storage.usedBytes.toString(),
-        quota: storage.quotaBytes.toString(),
-        requested: additionalBytes.toString(),
-      }
-    );
+    throw new RPCError(ErrorCode.STORAGE_QUOTA_EXCEEDED, "Storage quota exceeded", {
+      used: storage.usedBytes.toString(),
+      quota: storage.quotaBytes.toString(),
+      requested: additionalBytes.toString(),
+    });
   }
 }
 
@@ -141,18 +131,15 @@ export const userRouter = {
    * @throws {RPCError} USER_NOT_FOUND - User does not exist
    * @throws {RPCError} FORBIDDEN - Cannot view profile due to visibility settings
    */
-  "user.getProfile": async (
-    ctx: ProcedureContext<z.infer<typeof getProfileSchema>>
-  ) => {
+  "user.getProfile": async (ctx: ProcedureContext<z.infer<typeof getProfileSchema>>) => {
     // Validate input
     const validationResult = getProfileSchema.safeParse(ctx.input);
     if (!validationResult.success) {
       const firstError = validationResult.error.errors[0];
-      throw new RPCError(
-        ErrorCode.VALIDATION_ERROR,
-        firstError?.message || "Invalid input",
-        { field: firstError?.path[0], errors: validationResult.error.errors }
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, firstError?.message || "Invalid input", {
+        field: firstError?.path[0],
+        errors: validationResult.error.errors,
+      });
     }
 
     const { username } = validationResult.data;
@@ -172,27 +159,15 @@ export const userRouter = {
     });
 
     if (!user) {
-      throw new RPCError(
-        ErrorCode.USER_NOT_FOUND,
-        "User not found",
-        { username }
-      );
+      throw new RPCError(ErrorCode.USER_NOT_FOUND, "User not found", { username });
     }
 
     // Check visibility permissions
     const visibility = user.profile?.visibility || "public";
-    const canView = await checkProfileVisibility(
-      user.id,
-      visibility,
-      ctx.user?.id || null
-    );
+    const canView = await checkProfileVisibility(user.id, visibility, ctx.user?.id || null);
 
     if (!canView) {
-      throw new RPCError(
-        ErrorCode.FORBIDDEN,
-        "Cannot view this profile",
-        { visibility }
-      );
+      throw new RPCError(ErrorCode.FORBIDDEN, "Cannot view this profile", { visibility });
     }
 
     // Get profile sections (filter by visibility if not owner)
@@ -244,30 +219,23 @@ export const userRouter = {
    * @throws {RPCError} VALIDATION_ERROR - Invalid input
    * @throws {RPCError} STORAGE_QUOTA_EXCEEDED - Avatar upload would exceed quota
    */
-  "user.updateProfile": async (
-    ctx: ProcedureContext<z.infer<typeof updateProfileSchema>>
-  ) => {
+  "user.updateProfile": async (ctx: ProcedureContext<z.infer<typeof updateProfileSchema>>) => {
     // Require authentication
     if (!ctx.user) {
-      throw new RPCError(
-        ErrorCode.UNAUTHORIZED,
-        "Authentication required"
-      );
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "Authentication required");
     }
 
     // Validate input
     const validationResult = updateProfileSchema.safeParse(ctx.input);
     if (!validationResult.success) {
       const firstError = validationResult.error.errors[0];
-      throw new RPCError(
-        ErrorCode.VALIDATION_ERROR,
-        firstError?.message || "Invalid input",
-        { field: firstError?.path[0], errors: validationResult.error.errors }
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, firstError?.message || "Invalid input", {
+        field: firstError?.path[0],
+        errors: validationResult.error.errors,
+      });
     }
 
-    const { displayName, bio, avatarUrl, visibility, avatarSize } =
-      validationResult.data;
+    const { displayName, bio, avatarUrl, visibility, avatarSize } = validationResult.data;
 
     const userId = BigInt(ctx.user.id);
 
@@ -334,15 +302,10 @@ export const userRouter = {
    * @throws {RPCError} UNAUTHORIZED - Not authenticated
    * @throws {RPCError} VALIDATION_ERROR - Invalid style configuration
    */
-  "user.updateStyle": async (
-    ctx: ProcedureContext<z.infer<typeof updateStyleSchema>>
-  ) => {
+  "user.updateStyle": async (ctx: ProcedureContext<z.infer<typeof updateStyleSchema>>) => {
     // Require authentication
     if (!ctx.user) {
-      throw new RPCError(
-        ErrorCode.UNAUTHORIZED,
-        "Authentication required"
-      );
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "Authentication required");
     }
 
     // Validate input
@@ -386,8 +349,8 @@ export const userRouter = {
           ...musicConfig,
         }
       : existingProfile?.musicConfig !== undefined
-      ? (existingProfile.musicConfig as Prisma.InputJsonValue | null)
-      : null;
+        ? (existingProfile.musicConfig as Prisma.InputJsonValue | null)
+        : null;
 
     const mergedStyleConfig: Prisma.InputJsonValue = styleConfig
       ? {
@@ -442,15 +405,10 @@ export const userRouter = {
    * @throws {RPCError} UNAUTHORIZED - Not authenticated
    * @throws {RPCError} VALIDATION_ERROR - Invalid section configuration
    */
-  "user.updateSections": async (
-    ctx: ProcedureContext<z.infer<typeof updateSectionsSchema>>
-  ) => {
+  "user.updateSections": async (ctx: ProcedureContext<z.infer<typeof updateSectionsSchema>>) => {
     // Require authentication
     if (!ctx.user) {
-      throw new RPCError(
-        ErrorCode.UNAUTHORIZED,
-        "Authentication required"
-      );
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "Authentication required");
     }
 
     // Validate input
@@ -570,18 +528,15 @@ export const userRouter = {
    *
    * @throws {RPCError} USER_NOT_FOUND - User does not exist
    */
-  "user.getSections": async (
-    ctx: ProcedureContext<z.infer<typeof getSectionsSchema>>
-  ) => {
+  "user.getSections": async (ctx: ProcedureContext<z.infer<typeof getSectionsSchema>>) => {
     // Validate input
     const validationResult = getSectionsSchema.safeParse(ctx.input);
     if (!validationResult.success) {
       const firstError = validationResult.error.errors[0];
-      throw new RPCError(
-        ErrorCode.VALIDATION_ERROR,
-        firstError?.message || "Invalid input",
-        { field: firstError?.path[0], errors: validationResult.error.errors }
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, firstError?.message || "Invalid input", {
+        field: firstError?.path[0],
+        errors: validationResult.error.errors,
+      });
     }
 
     const { username } = validationResult.data;
@@ -598,11 +553,7 @@ export const userRouter = {
     });
 
     if (!user) {
-      throw new RPCError(
-        ErrorCode.USER_NOT_FOUND,
-        "User not found",
-        { username }
-      );
+      throw new RPCError(ErrorCode.USER_NOT_FOUND, "User not found", { username });
     }
 
     // Check if viewer is the owner

@@ -60,10 +60,16 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-vrss_dev_password}
       DB_POOL_MIN: ${DB_POOL_MIN:-2}
       DB_POOL_MAX: ${DB_POOL_MAX:-10}
+      DATABASE_URL: postgresql://${DB_USER:-vrss_user}:${DB_PASSWORD:-vrss_dev_password}@db:5432/${DB_NAME:-vrss}
 
       # JWT and security
       JWT_SECRET: ${JWT_SECRET:-dev_jwt_secret_change_in_production}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+
+      # Better-auth configuration
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:5050}
+      APP_URL: ${BETTER_AUTH_URL:-http://localhost:5050}
 
       # Storage configuration
       STORAGE_TYPE: ${STORAGE_TYPE:-local}
@@ -91,6 +97,7 @@ services:
     volumes:
       # Hot reload for development
       - ./apps/api/src:/app/apps/api/src:ro
+      - ./apps/api/test:/app/apps/api/test:ro
       - ./apps/api/package.json:/app/apps/api/package.json:ro
       - ./apps/api/prisma:/app/apps/api/prisma:ro
       # Workspace packages for hot reload

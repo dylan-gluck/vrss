@@ -8,9 +8,9 @@
  * @see docs/SECURITY_DESIGN.md lines 260-361 for middleware specifications
  */
 
-import { describe, it, expect, beforeAll, afterAll } from 'bun:test';
-import { Hono } from 'hono';
-import { PrismaClient } from '@prisma/client';
+import { afterAll, beforeAll, describe, expect, it } from "bun:test";
+import { PrismaClient } from "@prisma/client";
+import { Hono } from "hono";
 
 const prisma = new PrismaClient();
 
@@ -18,17 +18,21 @@ const prisma = new PrismaClient();
 // TEST HELPERS
 // =============================================================================
 
+// Counter to ensure unique usernames
+let userCounter = 0;
+
 /**
  * Create a test user with optional email verification
  */
 async function createTestUser(emailVerified = true) {
   const timestamp = Date.now();
-  const username = `testuser_${timestamp}`;
-  const email = `test_${timestamp}@example.com`;
+  const counter = userCounter++;
+  const username = `testuser_${timestamp}_${counter}`;
+  const email = `test_${timestamp}_${counter}@example.com`;
 
   // Hash password using Bun's bcrypt
-  const passwordHash = await Bun.password.hash('TestPassword123!', {
-    algorithm: 'bcrypt',
+  const passwordHash = await Bun.password.hash("TestPassword123!", {
+    algorithm: "bcrypt",
     cost: 12,
   });
 
@@ -38,7 +42,7 @@ async function createTestUser(emailVerified = true) {
       email,
       passwordHash,
       emailVerified,
-      status: 'active',
+      status: "active",
     },
   });
 
@@ -57,8 +61,8 @@ async function createSession(userId: bigint, expiresInDays = 7) {
       userId,
       token,
       expiresAt,
-      userAgent: 'Test User Agent',
-      ipAddress: '127.0.0.1',
+      userAgent: "Test User Agent",
+      ipAddress: "127.0.0.1",
       lastActivityAt: new Date(),
     },
   });
@@ -78,8 +82,8 @@ async function createSessionWithActivity(userId: bigint, lastActivityAt: Date) {
       userId,
       token,
       expiresAt,
-      userAgent: 'Test User Agent',
-      ipAddress: '127.0.0.1',
+      userAgent: "Test User Agent",
+      ipAddress: "127.0.0.1",
       lastActivityAt,
     },
   });
@@ -93,7 +97,7 @@ async function createSessionWithActivity(userId: bigint, lastActivityAt: Date) {
 function generateSessionToken(): string {
   const bytes = new Uint8Array(32);
   crypto.getRandomValues(bytes);
-  return Buffer.from(bytes).toString('base64url');
+  return Buffer.from(bytes).toString("base64url");
 }
 
 /**
@@ -127,14 +131,14 @@ async function cleanupTestData(userIds: bigint[]) {
 // SESSION VALIDATION TESTS
 // =============================================================================
 
-describe('Auth Middleware - Session Validation', () => {
+describe("Auth Middleware - Session Validation", () => {
   const testUserIds: bigint[] = [];
 
   afterAll(async () => {
     await cleanupTestData(testUserIds);
   });
 
-  it('should validate session from cookie-based authentication', async () => {
+  it("should validate session from cookie-based authentication", async () => {
     // Create test user and session
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -142,7 +146,7 @@ describe('Auth Middleware - Session Validation', () => {
 
     // Simulate request with session cookie
     const app = createTestApp();
-    app.get('/test', (c) => {
+    app.get("/test", (c) => {
       // In real middleware, user would be attached to context
       // For now, we verify session exists and is valid
       return c.json({ authenticated: true });
@@ -160,7 +164,7 @@ describe('Auth Middleware - Session Validation', () => {
     expect(dbSession?.user.emailVerified).toBe(true);
   });
 
-  it('should validate session from Bearer token authentication', async () => {
+  it("should validate session from Bearer token authentication", async () => {
     // Create test user and session
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -180,8 +184,8 @@ describe('Auth Middleware - Session Validation', () => {
     expect(authHeader).toContain(session.token);
   });
 
-  it('should reject invalid session token', async () => {
-    const invalidToken = 'invalid_token_12345';
+  it("should reject invalid session token", async () => {
+    const invalidToken = "invalid_token_12345";
 
     // Try to find session with invalid token
     const dbSession = await prisma.session.findUnique({
@@ -191,7 +195,7 @@ describe('Auth Middleware - Session Validation', () => {
     expect(dbSession).toBeNull();
   });
 
-  it('should reject expired session token', async () => {
+  it("should reject expired session token", async () => {
     // Create test user
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -205,8 +209,8 @@ describe('Auth Middleware - Session Validation', () => {
         userId: user.id,
         token,
         expiresAt: expiredDate,
-        userAgent: 'Test User Agent',
-        ipAddress: '127.0.0.1',
+        userAgent: "Test User Agent",
+        ipAddress: "127.0.0.1",
         lastActivityAt: new Date(),
       },
     });
@@ -220,12 +224,12 @@ describe('Auth Middleware - Session Validation', () => {
     expect(dbSession?.expiresAt.getTime()).toBeLessThan(Date.now());
   });
 
-  it('should handle missing authentication credentials', async () => {
+  it("should handle missing authentication credentials", async () => {
     // Simulate request with no cookie and no Authorization header
     // Middleware should not throw error, just not attach user to context
 
     const app = createTestApp();
-    app.get('/test', (c) => {
+    app.get("/test", (c) => {
       // User should not be in context
       return c.json({ authenticated: false });
     });
@@ -234,12 +238,12 @@ describe('Auth Middleware - Session Validation', () => {
     expect(true).toBe(true);
   });
 
-  it('should handle malformed Bearer token', async () => {
+  it("should handle malformed Bearer token", async () => {
     const malformedTokens = [
-      'Bearer', // Missing token
-      'Bearer ', // Empty token
-      'InvalidFormat token', // Wrong format
-      'Bearer token with spaces', // Spaces in token
+      "Bearer", // Missing token
+      "Bearer ", // Empty token
+      "InvalidFormat token", // Wrong format
+      "Bearer token with spaces", // Spaces in token
     ];
 
     for (const token of malformedTokens) {
@@ -249,7 +253,7 @@ describe('Auth Middleware - Session Validation', () => {
     }
   });
 
-  it('should attach user and session to context when authenticated', async () => {
+  it("should attach user and session to context when authenticated", async () => {
     // Create test user and session
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -274,21 +278,21 @@ describe('Auth Middleware - Session Validation', () => {
 // PUBLIC VS PROTECTED PROCEDURES TESTS
 // =============================================================================
 
-describe('Auth Middleware - Public vs Protected Procedures', () => {
+describe("Auth Middleware - Public vs Protected Procedures", () => {
   const testUserIds: bigint[] = [];
 
   afterAll(async () => {
     await cleanupTestData(testUserIds);
   });
 
-  it('should allow access to public procedures without authentication', async () => {
+  it("should allow access to public procedures without authentication", async () => {
     const app = createTestApp();
 
     // Public procedure (no auth required)
-    app.get('/public', (c) => {
+    app.get("/public", (c) => {
       return c.json({
-        message: 'Public endpoint',
-        accessible: true
+        message: "Public endpoint",
+        accessible: true,
       });
     });
 
@@ -296,7 +300,7 @@ describe('Auth Middleware - Public vs Protected Procedures', () => {
     expect(true).toBe(true);
   });
 
-  it('should allow access to public procedures with authentication', async () => {
+  it("should allow access to public procedures with authentication", async () => {
     // Create authenticated user
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -305,10 +309,10 @@ describe('Auth Middleware - Public vs Protected Procedures', () => {
     const app = createTestApp();
 
     // Public procedure should work with or without auth
-    app.get('/public', (c) => {
+    app.get("/public", (c) => {
       return c.json({
-        message: 'Public endpoint',
-        authenticated: true
+        message: "Public endpoint",
+        authenticated: true,
       });
     });
 
@@ -320,32 +324,35 @@ describe('Auth Middleware - Public vs Protected Procedures', () => {
     expect(dbSession).toBeTruthy();
   });
 
-  it('should return 401 for protected procedures without authentication', async () => {
+  it("should return 401 for protected procedures without authentication", async () => {
     const app = createTestApp();
 
     // Protected procedure (requires auth)
-    app.get('/protected', (c) => {
-      const user = c.get('user');
+    app.get("/protected", (c) => {
+      const user = c.get("user");
 
       if (!user) {
-        return c.json({
-          error: 'Unauthorized',
-          message: 'Authentication required',
-        }, 401);
+        return c.json(
+          {
+            error: "Unauthorized",
+            message: "Authentication required",
+          },
+          401
+        );
       }
 
       return c.json({
-        message: 'Protected endpoint',
-        user: user
+        message: "Protected endpoint",
+        user: user,
       });
     });
 
     // Simulate middleware behavior without authentication
-    const response = { error: 'Unauthorized', message: 'Authentication required' };
-    expect(response.error).toBe('Unauthorized');
+    const response = { error: "Unauthorized", message: "Authentication required" };
+    expect(response.error).toBe("Unauthorized");
   });
 
-  it('should allow access to protected procedures with valid authentication', async () => {
+  it("should allow access to protected procedures with valid authentication", async () => {
     // Create authenticated user
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -361,7 +368,7 @@ describe('Auth Middleware - Public vs Protected Procedures', () => {
     expect(dbSession?.user).toBeTruthy();
   });
 
-  it('should return 401 for protected procedures with expired session', async () => {
+  it("should return 401 for protected procedures with expired session", async () => {
     // Create user with expired session
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -374,19 +381,19 @@ describe('Auth Middleware - Public vs Protected Procedures', () => {
         userId: user.id,
         token,
         expiresAt: expiredDate,
-        userAgent: 'Test User Agent',
-        ipAddress: '127.0.0.1',
+        userAgent: "Test User Agent",
+        ipAddress: "127.0.0.1",
         lastActivityAt: new Date(),
       },
     });
 
     // Protected endpoint should reject expired session
-    const response = { error: 'Unauthorized', message: 'Session expired' };
-    expect(response.error).toBe('Unauthorized');
+    const response = { error: "Unauthorized", message: "Session expired" };
+    expect(response.error).toBe("Unauthorized");
   });
 
-  it('should return 401 for protected procedures with invalid session token', async () => {
-    const invalidToken = 'invalid_token_xyz';
+  it("should return 401 for protected procedures with invalid session token", async () => {
+    const invalidToken = "invalid_token_xyz";
 
     // Verify token doesn't exist
     const dbSession = await prisma.session.findUnique({
@@ -396,8 +403,8 @@ describe('Auth Middleware - Public vs Protected Procedures', () => {
     expect(dbSession).toBeNull();
 
     // Protected endpoint should reject invalid token
-    const response = { error: 'Unauthorized', message: 'Invalid session token' };
-    expect(response.error).toBe('Unauthorized');
+    const response = { error: "Unauthorized", message: "Invalid session token" };
+    expect(response.error).toBe("Unauthorized");
   });
 });
 
@@ -405,14 +412,14 @@ describe('Auth Middleware - Public vs Protected Procedures', () => {
 // SESSION REFRESH TESTS
 // =============================================================================
 
-describe('Auth Middleware - Session Refresh', () => {
+describe("Auth Middleware - Session Refresh", () => {
   const testUserIds: bigint[] = [];
 
   afterAll(async () => {
     await cleanupTestData(testUserIds);
   });
 
-  it('should update lastActivityAt when session is older than 24 hours', async () => {
+  it("should update lastActivityAt when session is older than 24 hours", async () => {
     // Create user
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -437,7 +444,7 @@ describe('Auth Middleware - Session Refresh', () => {
     );
   });
 
-  it('should NOT update lastActivityAt when session is newer than 24 hours', async () => {
+  it("should NOT update lastActivityAt when session is newer than 24 hours", async () => {
     // Create user
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -457,7 +464,7 @@ describe('Auth Middleware - Session Refresh', () => {
     expect(session.lastActivityAt.getTime()).toBe(initialTime);
   });
 
-  it('should implement sliding window session refresh correctly', async () => {
+  it("should implement sliding window session refresh correctly", async () => {
     // Create user
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -484,7 +491,7 @@ describe('Auth Middleware - Session Refresh', () => {
     expect(refreshedSession.expiresAt.getTime()).toBeGreaterThan(initialExpiresAt.getTime());
   });
 
-  it('should respect 24-hour update age threshold', async () => {
+  it("should respect 24-hour update age threshold", async () => {
     // Create user
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -492,9 +499,9 @@ describe('Auth Middleware - Session Refresh', () => {
     // Test boundary conditions
     const testCases = [
       { hoursAgo: 23, shouldUpdate: false }, // Just under 24h
-      { hoursAgo: 24, shouldUpdate: true },  // Exactly 24h
-      { hoursAgo: 25, shouldUpdate: true },  // Over 24h
-      { hoursAgo: 48, shouldUpdate: true },  // 2 days
+      { hoursAgo: 24, shouldUpdate: true }, // Exactly 24h
+      { hoursAgo: 25, shouldUpdate: true }, // Over 24h
+      { hoursAgo: 48, shouldUpdate: true }, // 2 days
     ];
 
     for (const testCase of testCases) {
@@ -511,7 +518,7 @@ describe('Auth Middleware - Session Refresh', () => {
     }
   });
 
-  it('should maintain session expiry within 7-day window', async () => {
+  it("should maintain session expiry within 7-day window", async () => {
     // Create user
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -546,14 +553,14 @@ describe('Auth Middleware - Session Refresh', () => {
 // EMAIL VERIFICATION ENFORCEMENT TESTS
 // =============================================================================
 
-describe('Auth Middleware - Email Verification', () => {
+describe("Auth Middleware - Email Verification", () => {
   const testUserIds: bigint[] = [];
 
   afterAll(async () => {
     await cleanupTestData(testUserIds);
   });
 
-  it('should allow unverified users to access non-sensitive procedures', async () => {
+  it("should allow unverified users to access non-sensitive procedures", async () => {
     // Create unverified user
     const user = await createTestUser(false);
     testUserIds.push(user.id);
@@ -574,7 +581,7 @@ describe('Auth Middleware - Email Verification', () => {
     expect(dbSession).toBeTruthy();
   });
 
-  it('should return 403 for sensitive procedures when email is not verified', async () => {
+  it("should return 403 for sensitive procedures when email is not verified", async () => {
     // Create unverified user
     const user = await createTestUser(false);
     testUserIds.push(user.id);
@@ -588,14 +595,14 @@ describe('Auth Middleware - Email Verification', () => {
 
     if (requiresVerification && !hasVerifiedEmail) {
       const response = {
-        error: 'Forbidden',
-        message: 'Email verification required',
+        error: "Forbidden",
+        message: "Email verification required",
       };
-      expect(response.error).toBe('Forbidden');
+      expect(response.error).toBe("Forbidden");
     }
   });
 
-  it('should allow verified users to access sensitive procedures', async () => {
+  it("should allow verified users to access sensitive procedures", async () => {
     // Create verified user
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -617,7 +624,7 @@ describe('Auth Middleware - Email Verification', () => {
     expect(dbSession?.user.emailVerified).toBe(true);
   });
 
-  it('should attach emailVerified status to context', async () => {
+  it("should attach emailVerified status to context", async () => {
     // Test both verified and unverified users
     const verifiedUser = await createTestUser(true);
     const unverifiedUser = await createTestUser(false);
@@ -641,7 +648,7 @@ describe('Auth Middleware - Email Verification', () => {
     expect(unverifiedData?.user.emailVerified).toBe(false);
   });
 
-  it('should differentiate between requireAuth and requireVerifiedEmail', async () => {
+  it("should differentiate between requireAuth and requireVerifiedEmail", async () => {
     // Create unverified user
     const user = await createTestUser(false);
     testUserIds.push(user.id);
@@ -655,18 +662,18 @@ describe('Auth Middleware - Email Verification', () => {
 
     const response = {
       auth: { passed: true },
-      verified: { passed: false, message: 'Email verification required' },
+      verified: { passed: false, message: "Email verification required" },
     };
 
     expect(response.auth.passed).toBe(true);
     expect(response.verified.passed).toBe(false);
   });
 
-  it('should allow email verification endpoint for unverified users', async () => {
+  it("should allow email verification endpoint for unverified users", async () => {
     // Create unverified user
     const user = await createTestUser(false);
     testUserIds.push(user.id);
-    const session = await createSession(user.id);
+    const _session = await createSession(user.id);
 
     // Unverified users should be able to verify their email
     expect(user.emailVerified).toBe(false);
@@ -685,14 +692,14 @@ describe('Auth Middleware - Email Verification', () => {
 // INTEGRATION TESTS
 // =============================================================================
 
-describe('Auth Middleware - Integration Tests', () => {
+describe("Auth Middleware - Integration Tests", () => {
   const testUserIds: bigint[] = [];
 
   afterAll(async () => {
     await cleanupTestData(testUserIds);
   });
 
-  it('should handle complete authentication flow', async () => {
+  it("should handle complete authentication flow", async () => {
     // 1. Create user (unverified)
     const user = await createTestUser(false);
     testUserIds.push(user.id);
@@ -723,7 +730,7 @@ describe('Auth Middleware - Integration Tests', () => {
     expect(dbSession?.user.emailVerified).toBe(true);
   });
 
-  it('should handle session expiry and cleanup', async () => {
+  it("should handle session expiry and cleanup", async () => {
     // Create user with expired session
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -736,8 +743,8 @@ describe('Auth Middleware - Integration Tests', () => {
         userId: user.id,
         token,
         expiresAt: expiredDate,
-        userAgent: 'Test User Agent',
-        ipAddress: '127.0.0.1',
+        userAgent: "Test User Agent",
+        ipAddress: "127.0.0.1",
         lastActivityAt: new Date(),
       },
     });
@@ -758,7 +765,7 @@ describe('Auth Middleware - Integration Tests', () => {
     expect(deletedSession).toBeNull();
   });
 
-  it('should handle concurrent session refreshes correctly', async () => {
+  it("should handle concurrent session refreshes correctly", async () => {
     // Create user with old session
     const user = await createTestUser(true);
     testUserIds.push(user.id);
@@ -785,12 +792,10 @@ describe('Auth Middleware - Integration Tests', () => {
       where: { id: session.id },
     });
 
-    expect(updatedSession?.lastActivityAt.getTime()).toBeGreaterThan(
-      oldActivityDate.getTime()
-    );
+    expect(updatedSession?.lastActivityAt.getTime()).toBeGreaterThan(oldActivityDate.getTime());
   });
 
-  it('should preserve user session across multiple requests', async () => {
+  it("should preserve user session across multiple requests", async () => {
     // Create user and session
     const user = await createTestUser(true);
     testUserIds.push(user.id);

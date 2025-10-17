@@ -5,9 +5,15 @@
  * Provides sensible defaults while allowing customization.
  */
 
-import { User, UserProfile, StorageUsage, UserStatus, ProfileVisibility } from "@prisma/client";
-import { getTestDatabase } from "../setup";
+import type {
+  ProfileVisibility,
+  StorageUsage,
+  User,
+  UserProfile,
+  UserStatus,
+} from "@prisma/client";
 import { hashPassword } from "../helpers/auth";
+import { getTestDatabase } from "../setup";
 
 /**
  * User builder with fluent interface
@@ -73,7 +79,7 @@ export class UserBuilder {
   /**
    * Mark email as verified
    */
-  emailVerified(verified: boolean = true): this {
+  emailVerified(verified = true): this {
     this.data.emailVerified = verified;
     return this;
   }
@@ -105,14 +111,16 @@ export class UserBuilder {
   /**
    * Enable profile creation with optional data
    */
-  withProfile(data?: Partial<{
-    displayName: string;
-    bio: string;
-    age: number;
-    location: string;
-    website: string;
-    visibility: ProfileVisibility;
-  }>): this {
+  withProfile(
+    data?: Partial<{
+      displayName: string;
+      bio: string;
+      age: number;
+      location: string;
+      website: string;
+      visibility: ProfileVisibility;
+    }>
+  ): this {
     this.shouldCreateProfile = true;
     if (data) {
       this.profileData = { ...this.profileData, ...data };
@@ -123,14 +131,16 @@ export class UserBuilder {
   /**
    * Set storage quota configuration
    */
-  withStorage(data?: Partial<{
-    quotaBytes: bigint;
-    usedBytes: bigint;
-    imagesBytes: bigint;
-    videosBytes: bigint;
-    audioBytes: bigint;
-    otherBytes: bigint;
-  }>): this {
+  withStorage(
+    data?: Partial<{
+      quotaBytes: bigint;
+      usedBytes: bigint;
+      imagesBytes: bigint;
+      videosBytes: bigint;
+      audioBytes: bigint;
+      otherBytes: bigint;
+    }>
+  ): this {
     this.shouldCreateStorage = true;
     if (data) {
       this.storageData = { ...this.storageData, ...data };
@@ -248,11 +258,13 @@ export class UserBuilder {
   /**
    * Build multiple users
    */
-  async buildMany(count: number): Promise<Array<{
-    user: User;
-    profile?: UserProfile;
-    storage?: StorageUsage;
-  }>> {
+  async buildMany(count: number): Promise<
+    Array<{
+      user: User;
+      profile?: UserProfile;
+      storage?: StorageUsage;
+    }>
+  > {
     const users = [];
     for (let i = 0; i < count; i++) {
       // Clone the builder configuration for each user
@@ -325,5 +337,8 @@ export async function createUserWithProfile(overrides?: {
   }
 
   const result = await builder.build();
-  return { user: result.user, profile: result.profile! };
+  if (!result.profile) {
+    throw new Error("Profile creation failed - this should never happen when withProfile() is called");
+  }
+  return { user: result.user, profile: result.profile };
 }

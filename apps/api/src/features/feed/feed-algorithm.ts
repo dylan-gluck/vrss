@@ -8,7 +8,7 @@
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md (custom_feeds, feed_filters)
  */
 
-import { PrismaClient, Prisma } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -54,9 +54,11 @@ function buildFilterCondition(filter: FeedFilter): Prisma.PostWhereInput {
       // Filter by post type(s)
       if (operator === "equals") {
         return { type: value };
-      } else if (operator === "not_equals") {
+      }
+      if (operator === "not_equals") {
         return { type: { not: value } };
-      } else if (operator === "contains" || operator === "in_range") {
+      }
+      if (operator === "contains" || operator === "in_range") {
         // Support array of types
         const types = Array.isArray(value) ? value : [value];
         return { type: { in: types } };
@@ -67,11 +69,15 @@ function buildFilterCondition(filter: FeedFilter): Prisma.PostWhereInput {
       // Filter by author ID(s)
       if (operator === "equals") {
         return { userId: BigInt(value) };
-      } else if (operator === "not_equals") {
+      }
+      if (operator === "not_equals") {
         return { userId: { not: BigInt(value) } };
-      } else if (operator === "contains" || operator === "in_range") {
+      }
+      if (operator === "contains" || operator === "in_range") {
         // Support array of author IDs
-        const authorIds = Array.isArray(value) ? value.map((id: string) => BigInt(id)) : [BigInt(value)];
+        const authorIds = Array.isArray(value)
+          ? value.map((id: string) => BigInt(id))
+          : [BigInt(value)];
         return { userId: { in: authorIds } };
       }
       break;
@@ -92,7 +98,8 @@ function buildFilterCondition(filter: FeedFilter): Prisma.PostWhereInput {
       // Filter by date range
       if (operator === "in_range") {
         // Handle both array format [start, end] and object format {start, end}
-        let startDate, endDate;
+        let startDate: any;
+        let endDate: any;
         if (Array.isArray(value) && value.length === 2) {
           [startDate, endDate] = value;
         } else if (typeof value === "object" && value.start && value.end) {
@@ -108,9 +115,11 @@ function buildFilterCondition(filter: FeedFilter): Prisma.PostWhereInput {
             },
           };
         }
-      } else if (operator === "greater_than") {
+      }
+      if (operator === "greater_than") {
         return { createdAt: { gte: new Date(value) } };
-      } else if (operator === "less_than") {
+      }
+      if (operator === "less_than") {
         return { createdAt: { lte: new Date(value) } };
       }
       break;
@@ -132,7 +141,8 @@ function buildFilterCondition(filter: FeedFilter): Prisma.PostWhereInput {
           case "views":
             return { viewsCount: { gt: threshold } };
         }
-      } else if (operator === "less_than") {
+      }
+      if (operator === "less_than") {
         const metric = value.metric || "likes";
         const threshold = value.threshold || 0;
 
@@ -157,7 +167,10 @@ function buildFilterCondition(filter: FeedFilter): Prisma.PostWhereInput {
 /**
  * Build complete where clause from algorithm config
  */
-function buildWhereClause(algorithmConfig: AlgorithmConfig, userId: string): Prisma.PostWhereInput {
+function buildWhereClause(
+  algorithmConfig: AlgorithmConfig,
+  _userId: string
+): Prisma.PostWhereInput {
   const { filters = [], logic = "AND" } = algorithmConfig;
 
   // Build filter conditions
@@ -178,22 +191,18 @@ function buildWhereClause(algorithmConfig: AlgorithmConfig, userId: string): Pri
       ...baseConditions,
       OR: filterConditions.length > 0 ? filterConditions : undefined,
     };
-  } else {
-    // AND logic (default)
-    return {
-      ...baseConditions,
-      AND: filterConditions.length > 0 ? filterConditions : undefined,
-    };
   }
+  // AND logic (default)
+  return {
+    ...baseConditions,
+    AND: filterConditions.length > 0 ? filterConditions : undefined,
+  };
 }
 
 /**
  * Apply visibility filtering based on viewer's relationship to post authors
  */
-async function applyVisibilityFiltering(
-  posts: any[],
-  viewerId: string
-): Promise<any[]> {
+async function applyVisibilityFiltering(posts: any[], viewerId: string): Promise<any[]> {
   if (posts.length === 0) return posts;
 
   // Get user IDs from posts

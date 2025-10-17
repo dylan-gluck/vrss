@@ -3,7 +3,7 @@
  * Post creation, retrieval, and management
  */
 
-import type { Post, Comment, PostType, PostVisibility, PaginatedResponse } from '../types';
+import type { Comment, PaginatedResponse, Post, PostType, PostVisibility } from "../types";
 
 export namespace PostProcedures {
   // post.create

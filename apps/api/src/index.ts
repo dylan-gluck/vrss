@@ -3,43 +3,46 @@
  * Bun + Hono RPC-style API
  */
 
-import { Hono } from 'hono';
-import { logger } from 'hono/logger';
-import { cors } from 'hono/cors';
-import { createRPCRouter } from './rpc';
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import { logger } from "hono/logger";
+import { createRPCRouter } from "./rpc";
 
 const app = new Hono();
 
 // Middleware
-app.use('*', logger());
-app.use('*', cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5050',
-  credentials: true
-}));
+app.use("*", logger());
+app.use(
+  "*",
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:5050",
+    credentials: true,
+  })
+);
 
 // Health check
-app.get('/health', (c) => {
+app.get("/health", (c) => {
   return c.json({
-    status: 'healthy',
+    status: "healthy",
     timestamp: new Date().toISOString(),
-    service: 'vrss-api'
+    service: "vrss-api",
   });
 });
 
 // Root endpoint
-app.get('/', (c) => {
+app.get("/", (c) => {
   return c.json({
-    name: 'VRSS API',
-    version: '0.1.0',
-    description: 'RPC-style API for VRSS Social Platform'
+    name: "VRSS API",
+    version: "0.1.0",
+    description: "RPC-style API for VRSS Social Platform",
   });
 });
 
 // Mount RPC router
-app.route('/api/rpc', createRPCRouter());
+app.route("/api/rpc", createRPCRouter());
 
 // Start server
-const port = parseInt(process.env.PORT || '3030', 10);
+const port = Number.parseInt(process.env.PORT || "3030", 10);
 
 export default {
   port,

@@ -3,7 +3,7 @@
  * User notification management
  */
 
-import type { Notification, PaginatedResponse } from '../types';
+import type { Notification, PaginatedResponse } from "../types";
 
 export namespace NotificationProcedures {
   // notification.getNotifications
@@ -30,7 +30,7 @@ export namespace NotificationProcedures {
 
   // notification.markAllAsRead
   export namespace MarkAllAsRead {
-    export interface Input {}
+    export type Input = Record<string, never>;
 
     export interface Output {
       count: number;
@@ -39,7 +39,7 @@ export namespace NotificationProcedures {
 
   // notification.getUnreadCount
   export namespace GetUnreadCount {
-    export interface Input {}
+    export type Input = Record<string, never>;
 
     export interface Output {
       count: number;

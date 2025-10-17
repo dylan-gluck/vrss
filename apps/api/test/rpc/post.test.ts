@@ -18,13 +18,13 @@
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md lines 180-270 (posts schema)
  */
 
-import { describe, it, expect, beforeEach, afterEach } from "bun:test";
-import { getTestDatabase } from "../setup";
-import { cleanAllTables } from "../helpers/database";
-import { buildUser } from "../fixtures/userBuilder";
-import { ProcedureContext } from "../../src/rpc/types";
+import { afterEach, beforeEach, describe, expect, it } from "bun:test";
 import { ErrorCode } from "@vrss/api-contracts";
 import { postRouter } from "../../src/rpc/routers/post";
+import type { ProcedureContext } from "../../src/rpc/types";
+import { buildUser } from "../fixtures/userBuilder";
+import { cleanAllTables } from "../helpers/database";
+import { getTestDatabase } from "../setup";
 
 // Test utilities
 function createMockContext<T>(overrides?: Partial<ProcedureContext<T>>): ProcedureContext<T> {
@@ -61,10 +61,7 @@ describe("Post Router", () => {
   describe("post.create", () => {
     it("should create text post successfully", async () => {
       // Arrange: Create authenticated user
-      const { user } = await buildUser()
-        .username("author")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("author").withProfile().build();
 
       const ctx = createMockContext<{
         type: "text";
@@ -119,7 +116,7 @@ describe("Post Router", () => {
       });
 
       // Expected: Post created with media reference
-      const expectedResult = {
+      const _expectedResult = {
         post: {
           id: expect.any(String),
           userId: user.id,
@@ -142,7 +139,7 @@ describe("Post Router", () => {
         .withStorage({ usedBytes: BigInt(10485760), quotaBytes: BigInt(52428800) })
         .build();
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: user.id, username: user.username } as any,
         input: {
           type: "video",
@@ -158,7 +155,7 @@ describe("Post Router", () => {
     it("should create song post successfully", async () => {
       const { user } = await buildUser().username("musician").withProfile().build();
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: user.id, username: user.username } as any,
         input: {
           type: "song",
@@ -186,7 +183,7 @@ describe("Post Router", () => {
     it("should fail to create text post without content", async () => {
       const { user } = await buildUser().username("badauthor").withProfile().build();
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: user.id, username: user.username } as any,
         input: {
           type: "text",
@@ -200,7 +197,7 @@ describe("Post Router", () => {
     it("should fail to create media post without mediaIds", async () => {
       const { user } = await buildUser().username("badphotographer").withProfile().build();
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: user.id, username: user.username } as any,
         input: {
           type: "image",
@@ -219,7 +216,7 @@ describe("Post Router", () => {
         .withStorage({ usedBytes: BigInt(52428800), quotaBytes: BigInt(52428800) })
         .build();
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: user.id, username: user.username } as any,
         input: {
           type: "image",
@@ -282,7 +279,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: viewer.id, username: viewer.username } as any,
         input: { postId: post.id.toString() },
       });
@@ -291,7 +288,10 @@ describe("Post Router", () => {
     });
 
     it("should allow followers to view followers-only post", async () => {
-      const { user: author } = await buildUser().username("authorwithfollowers").withProfile().build();
+      const { user: author } = await buildUser()
+        .username("authorwithfollowers")
+        .withProfile()
+        .build();
       const { user: follower } = await buildUser().username("follower").withProfile().build();
 
       // Create follow relationship
@@ -313,7 +313,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: follower.id, username: follower.username } as any,
         input: { postId: post.id.toString() },
       });
@@ -336,7 +336,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         input: { postId: post.id.toString() },
       });
 
@@ -344,7 +344,7 @@ describe("Post Router", () => {
     });
 
     it("should fail to retrieve non-existent post", async () => {
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         input: { postId: "non-existent-id" },
       });
 
@@ -371,7 +371,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: user.id, username: user.username } as any,
         input: {
           postId: post.id.toString(),
@@ -396,7 +396,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: user.id, username: user.username } as any,
         input: {
           postId: post.id.toString(),
@@ -422,7 +422,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: attacker.id, username: attacker.username } as any,
         input: {
           postId: post.id.toString(),
@@ -448,7 +448,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: user.id, username: user.username } as any,
         input: {
           postId: post.id.toString(),
@@ -510,7 +510,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: attacker.id, username: attacker.username } as any,
         input: { postId: post.id.toString() },
       });
@@ -533,7 +533,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: user.id, username: user.username } as any,
         input: { postId: post.id.toString() },
       });
@@ -647,7 +647,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: liker.id, username: liker.username } as any,
         input: { postId: post.id.toString() },
       });
@@ -656,7 +656,10 @@ describe("Post Router", () => {
     });
 
     it("should fail to like deleted post", async () => {
-      const { user: author } = await buildUser().username("deletedlikeauthor").withProfile().build();
+      const { user: author } = await buildUser()
+        .username("deletedlikeauthor")
+        .withProfile()
+        .build();
       const { user: liker } = await buildUser().username("deletedliker").withProfile().build();
 
       const post = await db.post.create({
@@ -671,7 +674,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: liker.id, username: liker.username } as any,
         input: { postId: post.id.toString() },
       });
@@ -748,7 +751,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: unliker.id, username: unliker.username } as any,
         input: { postId: post.id.toString() },
       });
@@ -787,7 +790,7 @@ describe("Post Router", () => {
       });
 
       // Act: Add comment
-      const result = await postRouter["post.comment"](ctx);
+      const _result = await postRouter["post.comment"](ctx);
 
       // Assert: Comment created
       const comment = await db.comment.findFirst({
@@ -834,7 +837,7 @@ describe("Post Router", () => {
       });
 
       // Reply to comment
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: commenter2.id, username: commenter2.username } as any,
         input: {
           postId: post.id.toString(),
@@ -847,8 +850,14 @@ describe("Post Router", () => {
     });
 
     it("should fail to comment on deleted post", async () => {
-      const { user: author } = await buildUser().username("deletedcommentauthor").withProfile().build();
-      const { user: commenter } = await buildUser().username("deletedcommenter").withProfile().build();
+      const { user: author } = await buildUser()
+        .username("deletedcommentauthor")
+        .withProfile()
+        .build();
+      const { user: commenter } = await buildUser()
+        .username("deletedcommenter")
+        .withProfile()
+        .build();
 
       const post = await db.post.create({
         data: {
@@ -862,7 +871,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: commenter.id, username: commenter.username } as any,
         input: {
           postId: post.id.toString(),
@@ -874,8 +883,14 @@ describe("Post Router", () => {
     });
 
     it("should fail to add empty comment", async () => {
-      const { user: author } = await buildUser().username("emptycommentauthor").withProfile().build();
-      const { user: commenter } = await buildUser().username("emptycommenter").withProfile().build();
+      const { user: author } = await buildUser()
+        .username("emptycommentauthor")
+        .withProfile()
+        .build();
+      const { user: commenter } = await buildUser()
+        .username("emptycommenter")
+        .withProfile()
+        .build();
 
       const post = await db.post.create({
         data: {
@@ -888,7 +903,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: commenter.id, username: commenter.username } as any,
         input: {
           postId: post.id.toString(),
@@ -906,7 +921,10 @@ describe("Post Router", () => {
 
   describe("post.getComments", () => {
     it("should retrieve comments with cursor pagination", async () => {
-      const { user: author } = await buildUser().username("commentlistauthor").withProfile().build();
+      const { user: author } = await buildUser()
+        .username("commentlistauthor")
+        .withProfile()
+        .build();
 
       const post = await db.post.create({
         data: {
@@ -935,7 +953,7 @@ describe("Post Router", () => {
         });
       }
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         input: {
           postId: post.id.toString(),
           limit: 20,
@@ -964,7 +982,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         input: {
           postId: post.id.toString(),
         },
@@ -974,8 +992,14 @@ describe("Post Router", () => {
     });
 
     it("should exclude deleted comments from results", async () => {
-      const { user: author } = await buildUser().username("deletedcommentsauthor").withProfile().build();
-      const { user: commenter } = await buildUser().username("deletedcommentsuser").withProfile().build();
+      const { user: author } = await buildUser()
+        .username("deletedcommentsauthor")
+        .withProfile()
+        .build();
+      const { user: commenter } = await buildUser()
+        .username("deletedcommentsuser")
+        .withProfile()
+        .build();
 
       const post = await db.post.create({
         data: {
@@ -1007,7 +1031,7 @@ describe("Post Router", () => {
         },
       });
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         input: { postId: post.id.toString() },
       });
 
@@ -1028,7 +1052,7 @@ describe("Post Router", () => {
         .build();
 
       // Try to create 5MB image post (would exceed quota)
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: user.id, username: user.username } as any,
         input: {
           type: "image",
@@ -1047,7 +1071,7 @@ describe("Post Router", () => {
         .withStorage({ usedBytes: BigInt(10485760), quotaBytes: BigInt(52428800) })
         .build();
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: user.id, username: user.username } as any,
         input: {
           type: "image",
@@ -1066,7 +1090,7 @@ describe("Post Router", () => {
         .withStorage({ usedBytes: BigInt(52428800), quotaBytes: BigInt(52428800) })
         .build();
 
-      const ctx = createMockContext({
+      const _ctx = createMockContext({
         user: { id: user.id, username: user.username } as any,
         input: {
           type: "text",

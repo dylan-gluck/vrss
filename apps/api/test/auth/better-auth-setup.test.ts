@@ -15,20 +15,20 @@
  * @see docs/TESTING-STRATEGY.md for test patterns
  */
 
-import { describe, it, expect, beforeEach } from "bun:test";
+import { beforeEach, describe, expect, it } from "bun:test";
 
 // Import test setup to trigger PostgreSQL container lifecycle
 import "../setup";
-import { getTestDatabase, getTestDatabaseUrl } from "../setup";
 import { cleanAllTables } from "../helpers/database";
+import { getTestDatabase, getTestDatabaseUrl } from "../setup";
 
 // Type imports for Better-auth (will be available after installation)
 type BetterAuth = {
   api: {
-    signUp: Function;
-    signIn: Function;
-    signOut: Function;
-    getSession: Function;
+    signUp: (...args: any[]) => any;
+    signIn: (...args: any[]) => any;
+    signOut: (...args: any[]) => any;
+    getSession: (...args: any[]) => any;
   };
   options: {
     database: any;
@@ -46,7 +46,7 @@ async function getAuthInstance(): Promise<BetterAuth | null> {
   try {
     const authModule = await import("../../src/lib/auth");
     return authModule.auth;
-  } catch (error) {
+  } catch (_error) {
     return null;
   }
 }
@@ -336,7 +336,7 @@ describe("Better-auth Setup: Session Tables", () => {
     });
 
     // Create an expired session
-    const expiredSession = await db.session.create({
+    const _expiredSession = await db.session.create({
       data: {
         userId: user.id,
         token: "expired_token",
@@ -348,7 +348,7 @@ describe("Better-auth Setup: Session Tables", () => {
     });
 
     // Create a valid session
-    const validSession = await db.session.create({
+    const _validSession = await db.session.create({
       data: {
         userId: user.id,
         token: "valid_token",
@@ -384,7 +384,7 @@ describe("Better-auth Setup: Configuration", () => {
 
     expect(secret).toBeDefined();
     expect(secret).not.toBe("");
-    expect(secret?.length).toBeGreaterThan(32); // Minimum 32 characters for security
+    expect(secret?.length).toBeGreaterThanOrEqual(32); // Minimum 32 characters for security
   });
 
   it("should have DATABASE_URL as valid PostgreSQL connection string", () => {
@@ -461,7 +461,7 @@ describe("Better-auth Setup: Configuration", () => {
 
     // In test environment, secure should be false
     // In production, secure should be true
-    const isProduction = process.env.NODE_ENV === "production";
+    const _isProduction = process.env.NODE_ENV === "production";
 
     // Note: Better-auth may store this in different config locations
     // This is a validation that the configuration is environment-aware

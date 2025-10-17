@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { renderWithProviders, screen, waitFor } from './utils/render';
-import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
-import { TEST_PERSONAS, MOCK_POSTS } from './mocks/data';
-import React from 'react';
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import React from "react";
+import { beforeEach, describe, expect, it } from "vitest";
+import { MOCK_POSTS, TEST_PERSONAS } from "./mocks/data";
+import { renderWithProviders, screen, waitFor } from "./utils/render";
 
 /**
  * Infrastructure Validation Tests
@@ -15,75 +15,73 @@ import React from 'react';
  * - Mock data is accessible
  */
 
-describe('Test Infrastructure', () => {
-  describe('Basic Vitest Setup', () => {
-    it('should run basic assertions', () => {
+describe("Test Infrastructure", () => {
+  describe("Basic Vitest Setup", () => {
+    it("should run basic assertions", () => {
       expect(true).toBe(true);
       expect(1 + 1).toBe(2);
     });
 
-    it('should have access to test globals', () => {
+    it("should have access to test globals", () => {
       expect(describe).toBeDefined();
       expect(it).toBeDefined();
       expect(expect).toBeDefined();
     });
   });
 
-  describe('React Testing Library Setup', () => {
-    it('should render a basic component', () => {
+  describe("React Testing Library Setup", () => {
+    it("should render a basic component", () => {
       const TestComponent = () => <div>Hello Test</div>;
       renderWithProviders(<TestComponent />);
-      expect(screen.getByText('Hello Test')).toBeInTheDocument();
+      expect(screen.getByText("Hello Test")).toBeInTheDocument();
     });
 
-    it('should handle async rendering', async () => {
+    it("should handle async rendering", async () => {
       const TestComponent = () => {
-        const [text, setText] = React.useState('Loading...');
+        const [text, setText] = React.useState("Loading...");
 
         React.useEffect(() => {
-          setTimeout(() => setText('Loaded!'), 100);
+          setTimeout(() => setText("Loaded!"), 100);
         }, []);
 
         return <div>{text}</div>;
       };
 
       renderWithProviders(<TestComponent />);
-      expect(screen.getByText('Loading...')).toBeInTheDocument();
+      expect(screen.getByText("Loading...")).toBeInTheDocument();
 
       await waitFor(() => {
-        expect(screen.getByText('Loaded!')).toBeInTheDocument();
+        expect(screen.getByText("Loaded!")).toBeInTheDocument();
       });
     });
   });
 
-  describe('TanStack Query Provider Setup', () => {
-    it('should provide QueryClient context', () => {
+  describe("TanStack Query Provider Setup", () => {
+    it("should provide QueryClient context", () => {
       const TestComponent = () => {
         const query = useQuery({
-          queryKey: ['test'],
-          queryFn: async () => ({ data: 'test' }),
+          queryKey: ["test"],
+          queryFn: async () => ({ data: "test" }),
         });
 
-        return <div>{query.data ? 'Query works' : 'Loading'}</div>;
+        return <div>{query.data ? "Query works" : "Loading"}</div>;
       };
 
       renderWithProviders(<TestComponent />);
 
       // Query should eventually resolve
       waitFor(() => {
-        expect(screen.getByText('Query works')).toBeInTheDocument();
+        expect(screen.getByText("Query works")).toBeInTheDocument();
       });
     });
   });
 
-  describe('React Router Setup', () => {
-    it('should provide Router context', () => {
+  describe("React Router Setup", () => {
+    it("should provide Router context", () => {
       const TestComponent = () => {
-        const isRouterAvailable = !!React.useContext(
-          (React as any).__RouterContext || {}
-        );
+        const isRouterAvailable = !!React.useContext((React as any).__RouterContext || {});
 
-        return <div>Router: {isRouterAvailable ? 'Available' : 'Missing'}</div>;
+        return <div>Router: {isRouterAvailable ? "Available" : "Missing"}</div>;
       };
 
       renderWithProviders(<TestComponent />);
@@ -92,17 +90,17 @@ describe('Test Infrastructure', () => {
     });
   });
 
-  describe('MSW Mock Server Setup', () => {
-    it('should intercept RPC API calls', async () => {
+  describe("MSW Mock Server Setup", () => {
+    it("should intercept RPC API calls", async () => {
       const TestComponent = () => {
         const { data, isLoading } = useQuery({
-          queryKey: ['feed'],
+          queryKey: ["feed"],
           queryFn: async () => {
-            const response = await fetch('http://localhost:3000/api/rpc', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+            const response = await fetch("http://localhost:3000/api/rpc", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                method: 'feed.get',
+                method: "feed.get",
                 params: { cursor: 0, limit: 20 },
               }),
             });
@@ -123,12 +121,12 @@ describe('Test Infrastructure', () => {
       });
     });
 
-    it('should return mock feed data', async () => {
-      const response = await fetch('http://localhost:3000/api/rpc', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+    it("should return mock feed data", async () => {
+      const response = await fetch("http://localhost:3000/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          method: 'feed.get',
+          method: "feed.get",
           params: { cursor: 0, limit: 20 },
         }),
       });
@@ -139,15 +137,15 @@ describe('Test Infrastructure', () => {
       expect(data.result.posts.length).toBeGreaterThan(0);
     });
 
-    it('should return mock authentication response', async () => {
-      const response = await fetch('http://localhost:3000/api/rpc', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+    it("should return mock authentication response", async () => {
+      const response = await fetch("http://localhost:3000/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          method: 'auth.login',
+          method: "auth.login",
           params: {
             email: TEST_PERSONAS.CREATOR.email,
-            password: 'SecurePass123!',
+            password: "SecurePass123!",
           },
         }),
       });
@@ -159,15 +157,15 @@ describe('Test Infrastructure', () => {
       expect(data.result.user.username).toBe(TEST_PERSONAS.CREATOR.username);
     });
 
-    it('should return error for invalid credentials', async () => {
-      const response = await fetch('http://localhost:3000/api/rpc', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+    it("should return error for invalid credentials", async () => {
+      const response = await fetch("http://localhost:3000/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          method: 'auth.login',
+          method: "auth.login",
           params: {
-            email: 'wrong@example.com',
-            password: 'WrongPassword',
+            email: "wrong@example.com",
+            password: "WrongPassword",
           },
         }),
       });
@@ -175,30 +173,30 @@ describe('Test Infrastructure', () => {
       const data = await response.json();
       expect(data.error).toBeDefined();
       expect(data.error.code).toBe(401);
-      expect(data.error.message).toContain('Invalid');
+      expect(data.error.message).toContain("Invalid");
     });
   });
 
-  describe('Mock Data Availability', () => {
-    it('should have test personas defined', () => {
+  describe("Mock Data Availability", () => {
+    it("should have test personas defined", () => {
       expect(TEST_PERSONAS.CREATOR).toBeDefined();
       expect(TEST_PERSONAS.CONSUMER).toBeDefined();
       expect(TEST_PERSONAS.BUSINESS).toBeDefined();
 
-      expect(TEST_PERSONAS.CREATOR.username).toBe('maya_music');
-      expect(TEST_PERSONAS.CONSUMER.username).toBe('marcus_consumer');
-      expect(TEST_PERSONAS.BUSINESS.username).toBe('jade_cafe');
+      expect(TEST_PERSONAS.CREATOR.username).toBe("maya_music");
+      expect(TEST_PERSONAS.CONSUMER.username).toBe("marcus_consumer");
+      expect(TEST_PERSONAS.BUSINESS.username).toBe("jade_cafe");
     });
 
-    it('should have mock posts defined', () => {
+    it("should have mock posts defined", () => {
       expect(MOCK_POSTS).toBeDefined();
       expect(MOCK_POSTS.length).toBeGreaterThan(0);
-      expect(MOCK_POSTS[0]).toHaveProperty('id');
-      expect(MOCK_POSTS[0]).toHaveProperty('content');
-      expect(MOCK_POSTS[0]).toHaveProperty('author');
+      expect(MOCK_POSTS[0]).toHaveProperty("id");
+      expect(MOCK_POSTS[0]).toHaveProperty("content");
+      expect(MOCK_POSTS[0]).toHaveProperty("author");
     });
 
-    it('should have correct test persona data structure', () => {
+    it("should have correct test persona data structure", () => {
       const creator = TEST_PERSONAS.CREATOR;
 
       expect(creator).toMatchObject({
@@ -212,21 +210,21 @@ describe('Test Infrastructure', () => {
     });
   });
 
-  describe('Custom Render Utility', () => {
-    it('should export renderWithProviders', () => {
+  describe("Custom Render Utility", () => {
+    it("should export renderWithProviders", () => {
       expect(renderWithProviders).toBeDefined();
-      expect(typeof renderWithProviders).toBe('function');
+      expect(typeof renderWithProviders).toBe("function");
     });
 
-    it('should wrap components with all providers', () => {
+    it("should wrap components with all providers", () => {
       const TestComponent = () => {
         // This component will fail to render if providers are missing
         const query = useQuery({
-          queryKey: ['test-providers'],
-          queryFn: async () => 'providers work',
+          queryKey: ["test-providers"],
+          queryFn: async () => "providers work",
         });
 
-        return <div>Test: {query.data || 'loading'}</div>;
+        return <div>Test: {query.data || "loading"}</div>;
       };
 
       const { container } = renderWithProviders(<TestComponent />);
@@ -234,22 +232,24 @@ describe('Test Infrastructure', () => {
     });
   });
 
-  describe('Global Test Utilities', () => {
-    it('should have matchMedia mock', () => {
+  describe("Global Test Utilities", () => {
+    it("should have matchMedia mock", () => {
       expect(window.matchMedia).toBeDefined();
-      const media = window.matchMedia('(min-width: 768px)');
-      expect(media).toHaveProperty('matches');
-      expect(media).toHaveProperty('media');
+      const media = window.matchMedia("(min-width: 768px)");
+      expect(media).toHaveProperty("matches");
+      expect(media).toHaveProperty("media");
     });
 
-    it('should have IntersectionObserver mock', () => {
+    it("should have IntersectionObserver mock", () => {
       expect(global.IntersectionObserver).toBeDefined();
-      const observer = new IntersectionObserver(() => {});
-      expect(observer).toHaveProperty('observe');
-      expect(observer).toHaveProperty('disconnect');
+      const observer = new IntersectionObserver(() => {
+        // Mock callback - no-op for testing
+      });
+      expect(observer).toHaveProperty("observe");
+      expect(observer).toHaveProperty("disconnect");
     });
 
-    it('should have crypto.randomUUID mock', () => {
+    it("should have crypto.randomUUID mock", () => {
       expect(global.crypto.randomUUID).toBeDefined();
       const uuid = global.crypto.randomUUID();
       expect(uuid).toMatch(
@@ -258,8 +258,8 @@ describe('Test Infrastructure', () => {
     });
   });
 
-  describe('Coverage Configuration', () => {
-    it('should validate test is running with coverage config', () => {
+  describe("Coverage Configuration", () => {
+    it("should validate test is running with coverage config", () => {
       // If this test runs, it means vitest.config.ts is loaded correctly
       expect(true).toBe(true);
     });
@@ -276,23 +276,23 @@ describe('Test Infrastructure', () => {
  * 4. TanStack Query caches the response
  * 5. Component renders the data
  */
-describe('Integration: Full RPC Flow', () => {
-  it('should complete full feed fetch flow', async () => {
+describe("Integration: Full RPC Flow", () => {
+  it("should complete full feed fetch flow", async () => {
     const FeedComponent = () => {
       const { data, isLoading, error } = useQuery({
-        queryKey: ['integration-feed'],
+        queryKey: ["integration-feed"],
         queryFn: async () => {
-          const response = await fetch('http://localhost:3000/api/rpc', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+          const response = await fetch("http://localhost:3000/api/rpc", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              method: 'feed.get',
+              method: "feed.get",
               params: { cursor: 0, limit: 20 },
             }),
           });
 
           if (!response.ok) {
-            throw new Error('Network error');
+            throw new Error("Network error");
           }
 
           const result = await response.json();
@@ -320,15 +320,15 @@ describe('Integration: Full RPC Flow', () => {
     renderWithProviders(<FeedComponent />);
 
     // Should show loading state
-    expect(screen.getByText('Loading feed...')).toBeInTheDocument();
+    expect(screen.getByText("Loading feed...")).toBeInTheDocument();
 
     // Should eventually show posts
     await waitFor(() => {
-      expect(screen.getByText('Feed')).toBeInTheDocument();
+      expect(screen.getByText("Feed")).toBeInTheDocument();
     });
 
     // Should render post content
-    expect(screen.getByTestId('post-count')).toBeInTheDocument();
+    expect(screen.getByTestId("post-count")).toBeInTheDocument();
     expect(screen.getByText(/Working on my new album/)).toBeInTheDocument();
   });
 });

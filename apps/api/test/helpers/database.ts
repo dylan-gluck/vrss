@@ -4,7 +4,7 @@
  * Utilities for database cleanup, transaction management, and test data isolation.
  */
 
-import { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "@prisma/client";
 import { getTestDatabase } from "../setup";
 
 /**
@@ -142,26 +142,30 @@ export async function resetSequences(): Promise<void> {
  * @returns Result of the function
  */
 export async function withRollback<T>(
-  fn: (tx: Omit<PrismaClient, "$connect" | "$disconnect" | "$on" | "$transaction" | "$use">) => Promise<T>
+  fn: (
+    tx: Omit<PrismaClient, "$connect" | "$disconnect" | "$on" | "$transaction" | "$use">
+  ) => Promise<T>
 ): Promise<T> {
   const db = getTestDatabase();
 
-  return await db.$transaction(async (tx) => {
-    const result = await fn(tx);
+  return await db
+    .$transaction(async (tx) => {
+      const _result = await fn(tx);
 
-    // Force rollback by throwing an error
-    // This is caught by Prisma and transaction is rolled back
-    throw new Error("ROLLBACK_TRANSACTION");
-  }).catch((error) => {
-    // If it's our intentional rollback, return the result
-    if (error.message === "ROLLBACK_TRANSACTION") {
-      // Note: This pattern is a bit hacky but works for testing
-      // The actual result is lost due to the throw
-      // For real rollback testing, use manual transaction management
+      // Force rollback by throwing an error
+      // This is caught by Prisma and transaction is rolled back
+      throw new Error("ROLLBACK_TRANSACTION");
+    })
+    .catch((error) => {
+      // If it's our intentional rollback, return the result
+      if (error.message === "ROLLBACK_TRANSACTION") {
+        // Note: This pattern is a bit hacky but works for testing
+        // The actual result is lost due to the throw
+        // For real rollback testing, use manual transaction management
+        throw error;
+      }
       throw error;
-    }
-    throw error;
-  });
+    });
 }
 
 /**
@@ -173,13 +177,14 @@ export async function getTableCounts(): Promise<Record<string, number>> {
 
   return {
     users: await db.user.count(),
-    userProfiles: await db.userProfile.count(),
+    profiles: await db.userProfile.count(),
     sessions: await db.session.count(),
     posts: await db.post.count(),
     postMedia: await db.postMedia.count(),
     customFeeds: await db.customFeed.count(),
     feedFilters: await db.feedFilter.count(),
     storageUsage: await db.storageUsage.count(),
+    storageQuotas: await db.storageUsage.count(), // Alias for backward compatibility
   };
 }
 
@@ -193,8 +198,8 @@ export async function getTableCounts(): Promise<Record<string, number>> {
  */
 export async function waitFor(
   condition: () => Promise<boolean> | boolean,
-  timeout: number = 5000,
-  interval: number = 100
+  timeout = 5000,
+  interval = 100
 ): Promise<void> {
   const startTime = Date.now();
 

@@ -3,7 +3,7 @@
  * Following, friendship, and social graph management
  */
 
-import type { User, Follow, Friendship, FriendshipStatus, PaginatedResponse } from '../types';
+import type { Follow, Friendship, FriendshipStatus, PaginatedResponse, User } from "../types";
 
 export namespace SocialProcedures {
   // social.follow
@@ -13,7 +13,7 @@ export namespace SocialProcedures {
     }
 
     export interface Output {
-      follow: import('../types').Follow;
+      follow: import("../types").Follow;
     }
   }
 
@@ -65,7 +65,7 @@ export namespace SocialProcedures {
   export namespace RespondToFriendRequest {
     export interface Input {
       friendshipId: string;
-      action: 'accept' | 'reject';
+      action: "accept" | "reject";
     }
 
     export interface Output {

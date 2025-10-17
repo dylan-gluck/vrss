@@ -7,11 +7,16 @@
  * @see docs/SECURITY_DESIGN.md for architecture details
  */
 
+import { PrismaClient } from "@prisma/client";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
+
+// Export secret for testing/verification (better-auth may not expose it in options)
+const authSecret = process.env.BETTER_AUTH_SECRET || (() => {
+  throw new Error("BETTER_AUTH_SECRET environment variable is required");
+})();
 
 const baseAuth = betterAuth({
   // Database adapter
@@ -48,8 +53,8 @@ const baseAuth = betterAuth({
   // Base URL for email links
   baseURL: process.env.APP_URL || "http://localhost:3000",
 
-  // Secret for signing tokens
-  secret: process.env.BETTER_AUTH_SECRET,
+  // Secret for signing tokens (required, min 32 chars for security)
+  secret: authSecret,
 
   // Trusted origins
   trustedOrigins: [
@@ -61,6 +66,10 @@ const baseAuth = betterAuth({
 // Export auth with convenience aliases for common methods
 export const auth = {
   ...baseAuth,
+  options: {
+    ...baseAuth.options,
+    secret: authSecret, // Explicitly expose secret for verification
+  },
   api: {
     ...baseAuth.api,
     // Convenience aliases for tests and common usage

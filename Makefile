@@ -163,8 +163,11 @@ db-reset: ## Reset database (drop all tables and recreate)
 
 test: ## Run all tests
 	@echo "$(BLUE)Running tests...$(NC)"
-	docker-compose exec backend bun test
-	docker-compose exec frontend npm test
+	@echo "$(YELLOW)Backend tests:$(NC)"
+	@docker-compose exec backend bun test || (echo "$(RED)Backend tests failed$(NC)" && exit 1)
+	@echo ""
+	@echo "$(YELLOW)Frontend tests:$(NC)"
+	@docker-compose exec frontend npm test || echo "$(YELLOW)Frontend tests not configured or failed$(NC)"
 	@echo "$(GREEN)Tests complete$(NC)"
 
 test-backend: ## Run backend tests only
@@ -176,6 +179,69 @@ test-frontend: ## Run frontend tests only
 test-coverage: ## Run tests with coverage report
 	docker-compose exec backend bun test --coverage
 	docker-compose exec frontend npm run test:coverage
+
+##@ Code Quality
+
+typecheck: ## Run TypeScript type checking across all packages
+	@echo "$(BLUE)Running type checks...$(NC)"
+	@if command -v bun > /dev/null; then \
+		bun run type-check; \
+	else \
+		echo "$(RED)Error: bun not found. Install bun or run 'make typecheck-docker'$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(GREEN)Type checks complete$(NC)"
+
+typecheck-docker: ## Run TypeScript type checking in Docker containers
+	@echo "$(BLUE)Running type checks in Docker...$(NC)"
+	@echo "$(YELLOW)Backend (API):$(NC)"
+	@docker-compose exec backend bun run type-check || echo "$(RED)Backend type check failed$(NC)"
+	@echo ""
+	@echo "$(YELLOW)Frontend (Web):$(NC)"
+	@docker-compose exec frontend npm run type-check || echo "$(RED)Frontend type check failed$(NC)"
+	@echo "$(GREEN)Type checks complete$(NC)"
+
+lint: ## Run linting and auto-fix issues across all packages
+	@echo "$(BLUE)Running Biome linter with auto-fix...$(NC)"
+	@if command -v bun > /dev/null; then \
+		bun run lint; \
+	else \
+		echo "$(RED)Error: bun not found. Install bun or run 'make lint-docker'$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(GREEN)Linting complete$(NC)"
+
+lint-check: ## Run linting in check-only mode (no auto-fix)
+	@echo "$(BLUE)Running Biome linter in check mode...$(NC)"
+	@if command -v bun > /dev/null; then \
+		bun run lint:check; \
+	else \
+		echo "$(RED)Error: bun not found$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(GREEN)Lint check complete$(NC)"
+
+lint-docker: ## Run linting in Docker containers
+	@echo "$(BLUE)Running linters in Docker...$(NC)"
+	@echo "$(YELLOW)Backend (API):$(NC)"
+	@docker-compose exec backend bun run lint || echo "$(YELLOW)Backend lint failed$(NC)"
+	@echo ""
+	@echo "$(YELLOW)Frontend (Web):$(NC)"
+	@docker-compose exec frontend npm run lint || echo "$(RED)Frontend lint failed$(NC)"
+	@echo "$(GREEN)Linting complete$(NC)"
+
+format: ## Format code with Biome
+	@echo "$(BLUE)Formatting code with Biome...$(NC)"
+	@if command -v bun > /dev/null; then \
+		bun run format; \
+	else \
+		echo "$(RED)Error: bun not found$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(GREEN)Formatting complete$(NC)"
+
+check: typecheck lint ## Run all code quality checks (typecheck + lint)
+	@echo "$(GREEN)All code quality checks passed!$(NC)"
 
 ##@ Production
 

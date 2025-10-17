@@ -23,5 +23,5 @@ Options:
 
 1. Analyze the request, find the original requirements. Ultrathink.
 2. Use modern cli tools [`rg`, `fd`, `sd`, `fzf`] to search codebase for relevant files & patterns.
-3. Use Bash(`codebase-map format [options]`) to analyze existing files and symbols across the project or using a specific include glob.
+3. Use Bash(`codebase-map format [options]`) to analyze existing files and symbols across the project or using a specific include/exclude glob.
 4. Return a well structured `TASK_CONTEXT` including all necessary references

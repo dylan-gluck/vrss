@@ -3,7 +3,7 @@
  * Custom feed management and timeline retrieval
  */
 
-import type { Post, CustomFeed, FeedFilter, PaginatedResponse } from '../types';
+import type { CustomFeed, FeedFilter, PaginatedResponse, Post } from "../types";
 
 export namespace FeedProcedures {
   // feed.getFeed
@@ -57,7 +57,7 @@ export namespace FeedProcedures {
 
   // feed.listFeeds
   export namespace ListFeeds {
-    export interface Input {}
+    export type Input = Record<string, never>;
 
     export interface Output {
       feeds: CustomFeed[];

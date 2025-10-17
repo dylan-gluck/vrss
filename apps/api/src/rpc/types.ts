@@ -8,7 +8,7 @@
  * @see docs/specs/001-vrss-social-platform/PLAN.md Phase 2.3
  */
 
-import { Context } from "hono";
+import type { Context } from "hono";
 
 /**
  * User type from Better-auth session (as set by auth middleware)

@@ -3,7 +3,7 @@
  * Search and exploration features
  */
 
-import type { User, Post, PaginatedResponse } from '../types';
+import type { PaginatedResponse, Post, User } from "../types";
 
 export namespace DiscoveryProcedures {
   // discovery.searchUsers

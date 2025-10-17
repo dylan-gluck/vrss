@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { type Page, expect } from "@playwright/test";
 
 /**
  * Authentication Helper for E2E Tests
@@ -21,8 +21,8 @@ export interface LoginCredentials {
 export class AuthHelper {
   constructor(
     private page: Page,
-    private baseURL: string = 'http://localhost:5173',
-    private apiURL: string = 'http://localhost:3000'
+    private baseURL = "http://localhost:5173",
+    private apiURL = "http://localhost:3000"
   ) {}
 
   /**
@@ -54,16 +54,13 @@ export class AuthHelper {
    * @returns Promise that resolves when registration is complete
    */
   async registerViaAPI(credentials: UserCredentials): Promise<void> {
-    const response = await this.page.request.post(
-      `${this.apiURL}/api/auth/sign-up`,
-      {
-        data: {
-          email: credentials.email,
-          password: credentials.password,
-          name: credentials.username,
-        },
-      }
-    );
+    const response = await this.page.request.post(`${this.apiURL}/api/auth/sign-up`, {
+      data: {
+        email: credentials.email,
+        password: credentials.password,
+        name: credentials.username,
+      },
+    });
 
     expect(response.ok()).toBeTruthy();
   }
@@ -95,24 +92,19 @@ export class AuthHelper {
    * @returns Promise that resolves when login is complete
    */
   async loginViaAPI(credentials: LoginCredentials): Promise<void> {
-    const response = await this.page.request.post(
-      `${this.apiURL}/api/auth/sign-in`,
-      {
-        data: {
-          email: credentials.email,
-          password: credentials.password,
-        },
-      }
-    );
+    const response = await this.page.request.post(`${this.apiURL}/api/auth/sign-in`, {
+      data: {
+        email: credentials.email,
+        password: credentials.password,
+      },
+    });
 
     expect(response.ok()).toBeTruthy();
 
     // Store cookies from API response
-    const cookies = response.headers()['set-cookie'];
+    const cookies = response.headers()["set-cookie"];
     if (cookies) {
-      await this.page.context().addCookies(
-        this.parseCookies(cookies, this.apiURL)
-      );
+      await this.page.context().addCookies(this.parseCookies(cookies, this.apiURL));
     }
   }
 
@@ -138,8 +130,7 @@ export class AuthHelper {
   async isAuthenticated(): Promise<boolean> {
     const cookies = await this.page.context().cookies();
     return cookies.some(
-      (cookie) =>
-        cookie.name.includes('session') || cookie.name.includes('auth')
+      (cookie) => cookie.name.includes("session") || cookie.name.includes("auth")
     );
   }
 
@@ -160,15 +151,13 @@ export class AuthHelper {
    * @param credentials User credentials
    * @returns Promise that resolves when session is ready
    */
-  async setupAuthenticatedSession(
-    credentials: UserCredentials
-  ): Promise<void> {
+  async setupAuthenticatedSession(credentials: UserCredentials): Promise<void> {
     try {
       // Try to register user (may fail if already exists)
       await this.registerViaAPI(credentials);
-    } catch (error) {
+    } catch (_error) {
       // User might already exist, continue to login
-      console.log('User may already exist, attempting login...');
+      console.log("User may already exist, attempting login...");
     }
 
     // Login via API for faster test setup
@@ -186,13 +175,13 @@ export class AuthHelper {
    * @param timeout Maximum time to wait (ms)
    * @returns Promise that resolves when session is active
    */
-  async waitForSession(timeout: number = 5000): Promise<void> {
+  async waitForSession(timeout = 5000): Promise<void> {
     await this.page.waitForFunction(
       () => {
         return (
-          document.cookie.includes('session') ||
-          document.cookie.includes('auth') ||
-          localStorage.getItem('auth-token') !== null
+          document.cookie.includes("session") ||
+          document.cookie.includes("auth") ||
+          localStorage.getItem("auth-token") !== null
         );
       },
       { timeout }
@@ -204,9 +193,7 @@ export class AuthHelper {
    * @returns Promise that resolves to user data
    */
   async getCurrentUser(): Promise<any> {
-    const response = await this.page.request.get(
-      `${this.apiURL}/api/auth/session`
-    );
+    const response = await this.page.request.get(`${this.apiURL}/api/auth/session`);
 
     if (!response.ok()) {
       return null;
@@ -223,16 +210,16 @@ export class AuthHelper {
    */
   private parseCookies(cookieHeader: string, domain: string): any[] {
     const cookies: any[] = [];
-    const cookieStrings = cookieHeader.split(',');
+    const cookieStrings = cookieHeader.split(",");
 
     for (const cookieString of cookieStrings) {
-      const parts = cookieString.split(';')[0].split('=');
+      const parts = cookieString.split(";")[0].split("=");
       if (parts.length === 2) {
         cookies.push({
           name: parts[0].trim(),
           value: parts[1].trim(),
           domain: new URL(domain).hostname,
-          path: '/',
+          path: "/",
         });
       }
     }

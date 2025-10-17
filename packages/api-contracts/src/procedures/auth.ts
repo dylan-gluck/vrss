@@ -3,7 +3,7 @@
  * Authentication and session management procedures
  */
 
-import type { User } from '../types';
+import type { User } from "../types";
 
 export namespace AuthProcedures {
   // auth.register
@@ -35,7 +35,7 @@ export namespace AuthProcedures {
 
   // auth.getSession
   export namespace GetSession {
-    export interface Input {}
+    export type Input = Record<string, never>;
 
     export interface Output {
       user: User;
@@ -48,7 +48,7 @@ export namespace AuthProcedures {
 
   // auth.logout
   export namespace Logout {
-    export interface Input {}
+    export type Input = Record<string, never>;
 
     export interface Output {
       success: boolean;

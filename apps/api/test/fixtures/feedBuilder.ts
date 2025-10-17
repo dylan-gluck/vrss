@@ -5,7 +5,7 @@
  * Supports all filter types and operators.
  */
 
-import { CustomFeed, FeedFilter, FilterType, FilterOperator } from "@prisma/client";
+import type { CustomFeed, FeedFilter, FilterOperator, FilterType } from "@prisma/client";
 import { getTestDatabase } from "../setup";
 
 /**
@@ -111,9 +111,9 @@ export class FeedBuilder {
    */
   filterByUser(userIds: bigint[], operator: FilterOperator = "in_range"): this {
     return this.addFilter({
-      type: "user",
+      type: "author",
       operator,
-      value: userIds.map(id => id.toString()),
+      value: userIds.map((id) => id.toString()),
     });
   }
 
@@ -135,7 +135,7 @@ export class FeedBuilder {
     return this.addFilter({
       type: "engagement",
       operator: "greater_than",
-      value: { metric, value: minValue },
+      value: { metric, threshold: minValue },
     });
   }
 
@@ -235,10 +235,12 @@ export class FeedBuilder {
   /**
    * Build multiple feeds with the same configuration
    */
-  async buildMany(count: number): Promise<Array<{
-    feed: CustomFeed;
-    filters: FeedFilter[];
-  }>> {
+  async buildMany(count: number): Promise<
+    Array<{
+      feed: CustomFeed;
+      filters: FeedFilter[];
+    }>
+  > {
     const feeds = [];
     for (let i = 0; i < count; i++) {
       // Clone the builder configuration
@@ -269,10 +271,7 @@ export function buildFeed(): FeedBuilder {
 /**
  * Quick helper to create a basic custom feed
  */
-export async function createCustomFeed(
-  userId: bigint,
-  name?: string
-): Promise<CustomFeed> {
+export async function createCustomFeed(userId: bigint, name?: string): Promise<CustomFeed> {
   const builder = buildFeed().forUser(userId);
 
   if (name) {
@@ -294,9 +293,7 @@ export async function createPostTypeFeed(
     description?: string;
   }
 ): Promise<{ feed: CustomFeed; filters: FeedFilter[] }> {
-  const builder = buildFeed()
-    .forUser(userId)
-    .filterByPostType(postTypes);
+  const builder = buildFeed().forUser(userId).filterByPostType(postTypes);
 
   if (options?.name) {
     builder.name(options.name);
@@ -320,9 +317,7 @@ export async function createUserFeed(
     description?: string;
   }
 ): Promise<{ feed: CustomFeed; filters: FeedFilter[] }> {
-  const builder = buildFeed()
-    .forUser(userId)
-    .filterByUser(followedUserIds);
+  const builder = buildFeed().forUser(userId).filterByUser(followedUserIds);
 
   if (options?.name) {
     builder.name(options.name);
@@ -348,9 +343,7 @@ export async function createEngagementFeed(
     description?: string;
   }
 ): Promise<{ feed: CustomFeed; filters: FeedFilter[] }> {
-  const builder = buildFeed()
-    .forUser(userId)
-    .filterByEngagement("likes", minLikes);
+  const builder = buildFeed().forUser(userId).filterByEngagement("likes", minLikes);
 
   if (options?.name) {
     builder.name(options.name);
@@ -376,9 +369,7 @@ export async function createHashtagFeed(
     description?: string;
   }
 ): Promise<{ feed: CustomFeed; filters: FeedFilter[] }> {
-  const builder = buildFeed()
-    .forUser(userId)
-    .filterByHashtag(hashtags);
+  const builder = buildFeed().forUser(userId).filterByHashtag(hashtags);
 
   if (options?.name) {
     builder.name(options.name);

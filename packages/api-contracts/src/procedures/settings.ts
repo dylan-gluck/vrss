@@ -3,12 +3,12 @@
  * Account and privacy settings management
  */
 
-import type { AccountSettings, PrivacySettings } from '../types';
+import type { AccountSettings, PrivacySettings } from "../types";
 
 export namespace SettingsProcedures {
   // settings.getAccountSettings
   export namespace GetAccountSettings {
-    export interface Input {}
+    export type Input = Record<string, never>;
 
     export interface Output {
       settings: AccountSettings;
@@ -30,7 +30,7 @@ export namespace SettingsProcedures {
 
   // settings.getPrivacySettings
   export namespace GetPrivacySettings {
-    export interface Input {}
+    export type Input = Record<string, never>;
 
     export interface Output {
       settings: PrivacySettings;
@@ -40,8 +40,8 @@ export namespace SettingsProcedures {
   // settings.updatePrivacy
   export namespace UpdatePrivacy {
     export interface Input {
-      profileVisibility?: 'public' | 'private' | 'followers_only';
-      allowMessagesFrom?: 'everyone' | 'followers' | 'friends' | 'nobody';
+      profileVisibility?: "public" | "private" | "followers_only";
+      allowMessagesFrom?: "everyone" | "followers" | "friends" | "nobody";
       allowTagging?: boolean;
       showOnlineStatus?: boolean;
     }

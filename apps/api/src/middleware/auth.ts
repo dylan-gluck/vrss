@@ -7,12 +7,21 @@
  * @see docs/SECURITY_DESIGN.md lines 260-361 for architecture details
  */
 
-import { Context, MiddlewareHandler } from "hono";
-import { getCookie } from "hono/cookie";
-import { auth } from "../lib/auth";
 import { PrismaClient } from "@prisma/client";
+import type { Context, MiddlewareHandler } from "hono";
+import { getCookie } from "hono/cookie";
 
 const prisma = new PrismaClient();
+
+// Lazy load auth to avoid circular dependency
+let authInstance: any = null;
+function getAuth() {
+  if (!authInstance) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    authInstance = require("../lib/auth").auth;
+  }
+  return authInstance;
+}
 
 // =============================================================================
 // TYPE AUGMENTATION
@@ -144,6 +153,7 @@ export const authMiddleware: MiddlewareHandler = async (c, next) => {
 
   try {
     // Validate session via Better-auth API
+    const auth = getAuth();
     const sessionData = (await auth.api.getSession({
       headers: c.req.raw.headers,
     })) as SessionResponse | null;

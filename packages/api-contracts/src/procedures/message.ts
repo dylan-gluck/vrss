@@ -3,7 +3,7 @@
  * Direct messaging and conversation management
  */
 
-import type { Message, Conversation, PaginatedResponse } from '../types';
+import type { Conversation, Message, PaginatedResponse } from "../types";
 
 export namespace MessageProcedures {
   // message.sendMessage

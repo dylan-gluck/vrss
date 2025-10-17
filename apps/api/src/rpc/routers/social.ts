@@ -17,16 +17,16 @@
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md lines 2256-2279 (Friendship trigger)
  */
 
-import { z } from "zod";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { type Prisma, PrismaClient } from "@prisma/client";
 import { ErrorCode } from "@vrss/api-contracts";
-import { ProcedureContext } from "../types";
+import type { z } from "zod";
+import type { ProcedureContext } from "../types";
 import {
   followUserSchema,
-  unfollowUserSchema,
   getFollowersSchema,
   getFollowingSchema,
   getFriendsSchema,
+  unfollowUserSchema,
 } from "./schemas/social";
 
 // Initialize Prisma client
@@ -54,7 +54,11 @@ class RPCError extends Error {
 /**
  * Get validation error message safely
  */
-function getValidationError(validationResult: any): { message: string; field: string; errors: any[] } {
+function getValidationError(validationResult: any): {
+  message: string;
+  field: string;
+  errors: any[];
+} {
   const errors = validationResult.error?.errors || [];
   const firstError = errors[0];
   return {
@@ -89,7 +93,7 @@ function decodeCursor(cursor: string): { createdAt: Date; id: bigint } | null {
       createdAt: new Date(parsed.createdAt),
       id: BigInt(parsed.id),
     };
-  } catch (error) {
+  } catch (_error) {
     return null;
   }
 }
@@ -110,26 +114,20 @@ export const socialRouter = {
    * @throws {RPCError} USER_NOT_FOUND - Target user does not exist
    * @throws {RPCError} ALREADY_FOLLOWING - Already following this user
    */
-  "social.follow": async (
-    ctx: ProcedureContext<z.infer<typeof followUserSchema>>
-  ) => {
+  "social.follow": async (ctx: ProcedureContext<z.infer<typeof followUserSchema>>) => {
     // Check authentication
     if (!ctx.user) {
-      throw new RPCError(
-        ErrorCode.UNAUTHORIZED,
-        "Authentication required"
-      );
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "Authentication required");
     }
 
     // Validate input
     const validationResult = followUserSchema.safeParse(ctx.input);
     if (!validationResult.success) {
       const error = getValidationError(validationResult);
-      throw new RPCError(
-        ErrorCode.VALIDATION_ERROR,
-        error.message,
-        { field: error.field, errors: error.errors }
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, error.message, {
+        field: error.field,
+        errors: error.errors,
+      });
     }
 
     const { userId: targetUserId } = validationResult.data;
@@ -138,10 +136,7 @@ export const socialRouter = {
 
     // Check for self-follow
     if (followerId === followingId) {
-      throw new RPCError(
-        ErrorCode.VALIDATION_ERROR,
-        "Cannot follow yourself"
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, "Cannot follow yourself");
     }
 
     // Check if target user exists
@@ -150,10 +145,7 @@ export const socialRouter = {
     });
 
     if (!targetUser) {
-      throw new RPCError(
-        ErrorCode.USER_NOT_FOUND,
-        "User not found"
-      );
+      throw new RPCError(ErrorCode.USER_NOT_FOUND, "User not found");
     }
 
     // Check if already following
@@ -167,10 +159,7 @@ export const socialRouter = {
     });
 
     if (existingFollow) {
-      throw new RPCError(
-        ErrorCode.ALREADY_FOLLOWING,
-        "Already following this user"
-      );
+      throw new RPCError(ErrorCode.ALREADY_FOLLOWING, "Already following this user");
     }
 
     // Create follow relationship
@@ -197,26 +186,20 @@ export const socialRouter = {
    * @throws {RPCError} VALIDATION_ERROR - Invalid input
    * @throws {RPCError} NOT_FOUND - Not following this user (idempotent)
    */
-  "social.unfollow": async (
-    ctx: ProcedureContext<z.infer<typeof unfollowUserSchema>>
-  ) => {
+  "social.unfollow": async (ctx: ProcedureContext<z.infer<typeof unfollowUserSchema>>) => {
     // Check authentication
     if (!ctx.user) {
-      throw new RPCError(
-        ErrorCode.UNAUTHORIZED,
-        "Authentication required"
-      );
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "Authentication required");
     }
 
     // Validate input
     const validationResult = unfollowUserSchema.safeParse(ctx.input);
     if (!validationResult.success) {
       const error = getValidationError(validationResult);
-      throw new RPCError(
-        ErrorCode.VALIDATION_ERROR,
-        error.message,
-        { field: error.field, errors: error.errors }
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, error.message, {
+        field: error.field,
+        errors: error.errors,
+      });
     }
 
     const { userId: targetUserId } = validationResult.data;
@@ -234,10 +217,7 @@ export const socialRouter = {
     });
 
     if (!existingFollow) {
-      throw new RPCError(
-        ErrorCode.NOT_FOUND,
-        "Not following this user"
-      );
+      throw new RPCError(ErrorCode.NOT_FOUND, "Not following this user");
     }
 
     // Delete follow relationship
@@ -274,18 +254,12 @@ export const socialRouter = {
    *
    * @throws {RPCError} VALIDATION_ERROR - Invalid input
    */
-  "social.getFollowers": async (
-    ctx: ProcedureContext<z.infer<typeof getFollowersSchema>>
-  ) => {
+  "social.getFollowers": async (ctx: ProcedureContext<z.infer<typeof getFollowersSchema>>) => {
     // Validate input
     const validationResult = getFollowersSchema.safeParse(ctx.input);
     if (!validationResult.success) {
       const error = getValidationError(validationResult);
-      throw new RPCError(
-        ErrorCode.VALIDATION_ERROR,
-        error.message,
-        { field: error.field }
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, error.message, { field: error.field });
     }
 
     let { userId, limit, cursor } = validationResult.data;
@@ -297,10 +271,7 @@ export const socialRouter = {
     const targetUserId = userId || ctx.user?.id;
 
     if (!targetUserId) {
-      throw new RPCError(
-        ErrorCode.UNAUTHORIZED,
-        "User ID required when not authenticated"
-      );
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "User ID required when not authenticated");
     }
 
     // Build query for followers (users who follow the target user)
@@ -320,10 +291,7 @@ export const socialRouter = {
     // Fetch followers
     const follows = await prisma.userFollow.findMany({
       where,
-      orderBy: [
-        { createdAt: "desc" },
-        { id: "desc" },
-      ],
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
       take: limit + 1, // Fetch one extra to determine if there are more
       include: {
         follower: {
@@ -346,7 +314,8 @@ export const socialRouter = {
     const hasMore = follows.length > limit;
     const followsToReturn = hasMore ? follows.slice(0, limit) : follows;
     const lastFollow = followsToReturn[followsToReturn.length - 1];
-    const nextCursor = hasMore && lastFollow ? encodeCursor(lastFollow.createdAt, lastFollow.id) : undefined;
+    const nextCursor =
+      hasMore && lastFollow ? encodeCursor(lastFollow.createdAt, lastFollow.id) : undefined;
 
     // Map to user objects
     const followers = followsToReturn.map((f) => ({
@@ -355,10 +324,12 @@ export const socialRouter = {
       email: f.follower.email,
       displayName: f.follower.profile?.displayName || null,
       bio: f.follower.profile?.bio || null,
-      profile: f.follower.profile ? {
-        displayName: f.follower.profile.displayName,
-        bio: f.follower.profile.bio,
-      } : null,
+      profile: f.follower.profile
+        ? {
+            displayName: f.follower.profile.displayName,
+            bio: f.follower.profile.bio,
+          }
+        : null,
     }));
 
     return {
@@ -376,18 +347,12 @@ export const socialRouter = {
    *
    * @throws {RPCError} VALIDATION_ERROR - Invalid input
    */
-  "social.getFollowing": async (
-    ctx: ProcedureContext<z.infer<typeof getFollowingSchema>>
-  ) => {
+  "social.getFollowing": async (ctx: ProcedureContext<z.infer<typeof getFollowingSchema>>) => {
     // Validate input
     const validationResult = getFollowingSchema.safeParse(ctx.input);
     if (!validationResult.success) {
       const error = getValidationError(validationResult);
-      throw new RPCError(
-        ErrorCode.VALIDATION_ERROR,
-        error.message,
-        { field: error.field }
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, error.message, { field: error.field });
     }
 
     let { userId, limit, cursor } = validationResult.data;
@@ -399,10 +364,7 @@ export const socialRouter = {
     const targetUserId = userId || ctx.user?.id;
 
     if (!targetUserId) {
-      throw new RPCError(
-        ErrorCode.UNAUTHORIZED,
-        "User ID required when not authenticated"
-      );
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "User ID required when not authenticated");
     }
 
     // Build query for following (users that the target user follows)
@@ -422,10 +384,7 @@ export const socialRouter = {
     // Fetch following
     const follows = await prisma.userFollow.findMany({
       where,
-      orderBy: [
-        { createdAt: "desc" },
-        { id: "desc" },
-      ],
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
       take: limit + 1, // Fetch one extra to determine if there are more
       include: {
         following: {
@@ -448,7 +407,8 @@ export const socialRouter = {
     const hasMore = follows.length > limit;
     const followsToReturn = hasMore ? follows.slice(0, limit) : follows;
     const lastFollow = followsToReturn[followsToReturn.length - 1];
-    const nextCursor = hasMore && lastFollow ? encodeCursor(lastFollow.createdAt, lastFollow.id) : undefined;
+    const nextCursor =
+      hasMore && lastFollow ? encodeCursor(lastFollow.createdAt, lastFollow.id) : undefined;
 
     // Map to user objects
     const following = followsToReturn.map((f) => ({
@@ -457,10 +417,12 @@ export const socialRouter = {
       email: f.following.email,
       displayName: f.following.profile?.displayName || null,
       bio: f.following.profile?.bio || null,
-      profile: f.following.profile ? {
-        displayName: f.following.profile.displayName,
-        bio: f.following.profile.bio,
-      } : null,
+      profile: f.following.profile
+        ? {
+            displayName: f.following.profile.displayName,
+            bio: f.following.profile.bio,
+          }
+        : null,
     }));
 
     return {
@@ -478,18 +440,12 @@ export const socialRouter = {
    *
    * @throws {RPCError} VALIDATION_ERROR - Invalid input
    */
-  "social.getFriends": async (
-    ctx: ProcedureContext<z.infer<typeof getFriendsSchema>>
-  ) => {
+  "social.getFriends": async (ctx: ProcedureContext<z.infer<typeof getFriendsSchema>>) => {
     // Validate input
     const validationResult = getFriendsSchema.safeParse(ctx.input);
     if (!validationResult.success) {
       const error = getValidationError(validationResult);
-      throw new RPCError(
-        ErrorCode.VALIDATION_ERROR,
-        error.message,
-        { field: error.field }
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, error.message, { field: error.field });
     }
 
     let { userId, limit, cursor } = validationResult.data;
@@ -501,20 +457,14 @@ export const socialRouter = {
     const targetUserId = userId || ctx.user?.id;
 
     if (!targetUserId) {
-      throw new RPCError(
-        ErrorCode.UNAUTHORIZED,
-        "User ID required when not authenticated"
-      );
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "User ID required when not authenticated");
     }
 
     const targetUserIdBigInt = BigInt(targetUserId);
 
     // Build query for friendships (bidirectional lookup)
     const where: Prisma.FriendshipWhereInput = {
-      OR: [
-        { userId1: targetUserIdBigInt },
-        { userId2: targetUserIdBigInt },
-      ],
+      OR: [{ userId1: targetUserIdBigInt }, { userId2: targetUserIdBigInt }],
     };
 
     // Cursor pagination
@@ -542,10 +492,7 @@ export const socialRouter = {
     // Fetch friendships
     const friendships = await prisma.friendship.findMany({
       where,
-      orderBy: [
-        { createdAt: "desc" },
-        { id: "desc" },
-      ],
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
       take: limit + 1, // Fetch one extra to determine if there are more
       include: {
         user1: {
@@ -581,7 +528,10 @@ export const socialRouter = {
     const hasMore = friendships.length > limit;
     const friendshipsToReturn = hasMore ? friendships.slice(0, limit) : friendships;
     const lastFriendship = friendshipsToReturn[friendshipsToReturn.length - 1];
-    const nextCursor = hasMore && lastFriendship ? encodeCursor(lastFriendship.createdAt, lastFriendship.id) : undefined;
+    const nextCursor =
+      hasMore && lastFriendship
+        ? encodeCursor(lastFriendship.createdAt, lastFriendship.id)
+        : undefined;
 
     // Map to user objects (return the other user in the friendship)
     const friends = friendshipsToReturn.map((f) => {
@@ -594,10 +544,12 @@ export const socialRouter = {
         email: friend.email,
         displayName: friend.profile?.displayName || null,
         bio: friend.profile?.bio || null,
-        profile: friend.profile ? {
-          displayName: friend.profile.displayName,
-          bio: friend.profile.bio,
-        } : null,
+        profile: friend.profile
+          ? {
+              displayName: friend.profile.displayName,
+              bio: friend.profile.bio,
+            }
+          : null,
       };
     });
 

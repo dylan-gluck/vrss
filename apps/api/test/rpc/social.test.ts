@@ -21,13 +21,13 @@
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md lines 2256-2279 (Friendship trigger)
  */
 
-import { describe, it, expect, beforeEach, afterEach } from "bun:test";
-import { getTestDatabase } from "../setup";
-import { cleanAllTables } from "../helpers/database";
-import { buildUser } from "../fixtures/userBuilder";
-import { ProcedureContext } from "../../src/rpc/types";
+import { afterEach, beforeEach, describe, expect, it } from "bun:test";
 import { ErrorCode } from "@vrss/api-contracts";
 import { socialRouter } from "../../src/rpc/routers/social";
+import type { ProcedureContext } from "../../src/rpc/types";
+import { buildUser } from "../fixtures/userBuilder";
+import { cleanAllTables } from "../helpers/database";
+import { getTestDatabase } from "../setup";
 
 // Test utilities
 function createMockContext<T>(overrides?: Partial<ProcedureContext<T>>): ProcedureContext<T> {
@@ -64,15 +64,9 @@ describe("Social Router", () => {
   describe("social.follow", () => {
     it("should successfully follow a user", async () => {
       // Arrange: Create two users
-      const { user: follower } = await buildUser()
-        .username("follower")
-        .withProfile()
-        .build();
+      const { user: follower } = await buildUser().username("follower").withProfile().build();
 
-      const { user: target } = await buildUser()
-        .username("target")
-        .withProfile()
-        .build();
+      const { user: target } = await buildUser().username("target").withProfile().build();
 
       const ctx = createMockContext<{
         userId: string;
@@ -107,10 +101,7 @@ describe("Social Router", () => {
 
     it("should return error when trying to follow yourself", async () => {
       // Arrange: Create user
-      const { user } = await buildUser()
-        .username("selfie")
-        .withProfile()
-        .build();
+      const { user } = await buildUser().username("selfie").withProfile().build();
 
       const ctx = createMockContext<{
         userId: string;
@@ -136,10 +127,7 @@ describe("Social Router", () => {
         .withProfile()
         .build();
 
-      const { user: target } = await buildUser()
-        .username("duplicate_target")
-        .withProfile()
-        .build();
+      const { user: target } = await buildUser().username("duplicate_target").withProfile().build();
 
       // Create existing follow
       await db.userFollow.create({
@@ -168,15 +156,9 @@ describe("Social Router", () => {
 
     it("should create friendship when mutual follow detected (CRITICAL - DB trigger)", async () => {
       // Arrange: Create two users with one-way follow already established
-      const { user: userA } = await buildUser()
-        .username("user_a")
-        .withProfile()
-        .build();
+      const { user: userA } = await buildUser().username("user_a").withProfile().build();
 
-      const { user: userB } = await buildUser()
-        .username("user_b")
-        .withProfile()
-        .build();
+      const { user: userB } = await buildUser().username("user_b").withProfile().build();
 
       // UserB already follows UserA
       await db.userFollow.create({
@@ -190,7 +172,10 @@ describe("Social Router", () => {
       const beforeFriendship = await db.friendship.findFirst({
         where: {
           OR: [
-            { userId1: Math.min(Number(userA.id), Number(userB.id)), userId2: Math.max(Number(userA.id), Number(userB.id)) },
+            {
+              userId1: Math.min(Number(userA.id), Number(userB.id)),
+              userId2: Math.max(Number(userA.id), Number(userB.id)),
+            },
           ],
         },
       });
@@ -251,10 +236,7 @@ describe("Social Router", () => {
 
     it("should require authentication to follow", async () => {
       // Arrange: Create target user
-      const { user: target } = await buildUser()
-        .username("unauth_target")
-        .withProfile()
-        .build();
+      const { user: target } = await buildUser().username("unauth_target").withProfile().build();
 
       const ctx = createMockContext<{
         userId: string;
@@ -277,15 +259,9 @@ describe("Social Router", () => {
   describe("social.unfollow", () => {
     it("should successfully unfollow a user", async () => {
       // Arrange: Create follow relationship
-      const { user: follower } = await buildUser()
-        .username("unfollower")
-        .withProfile()
-        .build();
+      const { user: follower } = await buildUser().username("unfollower").withProfile().build();
 
-      const { user: target } = await buildUser()
-        .username("unfollowed")
-        .withProfile()
-        .build();
+      const { user: target } = await buildUser().username("unfollowed").withProfile().build();
 
       await db.userFollow.create({
         data: {
@@ -325,10 +301,7 @@ describe("Social Router", () => {
 
     it("should return error when not following (idempotent)", async () => {
       // Arrange: Create users without follow relationship
-      const { user: follower } = await buildUser()
-        .username("never_followed")
-        .withProfile()
-        .build();
+      const { user: follower } = await buildUser().username("never_followed").withProfile().build();
 
       const { user: target } = await buildUser()
         .username("never_followed_target")
@@ -354,15 +327,9 @@ describe("Social Router", () => {
 
     it("should delete friendship when unfollowing a friend", async () => {
       // Arrange: Create mutual follow (friendship)
-      const { user: userA } = await buildUser()
-        .username("friend_a")
-        .withProfile()
-        .build();
+      const { user: userA } = await buildUser().username("friend_a").withProfile().build();
 
-      const { user: userB } = await buildUser()
-        .username("friend_b")
-        .withProfile()
-        .build();
+      const { user: userB } = await buildUser().username("friend_b").withProfile().build();
 
       // Create mutual follows
       await db.userFollow.create({
@@ -427,15 +394,9 @@ describe("Social Router", () => {
 
     it("should preserve other user's follow if not mutual", async () => {
       // Arrange: Create one-way follow
-      const { user: userA } = await buildUser()
-        .username("oneway_a")
-        .withProfile()
-        .build();
+      const { user: userA } = await buildUser().username("oneway_a").withProfile().build();
 
-      const { user: userB } = await buildUser()
-        .username("oneway_b")
-        .withProfile()
-        .build();
+      const { user: userB } = await buildUser().username("oneway_b").withProfile().build();
 
       // Only UserA follows UserB (not mutual)
       await db.userFollow.create({
@@ -446,10 +407,7 @@ describe("Social Router", () => {
       });
 
       // UserC also follows UserB (unrelated)
-      const { user: userC } = await buildUser()
-        .username("oneway_c")
-        .withProfile()
-        .build();
+      const { user: userC } = await buildUser().username("oneway_c").withProfile().build();
 
       await db.userFollow.create({
         data: {
@@ -513,25 +471,13 @@ describe("Social Router", () => {
   describe("social.getFollowers", () => {
     it("should return followers list for a user", async () => {
       // Arrange: Create user with followers
-      const { user: target } = await buildUser()
-        .username("popular")
-        .withProfile()
-        .build();
+      const { user: target } = await buildUser().username("popular").withProfile().build();
 
-      const { user: follower1 } = await buildUser()
-        .username("follower1")
-        .withProfile()
-        .build();
+      const { user: follower1 } = await buildUser().username("follower1").withProfile().build();
 
-      const { user: follower2 } = await buildUser()
-        .username("follower2")
-        .withProfile()
-        .build();
+      const { user: follower2 } = await buildUser().username("follower2").withProfile().build();
 
-      const { user: follower3 } = await buildUser()
-        .username("follower3")
-        .withProfile()
-        .build();
+      const { user: follower3 } = await buildUser().username("follower3").withProfile().build();
 
       // Create follows
       await db.userFollow.create({
@@ -570,19 +516,11 @@ describe("Social Router", () => {
 
     it("should support cursor pagination (limit 20, nextCursor)", async () => {
       // Arrange: Create user with 25 followers
-      const { user: target } = await buildUser()
-        .username("mega_popular")
-        .withProfile()
-        .build();
+      const { user: target } = await buildUser().username("mega_popular").withProfile().build();
 
       const followerPromises = [];
       for (let i = 0; i < 25; i++) {
-        followerPromises.push(
-          buildUser()
-            .username(`follower_${i}`)
-            .withProfile()
-            .build()
-        );
+        followerPromises.push(buildUser().username(`follower_${i}`).withProfile().build());
       }
 
       const followers = await Promise.all(followerPromises);
@@ -641,10 +579,7 @@ describe("Social Router", () => {
 
     it("should return empty list for user with no followers", async () => {
       // Arrange: Create user with no followers
-      const { user: loner } = await buildUser()
-        .username("loner")
-        .withProfile()
-        .build();
+      const { user: loner } = await buildUser().username("loner").withProfile().build();
 
       const ctx = createMockContext<{
         userId?: string;
@@ -701,10 +636,7 @@ describe("Social Router", () => {
 
     it("should order by created_at DESC (newest followers first)", async () => {
       // Arrange: Create user with followers at different times
-      const { user: target } = await buildUser()
-        .username("ordered_target")
-        .withProfile()
-        .build();
+      const { user: target } = await buildUser().username("ordered_target").withProfile().build();
 
       const { user: oldFollower } = await buildUser()
         .username("old_follower")
@@ -808,20 +740,11 @@ describe("Social Router", () => {
         .withProfile()
         .build();
 
-      const { user: target1 } = await buildUser()
-        .username("target1")
-        .withProfile()
-        .build();
+      const { user: target1 } = await buildUser().username("target1").withProfile().build();
 
-      const { user: target2 } = await buildUser()
-        .username("target2")
-        .withProfile()
-        .build();
+      const { user: target2 } = await buildUser().username("target2").withProfile().build();
 
-      const { user: target3 } = await buildUser()
-        .username("target3")
-        .withProfile()
-        .build();
+      const { user: target3 } = await buildUser().username("target3").withProfile().build();
 
       // Create follows
       await db.userFollow.create({
@@ -860,19 +783,11 @@ describe("Social Router", () => {
 
     it("should support cursor pagination (limit 20, nextCursor)", async () => {
       // Arrange: Create user following 25 users
-      const { user: follower } = await buildUser()
-        .username("super_follower")
-        .withProfile()
-        .build();
+      const { user: follower } = await buildUser().username("super_follower").withProfile().build();
 
       const targetPromises = [];
       for (let i = 0; i < 25; i++) {
-        targetPromises.push(
-          buildUser()
-            .username(`target_${i}`)
-            .withProfile()
-            .build()
-        );
+        targetPromises.push(buildUser().username(`target_${i}`).withProfile().build());
       }
 
       const targets = await Promise.all(targetPromises);
@@ -931,10 +846,7 @@ describe("Social Router", () => {
 
     it("should return empty list for user following no one", async () => {
       // Arrange: Create user who follows nobody
-      const { user: antisocial } = await buildUser()
-        .username("antisocial")
-        .withProfile()
-        .build();
+      const { user: antisocial } = await buildUser().username("antisocial").withProfile().build();
 
       const ctx = createMockContext<{
         userId?: string;
@@ -991,20 +903,11 @@ describe("Social Router", () => {
 
     it("should order by created_at DESC (newest follows first)", async () => {
       // Arrange: Create user following others at different times
-      const { user: follower } = await buildUser()
-        .username("time_follower")
-        .withProfile()
-        .build();
+      const { user: follower } = await buildUser().username("time_follower").withProfile().build();
 
-      const { user: oldTarget } = await buildUser()
-        .username("old_target")
-        .withProfile()
-        .build();
+      const { user: oldTarget } = await buildUser().username("old_target").withProfile().build();
 
-      const { user: newTarget } = await buildUser()
-        .username("new_target")
-        .withProfile()
-        .build();
+      const { user: newTarget } = await buildUser().username("new_target").withProfile().build();
 
       // Create old follow
       await db.userFollow.create({
@@ -1093,15 +996,9 @@ describe("Social Router", () => {
   describe("Friendship Creation (DB Trigger Integration)", () => {
     it("should verify both users appear in each other's friends list", async () => {
       // Arrange: Create mutual follow
-      const { user: userA } = await buildUser()
-        .username("mutual_a")
-        .withProfile()
-        .build();
+      const { user: userA } = await buildUser().username("mutual_a").withProfile().build();
 
-      const { user: userB } = await buildUser()
-        .username("mutual_b")
-        .withProfile()
-        .build();
+      const { user: userB } = await buildUser().username("mutual_b").withProfile().build();
 
       // Create bidirectional follows
       await db.userFollow.create({
@@ -1125,15 +1022,9 @@ describe("Social Router", () => {
 
     it("should verify friendship record exists in DB after mutual follow", async () => {
       // Arrange: Create users
-      const { user: userX } = await buildUser()
-        .username("user_x")
-        .withProfile()
-        .build();
+      const { user: userX } = await buildUser().username("user_x").withProfile().build();
 
-      const { user: userY } = await buildUser()
-        .username("user_y")
-        .withProfile()
-        .build();
+      const { user: userY } = await buildUser().username("user_y").withProfile().build();
 
       // Act: Create mutual follows
       await db.userFollow.create({
@@ -1161,15 +1052,9 @@ describe("Social Router", () => {
 
     it("should not create duplicate friendships", async () => {
       // Arrange: Create mutual follow
-      const { user: userP } = await buildUser()
-        .username("user_p")
-        .withProfile()
-        .build();
+      const { user: userP } = await buildUser().username("user_p").withProfile().build();
 
-      const { user: userQ } = await buildUser()
-        .username("user_q")
-        .withProfile()
-        .build();
+      const { user: userQ } = await buildUser().username("user_q").withProfile().build();
 
       // Create mutual follows
       await db.userFollow.create({
@@ -1200,15 +1085,9 @@ describe("Social Router", () => {
   describe("Edge Cases", () => {
     it("should handle pagination with empty cursor", async () => {
       // Arrange: Create user with followers
-      const { user: target } = await buildUser()
-        .username("edge_target")
-        .withProfile()
-        .build();
+      const { user: target } = await buildUser().username("edge_target").withProfile().build();
 
-      const { user: follower } = await buildUser()
-        .username("edge_follower")
-        .withProfile()
-        .build();
+      const { user: follower } = await buildUser().username("edge_follower").withProfile().build();
 
       await db.userFollow.create({
         data: { followerId: follower.id, followingId: target.id },
@@ -1232,15 +1111,9 @@ describe("Social Router", () => {
 
     it("should handle very large limit values", async () => {
       // Arrange: Create user with followers
-      const { user: target } = await buildUser()
-        .username("limit_target")
-        .withProfile()
-        .build();
+      const { user: target } = await buildUser().username("limit_target").withProfile().build();
 
-      const { user: follower } = await buildUser()
-        .username("limit_follower")
-        .withProfile()
-        .build();
+      const { user: follower } = await buildUser().username("limit_follower").withProfile().build();
 
       await db.userFollow.create({
         data: { followerId: follower.id, followingId: target.id },

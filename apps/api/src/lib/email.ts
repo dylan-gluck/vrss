@@ -97,7 +97,7 @@ function getEmailConfig(): EmailConfig {
   if (detectedProvider === "smtp") {
     config.smtp = {
       host: process.env.SMTP_HOST || "localhost",
-      port: parseInt(process.env.SMTP_PORT || "587", 10),
+      port: Number.parseInt(process.env.SMTP_PORT || "587", 10),
       secure: process.env.SMTP_SECURE === "true",
       auth: {
         user: process.env.SMTP_USER || "",
@@ -130,7 +130,7 @@ async function sendEmailConsole(options: EmailOptions): Promise<void> {
   console.log("\n--- Plain Text ---");
   console.log(options.text);
   console.log("\n--- HTML Preview ---");
-  console.log(options.html.substring(0, 500) + "...");
+  console.log(`${options.html.substring(0, 500)}...`);
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 }
 
@@ -145,10 +145,10 @@ async function sendEmailSMTP(options: EmailOptions, config: EmailConfig): Promis
     const nodemailer = await import("nodemailer");
 
     const transporter = nodemailer.default.createTransport({
-      host: config.smtp!.host,
-      port: config.smtp!.port,
-      secure: config.smtp!.secure,
-      auth: config.smtp!.auth,
+      host: config.smtp?.host,
+      port: config.smtp?.port,
+      secure: config.smtp?.secure,
+      auth: config.smtp?.auth,
     });
 
     await transporter.sendMail({
@@ -176,7 +176,7 @@ async function sendEmailSendGrid(options: EmailOptions, config: EmailConfig): Pr
     // @ts-ignore - @sendgrid/mail is optional dependency
     const sgMail = await import("@sendgrid/mail");
 
-    sgMail.default.setApiKey(config.sendgrid!.apiKey);
+    sgMail.default.setApiKey(config.sendgrid?.apiKey);
 
     await sgMail.default.send({
       from: config.from,

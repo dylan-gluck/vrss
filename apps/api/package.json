@@ -11,7 +11,9 @@
     "test:watch": "bun test --watch",
     "test:coverage": "bun test --coverage",
     "test:ui": "bun test --watch",
-    "lint": "eslint .",
+    "lint": "biome lint --write .",
+    "lint:check": "biome check .",
+    "format": "biome format --write .",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist .turbo coverage",
     "db:generate": "prisma generate",
@@ -36,7 +38,6 @@
     "@testcontainers/postgresql": "^11.7.1",
     "@types/bun": "latest",
     "@types/node": "^24.8.0",
-    "@vrss/eslint-config": "workspace:*",
     "@vrss/typescript-config": "workspace:*",
     "prisma": "^6.1.0",
     "testcontainers": "^11.7.1"

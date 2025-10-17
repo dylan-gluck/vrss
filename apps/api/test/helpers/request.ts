@@ -5,8 +5,8 @@
  * JSON handling, and response validation.
  */
 
-import { Hono } from "hono";
-import { TestAuthContext } from "./auth";
+import type { Hono } from "hono";
+import type { TestAuthContext } from "./auth";
 
 /**
  * Response wrapper with convenience methods
@@ -77,9 +77,7 @@ export class TestResponse {
   expectBodyContains(partial: Record<string, any>): this {
     for (const [key, value] of Object.entries(partial)) {
       if (this.body[key] !== value) {
-        throw new Error(
-          `Expected body.${key} to be ${value}, got ${this.body[key]}`
-        );
+        throw new Error(`Expected body.${key} to be ${value}, got ${this.body[key]}`);
       }
     }
     return this;
@@ -105,7 +103,7 @@ export class TestRequest {
    * Add authentication header
    */
   auth(token: string): this {
-    this.headers["Authorization"] = `Bearer ${token}`;
+    this.headers.Authorization = `Bearer ${token}`;
     return this;
   }
 
@@ -127,7 +125,7 @@ export class TestRequest {
   /**
    * Set multiple headers
    */
-  headers(headers: Record<string, string>): this {
+  setHeaders(headers: Record<string, string>): this {
     Object.assign(this.headers, headers);
     return this;
   }
@@ -143,7 +141,7 @@ export class TestRequest {
   /**
    * Add multiple query parameters
    */
-  queryParams(params: Record<string, string>): this {
+  setQueryParams(params: Record<string, string>): this {
     Object.assign(this.queryParams, params);
     return this;
   }
@@ -176,7 +174,7 @@ export class TestRequest {
     const headers = response.headers;
 
     // Parse body as JSON if possible
-    let parsedBody;
+    let parsedBody: any;
     const contentType = headers.get("content-type") || "";
     if (contentType.includes("application/json")) {
       parsedBody = await response.json();
@@ -327,9 +325,7 @@ export function expectResponse(
       response.expectBodyContains(expected.body);
     } else {
       if (response.body !== expected.body) {
-        throw new Error(
-          `Expected body to be ${expected.body}, got ${response.body}`
-        );
+        throw new Error(`Expected body to be ${expected.body}, got ${response.body}`);
       }
     }
   }
@@ -338,9 +334,7 @@ export function expectResponse(
     for (const [key, value] of Object.entries(expected.headers)) {
       const actual = response.getHeader(key);
       if (actual !== value) {
-        throw new Error(
-          `Expected header ${key} to be ${value}, got ${actual}`
-        );
+        throw new Error(`Expected header ${key} to be ${value}, got ${actual}`);
       }
     }
   }

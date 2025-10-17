@@ -15,10 +15,10 @@
  * @see docs/SECURITY_DESIGN.md for session configuration
  */
 
-import { describe, test, expect, beforeEach } from "bun:test";
-import { getTestDatabase } from "../setup";
-import { cleanUserData } from "../helpers/database";
+import { beforeEach, describe, expect, test } from "bun:test";
 import { createAuthenticatedUser, createExpiredSession } from "../helpers/auth";
+import { cleanUserData } from "../helpers/database";
+import { getTestDatabase } from "../setup";
 
 describe("auth.getSession", () => {
   beforeEach(async () => {
@@ -149,7 +149,7 @@ describe("auth.getSession", () => {
     const db = getTestDatabase();
 
     // Arrange: Create session with lastActivityAt 12 hours ago
-    const { user, session } = await createAuthenticatedUser();
+    const { session } = await createAuthenticatedUser();
 
     const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000);
     await db.session.update({
@@ -169,7 +169,7 @@ describe("auth.getSession", () => {
     expect(currentSession?.lastActivityAt.getTime()).toBeLessThan(Date.now() - 11 * 60 * 60 * 1000);
 
     // Check if refresh is needed (lastActivityAt > 24h ago)
-    const timeSinceActivity = Date.now() - currentSession!.lastActivityAt.getTime();
+    const timeSinceActivity = Date.now() - currentSession?.lastActivityAt.getTime();
     const shouldRefresh = timeSinceActivity > 24 * 60 * 60 * 1000;
 
     expect(shouldRefresh).toBe(false); // Only 12 hours, no refresh needed
@@ -194,7 +194,7 @@ describe("auth.getSession", () => {
     const db = getTestDatabase();
 
     // Arrange: Create session with lastActivityAt > 24h ago
-    const { user, session } = await createAuthenticatedUser();
+    const { session } = await createAuthenticatedUser();
 
     const twentyFiveHoursAgo = new Date(Date.now() - 25 * 60 * 60 * 1000);
     await db.session.update({
@@ -233,10 +233,10 @@ describe("auth.getSession", () => {
     const { user } = await createAuthenticatedUser();
 
     // Create additional sessions
-    const desktopSession = await db.session.create({
+    const _desktopSession = await db.session.create({
       data: {
         userId: user.id,
-        token: "desktop_token_" + Date.now(),
+        token: `desktop_token_${Date.now()}`,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         userAgent: "Mozilla/5.0 (Desktop)",
         ipAddress: "192.168.1.100",
@@ -244,10 +244,10 @@ describe("auth.getSession", () => {
       },
     });
 
-    const mobileSession = await db.session.create({
+    const _mobileSession = await db.session.create({
       data: {
         userId: user.id,
-        token: "mobile_token_" + Date.now(),
+        token: `mobile_token_${Date.now()}`,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         userAgent: "Mozilla/5.0 (Mobile)",
         ipAddress: "192.168.1.101",
@@ -255,10 +255,10 @@ describe("auth.getSession", () => {
       },
     });
 
-    const tabletSession = await db.session.create({
+    const _tabletSession = await db.session.create({
       data: {
         userId: user.id,
-        token: "tablet_token_" + Date.now(),
+        token: `tablet_token_${Date.now()}`,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         userAgent: "Mozilla/5.0 (Tablet)",
         ipAddress: "192.168.1.102",
@@ -284,16 +284,16 @@ describe("auth.getSession", () => {
     expect(uniqueTokens.size).toBe(activeSessions.length);
 
     // Assert: All belong to same user
-    activeSessions.forEach((session) => {
+    for (const session of activeSessions) {
       expect(session.userId).toBe(user.id);
-    });
+    }
   });
 
   test("should reject session for suspended user", async () => {
     const db = getTestDatabase();
 
     // Arrange: Create authenticated user then suspend
-    const { user, session, token } = await createAuthenticatedUser();
+    const { user, token } = await createAuthenticatedUser();
 
     await db.user.update({
       where: { id: user.id },
@@ -326,7 +326,7 @@ describe("auth.getSession", () => {
     const db = getTestDatabase();
 
     // Arrange: Create authenticated user then delete
-    const { user, session, token } = await createAuthenticatedUser();
+    const { user, token } = await createAuthenticatedUser();
 
     await db.user.update({
       where: { id: user.id },
@@ -369,7 +369,7 @@ describe("auth.getSession", () => {
     const session = await db.session.create({
       data: {
         userId: user.id,
-        token: "metadata_token_" + Date.now(),
+        token: `metadata_token_${Date.now()}`,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         userAgent,
         ipAddress,
@@ -399,7 +399,7 @@ describe("auth.getSession", () => {
   });
 
   test("should enforce 7-day session expiry", async () => {
-    const db = getTestDatabase();
+    const _db = getTestDatabase();
 
     // Arrange: Create session
     const { session } = await createAuthenticatedUser();
@@ -426,7 +426,7 @@ describe("auth.getSession", () => {
     // Arrange: Create multiple expired sessions
     const { user } = await createAuthenticatedUser();
 
-    const expiredSessions = await Promise.all([
+    const _expiredSessions = await Promise.all([
       createExpiredSession(user.id),
       createExpiredSession(user.id),
       createExpiredSession(user.id),
@@ -462,7 +462,7 @@ describe("auth.getSession", () => {
     const db = getTestDatabase();
 
     // Arrange: Create user with unverified email and session
-    const { user, session, token } = await createAuthenticatedUser({
+    const { token } = await createAuthenticatedUser({
       emailVerified: false,
     });
 

@@ -1,17 +1,12 @@
-import { test, expect } from '@playwright/test';
-import { AuthHelper } from '../helpers/auth-helper';
+import { expect, test } from "@playwright/test";
+import { FeedBuilder, MessageBuilder, PostBuilder, SAMPLE_POSTS } from "../fixtures/test-data";
 import {
-  MAYA_MUSIC,
-  MARCUS_CONSUMER,
   JADE_CAFE,
+  MARCUS_CONSUMER,
+  MAYA_MUSIC,
   generateUniqueTestUser,
-} from '../fixtures/test-users';
-import {
-  PostBuilder,
-  FeedBuilder,
-  MessageBuilder,
-  SAMPLE_POSTS,
-} from '../fixtures/test-data';
+} from "../fixtures/test-users";
+import { AuthHelper } from "../helpers/auth-helper";
 
 /**
  * Example E2E Test Scenarios
@@ -23,18 +18,18 @@ import {
  * Implement full critical scenarios based on TEST-SPECIFICATIONS.md
  */
 
-test.describe('Example: User Authentication Flows', () => {
-  test('should register and login a new user', async ({ page }) => {
+test.describe("Example: User Authentication Flows", () => {
+  test("should register and login a new user", async ({ page }) => {
     const authHelper = new AuthHelper(page);
-    const uniqueUser = generateUniqueTestUser('example_user');
+    const uniqueUser = generateUniqueTestUser("example_user");
 
     // Register user
-    await test.step('Register new user', async () => {
+    await test.step("Register new user", async () => {
       await authHelper.registerViaAPI(uniqueUser);
     });
 
     // Login
-    await test.step('Login with new user', async () => {
+    await test.step("Login with new user", async () => {
       await authHelper.loginViaAPI({
         email: uniqueUser.email,
         password: uniqueUser.password,
@@ -42,40 +37,38 @@ test.describe('Example: User Authentication Flows', () => {
     });
 
     // Verify session
-    await test.step('Verify authenticated session', async () => {
+    await test.step("Verify authenticated session", async () => {
       const isAuth = await authHelper.isAuthenticated();
       expect(isAuth).toBeTruthy();
     });
 
     // Navigate to home
-    await test.step('Navigate to home page', async () => {
-      await page.goto('/home');
+    await test.step("Navigate to home page", async () => {
+      await page.goto("/home");
       await expect(page).toHaveURL(/\/(home|feed|profile)/);
     });
   });
 
-  test('should handle login with invalid credentials', async ({ page }) => {
-    await page.goto('/login');
+  test("should handle login with invalid credentials", async ({ page }) => {
+    await page.goto("/login");
 
     // Enter invalid credentials
-    await page.fill('input[name="email"]', 'invalid@example.com');
-    await page.fill('input[name="password"]', 'WrongPassword123!');
+    await page.fill('input[name="email"]', "invalid@example.com");
+    await page.fill('input[name="password"]', "WrongPassword123!");
 
     // Submit form
     await page.click('button[type="submit"]');
 
     // Should show error message (adjust selector based on your UI)
-    await expect(
-      page.locator('text=/Invalid|incorrect|wrong/i')
-    ).toBeVisible({ timeout: 5000 });
+    await expect(page.locator("text=/Invalid|incorrect|wrong/i")).toBeVisible({ timeout: 5000 });
 
     // Should remain on login page
     await expect(page).toHaveURL(/\/login/);
   });
 
-  test('should logout successfully', async ({ page }) => {
+  test("should logout successfully", async ({ page }) => {
     const authHelper = new AuthHelper(page);
-    const uniqueUser = generateUniqueTestUser('logout_test');
+    const uniqueUser = generateUniqueTestUser("logout_test");
 
     // Setup authenticated session
     await authHelper.setupAuthenticatedSession(uniqueUser);
@@ -89,8 +82,8 @@ test.describe('Example: User Authentication Flows', () => {
   });
 });
 
-test.describe('Example: Using Test Personas', () => {
-  test('should use Maya Music persona', async ({ page }) => {
+test.describe("Example: Using Test Personas", () => {
+  test("should use Maya Music persona", async ({ page }) => {
     const authHelper = new AuthHelper(page);
 
     // Login as Maya Music (creator persona)
@@ -103,53 +96,51 @@ test.describe('Example: Using Test Personas', () => {
     await expect(page.locator(`text=${MAYA_MUSIC.username}`)).toBeVisible();
   });
 
-  test('should use Marcus Consumer persona', async ({ page }) => {
+  test("should use Marcus Consumer persona", async ({ page }) => {
     const authHelper = new AuthHelper(page);
 
     // Login as Marcus (consumer persona)
     await authHelper.setupAuthenticatedSession(MARCUS_CONSUMER);
 
     // Navigate to discovery page
-    await page.goto('/discover');
+    await page.goto("/discover");
 
     // Should be able to search and discover content
     await expect(page).toHaveURL(/\/discover/);
   });
 
-  test('should use Jade Cafe persona (near storage limit)', async ({ page }) => {
+  test("should use Jade Cafe persona (near storage limit)", async ({ page }) => {
     const authHelper = new AuthHelper(page);
 
     // Login as Jade Cafe (business persona with high storage usage)
     await authHelper.setupAuthenticatedSession(JADE_CAFE);
 
     // Navigate to post creation
-    await page.goto('/post/create');
+    await page.goto("/post/create");
 
     // Storage warning should be visible (45MB of 50MB used)
     // Adjust selector based on your UI implementation
-    await expect(
-      page.locator('text=/storage|quota|limit/i')
-    ).toBeVisible({ timeout: 5000 });
+    await expect(page.locator("text=/storage|quota|limit/i")).toBeVisible({ timeout: 5000 });
   });
 });
 
-test.describe('Example: Using Test Data Builders', () => {
-  test('should create test post data', async ({ page }) => {
+test.describe("Example: Using Test Data Builders", () => {
+  test("should create test post data", async ({ page }) => {
     const authHelper = new AuthHelper(page);
-    const uniqueUser = generateUniqueTestUser('post_test');
+    const uniqueUser = generateUniqueTestUser("post_test");
 
     await authHelper.setupAuthenticatedSession(uniqueUser);
 
     // Build test post using builder pattern
     const testPost = new PostBuilder()
-      .withType('text')
-      .withContent('This is a test post created with PostBuilder')
+      .withType("text")
+      .withContent("This is a test post created with PostBuilder")
       .withAuthor(uniqueUser.username)
-      .withTags(['#test', '#example'])
+      .withTags(["#test", "#example"])
       .build();
 
     // Navigate to post creation page
-    await page.goto('/post/create');
+    await page.goto("/post/create");
 
     // Fill post form (adjust selectors based on your UI)
     await page.selectOption('select[name="type"]', testPost.type);
@@ -159,7 +150,7 @@ test.describe('Example: Using Test Data Builders', () => {
     if (testPost.tags && testPost.tags.length > 0) {
       for (const tag of testPost.tags) {
         await page.fill('input[name="tags"]', tag);
-        await page.keyboard.press('Enter');
+        await page.keyboard.press("Enter");
       }
     }
 
@@ -172,30 +163,30 @@ test.describe('Example: Using Test Data Builders', () => {
     });
   });
 
-  test('should create test feed with filters', async ({ page }) => {
+  test("should create test feed with filters", async ({ page }) => {
     const authHelper = new AuthHelper(page);
 
     await authHelper.setupAuthenticatedSession(MARCUS_CONSUMER);
 
     // Build test feed using builder pattern
     const testFeed = new FeedBuilder()
-      .withName('Example Music Feed')
+      .withName("Example Music Feed")
       .withOwner(MARCUS_CONSUMER.username)
       .addFilter({
-        field: 'post_type',
-        operator: 'equals',
-        value: 'music',
+        field: "post_type",
+        operator: "equals",
+        value: "music",
       })
       .addFilter({
-        field: 'likes',
-        operator: 'greater_than',
+        field: "likes",
+        operator: "greater_than",
         value: 10,
       })
-      .withLogicalOperator('AND')
+      .withLogicalOperator("AND")
       .build();
 
     // Navigate to feed builder
-    await page.goto('/feeds/create');
+    await page.goto("/feeds/create");
 
     // Fill feed form
     await page.fill('input[name="feedName"]', testFeed.name);
@@ -217,24 +208,21 @@ test.describe('Example: Using Test Data Builders', () => {
     });
   });
 
-  test('should use sample post data', async ({ page }) => {
+  test("should use sample post data", async () => {
     // Use predefined sample posts from test-data.ts
     const mayaPost = SAMPLE_POSTS[0]; // Maya's music post
 
-    console.log('Sample post:', mayaPost);
+    console.log("Sample post:", mayaPost);
 
     // Use sample data in your tests
-    expect(mayaPost.type).toBe('music');
-    expect(mayaPost.authorUsername).toBe('maya_music');
-    expect(mayaPost.tags).toContain('#indie');
+    expect(mayaPost.type).toBe("music");
+    expect(mayaPost.authorUsername).toBe("maya_music");
+    expect(mayaPost.tags).toContain("#indie");
   });
 });
 
-test.describe('Example: Multi-Browser Testing', () => {
-  test('should work on all configured browsers', async ({
-    page,
-    browserName,
-  }) => {
+test.describe("Example: Multi-Browser Testing", () => {
+  test("should work on all configured browsers", async ({ page, browserName }) => {
     // This test runs on chromium, mobile-chrome, and mobile-safari
     console.log(`Testing on: ${browserName}`);
 
@@ -245,7 +233,7 @@ test.describe('Example: Multi-Browser Testing', () => {
     await authHelper.setupAuthenticatedSession(uniqueUser);
 
     // Navigate to home
-    await page.goto('/home');
+    await page.goto("/home");
 
     // Verify page loads on all browsers
     await expect(page).toHaveURL(/\/(home|feed|profile)/);
@@ -256,24 +244,22 @@ test.describe('Example: Multi-Browser Testing', () => {
     });
   });
 
-  test('should handle responsive layouts', async ({ page, browserName }) => {
+  test("should handle responsive layouts", async ({ page, browserName }) => {
     const authHelper = new AuthHelper(page);
     const uniqueUser = generateUniqueTestUser(`responsive_test_${browserName}`);
 
     await authHelper.setupAuthenticatedSession(uniqueUser);
-    await page.goto('/home');
+    await page.goto("/home");
 
     // Get viewport size
     const viewport = page.viewportSize();
-    console.log(
-      `Viewport for ${browserName}: ${viewport?.width}x${viewport?.height}`
-    );
+    console.log(`Viewport for ${browserName}: ${viewport?.width}x${viewport?.height}`);
 
     // Verify page is interactive
-    await expect(page.locator('body')).toBeVisible();
+    await expect(page.locator("body")).toBeVisible();
 
     // Mobile-specific checks
-    if (browserName.includes('mobile')) {
+    if (browserName.includes("mobile")) {
       // Verify mobile menu exists (adjust selector)
       await expect(
         page.locator('[data-testid="mobile-menu"], button[aria-label="Menu"]')
@@ -282,10 +268,10 @@ test.describe('Example: Multi-Browser Testing', () => {
   });
 });
 
-test.describe('Example: API Integration', () => {
-  test('should interact with backend API', async ({ page }) => {
+test.describe("Example: API Integration", () => {
+  test("should interact with backend API", async ({ page }) => {
     const authHelper = new AuthHelper(page);
-    const uniqueUser = generateUniqueTestUser('api_test');
+    const uniqueUser = generateUniqueTestUser("api_test");
 
     // Register via API
     await authHelper.registerViaAPI(uniqueUser);
@@ -298,7 +284,7 @@ test.describe('Example: API Integration', () => {
 
     // Get current user from API
     const currentUser = await authHelper.getCurrentUser();
-    console.log('Current user:', currentUser);
+    console.log("Current user:", currentUser);
 
     // Verify user data
     if (currentUser) {
@@ -306,57 +292,55 @@ test.describe('Example: API Integration', () => {
     }
   });
 
-  test('should check API health', async ({ page }) => {
-    const response = await page.request.get('http://localhost:3000/health');
+  test("should check API health", async ({ page }) => {
+    const response = await page.request.get("http://localhost:3000/health");
 
     expect(response.ok()).toBeTruthy();
     expect(response.status()).toBe(200);
 
     const body = await response.text();
-    console.log('API health response:', body);
+    console.log("API health response:", body);
   });
 });
 
-test.describe('Example: Error Handling', () => {
-  test('should handle network errors', async ({ page }) => {
+test.describe("Example: Error Handling", () => {
+  test("should handle network errors", async ({ page }) => {
     // Simulate offline mode
     await page.context().setOffline(true);
 
     // Try to navigate
-    await page
-      .goto('/', { waitUntil: 'domcontentloaded', timeout: 5000 })
-      .catch(() => {
-        // Expected to fail
-      });
+    await page.goto("/", { waitUntil: "domcontentloaded", timeout: 5000 }).catch(() => {
+      // Expected to fail
+    });
 
     // Re-enable network
     await page.context().setOffline(false);
 
     // Should recover
-    await page.goto('/');
+    await page.goto("/");
     await expect(page).toHaveURL(/localhost/);
   });
 
-  test('should handle 404 errors', async ({ page }) => {
-    await page.goto('/nonexistent-page');
+  test("should handle 404 errors", async ({ page }) => {
+    await page.goto("/nonexistent-page");
 
     // Should show 404 page or redirect (adjust based on your app)
     const url = page.url();
-    console.log('404 navigation result:', url);
+    console.log("404 navigation result:", url);
 
     // Verify error handling
-    await expect(
-      page.locator('text=/404|not found|page not found/i')
-    ).toBeVisible({ timeout: 5000 });
+    await expect(page.locator("text=/404|not found|page not found/i")).toBeVisible({
+      timeout: 5000,
+    });
   });
 });
 
-test.describe('Example: Performance Monitoring', () => {
-  test('should measure page load time', async ({ page }) => {
+test.describe("Example: Performance Monitoring", () => {
+  test("should measure page load time", async ({ page }) => {
     const startTime = Date.now();
 
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
 
     const loadTime = Date.now() - startTime;
 
@@ -366,9 +350,9 @@ test.describe('Example: Performance Monitoring', () => {
     expect(loadTime).toBeLessThan(5000); // Should load in under 5 seconds
   });
 
-  test('should measure authentication flow time', async ({ page }) => {
+  test("should measure authentication flow time", async ({ page }) => {
     const authHelper = new AuthHelper(page);
-    const uniqueUser = generateUniqueTestUser('perf_test');
+    const uniqueUser = generateUniqueTestUser("perf_test");
 
     const startTime = Date.now();
 

@@ -12,18 +12,22 @@
  * The setup runs once for all tests in this file.
  */
 
-import { describe, it, expect, beforeEach } from "bun:test";
+import { beforeEach, describe, expect, it } from "bun:test";
 
 // Import setup to trigger container lifecycle
 import "./setup";
-import { getTestDatabase } from "./setup";
-import { cleanAllTables, getTableCounts } from "./helpers/database";
-import { createAuthContext, hashPassword, verifyPassword } from "./helpers/auth";
-import { buildUser, createTestUser } from "./fixtures/userBuilder";
-import { buildPost, createTextPost } from "./fixtures/postBuilder";
 import { buildFeed, createCustomFeed } from "./fixtures/feedBuilder";
+import { buildPost, createTextPost } from "./fixtures/postBuilder";
+import { buildUser, createTestUser } from "./fixtures/userBuilder";
+import { createAuthContext, hashPassword, verifyPassword } from "./helpers/auth";
+import { cleanAllTables, getTableCounts } from "./helpers/database";
+import { getTestDatabase } from "./setup";
 
 describe("Infrastructure: Database Connection", () => {
+  beforeEach(async () => {
+    await cleanAllTables();
+  });
+
   it("should connect to test database", async () => {
     const db = getTestDatabase();
     expect(db).toBeDefined();
@@ -180,20 +184,18 @@ describe("Infrastructure: User Builder", () => {
 
     expect(user).toBeDefined();
     expect(profile).toBeDefined();
-    expect(profile!.displayName).toBe("Test User");
-    expect(profile!.bio).toBe("This is a test bio");
-    expect(profile!.userId).toBe(user.id);
+    expect(profile?.displayName).toBe("Test User");
+    expect(profile?.bio).toBe("This is a test bio");
+    expect(profile?.userId).toBe(user.id);
   });
 
   it("should build user with storage quota", async () => {
-    const { user, storage } = await buildUser()
-      .withStorageQuotaMB(100)
-      .build();
+    const { user, storage } = await buildUser().withStorageQuotaMB(100).build();
 
     expect(user).toBeDefined();
     expect(storage).toBeDefined();
-    expect(storage!.quotaBytes).toBe(BigInt(100 * 1024 * 1024));
-    expect(storage!.usedBytes).toBe(BigInt(0));
+    expect(storage?.quotaBytes).toBe(BigInt(100 * 1024 * 1024));
+    expect(storage?.usedBytes).toBe(BigInt(0));
   });
 
   it("should build multiple users", async () => {
@@ -203,7 +205,7 @@ describe("Infrastructure: User Builder", () => {
     expect(users.length).toBe(3);
 
     // Verify all users have unique usernames
-    const usernames = users.map(u => u.user.username);
+    const usernames = users.map((u) => u.user.username);
     const uniqueUsernames = new Set(usernames);
     expect(uniqueUsernames.size).toBe(3);
   });
@@ -224,7 +226,7 @@ describe("Infrastructure: Post Builder", () => {
       .build();
 
     expect(post).toBeDefined();
-    expect(post.type).toBe("text");
+    expect(post.type).toBe("text_short");
     expect(post.content).toBe("Test post content");
     expect(post.status).toBe("published");
     expect(post.userId).toBe(user.id);
@@ -258,7 +260,7 @@ describe("Infrastructure: Post Builder", () => {
       .published()
       .build();
 
-    expect(post.type).toBe("gallery");
+    expect(post.type).toBe("image_gallery");
     expect(media.length).toBe(3);
 
     // Verify display order
@@ -276,7 +278,7 @@ describe("Infrastructure: Post Builder", () => {
       .published()
       .build();
 
-    expect(post.type).toBe("video");
+    expect(post.type).toBe("video_short");
     expect(media.length).toBe(1);
     expect(media[0].type).toBe("video");
     expect(media[0].durationSeconds).toBe(120);
@@ -284,11 +286,7 @@ describe("Infrastructure: Post Builder", () => {
 
   it("should build draft post", async () => {
     const { user } = await buildUser().build();
-    const { post } = await buildPost()
-      .byUser(user.id)
-      .asText()
-      .draft()
-      .build();
+    const { post } = await buildPost().byUser(user.id).asText().draft().build();
 
     expect(post.status).toBe("draft");
   });
@@ -321,10 +319,7 @@ describe("Infrastructure: Feed Builder", () => {
 
   it("should build custom feed", async () => {
     const { user } = await buildUser().build();
-    const { feed } = await buildFeed()
-      .forUser(user.id)
-      .name("My Custom Feed")
-      .build();
+    const { feed } = await buildFeed().forUser(user.id).name("My Custom Feed").build();
 
     expect(feed).toBeDefined();
     expect(feed.name).toBe("My Custom Feed");
@@ -347,7 +342,7 @@ describe("Infrastructure: Feed Builder", () => {
 
   it("should build feed with multiple filters", async () => {
     const { user } = await buildUser().build();
-    const { feed, filters } = await buildFeed()
+    const { filters } = await buildFeed()
       .forUser(user.id)
       .filterByPostType(["image"])
       .filterByEngagement("likes", 100)
@@ -360,21 +355,18 @@ describe("Infrastructure: Feed Builder", () => {
 
   it("should build feed with hashtag filter", async () => {
     const { user } = await buildUser().build();
-    const { feed, filters } = await buildFeed()
+    const { filters } = await buildFeed()
       .forUser(user.id)
       .filterByHashtag(["tech", "coding"])
       .build();
 
     expect(filters.length).toBe(1);
-    expect(filters[0].type).toBe("hashtag");
+    expect(filters[0].type).toBe("tag");
   });
 
   it("should build default feed", async () => {
     const { user } = await buildUser().build();
-    const { feed } = await buildFeed()
-      .forUser(user.id)
-      .asDefault()
-      .build();
+    const { feed } = await buildFeed().forUser(user.id).asDefault().build();
 
     expect(feed.isDefault).toBe(true);
   });
@@ -403,7 +395,7 @@ describe("Infrastructure: Integration", () => {
     expect(storage).toBeDefined();
 
     // Create posts
-    const { post: textPost } = await createTextPost(user.id, "Hello world!");
+    const textPost = await createTextPost(user.id, "Hello world!");
     const { post: imagePost, media } = await buildPost()
       .byUser(user.id)
       .asImage()
@@ -415,7 +407,7 @@ describe("Infrastructure: Integration", () => {
     expect(media.length).toBe(1);
 
     // Create custom feed
-    const { feed } = await createCustomFeed(user.id, "My Images");
+    const feed = await createCustomFeed(user.id, "My Images");
 
     expect(feed.userId).toBe(user.id);
 
@@ -431,10 +423,7 @@ describe("Infrastructure: Integration", () => {
 
   it("should handle multiple users with relationships", async () => {
     // Create multiple users
-    const users = await buildUser()
-      .withProfile()
-      .withStorageQuotaMB(50)
-      .buildMany(3);
+    const users = await buildUser().withProfile().withStorageQuotaMB(50).buildMany(3);
 
     expect(users.length).toBe(3);
 
@@ -453,6 +442,10 @@ describe("Infrastructure: Integration", () => {
 });
 
 describe("Infrastructure: Cleanup", () => {
+  beforeEach(async () => {
+    await cleanAllTables();
+  });
+
   it("should clean up after tests", async () => {
     // Create test data
     await createTestUser();

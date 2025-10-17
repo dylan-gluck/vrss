@@ -1,7 +1,8 @@
-import React, { ReactElement } from 'react';
-import { render, RenderOptions } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { type RenderOptions, render } from "@testing-library/react";
+import type React from "react";
+import type { ReactElement } from "react";
+import { BrowserRouter } from "react-router-dom";
 
 /**
  * Custom render function that wraps components with all necessary providers
@@ -34,8 +35,8 @@ function createTestQueryClient() {
     defaultOptions: {
       queries: {
         retry: false, // Disable retries in tests
-        gcTime: Infinity, // Don't garbage collect during tests
-        staleTime: Infinity, // Don't refetch during tests
+        gcTime: Number.POSITIVE_INFINITY, // Don't garbage collect during tests
+        staleTime: Number.POSITIVE_INFINITY, // Don't refetch during tests
       },
       mutations: {
         retry: false,
@@ -52,9 +53,7 @@ function AllTheProviders({ children }: AllTheProvidersProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        {children}
-      </BrowserRouter>
+      <BrowserRouter>{children}</BrowserRouter>
     </QueryClientProvider>
   );
 }
@@ -62,15 +61,12 @@ function AllTheProviders({ children }: AllTheProvidersProps) {
 /**
  * Custom render function with providers
  */
-export function renderWithProviders(
-  ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>
-) {
+export function renderWithProviders(ui: ReactElement, options?: Omit<RenderOptions, "wrapper">) {
   return render(ui, { wrapper: AllTheProviders, ...options });
 }
 
 /**
  * Re-export everything from React Testing Library
  */
-export * from '@testing-library/react';
+export * from "@testing-library/react";
 export { renderWithProviders as render };

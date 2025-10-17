@@ -17,15 +17,15 @@
  * @see docs/specs/001-vrss-social-platform/SDD.md for error codes
  */
 
-import { Hono } from "hono";
 import { ErrorCode } from "@vrss/api-contracts";
+import { Hono } from "hono";
 import { authMiddleware } from "../middleware/auth";
-import { ProcedureContext } from "./types";
 import { authRouter } from "./routers/auth";
-import { userRouter } from "./routers/user";
+import { feedRouter } from "./routers/feed";
 import { postRouter } from "./routers/post";
 import { socialRouter } from "./routers/social";
-import { feedRouter } from "./routers/feed";
+import { userRouter } from "./routers/user";
+import { ProcedureContext } from "./types";
 
 // =============================================================================
 // PUBLIC PROCEDURES
@@ -91,20 +91,14 @@ function generateRequestId(): string {
 /**
  * Create standardized RPC error response
  */
-function createErrorResponse(
-  code: number,
-  message: string,
-  details?: any,
-  requestId?: string
-) {
+function createErrorResponse(code: number, message: string, details?: any, requestId?: string) {
   const response: any = {
     success: false,
     error: {
       code,
       message,
       ...(details && { details }),
-      ...(process.env.NODE_ENV === "development" &&
-        details?.stack && { stack: details.stack }),
+      ...(process.env.NODE_ENV === "development" && details?.stack && { stack: details.stack }),
     },
     metadata: {
       timestamp: Date.now(),
@@ -175,10 +169,7 @@ export function createRPCRouter(): Hono {
 
   // Reject non-POST requests
   rpc.on(["GET", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"], "/", (c) => {
-    return c.json(
-      { error: "Method Not Allowed", message: "Only POST requests are allowed" },
-      405
-    );
+    return c.json({ error: "Method Not Allowed", message: "Only POST requests are allowed" }, 405);
   });
 
   // RPC endpoint - all procedures called via POST to this endpoint
@@ -205,7 +196,7 @@ export function createRPCRouter(): Hono {
       let body: any;
       try {
         body = await c.req.json();
-      } catch (error) {
+      } catch (_error) {
         return c.json(
           createErrorResponse(
             ErrorCode.VALIDATION_ERROR,
@@ -255,9 +246,7 @@ export function createRPCRouter(): Hono {
       const handler = PROCEDURE_REGISTRY[procedure];
       if (!handler) {
         const duration = Date.now() - startTime;
-        console.log(
-          `[RPC] ${requestId} ${procedure} - NOT_FOUND (${duration}ms)`
-        );
+        console.log(`[RPC] ${requestId} ${procedure} - NOT_FOUND (${duration}ms)`);
 
         return c.json(
           createErrorResponse(
@@ -276,9 +265,7 @@ export function createRPCRouter(): Hono {
 
       if (!isPublicProcedure && !user) {
         const duration = Date.now() - startTime;
-        console.log(
-          `[RPC] ${requestId} ${procedure} - UNAUTHORIZED (${duration}ms)`
-        );
+        console.log(`[RPC] ${requestId} ${procedure} - UNAUTHORIZED (${duration}ms)`);
 
         return c.json(
           createErrorResponse(

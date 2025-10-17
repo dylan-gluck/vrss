@@ -7,7 +7,7 @@
 
 export interface TestPost {
   id?: string;
-  type: 'text' | 'image' | 'video' | 'music';
+  type: "text" | "image" | "video" | "music";
   content: string;
   authorUsername: string;
   tags?: string[];
@@ -25,13 +25,13 @@ export interface TestFeed {
   name: string;
   ownerUsername: string;
   filters: TestFeedFilter[];
-  logicalOperator: 'AND' | 'OR' | 'NOT';
+  logicalOperator: "AND" | "OR" | "NOT";
   postCount?: number;
 }
 
 export interface TestFeedFilter {
   field: string;
-  operator: 'equals' | 'contains' | 'greater_than' | 'less_than' | 'within';
+  operator: "equals" | "contains" | "greater_than" | "less_than" | "within";
   value: string | number;
 }
 
@@ -40,14 +40,14 @@ export interface TestMessage {
   fromUsername: string;
   toUsername: string;
   content: string;
-  status?: 'sent' | 'delivered' | 'read';
+  status?: "sent" | "delivered" | "read";
   timestamp?: Date;
 }
 
 export interface TestNotification {
   id?: string;
   recipientUsername: string;
-  type: 'follow' | 'post' | 'message' | 'like' | 'comment';
+  type: "follow" | "post" | "message" | "like" | "comment";
   content: string;
   fromUsername?: string;
   isRead?: boolean;
@@ -60,75 +60,75 @@ export interface TestNotification {
 export const SAMPLE_POSTS: TestPost[] = [
   // Maya Music posts
   {
-    type: 'music',
-    content: 'My new album is dropping next week! 🎵',
-    authorUsername: 'maya_music',
-    tags: ['#indie', '#newmusic'],
-    fileUrl: 's3://test-bucket/album_cover.jpg',
+    type: "music",
+    content: "My new album is dropping next week! 🎵",
+    authorUsername: "maya_music",
+    tags: ["#indie", "#newmusic"],
+    fileUrl: "s3://test-bucket/album_cover.jpg",
     fileSize: 5_000_000, // 5MB
-    mimeType: 'audio/mpeg',
+    mimeType: "audio/mpeg",
     likes: 250,
-    location: 'Austin, TX',
+    location: "Austin, TX",
   },
   {
-    type: 'image',
-    content: 'Recording session vibes ✨',
-    authorUsername: 'maya_music',
-    tags: ['#studio', '#recording'],
-    fileUrl: 's3://test-bucket/studio_photo.jpg',
+    type: "image",
+    content: "Recording session vibes ✨",
+    authorUsername: "maya_music",
+    tags: ["#studio", "#recording"],
+    fileUrl: "s3://test-bucket/studio_photo.jpg",
     fileSize: 3_000_000, // 3MB
-    mimeType: 'image/jpeg',
+    mimeType: "image/jpeg",
     likes: 180,
-    location: 'Austin, TX',
+    location: "Austin, TX",
   },
   {
-    type: 'text',
-    content: 'Thank you all for 1K followers! You are amazing! 💜',
-    authorUsername: 'maya_music',
-    tags: ['#thankyou'],
+    type: "text",
+    content: "Thank you all for 1K followers! You are amazing! 💜",
+    authorUsername: "maya_music",
+    tags: ["#thankyou"],
     likes: 320,
   },
 
   // Jade Cafe posts
   {
-    type: 'image',
-    content: 'Fresh croissants this morning! Come grab one ☕',
-    authorUsername: 'jade_cafe',
-    tags: ['#breakfast', '#pastries', '#local'],
-    fileUrl: 's3://test-bucket/croissants.jpg',
+    type: "image",
+    content: "Fresh croissants this morning! Come grab one ☕",
+    authorUsername: "jade_cafe",
+    tags: ["#breakfast", "#pastries", "#local"],
+    fileUrl: "s3://test-bucket/croissants.jpg",
     fileSize: 2_500_000, // 2.5MB
-    mimeType: 'image/jpeg',
+    mimeType: "image/jpeg",
     likes: 150,
-    location: 'Seattle, WA',
+    location: "Seattle, WA",
   },
   {
-    type: 'text',
-    content: 'Live music tonight at 7pm! Supporting local artists 🎸',
-    authorUsername: 'jade_cafe',
-    tags: ['#livemusic', '#local'],
+    type: "text",
+    content: "Live music tonight at 7pm! Supporting local artists 🎸",
+    authorUsername: "jade_cafe",
+    tags: ["#livemusic", "#local"],
     likes: 95,
-    location: 'Seattle, WA',
+    location: "Seattle, WA",
   },
 
   // Artist Sam posts
   {
-    type: 'image',
-    content: 'New commission piece finished! DM for inquiries.',
-    authorUsername: 'artist_sam',
-    tags: ['#art', '#commission', '#illustration'],
-    fileUrl: 's3://test-bucket/artwork.jpg',
+    type: "image",
+    content: "New commission piece finished! DM for inquiries.",
+    authorUsername: "artist_sam",
+    tags: ["#art", "#commission", "#illustration"],
+    fileUrl: "s3://test-bucket/artwork.jpg",
     fileSize: 4_000_000, // 4MB
-    mimeType: 'image/jpeg',
+    mimeType: "image/jpeg",
     likes: 200,
-    location: 'Brooklyn, NY',
+    location: "Brooklyn, NY",
   },
 
   // Marcus Consumer posts
   {
-    type: 'text',
-    content: 'Just discovered @maya_music and loving the sound! 🎶',
-    authorUsername: 'marcus_consumer',
-    tags: ['#musicdiscovery'],
+    type: "text",
+    content: "Just discovered @maya_music and loving the sound! 🎶",
+    authorUsername: "marcus_consumer",
+    tags: ["#musicdiscovery"],
     likes: 45,
   },
 ];
@@ -138,62 +138,62 @@ export const SAMPLE_POSTS: TestPost[] = [
  */
 export const SAMPLE_FEEDS: TestFeed[] = [
   {
-    name: 'Music Only',
-    ownerUsername: 'marcus_consumer',
+    name: "Music Only",
+    ownerUsername: "marcus_consumer",
     filters: [
       {
-        field: 'post_type',
-        operator: 'equals',
-        value: 'music',
+        field: "post_type",
+        operator: "equals",
+        value: "music",
       },
     ],
-    logicalOperator: 'AND',
+    logicalOperator: "AND",
     postCount: 8,
   },
   {
-    name: 'Local Music',
-    ownerUsername: 'marcus_consumer',
+    name: "Local Music",
+    ownerUsername: "marcus_consumer",
     filters: [
       {
-        field: 'post_type',
-        operator: 'equals',
-        value: 'music',
+        field: "post_type",
+        operator: "equals",
+        value: "music",
       },
       {
-        field: 'author_location',
-        operator: 'within',
-        value: '20 miles',
+        field: "author_location",
+        operator: "within",
+        value: "20 miles",
       },
     ],
-    logicalOperator: 'AND',
+    logicalOperator: "AND",
     postCount: 3,
   },
   {
-    name: 'Local Indie Music',
-    ownerUsername: 'marcus_consumer',
+    name: "Local Indie Music",
+    ownerUsername: "marcus_consumer",
     filters: [
       {
-        field: 'post_type',
-        operator: 'equals',
-        value: 'music',
+        field: "post_type",
+        operator: "equals",
+        value: "music",
       },
       {
-        field: 'author_location',
-        operator: 'within',
-        value: '20 miles',
+        field: "author_location",
+        operator: "within",
+        value: "20 miles",
       },
       {
-        field: 'tags',
-        operator: 'contains',
-        value: '#indie',
+        field: "tags",
+        operator: "contains",
+        value: "#indie",
       },
       {
-        field: 'likes',
-        operator: 'greater_than',
+        field: "likes",
+        operator: "greater_than",
         value: 10,
       },
     ],
-    logicalOperator: 'AND',
+    logicalOperator: "AND",
     postCount: 2,
   },
 ];
@@ -203,22 +203,22 @@ export const SAMPLE_FEEDS: TestFeed[] = [
  */
 export const SAMPLE_MESSAGES: TestMessage[] = [
   {
-    fromUsername: 'marcus_consumer',
-    toUsername: 'maya_music',
-    content: 'Hi Maya! Love your new album!',
-    status: 'delivered',
+    fromUsername: "marcus_consumer",
+    toUsername: "maya_music",
+    content: "Hi Maya! Love your new album!",
+    status: "delivered",
   },
   {
-    fromUsername: 'maya_music',
-    toUsername: 'marcus_consumer',
-    content: 'Thank you so much! Really appreciate the support 💜',
-    status: 'delivered',
+    fromUsername: "maya_music",
+    toUsername: "marcus_consumer",
+    content: "Thank you so much! Really appreciate the support 💜",
+    status: "delivered",
   },
   {
-    fromUsername: 'jade_cafe',
-    toUsername: 'maya_music',
-    content: 'Would you be interested in playing at our cafe?',
-    status: 'delivered',
+    fromUsername: "jade_cafe",
+    toUsername: "maya_music",
+    content: "Would you be interested in playing at our cafe?",
+    status: "delivered",
   },
 ];
 
@@ -227,31 +227,31 @@ export const SAMPLE_MESSAGES: TestMessage[] = [
  */
 export const SAMPLE_NOTIFICATIONS: TestNotification[] = [
   {
-    recipientUsername: 'maya_music',
-    type: 'follow',
-    content: 'marcus_consumer started following you',
-    fromUsername: 'marcus_consumer',
+    recipientUsername: "maya_music",
+    type: "follow",
+    content: "marcus_consumer started following you",
+    fromUsername: "marcus_consumer",
     isRead: false,
   },
   {
-    recipientUsername: 'marcus_consumer',
-    type: 'post',
-    content: 'maya_music posted: My new album is dropping next week!',
-    fromUsername: 'maya_music',
+    recipientUsername: "marcus_consumer",
+    type: "post",
+    content: "maya_music posted: My new album is dropping next week!",
+    fromUsername: "maya_music",
     isRead: false,
   },
   {
-    recipientUsername: 'maya_music',
-    type: 'message',
-    content: 'New message from marcus_consumer',
-    fromUsername: 'marcus_consumer',
+    recipientUsername: "maya_music",
+    type: "message",
+    content: "New message from marcus_consumer",
+    fromUsername: "marcus_consumer",
     isRead: false,
   },
   {
-    recipientUsername: 'maya_music',
-    type: 'like',
-    content: 'marcus_consumer liked your post',
-    fromUsername: 'marcus_consumer',
+    recipientUsername: "maya_music",
+    type: "like",
+    content: "marcus_consumer liked your post",
+    fromUsername: "marcus_consumer",
     isRead: true,
   },
 ];
@@ -268,29 +268,29 @@ export interface TestFile {
 
 export const SAMPLE_FILES: Record<string, TestFile> = {
   SMALL_IMAGE: {
-    name: 'photo.jpg',
+    name: "photo.jpg",
     size: 2_000_000, // 2MB
-    mimeType: 'image/jpeg',
+    mimeType: "image/jpeg",
   },
   LARGE_IMAGE: {
-    name: 'album_cover.jpg',
+    name: "album_cover.jpg",
     size: 5_000_000, // 5MB
-    mimeType: 'image/jpeg',
+    mimeType: "image/jpeg",
   },
   VIDEO: {
-    name: 'concert_video.mp4',
+    name: "concert_video.mp4",
     size: 15_000_000, // 15MB
-    mimeType: 'video/mp4',
+    mimeType: "video/mp4",
   },
   AUDIO: {
-    name: 'new_track.mp3',
+    name: "new_track.mp3",
     size: 8_000_000, // 8MB
-    mimeType: 'audio/mpeg',
+    mimeType: "audio/mpeg",
   },
   OVERSIZED_FILE: {
-    name: 'huge_video.mp4',
+    name: "huge_video.mp4",
     size: 100_000_000, // 100MB (exceeds typical limits)
-    mimeType: 'video/mp4',
+    mimeType: "video/mp4",
   },
 };
 
@@ -299,15 +299,15 @@ export const SAMPLE_FILES: Record<string, TestFile> = {
  */
 export class PostBuilder {
   private post: Partial<TestPost> = {
-    type: 'text',
-    content: 'Default test post',
-    authorUsername: 'maya_music',
+    type: "text",
+    content: "Default test post",
+    authorUsername: "maya_music",
     tags: [],
     likes: 0,
     comments: 0,
   };
 
-  withType(type: 'text' | 'image' | 'video' | 'music'): this {
+  withType(type: "text" | "image" | "video" | "music"): this {
     this.post.type = type;
     return this;
   }
@@ -354,10 +354,10 @@ export class PostBuilder {
  */
 export class FeedBuilder {
   private feed: Partial<TestFeed> = {
-    name: 'Test Feed',
-    ownerUsername: 'marcus_consumer',
+    name: "Test Feed",
+    ownerUsername: "marcus_consumer",
     filters: [],
-    logicalOperator: 'AND',
+    logicalOperator: "AND",
   };
 
   withName(name: string): this {
@@ -375,7 +375,7 @@ export class FeedBuilder {
     return this;
   }
 
-  withLogicalOperator(operator: 'AND' | 'OR' | 'NOT'): this {
+  withLogicalOperator(operator: "AND" | "OR" | "NOT"): this {
     this.feed.logicalOperator = operator;
     return this;
   }
@@ -390,10 +390,10 @@ export class FeedBuilder {
  */
 export class MessageBuilder {
   private message: Partial<TestMessage> = {
-    fromUsername: 'marcus_consumer',
-    toUsername: 'maya_music',
-    content: 'Test message',
-    status: 'sent',
+    fromUsername: "marcus_consumer",
+    toUsername: "maya_music",
+    content: "Test message",
+    status: "sent",
   };
 
   from(username: string): this {
@@ -411,7 +411,7 @@ export class MessageBuilder {
     return this;
   }
 
-  withStatus(status: 'sent' | 'delivered' | 'read'): this {
+  withStatus(status: "sent" | "delivered" | "read"): this {
     this.message.status = status;
     return this;
   }
@@ -426,14 +426,14 @@ export class MessageBuilder {
  */
 
 export function generateRandomPost(authorUsername: string): TestPost {
-  const types: Array<'text' | 'image' | 'video' | 'music'> = ['text', 'image', 'video', 'music'];
+  const types: Array<"text" | "image" | "video" | "music"> = ["text", "image", "video", "music"];
   const randomType = types[Math.floor(Math.random() * types.length)];
 
   return new PostBuilder()
     .withType(randomType)
     .withContent(`Test post ${Date.now()}`)
     .withAuthor(authorUsername)
-    .withTags(['#test'])
+    .withTags(["#test"])
     .withLikes(Math.floor(Math.random() * 100))
     .build();
 }

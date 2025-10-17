@@ -13,10 +13,10 @@
  * @see docs/SECURITY_DESIGN.md for session management
  */
 
-import { describe, test, expect, beforeEach } from "bun:test";
-import { getTestDatabase } from "../setup";
-import { cleanUserData } from "../helpers/database";
+import { beforeEach, describe, expect, test } from "bun:test";
 import { createAuthenticatedUser } from "../helpers/auth";
+import { cleanUserData } from "../helpers/database";
+import { getTestDatabase } from "../setup";
 
 describe("auth.logout", () => {
   beforeEach(async () => {
@@ -32,7 +32,7 @@ describe("auth.logout", () => {
     const db = getTestDatabase();
 
     // Arrange: Create authenticated user with session
-    const { user, session, token } = await createAuthenticatedUser();
+    const { session, token } = await createAuthenticatedUser();
 
     // Verify session exists
     const existingSession = await db.session.findUnique({
@@ -108,7 +108,7 @@ describe("auth.logout", () => {
     const db = getTestDatabase();
 
     // Arrange: Create authenticated user
-    const { user, session, token } = await createAuthenticatedUser();
+    const { session, token } = await createAuthenticatedUser();
 
     // Verify session is valid before logout
     const validSession = await db.session.findFirst({
@@ -144,13 +144,13 @@ describe("auth.logout", () => {
     const db = getTestDatabase();
 
     // Arrange: Create user with multiple sessions
-    const { user, session: session1, token: token1 } = await createAuthenticatedUser();
+    const { user, session: session1 } = await createAuthenticatedUser();
 
     // Create second session (different device)
     const session2 = await db.session.create({
       data: {
         userId: user.id,
-        token: "second_session_token_" + Date.now(),
+        token: `second_session_token_${Date.now()}`,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         userAgent: "Mozilla/5.0 (Mobile)",
         ipAddress: "192.168.1.101",
@@ -162,7 +162,7 @@ describe("auth.logout", () => {
     const session3 = await db.session.create({
       data: {
         userId: user.id,
-        token: "third_session_token_" + Date.now(),
+        token: `third_session_token_${Date.now()}`,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         userAgent: "Mozilla/5.0 (Tablet)",
         ipAddress: "192.168.1.102",
@@ -210,7 +210,7 @@ describe("auth.logout", () => {
       data: [
         {
           userId: user.id,
-          token: "session_1_" + Date.now(),
+          token: `session_1_${Date.now()}`,
           expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
           userAgent: "Desktop",
           ipAddress: "192.168.1.100",
@@ -218,7 +218,7 @@ describe("auth.logout", () => {
         },
         {
           userId: user.id,
-          token: "session_2_" + Date.now(),
+          token: `session_2_${Date.now()}`,
           expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
           userAgent: "Mobile",
           ipAddress: "192.168.1.101",
@@ -226,7 +226,7 @@ describe("auth.logout", () => {
         },
         {
           userId: user.id,
-          token: "session_3_" + Date.now(),
+          token: `session_3_${Date.now()}`,
           expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
           userAgent: "Tablet",
           ipAddress: "192.168.1.102",
@@ -290,7 +290,7 @@ describe("auth.logout", () => {
     const db = getTestDatabase();
 
     // Arrange: Create authenticated user
-    const { user, session, token } = await createAuthenticatedUser();
+    const { token } = await createAuthenticatedUser();
 
     // Act: Simulate concurrent logout requests
     const logout1 = db.session.deleteMany({
@@ -363,7 +363,7 @@ describe("auth.logout", () => {
     // This test documents the expected audit logging behavior
 
     // Arrange: Create authenticated user
-    const { user, session, token } = await createAuthenticatedUser();
+    const { user, session } = await createAuthenticatedUser();
 
     // Act: Logout
     const logoutTime = new Date();

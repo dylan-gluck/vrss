@@ -15,10 +15,10 @@
  * @see docs/SECURITY_DESIGN.md for email verification
  */
 
-import { describe, test, expect, beforeEach } from "bun:test";
-import { getTestDatabase } from "../setup";
-import { cleanUserData } from "../helpers/database";
+import { beforeEach, describe, expect, test } from "bun:test";
 import { hashPassword } from "../helpers/auth";
+import { cleanUserData } from "../helpers/database";
+import { getTestDatabase } from "../setup";
 
 describe("auth.verifyEmail", () => {
   beforeEach(async () => {
@@ -46,7 +46,7 @@ describe("auth.verifyEmail", () => {
     });
 
     // Create verification token (24-hour expiry)
-    const verificationToken = "test_verification_token_" + Date.now();
+    const verificationToken = `test_verification_token_${Date.now()}`;
     const token = await db.verificationToken.create({
       data: {
         identifier: user.email,
@@ -75,7 +75,7 @@ describe("auth.verifyEmail", () => {
 
     // Update user to verified
     const verifiedUser = await db.user.update({
-      where: { email: foundToken!.identifier },
+      where: { email: foundToken?.identifier },
       data: { emailVerified: true },
     });
 
@@ -109,7 +109,7 @@ describe("auth.verifyEmail", () => {
     });
 
     // Create expired verification token
-    const expiredToken = "expired_token_" + Date.now();
+    const expiredToken = `expired_token_${Date.now()}`;
     await db.verificationToken.create({
       data: {
         identifier: user.email,
@@ -126,7 +126,7 @@ describe("auth.verifyEmail", () => {
     expect(foundToken).toBeDefined();
 
     // Assert: Token is expired
-    const isExpired = foundToken!.expires.getTime() < Date.now();
+    const isExpired = foundToken?.expires.getTime() < Date.now();
     expect(isExpired).toBe(true);
 
     // Expected error code: 1020 (AUTH_TOKEN_EXPIRED)
@@ -189,7 +189,7 @@ describe("auth.verifyEmail", () => {
     });
 
     // Create verification token (shouldn't be used)
-    const token = "unused_token_" + Date.now();
+    const token = `unused_token_${Date.now()}`;
     await db.verificationToken.create({
       data: {
         identifier: user.email,
@@ -228,7 +228,7 @@ describe("auth.verifyEmail", () => {
     });
 
     // Old verification token
-    const oldToken = "old_token_" + Date.now();
+    const oldToken = `old_token_${Date.now()}`;
     await db.verificationToken.create({
       data: {
         identifier: user.email,
@@ -251,7 +251,7 @@ describe("auth.verifyEmail", () => {
     });
 
     // 2. Create new token
-    const newToken = "new_token_" + Date.now();
+    const newToken = `new_token_${Date.now()}`;
     const verificationToken = await db.verificationToken.create({
       data: {
         identifier: user.email,
@@ -347,7 +347,7 @@ describe("auth.verifyEmail", () => {
     const token = await db.verificationToken.create({
       data: {
         identifier: user.email,
-        token: "test_token_" + Date.now(),
+        token: `test_token_${Date.now()}`,
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
       },
     });
@@ -418,7 +418,7 @@ describe("auth.verifyEmail", () => {
     const token1 = await db.verificationToken.create({
       data: {
         identifier: user.email,
-        token: "token_1_" + Date.now(),
+        token: `token_1_${Date.now()}`,
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       },
     });
@@ -431,7 +431,7 @@ describe("auth.verifyEmail", () => {
     const token2 = await db.verificationToken.create({
       data: {
         identifier: user.email,
-        token: "token_2_" + Date.now(),
+        token: `token_2_${Date.now()}`,
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       },
     });
@@ -460,7 +460,7 @@ describe("auth.verifyEmail", () => {
       },
     });
 
-    const verificationToken = "cleanup_token_" + Date.now();
+    const verificationToken = `cleanup_token_${Date.now()}`;
     await db.verificationToken.create({
       data: {
         identifier: user.email,

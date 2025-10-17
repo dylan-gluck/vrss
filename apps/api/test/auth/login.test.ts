@@ -15,10 +15,10 @@
  * @see docs/SECURITY_DESIGN.md for session management
  */
 
-import { describe, test, expect, beforeEach } from "bun:test";
-import { getTestDatabase } from "../setup";
-import { cleanUserData } from "../helpers/database";
+import { beforeEach, describe, expect, test } from "bun:test";
 import { hashPassword, verifyPassword } from "../helpers/auth";
+import { cleanUserData } from "../helpers/database";
+import { getTestDatabase } from "../setup";
 
 describe("auth.login", () => {
   beforeEach(async () => {
@@ -65,7 +65,7 @@ describe("auth.login", () => {
     const session = await db.session.create({
       data: {
         userId: user.id,
-        token: "test_session_token_" + Date.now(),
+        token: `test_session_token_${Date.now()}`,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
         userAgent: "Test User Agent",
         ipAddress: "127.0.0.1",
@@ -292,7 +292,7 @@ describe("auth.login", () => {
     expect(updatedUser.lastLoginAt).toBeDefined();
     expect(updatedUser.lastLoginAt).not.toBeNull();
 
-    const lastLoginTime = updatedUser.lastLoginAt!.getTime();
+    const lastLoginTime = updatedUser.lastLoginAt?.getTime();
     expect(lastLoginTime).toBeGreaterThanOrEqual(beforeLogin);
     expect(lastLoginTime).toBeLessThanOrEqual(afterLogin);
   });
@@ -362,7 +362,7 @@ describe("auth.login", () => {
     const session = await db.session.create({
       data: {
         userId: user.id,
-        token: "test_token_" + Date.now(),
+        token: `test_token_${Date.now()}`,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         userAgent,
         ipAddress,
@@ -398,10 +398,10 @@ describe("auth.login", () => {
     });
 
     // Act: Create multiple sessions (different devices)
-    const session1 = await db.session.create({
+    const _session1 = await db.session.create({
       data: {
         userId: user.id,
-        token: "desktop_token_" + Date.now(),
+        token: `desktop_token_${Date.now()}`,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         userAgent: "Mozilla/5.0 (Desktop)",
         ipAddress: "192.168.1.100",
@@ -409,10 +409,10 @@ describe("auth.login", () => {
       },
     });
 
-    const session2 = await db.session.create({
+    const _session2 = await db.session.create({
       data: {
         userId: user.id,
-        token: "mobile_token_" + Date.now(),
+        token: `mobile_token_${Date.now()}`,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         userAgent: "Mozilla/5.0 (Mobile)",
         ipAddress: "192.168.1.101",

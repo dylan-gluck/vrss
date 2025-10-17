@@ -16,10 +16,10 @@
  * @see docs/SECURITY_DESIGN.md for password requirements
  */
 
-import { describe, test, expect, beforeEach } from "bun:test";
-import { getTestDatabase } from "../setup";
-import { cleanUserData } from "../helpers/database";
+import { beforeEach, describe, expect, test } from "bun:test";
 import { hashPassword } from "../helpers/auth";
+import { cleanUserData } from "../helpers/database";
+import { getTestDatabase } from "../setup";
 
 describe("auth.register", () => {
   beforeEach(async () => {
@@ -169,16 +169,23 @@ describe("auth.register", () => {
     // Expected error code: 1002 (AUTH_USERNAME_TAKEN)
     // Expected error message: "Username already exists"
 
-    await expect(async () => {
+    const passwordHash = await hashPassword(registrationData.password);
+    let errorThrown = false;
+    try {
       await db.user.create({
         data: {
           username: registrationData.username,
           email: registrationData.email,
-          passwordHash: await hashPassword(registrationData.password),
+          passwordHash,
           emailVerified: false,
         },
       });
-    }).toThrow(); // Prisma will throw unique constraint violation
+    } catch (_error) {
+      errorThrown = true;
+    }
+
+    // Assert: Error was thrown (Prisma unique constraint violation)
+    expect(errorThrown).toBe(true);
 
     // Verify only one user with this username exists
     const userCount = await db.user.count({
@@ -212,16 +219,23 @@ describe("auth.register", () => {
     // Expected error code: 1003 (AUTH_EMAIL_TAKEN)
     // Expected error message: "Email already registered"
 
-    await expect(async () => {
+    const passwordHash = await hashPassword(registrationData.password);
+    let errorThrown = false;
+    try {
       await db.user.create({
         data: {
           username: registrationData.username,
           email: registrationData.email,
-          passwordHash: await hashPassword(registrationData.password),
+          passwordHash,
           emailVerified: false,
         },
       });
-    }).toThrow(); // Prisma will throw unique constraint violation
+    } catch (_error) {
+      errorThrown = true;
+    }
+
+    // Assert: Error was thrown (Prisma unique constraint violation)
+    expect(errorThrown).toBe(true);
 
     // Verify only one user with this email exists
     const userCount = await db.user.count({
@@ -326,7 +340,7 @@ describe("auth.register", () => {
   });
 
   test("should enforce username length constraints (3-30 chars)", async () => {
-    const db = getTestDatabase();
+    const _db = getTestDatabase();
 
     // Arrange: Test invalid username lengths
     const invalidUsernames = [

@@ -5,7 +5,7 @@
  * Supports all post types: text, image, video, audio, gallery.
  */
 
-import { Post, PostMedia, PostType, PostStatus, MediaType } from "@prisma/client";
+import type { MediaType, Post, PostMedia, PostStatus, PostType } from "@prisma/client";
 import { getTestDatabase } from "../setup";
 
 /**
@@ -77,7 +77,7 @@ export class PostBuilder {
    * Create a video post
    */
   asVideo(): this {
-    this.data.type = "video";
+    this.data.type = "video_short";
     return this;
   }
 
@@ -85,7 +85,7 @@ export class PostBuilder {
    * Create an audio post
    */
   asAudio(): this {
-    this.data.type = "audio";
+    this.data.type = "song";
     return this;
   }
 
@@ -93,7 +93,7 @@ export class PostBuilder {
    * Create a gallery post
    */
   asGallery(): this {
-    this.data.type = "gallery";
+    this.data.type = "image_gallery";
     return this;
   }
 
@@ -327,10 +327,12 @@ export class PostBuilder {
   /**
    * Build multiple posts with the same configuration
    */
-  async buildMany(count: number): Promise<Array<{
-    post: Post;
-    media: PostMedia[];
-  }>> {
+  async buildMany(count: number): Promise<
+    Array<{
+      post: Post;
+      media: PostMedia[];
+    }>
+  > {
     const posts = [];
     for (let i = 0; i < count; i++) {
       // Clone the builder configuration
@@ -359,14 +361,8 @@ export function buildPost(): PostBuilder {
 /**
  * Quick helper to create a basic text post
  */
-export async function createTextPost(
-  userId: bigint,
-  content?: string
-): Promise<Post> {
-  const builder = buildPost()
-    .byUser(userId)
-    .asText()
-    .published();
+export async function createTextPost(userId: bigint, content?: string): Promise<Post> {
+  const builder = buildPost().byUser(userId).asText().published();
 
   if (content) {
     builder.content(content);
@@ -386,10 +382,7 @@ export async function createImagePost(
     imageCount?: number;
   }
 ): Promise<{ post: Post; media: PostMedia[] }> {
-  const builder = buildPost()
-    .byUser(userId)
-    .asImage()
-    .published();
+  const builder = buildPost().byUser(userId).asImage().published();
 
   if (options?.content) {
     builder.content(options.content);
@@ -413,10 +406,7 @@ export async function createVideoPost(
     durationSeconds?: number;
   }
 ): Promise<{ post: Post; media: PostMedia[] }> {
-  const builder = buildPost()
-    .byUser(userId)
-    .asVideo()
-    .published();
+  const builder = buildPost().byUser(userId).asVideo().published();
 
   if (options?.content) {
     builder.content(options.content);
@@ -439,10 +429,7 @@ export async function createGalleryPost(
     imageCount?: number;
   }
 ): Promise<{ post: Post; media: PostMedia[] }> {
-  const builder = buildPost()
-    .byUser(userId)
-    .asGallery()
-    .published();
+  const builder = buildPost().byUser(userId).asGallery().published();
 
   if (options?.content) {
     builder.content(options.content);

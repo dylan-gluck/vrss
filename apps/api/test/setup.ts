@@ -14,7 +14,7 @@
  * - afterAll: Disconnect
  */
 
-import { beforeAll, afterAll } from "bun:test";
+import { afterAll, beforeAll } from "bun:test";
 import { PrismaClient } from "@prisma/client";
 
 // Global test state
@@ -30,12 +30,14 @@ export function getTestDatabase(): PrismaClient {
     console.log("⚠️ Initializing database connection...");
 
     // Build DATABASE_URL from environment variables
-    const dbHost = process.env.DB_HOST || 'localhost';
-    const dbPort = process.env.DB_PORT || '6969';
-    const dbName = process.env.DB_NAME || 'vrss';
-    const dbUser = process.env.DB_USER || 'vrss_user';
-    const dbPassword = process.env.DB_PASSWORD || 'vrss_dev_password';
-    const databaseUrl = process.env.DATABASE_URL || `postgresql://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}?schema=public`;
+    const dbHost = process.env.DB_HOST || "localhost";
+    const dbPort = process.env.DB_PORT || "6969";
+    const dbName = process.env.DB_NAME || "vrss";
+    const dbUser = process.env.DB_USER || "vrss_user";
+    const dbPassword = process.env.DB_PASSWORD || "vrss_dev_password";
+    const databaseUrl =
+      process.env.DATABASE_URL ||
+      `postgresql://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}?schema=public`;
 
     prisma = new PrismaClient({
       datasourceUrl: databaseUrl,
@@ -52,12 +54,14 @@ beforeAll(async () => {
   console.log("🔌 Connecting to dev database...");
 
   // Build DATABASE_URL from environment variables
-  const dbHost = process.env.DB_HOST || 'localhost';
-  const dbPort = process.env.DB_PORT || '6969';
-  const dbName = process.env.DB_NAME || 'vrss';
-  const dbUser = process.env.DB_USER || 'vrss_user';
-  const dbPassword = process.env.DB_PASSWORD || 'vrss_dev_password';
-  const databaseUrl = process.env.DATABASE_URL || `postgresql://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}?schema=public`;
+  const dbHost = process.env.DB_HOST || "localhost";
+  const dbPort = process.env.DB_PORT || "6969";
+  const dbName = process.env.DB_NAME || "vrss";
+  const dbUser = process.env.DB_USER || "vrss_user";
+  const dbPassword = process.env.DB_PASSWORD || "vrss_dev_password";
+  const databaseUrl =
+    process.env.DATABASE_URL ||
+    `postgresql://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}?schema=public`;
 
   // Initialize Prisma client for dev database
   prisma = new PrismaClient({
@@ -87,6 +91,22 @@ afterAll(async () => {
     console.log("✅ Disconnected");
   }
 });
+
+/**
+ * Get the test database URL
+ * This is used by some tests to verify configuration
+ */
+export function getTestDatabaseUrl(): string {
+  const dbHost = process.env.DB_HOST || "localhost";
+  const dbPort = process.env.DB_PORT || "6969";
+  const dbName = process.env.DB_NAME || "vrss";
+  const dbUser = process.env.DB_USER || "vrss_user";
+  const dbPassword = process.env.DB_PASSWORD || "vrss_dev_password";
+  return (
+    process.env.DATABASE_URL ||
+    `postgresql://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}?schema=public`
+  );
+}
 
 /**
  * Test helper to clean all tables manually

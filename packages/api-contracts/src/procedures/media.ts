@@ -3,7 +3,7 @@
  * File upload and media management
  */
 
-import type { Media, MediaType } from '../types';
+import type { Media, MediaType } from "../types";
 
 export namespace MediaProcedures {
   // media.initiateUpload
@@ -34,7 +34,7 @@ export namespace MediaProcedures {
 
   // media.getStorageUsage
   export namespace GetStorageUsage {
-    export interface Input {}
+    export type Input = Record<string, never>;
 
     export interface Output {
       used: number;

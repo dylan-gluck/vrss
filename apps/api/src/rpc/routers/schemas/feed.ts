@@ -14,32 +14,24 @@ import { z } from "zod";
 // FILTER SCHEMAS
 // =============================================================================
 
-export const filterTypeSchema = z.enum([
-  "post_type",
-  "author",
-  "tag",
-  "date_range",
-  "engagement",
-], {
+export const filterTypeSchema = z.enum(["post_type", "author", "tag", "date_range", "engagement"], {
   errorMap: () => ({ message: "Invalid filter type" }),
 });
 
-export const filterOperatorSchema = z.enum([
-  "equals",
-  "not_equals",
-  "contains",
-  "greater_than",
-  "less_than",
-  "in_range",
-], {
-  errorMap: () => ({ message: "Invalid filter operator" }),
-});
+export const filterOperatorSchema = z.enum(
+  ["equals", "not_equals", "contains", "greater_than", "less_than", "in_range"],
+  {
+    errorMap: () => ({ message: "Invalid filter operator" }),
+  }
+);
 
-export const feedFilterSchema = z.object({
-  type: filterTypeSchema,
-  operator: filterOperatorSchema,
-  value: z.any(), // Can be string[], number, date range, etc.
-}).strict();
+export const feedFilterSchema = z
+  .object({
+    type: filterTypeSchema,
+    operator: filterOperatorSchema,
+    value: z.any(), // Can be string[], number, date range, etc.
+  })
+  .strict();
 
 // =============================================================================
 // FEED GET SCHEMA
@@ -56,7 +48,10 @@ export const getFeedSchema = z.object({
 // =============================================================================
 
 export const createFeedSchema = z.object({
-  name: z.string().min(1, "Feed name is required").max(100, "Feed name must be at most 100 characters"),
+  name: z
+    .string()
+    .min(1, "Feed name is required")
+    .max(100, "Feed name must be at most 100 characters"),
   filters: z.array(feedFilterSchema).default([]),
   isDefault: z.boolean().optional().default(false),
 });
@@ -65,12 +60,17 @@ export const createFeedSchema = z.object({
 // FEED UPDATE SCHEMA
 // =============================================================================
 
-export const updateFeedSchema = z.object({
-  feedId: z.string().min(1, "Feed ID is required"),
-  name: z.string().min(1, "Feed name must be at least 1 character").max(100, "Feed name must be at most 100 characters").optional(),
-  filters: z.array(feedFilterSchema).optional(),
-  isDefault: z.boolean().optional(),
-})
+export const updateFeedSchema = z
+  .object({
+    feedId: z.string().min(1, "Feed ID is required"),
+    name: z
+      .string()
+      .min(1, "Feed name must be at least 1 character")
+      .max(100, "Feed name must be at most 100 characters")
+      .optional(),
+    filters: z.array(feedFilterSchema).optional(),
+    isDefault: z.boolean().optional(),
+  })
   .refine(
     (data) => data.name !== undefined || data.filters !== undefined || data.isDefault !== undefined,
     { message: "At least one field (name, filters, or isDefault) must be provided" }

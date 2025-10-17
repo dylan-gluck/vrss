@@ -3,7 +3,7 @@
  * User profile and settings management
  */
 
-import type { User, UserProfile, ProfileStyles } from '../types';
+import type { ProfileStyles, User, UserProfile } from "../types";
 
 export namespace UserProcedures {
   // user.getProfile

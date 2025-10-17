@@ -18,8 +18,9 @@
  * @see docs/api-architecture.md for RPC patterns
  */
 
-import { z } from "zod";
 import { PrismaClient } from "@prisma/client";
+import { ErrorCode } from "@vrss/api-contracts";
+import { z } from "zod";
 import { auth } from "../../lib/auth";
 
 // Initialize Prisma client
@@ -30,15 +31,7 @@ const prisma = new PrismaClient();
 // =============================================================================
 
 enum AuthErrorCode {
-  // Input validation errors
-  AUTH_INVALID_INPUT = 1000,
-  AUTH_WEAK_PASSWORD = 1001,
-  AUTH_USERNAME_TAKEN = 1002,
-  AUTH_EMAIL_TAKEN = 1003,
-  AUTH_INVALID_EMAIL = 1004,
-  AUTH_INVALID_USERNAME = 1005,
-
-  // Authentication errors
+  // Authentication errors (using 1000 range for auth-specific errors)
   AUTH_EMAIL_NOT_VERIFIED = 1010,
   AUTH_INVALID_CREDENTIALS = 1011,
   AUTH_ACCOUNT_SUSPENDED = 1012,
@@ -53,6 +46,10 @@ enum AuthErrorCode {
   // Session errors
   AUTH_UNAUTHORIZED = 1030,
   AUTH_SESSION_EXPIRED = 1031,
+
+  // Conflict errors (1400 range for conflicts)
+  AUTH_USERNAME_TAKEN = 1401,
+  AUTH_EMAIL_TAKEN = 1402,
 }
 
 // =============================================================================
@@ -61,13 +58,38 @@ enum AuthErrorCode {
 
 class RPCError extends Error {
   constructor(
-    public code: AuthErrorCode,
+    public code: ErrorCode | AuthErrorCode,
     message: string,
     public details?: Record<string, unknown>
   ) {
     super(message);
     this.name = "RPCError";
   }
+}
+
+/**
+ * Create a user-friendly validation error message from Zod error
+ */
+function getValidationErrorMessage(error: z.ZodError): string {
+  const firstError = error.errors[0];
+  if (!firstError) {
+    return "Invalid input";
+  }
+
+  const field = firstError.path.length > 0 ? String(firstError.path[0]) : "input";
+  const message = firstError.message;
+
+  // If message is generic "Required", make it more specific
+  if (message === "Required") {
+    return `${field} is required`;
+  }
+
+  // If message doesn't mention the field, prepend it
+  if (!message.toLowerCase().includes(field.toLowerCase())) {
+    return `${field}: ${message}`;
+  }
+
+  return message;
 }
 
 // =============================================================================
@@ -90,8 +112,8 @@ const emailSchema = z
 // Password validation: 12-128 chars, must include uppercase, lowercase, number, special char
 const passwordSchema = z
   .string()
-  .min(12, "Password must be at least 12 characters")
-  .max(128, "Password must be at most 128 characters")
+  .min(12, "password must be at least 12 characters")
+  .max(128, "password must be at most 128 characters")
   .refine(
     (password) => /[A-Z]/.test(password),
     "Password must contain at least one uppercase letter"
@@ -100,10 +122,7 @@ const passwordSchema = z
     (password) => /[a-z]/.test(password),
     "Password must contain at least one lowercase letter"
   )
-  .refine(
-    (password) => /[0-9]/.test(password),
-    "Password must contain at least one number"
-  )
+  .refine((password) => /[0-9]/.test(password), "Password must contain at least one number")
   .refine(
     (password) => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
     "Password must contain at least one special character"
@@ -214,30 +233,21 @@ export const authRouter = {
    * Validates input, checks uniqueness, creates user, generates verification token,
    * and sends verification email. User cannot login until email is verified.
    *
-   * @throws {RPCError} AUTH_INVALID_INPUT - Invalid input data
-   * @throws {RPCError} AUTH_WEAK_PASSWORD - Password doesn't meet requirements
+   * @throws {RPCError} VALIDATION_ERROR - Invalid input data
    * @throws {RPCError} AUTH_USERNAME_TAKEN - Username already exists
    * @throws {RPCError} AUTH_EMAIL_TAKEN - Email already registered
-   * @throws {RPCError} AUTH_INVALID_EMAIL - Invalid email format
-   * @throws {RPCError} AUTH_INVALID_USERNAME - Invalid username format
    */
   "auth.register": async (ctx: ProcedureContext<z.infer<typeof registerSchema>>) => {
     // Validate input
     const validationResult = registerSchema.safeParse(ctx.input);
     if (!validationResult.success) {
+      const errorMessage = getValidationErrorMessage(validationResult.error);
       const firstError = validationResult.error.errors[0];
-      if (!firstError) {
-        throw new RPCError(
-          AuthErrorCode.AUTH_INVALID_INPUT,
-          "Invalid input data",
-          { errors: validationResult.error.errors }
-        );
-      }
-      throw new RPCError(
-        AuthErrorCode.AUTH_INVALID_INPUT,
-        firstError.message,
-        { field: firstError.path[0], errors: validationResult.error.errors }
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, errorMessage, {
+        field: firstError?.path[0],
+        errors: validationResult.error.errors,
+        fieldErrors: validationResult.error.flatten().fieldErrors,
+      });
     }
 
     const { username, email, password } = validationResult.data;
@@ -257,11 +267,9 @@ export const authRouter = {
     });
 
     if (existingUsername) {
-      throw new RPCError(
-        AuthErrorCode.AUTH_USERNAME_TAKEN,
-        "Username already exists",
-        { field: "username" }
-      );
+      throw new RPCError(AuthErrorCode.AUTH_USERNAME_TAKEN, "Username already exists", {
+        field: "username",
+      });
     }
 
     // Check email uniqueness
@@ -270,11 +278,9 @@ export const authRouter = {
     });
 
     if (existingEmail) {
-      throw new RPCError(
-        AuthErrorCode.AUTH_EMAIL_TAKEN,
-        "Email already registered",
-        { field: "email" }
-      );
+      throw new RPCError(AuthErrorCode.AUTH_EMAIL_TAKEN, "Email already registered", {
+        field: "email",
+      });
     }
 
     // Hash password
@@ -334,10 +340,13 @@ export const authRouter = {
     // Validate input
     const validationResult = loginSchema.safeParse(ctx.input);
     if (!validationResult.success) {
-      throw new RPCError(
-        AuthErrorCode.AUTH_INVALID_INPUT,
-        "Invalid email or password"
-      );
+      const errorMessage = getValidationErrorMessage(validationResult.error);
+      const firstError = validationResult.error.errors[0];
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, errorMessage, {
+        field: firstError?.path[0],
+        errors: validationResult.error.errors,
+        fieldErrors: validationResult.error.flatten().fieldErrors,
+      });
     }
 
     const { email, password } = validationResult.data;
@@ -355,19 +364,13 @@ export const authRouter = {
 
     // User not found - use generic error to prevent email enumeration
     if (!user) {
-      throw new RPCError(
-        AuthErrorCode.AUTH_INVALID_CREDENTIALS,
-        "Invalid email or password"
-      );
+      throw new RPCError(AuthErrorCode.AUTH_INVALID_CREDENTIALS, "Invalid email or password");
     }
 
     // Verify password
     const isPasswordValid = await verifyPassword(password, user.passwordHash);
     if (!isPasswordValid) {
-      throw new RPCError(
-        AuthErrorCode.AUTH_INVALID_CREDENTIALS,
-        "Invalid email or password"
-      );
+      throw new RPCError(AuthErrorCode.AUTH_INVALID_CREDENTIALS, "Invalid email or password");
     }
 
     // Check account status
@@ -380,11 +383,9 @@ export const authRouter = {
     }
 
     if (user.status === "deleted") {
-      throw new RPCError(
-        AuthErrorCode.AUTH_ACCOUNT_DELETED,
-        "Account no longer exists",
-        { status: user.status }
-      );
+      throw new RPCError(AuthErrorCode.AUTH_ACCOUNT_DELETED, "Account no longer exists", {
+        status: user.status,
+      });
     }
 
     // Check email verification
@@ -441,10 +442,7 @@ export const authRouter = {
   "auth.logout": async (ctx: ProcedureContext<void>) => {
     // Check if user is authenticated
     if (!ctx.user || !ctx.session) {
-      throw new RPCError(
-        AuthErrorCode.AUTH_UNAUTHORIZED,
-        "Not logged in"
-      );
+      throw new RPCError(AuthErrorCode.AUTH_UNAUTHORIZED, "Not logged in");
     }
 
     // Delete session
@@ -468,10 +466,7 @@ export const authRouter = {
   "auth.getSession": async (ctx: ProcedureContext<void>) => {
     // Check if user is authenticated
     if (!ctx.user || !ctx.session) {
-      throw new RPCError(
-        AuthErrorCode.AUTH_UNAUTHORIZED,
-        "No active session"
-      );
+      throw new RPCError(AuthErrorCode.AUTH_UNAUTHORIZED, "No active session");
     }
 
     // Return user and session
@@ -499,10 +494,13 @@ export const authRouter = {
     // Validate input
     const validationResult = verifyEmailSchema.safeParse(ctx.input);
     if (!validationResult.success) {
-      throw new RPCError(
-        AuthErrorCode.AUTH_INVALID_INPUT,
-        "Verification token is required"
-      );
+      const errorMessage = getValidationErrorMessage(validationResult.error);
+      const firstError = validationResult.error.errors[0];
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, errorMessage, {
+        field: firstError?.path[0],
+        errors: validationResult.error.errors,
+        fieldErrors: validationResult.error.flatten().fieldErrors,
+      });
     }
 
     const { token } = validationResult.data;
@@ -513,10 +511,7 @@ export const authRouter = {
     });
 
     if (!verificationToken) {
-      throw new RPCError(
-        AuthErrorCode.AUTH_TOKEN_INVALID,
-        "Invalid verification token"
-      );
+      throw new RPCError(AuthErrorCode.AUTH_TOKEN_INVALID, "Invalid verification token");
     }
 
     // Check if token is expired
@@ -538,10 +533,7 @@ export const authRouter = {
     });
 
     if (!user) {
-      throw new RPCError(
-        AuthErrorCode.AUTH_TOKEN_INVALID,
-        "Invalid verification token"
-      );
+      throw new RPCError(AuthErrorCode.AUTH_TOKEN_INVALID, "Invalid verification token");
     }
 
     // Mark email as verified
@@ -591,8 +583,7 @@ export const authRouter = {
    * Generates a new verification token and sends a new verification email.
    * Only works for unverified users.
    *
-   * @throws {RPCError} AUTH_INVALID_EMAIL - Email not found
-   * @throws {RPCError} AUTH_INVALID_INPUT - Email already verified
+   * @throws {RPCError} VALIDATION_ERROR - Invalid email format
    */
   "auth.resendVerification": async (
     ctx: ProcedureContext<z.infer<typeof resendVerificationSchema>>
@@ -600,10 +591,13 @@ export const authRouter = {
     // Validate input
     const validationResult = resendVerificationSchema.safeParse(ctx.input);
     if (!validationResult.success) {
-      throw new RPCError(
-        AuthErrorCode.AUTH_INVALID_INPUT,
-        "Invalid email format"
-      );
+      const errorMessage = getValidationErrorMessage(validationResult.error);
+      const firstError = validationResult.error.errors[0];
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, errorMessage, {
+        field: firstError?.path[0],
+        errors: validationResult.error.errors,
+        fieldErrors: validationResult.error.flatten().fieldErrors,
+      });
     }
 
     const { email } = validationResult.data;
@@ -624,10 +618,7 @@ export const authRouter = {
 
     // Check if already verified
     if (user.emailVerified) {
-      throw new RPCError(
-        AuthErrorCode.AUTH_INVALID_INPUT,
-        "Email is already verified"
-      );
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, "Email is already verified");
     }
 
     // Delete any existing verification tokens for this email

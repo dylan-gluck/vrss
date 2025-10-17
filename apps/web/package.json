@@ -11,7 +11,9 @@
     "test:watch": "npx vitest --watch",
     "test:ui": "npx vitest --ui",
     "test:coverage": "npx vitest run --coverage",
-    "lint": "eslint .",
+    "lint": "biome lint --write .",
+    "lint:check": "biome check .",
+    "format": "biome format --write .",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist build .turbo"
   },
@@ -33,7 +35,6 @@
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/coverage-v8": "^3.2.4",
     "@vitest/ui": "^3.2.4",
-    "@vrss/eslint-config": "workspace:*",
     "@vrss/typescript-config": "workspace:*",
     "autoprefixer": "^10.4.20",
     "happy-dom": "^20.0.2",

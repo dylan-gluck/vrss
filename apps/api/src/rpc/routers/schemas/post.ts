@@ -15,12 +15,7 @@ import { z } from "zod";
 // POST TYPE AND VISIBILITY ENUMS
 // =============================================================================
 
-export const postTypeSchema = z.enum([
-  "text",
-  "image",
-  "video",
-  "song",
-], {
+export const postTypeSchema = z.enum(["text", "image", "video", "song"], {
   errorMap: () => ({ message: "Post type must be text, image, video, or song" }),
 });
 
@@ -32,12 +27,16 @@ export const postVisibilitySchema = z.enum(["public", "followers", "private"], {
 // POST CREATE SCHEMAS
 // =============================================================================
 
-export const createPostSchema = z.object({
-  type: postTypeSchema,
-  content: z.string().min(1, "Content is required").max(10000, "Content must be at most 10,000 characters"),
-  mediaIds: z.array(z.string()).optional(),
-  visibility: postVisibilitySchema.default("public"),
-})
+export const createPostSchema = z
+  .object({
+    type: postTypeSchema,
+    content: z
+      .string()
+      .min(1, "Content is required")
+      .max(10000, "Content must be at most 10,000 characters"),
+    mediaIds: z.array(z.string()).optional(),
+    visibility: postVisibilitySchema.default("public"),
+  })
   .refine(
     (data) => {
       // Text posts must have content
@@ -71,15 +70,19 @@ export const getPostByIdSchema = z.object({
 // POST UPDATE SCHEMAS
 // =============================================================================
 
-export const updatePostSchema = z.object({
-  postId: z.string().min(1, "Post ID is required"),
-  content: z.string().min(1, "Content must be at least 1 character").max(10000, "Content must be at most 10,000 characters").optional(),
-  visibility: postVisibilitySchema.optional(),
-})
-  .refine(
-    (data) => data.content !== undefined || data.visibility !== undefined,
-    { message: "At least one field (content or visibility) must be provided" }
-  );
+export const updatePostSchema = z
+  .object({
+    postId: z.string().min(1, "Post ID is required"),
+    content: z
+      .string()
+      .min(1, "Content must be at least 1 character")
+      .max(10000, "Content must be at most 10,000 characters")
+      .optional(),
+    visibility: postVisibilitySchema.optional(),
+  })
+  .refine((data) => data.content !== undefined || data.visibility !== undefined, {
+    message: "At least one field (content or visibility) must be provided",
+  });
 
 // =============================================================================
 // POST DELETE SCHEMAS
@@ -107,7 +110,10 @@ export const unlikePostSchema = z.object({
 
 export const createCommentSchema = z.object({
   postId: z.string().min(1, "Post ID is required"),
-  content: z.string().min(1, "Comment content is required").max(2000, "Comment must be at most 2,000 characters"),
+  content: z
+    .string()
+    .min(1, "Comment content is required")
+    .max(2000, "Comment must be at most 2,000 characters"),
   parentCommentId: z.string().optional(), // For nested replies
 });
 

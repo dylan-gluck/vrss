@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient({
-  datasourceUrl: "postgresql://vrss_user:vrss_dev_password@localhost:6969/vrss?schema=public"
+  datasourceUrl: "postgresql://vrss_user:vrss_dev_password@localhost:6969/vrss?schema=public",
 });
 
 async function main() {
@@ -17,7 +17,7 @@ async function main() {
       email: "triggertest1@example.com",
       passwordHash: "hash",
       emailVerified: false,
-    }
+    },
   });
 
   const user2 = await prisma.user.create({
@@ -26,7 +26,7 @@ async function main() {
       email: "triggertest2@example.com",
       passwordHash: "hash",
       emailVerified: false,
-    }
+    },
   });
 
   // Create first follow
@@ -34,7 +34,7 @@ async function main() {
     data: {
       followerId: user1.id,
       followingId: user2.id,
-    }
+    },
   });
 
   console.log("✓ Created first follow (user1 -> user2)");
@@ -48,7 +48,7 @@ async function main() {
     data: {
       followerId: user2.id,
       followingId: user1.id,
-    }
+    },
   });
 
   console.log("✓ Created second follow (user2 -> user1) - mutual!");
