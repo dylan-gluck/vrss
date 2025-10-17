@@ -12,8 +12,10 @@ TASK_ID: $2
 
 ## Workflow
 
-1. SlashCommand(`/prime [PHASE_DOCUMENT] [TASK_ID]`) => `TASK_CONTEXT`
+1. SlashCommand(`/prime [PHASE_DOCUMENT] [TASK_ID]`) => `TASK_CONTEXT_FILE`
 
-2. SlashCommand(`/delegate /implement "[TASK_CONTEXT]"`) => `TASK_STATUS`
+2. SlashCommand(`/delegate "/implement @[TASK_CONTEXT_FILE]"`) => `TASK_STATUS`
 
 3. If `TASK_STATUS` is successful -> SlashCommand(`/validate [PHASE_DOCUMENT] [TASK_ID]`) => `VALIDATION_REPORT`
+
+4. If `VALIDATION_REPORT` is COMPLETE -> SlashCommand(`/commit --all`)
