@@ -59,9 +59,7 @@ describe("PWA Manifest", () => {
   });
 
   it("should have maskable icons for adaptive icon support", () => {
-    const maskableIcons = manifest.icons.filter((icon) =>
-      icon.purpose?.includes("maskable")
-    );
+    const maskableIcons = manifest.icons.filter((icon) => icon.purpose?.includes("maskable"));
     expect(maskableIcons.length).toBeGreaterThan(0);
   });
 

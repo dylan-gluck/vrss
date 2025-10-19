@@ -1,7 +1,7 @@
-import { describe, expect, it, beforeEach } from "vitest";
+import { useUIStore } from "@/lib/store/uiStore";
+import { beforeEach, describe, expect, it } from "vitest";
 import { renderWithProviders, screen } from "../../../../test/utils/render";
 import { BottomNav } from "../BottomNav";
-import { useUIStore } from "@/lib/store/uiStore";
 
 /**
  * Layout Component Tests - BottomNav (Mobile Bottom Navigation)

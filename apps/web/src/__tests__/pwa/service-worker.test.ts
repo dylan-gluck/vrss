@@ -124,16 +124,7 @@ describe("Service Worker Registration", () => {
 
   it("should cache all necessary file types", () => {
     // Validate glob patterns for cached files
-    const cachedFileExtensions = [
-      "js",
-      "css",
-      "html",
-      "ico",
-      "png",
-      "svg",
-      "woff",
-      "woff2",
-    ];
+    const cachedFileExtensions = ["js", "css", "html", "ico", "png", "svg", "woff", "woff2"];
 
     expect(cachedFileExtensions).toContain("js");
     expect(cachedFileExtensions).toContain("css");

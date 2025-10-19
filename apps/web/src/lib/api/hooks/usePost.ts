@@ -5,8 +5,8 @@
  * Includes optimistic updates for better UX.
  */
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { api } from '../client';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { api } from "../client";
 
 /**
  * Hook to create a new post
@@ -20,17 +20,16 @@ export function useCreatePost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (input: { content: string; media?: unknown[] }) =>
-      api.post.create(input),
+    mutationFn: (input: { content: string; media?: unknown[] }) => api.post.create(input),
     onMutate: async (newPost) => {
       // Cancel outgoing refetches
-      await queryClient.cancelQueries({ queryKey: ['feed'] });
+      await queryClient.cancelQueries({ queryKey: ["feed"] });
 
       // Snapshot previous value
-      const previousFeed = queryClient.getQueryData(['feed']);
+      const previousFeed = queryClient.getQueryData(["feed"]);
 
       // Optimistically update feed
-      queryClient.setQueryData(['feed'], (old: any) => {
+      queryClient.setQueryData(["feed"], (old: any) => {
         if (!old) return old;
 
         return {
@@ -41,7 +40,7 @@ export function useCreatePost() {
                   ...page,
                   posts: [
                     {
-                      id: 'temp-' + Date.now(),
+                      id: `temp-${Date.now()}`,
                       content: newPost.content,
                       createdAt: new Date().toISOString(),
                       likesCount: 0,
@@ -63,12 +62,12 @@ export function useCreatePost() {
     onError: (_error, _newPost, context) => {
       // Rollback optimistic update on error
       if (context?.previousFeed) {
-        queryClient.setQueryData(['feed'], context.previousFeed);
+        queryClient.setQueryData(["feed"], context.previousFeed);
       }
     },
     onSettled: () => {
       // Refetch feed after mutation completes
-      queryClient.invalidateQueries({ queryKey: ['feed'] });
+      queryClient.invalidateQueries({ queryKey: ["feed"] });
     },
   });
 }
@@ -81,7 +80,7 @@ export function useCreatePost() {
  */
 export function usePost(postId: string) {
   return useQuery({
-    queryKey: ['post', postId],
+    queryKey: ["post", postId],
     queryFn: () => api.post.getById({ postId }),
     enabled: !!postId,
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -103,8 +102,8 @@ export function useUpdatePost() {
       api.post.update(input),
     onSuccess: (_data, variables) => {
       // Invalidate post and feed queries
-      queryClient.invalidateQueries({ queryKey: ['post', variables.postId] });
-      queryClient.invalidateQueries({ queryKey: ['feed'] });
+      queryClient.invalidateQueries({ queryKey: ["post", variables.postId] });
+      queryClient.invalidateQueries({ queryKey: ["feed"] });
     },
   });
 }
@@ -123,8 +122,8 @@ export function useDeletePost() {
     mutationFn: (input: { postId: string }) => api.post.delete(input),
     onSuccess: (_data, variables) => {
       // Remove from cache
-      queryClient.removeQueries({ queryKey: ['post', variables.postId] });
-      queryClient.invalidateQueries({ queryKey: ['feed'] });
+      queryClient.removeQueries({ queryKey: ["post", variables.postId] });
+      queryClient.invalidateQueries({ queryKey: ["feed"] });
     },
   });
 }
@@ -144,13 +143,13 @@ export function useLikePost() {
     mutationFn: (input: { postId: string }) => api.post.like(input),
     onMutate: async (variables) => {
       // Cancel outgoing refetches
-      await queryClient.cancelQueries({ queryKey: ['post', variables.postId] });
+      await queryClient.cancelQueries({ queryKey: ["post", variables.postId] });
 
       // Snapshot previous value
-      const previousPost = queryClient.getQueryData(['post', variables.postId]);
+      const previousPost = queryClient.getQueryData(["post", variables.postId]);
 
       // Optimistically update
-      queryClient.setQueryData(['post', variables.postId], (old: any) => {
+      queryClient.setQueryData(["post", variables.postId], (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -164,12 +163,12 @@ export function useLikePost() {
     onError: (_error, variables, context) => {
       // Rollback on error
       if (context?.previousPost) {
-        queryClient.setQueryData(['post', variables.postId], context.previousPost);
+        queryClient.setQueryData(["post", variables.postId], context.previousPost);
       }
     },
     onSettled: (_data, _error, variables) => {
       // Refetch to ensure consistency
-      queryClient.invalidateQueries({ queryKey: ['post', variables.postId] });
+      queryClient.invalidateQueries({ queryKey: ["post", variables.postId] });
     },
   });
 }
@@ -187,11 +186,11 @@ export function useUnlikePost() {
   return useMutation({
     mutationFn: (input: { postId: string }) => api.post.unlike(input),
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: ['post', variables.postId] });
+      await queryClient.cancelQueries({ queryKey: ["post", variables.postId] });
 
-      const previousPost = queryClient.getQueryData(['post', variables.postId]);
+      const previousPost = queryClient.getQueryData(["post", variables.postId]);
 
-      queryClient.setQueryData(['post', variables.postId], (old: any) => {
+      queryClient.setQueryData(["post", variables.postId], (old: any) => {
         if (!old) return old;
         return {
           ...old,
@@ -204,11 +203,11 @@ export function useUnlikePost() {
     },
     onError: (_error, variables, context) => {
       if (context?.previousPost) {
-        queryClient.setQueryData(['post', variables.postId], context.previousPost);
+        queryClient.setQueryData(["post", variables.postId], context.previousPost);
       }
     },
     onSettled: (_data, _error, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['post', variables.postId] });
+      queryClient.invalidateQueries({ queryKey: ["post", variables.postId] });
     },
   });
 }

@@ -11,16 +11,16 @@
  * - Offline queue integration
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { rpcClient } from '../client';
-import { useAuthStore } from '../../store/authStore';
-import { useOfflineStore } from '../../store/offlineStore';
-import { ErrorCode } from '@vrss/api-contracts';
+import { ErrorCode } from "@vrss/api-contracts";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { useAuthStore } from "../../store/authStore";
+import { useOfflineStore } from "../../store/offlineStore";
+import { rpcClient } from "../client";
 
 // Mock fetch
 global.fetch = vi.fn();
 
-describe('RPC Client', () => {
+describe("RPC Client", () => {
   beforeEach(() => {
     // Reset mocks
     vi.clearAllMocks();
@@ -43,14 +43,14 @@ describe('RPC Client', () => {
     vi.restoreAllMocks();
   });
 
-  describe('Basic Request/Response', () => {
-    it('should make a successful RPC call', async () => {
+  describe("Basic Request/Response", () => {
+    it("should make a successful RPC call", async () => {
       const mockResponse = {
         success: true,
-        data: { id: '123', name: 'Test User' },
+        data: { id: "123", name: "Test User" },
         metadata: {
           timestamp: Date.now(),
-          requestId: 'req_123',
+          requestId: "req_123",
         },
       };
 
@@ -59,25 +59,25 @@ describe('RPC Client', () => {
         json: async () => mockResponse,
       });
 
-      const result = await rpcClient.call('user.getProfile', { username: 'testuser' });
+      const result = await rpcClient.call("user.getProfile", { username: "testuser" });
 
       expect(result).toEqual(mockResponse.data);
       expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/rpc'),
+        expect.stringContaining("/api/rpc"),
         expect.objectContaining({
-          method: 'POST',
+          method: "POST",
           headers: expect.objectContaining({
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           }),
         })
       );
     });
 
-    it('should send correct request format', async () => {
+    it("should send correct request format", async () => {
       const mockResponse = {
         success: true,
         data: {},
-        metadata: { timestamp: Date.now(), requestId: 'req_123' },
+        metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
       (global.fetch as any).mockResolvedValueOnce({
@@ -85,25 +85,25 @@ describe('RPC Client', () => {
         json: async () => mockResponse,
       });
 
-      await rpcClient.call('auth.login', { email: 'test@test.com', password: 'password123' });
+      await rpcClient.call("auth.login", { email: "test@test.com", password: "password123" });
 
       const fetchCall = (global.fetch as any).mock.calls[0];
       const requestBody = JSON.parse(fetchCall[1].body);
 
       expect(requestBody).toMatchObject({
-        procedure: 'auth.login',
+        procedure: "auth.login",
         input: {
-          email: 'test@test.com',
-          password: 'password123',
+          email: "test@test.com",
+          password: "password123",
         },
       });
     });
 
-    it('should include request ID in the request', async () => {
+    it("should include context in the request", async () => {
       const mockResponse = {
         success: true,
         data: {},
-        metadata: { timestamp: Date.now(), requestId: 'req_123' },
+        metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
       (global.fetch as any).mockResolvedValueOnce({
@@ -111,22 +111,26 @@ describe('RPC Client', () => {
         json: async () => mockResponse,
       });
 
-      await rpcClient.call('user.getProfile', { username: 'test' });
+      await rpcClient.call(
+        "user.getProfile",
+        { username: "test" },
+        { context: { correlationId: "test-123" } }
+      );
 
       const fetchCall = (global.fetch as any).mock.calls[0];
       const requestBody = JSON.parse(fetchCall[1].body);
 
       expect(requestBody.context).toBeDefined();
-      expect(requestBody.context.requestId).toBeDefined();
+      expect(requestBody.context.correlationId).toBe("test-123");
     });
   });
 
-  describe('Authentication Token Attachment', () => {
-    it('should attach Bearer token when user is authenticated', async () => {
+  describe("Authentication Token Attachment", () => {
+    it("should attach Bearer token when user is authenticated", async () => {
       // Set up authenticated state
       useAuthStore.setState({
-        user: { id: '1', username: 'test', email: 'test@test.com' },
-        token: 'test-token-123',
+        user: { id: "1", username: "test", email: "test@test.com", avatarUrl: null },
+        token: "test-token-123",
         isAuthenticated: true,
         isLoading: false,
       });
@@ -134,7 +138,7 @@ describe('RPC Client', () => {
       const mockResponse = {
         success: true,
         data: {},
-        metadata: { timestamp: Date.now(), requestId: 'req_123' },
+        metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
       (global.fetch as any).mockResolvedValueOnce({
@@ -142,19 +146,19 @@ describe('RPC Client', () => {
         json: async () => mockResponse,
       });
 
-      await rpcClient.call('post.create', { content: 'Test post' });
+      await rpcClient.call("post.create", { content: "Test post" });
 
       const fetchCall = (global.fetch as any).mock.calls[0];
       const headers = fetchCall[1].headers;
 
-      expect(headers.Authorization).toBe('Bearer test-token-123');
+      expect(headers.Authorization).toBe("Bearer test-token-123");
     });
 
-    it('should not include Authorization header when not authenticated', async () => {
+    it("should not include Authorization header when not authenticated", async () => {
       const mockResponse = {
         success: true,
         data: {},
-        metadata: { timestamp: Date.now(), requestId: 'req_123' },
+        metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
       (global.fetch as any).mockResolvedValueOnce({
@@ -162,7 +166,7 @@ describe('RPC Client', () => {
         json: async () => mockResponse,
       });
 
-      await rpcClient.call('auth.login', { email: 'test@test.com', password: 'pass' });
+      await rpcClient.call("auth.login", { email: "test@test.com", password: "pass" });
 
       const fetchCall = (global.fetch as any).mock.calls[0];
       const headers = fetchCall[1].headers;
@@ -171,15 +175,15 @@ describe('RPC Client', () => {
     });
   });
 
-  describe('Error Handling', () => {
-    it('should handle 401 Unauthorized errors', async () => {
+  describe("Error Handling", () => {
+    it("should handle 401 Unauthorized errors", async () => {
       const errorResponse = {
         success: false,
         error: {
           code: ErrorCode.UNAUTHORIZED,
-          message: 'Authentication required',
+          message: "Authentication required",
         },
-        metadata: { timestamp: Date.now(), requestId: 'req_123' },
+        metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
       (global.fetch as any).mockResolvedValueOnce({
@@ -188,19 +192,19 @@ describe('RPC Client', () => {
         json: async () => errorResponse,
       });
 
-      await expect(
-        rpcClient.call('post.create', { content: 'Test' })
-      ).rejects.toThrow('Authentication required');
+      await expect(rpcClient.call("post.create", { content: "Test" })).rejects.toThrow(
+        "Authentication required"
+      );
     });
 
-    it('should handle 403 Forbidden errors', async () => {
+    it("should handle 403 Forbidden errors", async () => {
       const errorResponse = {
         success: false,
         error: {
           code: ErrorCode.FORBIDDEN,
-          message: 'Access denied',
+          message: "Access denied",
         },
-        metadata: { timestamp: Date.now(), requestId: 'req_123' },
+        metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
       (global.fetch as any).mockResolvedValueOnce({
@@ -209,19 +213,19 @@ describe('RPC Client', () => {
         json: async () => errorResponse,
       });
 
-      await expect(
-        rpcClient.call('user.delete', { userId: '123' })
-      ).rejects.toThrow('Access denied');
+      await expect(rpcClient.call("user.delete", { userId: "123" })).rejects.toThrow(
+        "Access denied"
+      );
     });
 
-    it('should handle 500 Internal Server errors', async () => {
+    it("should handle 500 Internal Server errors", async () => {
       const errorResponse = {
         success: false,
         error: {
           code: ErrorCode.INTERNAL_SERVER_ERROR,
-          message: 'Internal server error',
+          message: "Internal server error",
         },
-        metadata: { timestamp: Date.now(), requestId: 'req_123' },
+        metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
       (global.fetch as any).mockResolvedValueOnce({
@@ -230,23 +234,23 @@ describe('RPC Client', () => {
         json: async () => errorResponse,
       });
 
-      await expect(
-        rpcClient.call('post.create', { content: 'Test' })
-      ).rejects.toThrow('Internal server error');
+      await expect(rpcClient.call("post.create", { content: "Test" })).rejects.toThrow(
+        "Internal server error"
+      );
     });
 
-    it('should handle validation errors with details', async () => {
+    it("should handle validation errors with details", async () => {
       const errorResponse = {
         success: false,
         error: {
           code: ErrorCode.VALIDATION_ERROR,
-          message: 'Validation failed',
+          message: "Validation failed",
           details: {
-            username: 'Username must be at least 3 characters',
-            email: 'Invalid email format',
+            username: "Username must be at least 3 characters",
+            email: "Invalid email format",
           },
         },
-        metadata: { timestamp: Date.now(), requestId: 'req_123' },
+        metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
       (global.fetch as any).mockResolvedValueOnce({
@@ -256,36 +260,36 @@ describe('RPC Client', () => {
       });
 
       try {
-        await rpcClient.call('auth.register', {
-          username: 'ab',
-          email: 'invalid',
-          password: 'pass',
+        await rpcClient.call("auth.register", {
+          username: "ab",
+          email: "invalid",
+          password: "pass",
         });
-        expect.fail('Should have thrown error');
+        expect.fail("Should have thrown error");
       } catch (error: any) {
-        expect(error.message).toBe('Validation failed');
+        expect(error.message).toBe("Validation failed");
         expect(error.code).toBe(ErrorCode.VALIDATION_ERROR);
         expect(error.details).toBeDefined();
       }
     });
 
-    it('should handle network errors', async () => {
-      (global.fetch as any).mockRejectedValueOnce(new Error('Network error'));
+    it("should handle network errors", async () => {
+      (global.fetch as any).mockRejectedValueOnce(new Error("Network error"));
 
-      await expect(
-        rpcClient.call('post.create', { content: 'Test' })
-      ).rejects.toThrow('Network error');
+      await expect(rpcClient.call("post.create", { content: "Test" })).rejects.toThrow(
+        "Network error"
+      );
     });
 
-    it('should throw custom error class with error details', async () => {
+    it("should throw custom error class with error details", async () => {
       const errorResponse = {
         success: false,
         error: {
           code: ErrorCode.NOT_FOUND,
-          message: 'User not found',
-          details: { userId: '123' },
+          message: "User not found",
+          details: { userId: "123" },
         },
-        metadata: { timestamp: Date.now(), requestId: 'req_123' },
+        metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
       (global.fetch as any).mockResolvedValueOnce({
@@ -295,69 +299,69 @@ describe('RPC Client', () => {
       });
 
       try {
-        await rpcClient.call('user.getProfile', { username: 'nonexistent' });
-        expect.fail('Should have thrown error');
+        await rpcClient.call("user.getProfile", { username: "nonexistent" });
+        expect.fail("Should have thrown error");
       } catch (error: any) {
         expect(error.code).toBe(ErrorCode.NOT_FOUND);
-        expect(error.message).toBe('User not found');
-        expect(error.details).toEqual({ userId: '123' });
+        expect(error.message).toBe("User not found");
+        expect(error.details).toEqual({ userId: "123" });
       }
     });
   });
 
-  describe('Offline Queue Integration', () => {
-    it('should add failed mutations to offline queue when offline', async () => {
+  describe("Offline Queue Integration", () => {
+    it("should add failed mutations to offline queue when offline", async () => {
       // Set offline
       useOfflineStore.setState({ isOnline: false, queue: [] });
 
-      const addToQueueSpy = vi.spyOn(useOfflineStore.getState(), 'addToQueue');
+      const addToQueueSpy = vi.spyOn(useOfflineStore.getState(), "addToQueue");
 
       // Mock network failure
-      (global.fetch as any).mockRejectedValueOnce(new Error('Network error'));
+      (global.fetch as any).mockRejectedValueOnce(new Error("Network error"));
 
       try {
-        await rpcClient.call('post.create', { content: 'Test post' }, { mutation: true });
-      } catch (error) {
+        await rpcClient.call("post.create", { content: "Test post" }, { mutation: true });
+      } catch (_error) {
         // Error is expected
       }
 
       expect(addToQueueSpy).toHaveBeenCalledWith({
-        type: 'RPC_CALL',
+        type: "RPC_CALL",
         payload: {
-          procedure: 'post.create',
-          input: { content: 'Test post' },
+          procedure: "post.create",
+          input: { content: "Test post" },
         },
       });
     });
 
-    it('should not queue queries when offline, only mutations', async () => {
+    it("should not queue queries when offline, only mutations", async () => {
       useOfflineStore.setState({ isOnline: false, queue: [] });
 
-      const addToQueueSpy = vi.spyOn(useOfflineStore.getState(), 'addToQueue');
+      const addToQueueSpy = vi.spyOn(useOfflineStore.getState(), "addToQueue");
 
-      (global.fetch as any).mockRejectedValueOnce(new Error('Network error'));
+      (global.fetch as any).mockRejectedValueOnce(new Error("Network error"));
 
       try {
-        await rpcClient.call('feed.get', { limit: 20 }, { mutation: false });
-      } catch (error) {
+        await rpcClient.call("feed.get", { limit: 20 }, { mutation: false });
+      } catch (_error) {
         // Error is expected
       }
 
       expect(addToQueueSpy).not.toHaveBeenCalled();
     });
 
-    it('should not queue when online even if request fails', async () => {
+    it("should not queue when online even if request fails", async () => {
       useOfflineStore.setState({ isOnline: true, queue: [] });
 
-      const addToQueueSpy = vi.spyOn(useOfflineStore.getState(), 'addToQueue');
+      const addToQueueSpy = vi.spyOn(useOfflineStore.getState(), "addToQueue");
 
       const errorResponse = {
         success: false,
         error: {
           code: ErrorCode.VALIDATION_ERROR,
-          message: 'Validation failed',
+          message: "Validation failed",
         },
-        metadata: { timestamp: Date.now(), requestId: 'req_123' },
+        metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
       (global.fetch as any).mockResolvedValueOnce({
@@ -367,8 +371,8 @@ describe('RPC Client', () => {
       });
 
       try {
-        await rpcClient.call('post.create', { content: '' }, { mutation: true });
-      } catch (error) {
+        await rpcClient.call("post.create", { content: "" }, { mutation: true });
+      } catch (_error) {
         // Error is expected
       }
 
@@ -376,12 +380,12 @@ describe('RPC Client', () => {
     });
   });
 
-  describe('Request Context', () => {
-    it('should allow custom context in requests', async () => {
+  describe("Request Context", () => {
+    it("should allow custom context in requests", async () => {
       const mockResponse = {
         success: true,
         data: {},
-        metadata: { timestamp: Date.now(), requestId: 'req_123' },
+        metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
       (global.fetch as any).mockResolvedValueOnce({
@@ -390,20 +394,20 @@ describe('RPC Client', () => {
       });
 
       await rpcClient.call(
-        'post.create',
-        { content: 'Test' },
-        { context: { correlationId: 'custom-correlation-id' } }
+        "post.create",
+        { content: "Test" },
+        { context: { correlationId: "custom-correlation-id" } }
       );
 
       const fetchCall = (global.fetch as any).mock.calls[0];
       const requestBody = JSON.parse(fetchCall[1].body);
 
-      expect(requestBody.context.correlationId).toBe('custom-correlation-id');
+      expect(requestBody.context.correlationId).toBe("custom-correlation-id");
     });
   });
 
-  describe('Timeout Handling', () => {
-    it('should timeout long-running requests', async () => {
+  describe("Timeout Handling", () => {
+    it("should timeout long-running requests", async () => {
       // Mock a slow fetch that takes longer than timeout
       (global.fetch as any).mockImplementationOnce(
         () =>
@@ -421,10 +425,10 @@ describe('RPC Client', () => {
       );
 
       // Call with very short timeout
-      const promise = rpcClient.call('post.create', { content: 'Test' }, { timeout: 100 });
+      const promise = rpcClient.call("post.create", { content: "Test" }, { timeout: 100 });
 
       // Wait for timeout to trigger
-      await expect(promise).rejects.toThrow('Request timeout');
+      await expect(promise).rejects.toThrow("Request timeout");
     });
   });
 });

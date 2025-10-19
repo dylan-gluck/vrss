@@ -5,10 +5,10 @@
  * Provides type-safe hooks with automatic caching and state management.
  */
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { api, rpcClient } from '../client';
-import { useAuthStore } from '../../store/authStore';
-import type { AuthProcedures } from '@vrss/api-contracts';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { AuthProcedures } from "@vrss/api-contracts";
+import { useAuthStore } from "../../store/authStore";
+import { api, rpcClient } from "../client";
 
 /**
  * Hook to login a user
@@ -28,8 +28,8 @@ export function useLogin() {
       setUser(data.user, data.sessionToken);
 
       // Invalidate any cached queries that depend on auth state
-      queryClient.invalidateQueries({ queryKey: ['session'] });
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+      queryClient.invalidateQueries({ queryKey: ["session"] });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
   });
 }
@@ -52,7 +52,7 @@ export function useRegister() {
       setUser(data.user, data.sessionToken);
 
       // Invalidate queries
-      queryClient.invalidateQueries({ queryKey: ['session'] });
+      queryClient.invalidateQueries({ queryKey: ["session"] });
     },
   });
 }
@@ -90,7 +90,7 @@ export function useSession() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   return useQuery({
-    queryKey: ['session'],
+    queryKey: ["session"],
     queryFn: () => api.auth.getSession(),
     enabled: isAuthenticated,
     staleTime: 1000 * 60 * 5, // 5 minutes

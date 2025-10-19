@@ -1,11 +1,11 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 export interface User {
   id: string;
   username: string;
   email: string;
-  avatarUrl?: string;
+  avatarUrl: string | null;
 }
 
 interface AuthState {
@@ -50,7 +50,7 @@ export const useAuthStore = create<AuthState>()(
         })),
     }),
     {
-      name: 'vrss-auth',
+      name: "vrss-auth",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         user: state.user,

@@ -4,8 +4,8 @@
  * TanStack Query hooks for social interaction procedures.
  */
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { api } from '../client';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { api } from "../client";
 
 /**
  * Hook to follow a user
@@ -21,9 +21,9 @@ export function useFollow() {
     mutationFn: (input: { userId: string }) => api.social.follow(input),
     onSuccess: (_data, variables) => {
       // Invalidate followers/following lists
-      queryClient.invalidateQueries({ queryKey: ['followers', variables.userId] });
-      queryClient.invalidateQueries({ queryKey: ['following'] });
-      queryClient.invalidateQueries({ queryKey: ['user', 'profile'] });
+      queryClient.invalidateQueries({ queryKey: ["followers", variables.userId] });
+      queryClient.invalidateQueries({ queryKey: ["following"] });
+      queryClient.invalidateQueries({ queryKey: ["user", "profile"] });
     },
   });
 }
@@ -41,9 +41,9 @@ export function useUnfollow() {
   return useMutation({
     mutationFn: (input: { userId: string }) => api.social.unfollow(input),
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['followers', variables.userId] });
-      queryClient.invalidateQueries({ queryKey: ['following'] });
-      queryClient.invalidateQueries({ queryKey: ['user', 'profile'] });
+      queryClient.invalidateQueries({ queryKey: ["followers", variables.userId] });
+      queryClient.invalidateQueries({ queryKey: ["following"] });
+      queryClient.invalidateQueries({ queryKey: ["user", "profile"] });
     },
   });
 }
@@ -58,7 +58,7 @@ export function useFollowers(userId: string, options: { limit?: number } = {}) {
   const { limit = 20 } = options;
 
   return useQuery({
-    queryKey: ['followers', userId],
+    queryKey: ["followers", userId],
     queryFn: () => api.social.getFollowers({ userId, limit }),
     enabled: !!userId,
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -75,7 +75,7 @@ export function useFollowing(userId: string, options: { limit?: number } = {}) {
   const { limit = 20 } = options;
 
   return useQuery({
-    queryKey: ['following', userId],
+    queryKey: ["following", userId],
     queryFn: () => api.social.getFollowing({ userId, limit }),
     enabled: !!userId,
     staleTime: 1000 * 60 * 5, // 5 minutes

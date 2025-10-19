@@ -1,8 +1,8 @@
-import { describe, expect, it, beforeEach } from "vitest";
-import { renderWithProviders, screen } from "../../../../test/utils/render";
-import { MobileHeader } from "../MobileHeader";
 import { useUIStore } from "@/lib/store/uiStore";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it } from "vitest";
+import { renderWithProviders, screen } from "../../../../test/utils/render";
+import { MobileHeader } from "../MobileHeader";
 
 /**
  * Layout Component Tests - MobileHeader

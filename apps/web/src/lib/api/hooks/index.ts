@@ -6,7 +6,7 @@
  */
 
 // Auth hooks
-export { useLogin, useRegister, useLogout, useSession, useAuth } from './useAuth';
+export { useLogin, useRegister, useLogout, useSession, useAuth } from "./useAuth";
 
 // Post hooks
 export {
@@ -16,13 +16,13 @@ export {
   useDeletePost,
   useLikePost,
   useUnlikePost,
-} from './usePost';
+} from "./usePost";
 
 // Feed hooks
-export { useFeed } from './useFeed';
+export { useFeed } from "./useFeed";
 
 // User hooks
-export { useUserProfile, useUpdateProfile } from './useUser';
+export { useUserProfile, useUpdateProfile } from "./useUser";
 
 // Social hooks
-export { useFollow, useUnfollow, useFollowers, useFollowing } from './useSocial';
+export { useFollow, useUnfollow, useFollowers, useFollowing } from "./useSocial";

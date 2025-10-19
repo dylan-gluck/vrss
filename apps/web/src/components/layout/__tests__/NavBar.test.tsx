@@ -1,8 +1,8 @@
-import { describe, expect, it, beforeEach } from "vitest";
-import { renderWithProviders, screen } from "../../../../test/utils/render";
-import { NavBar } from "../NavBar";
 import { useUIStore } from "@/lib/store/uiStore";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it } from "vitest";
+import { renderWithProviders, screen } from "../../../../test/utils/render";
+import { NavBar } from "../NavBar";
 
 /**
  * Layout Component Tests - NavBar (Desktop Sidebar)

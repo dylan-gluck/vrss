@@ -1,9 +1,9 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 export interface QueuedAction {
   id: string;
-  type: 'CREATE_POST' | 'UPDATE_PROFILE' | 'SEND_MESSAGE' | 'RPC_CALL';
+  type: "CREATE_POST" | "UPDATE_PROFILE" | "SEND_MESSAGE" | "RPC_CALL";
   payload: any;
   timestamp: number;
   retries: number;
@@ -15,7 +15,7 @@ interface OfflineState {
 
   // Actions
   setOnline: (online: boolean) => void;
-  addToQueue: (action: Omit<QueuedAction, 'id' | 'timestamp' | 'retries'>) => void;
+  addToQueue: (action: Omit<QueuedAction, "id" | "timestamp" | "retries">) => void;
   removeFromQueue: (id: string) => void;
   processQueue: () => Promise<void>;
 }
@@ -64,28 +64,26 @@ export const useOfflineStore = create<OfflineState>()(
         for (const action of queue) {
           try {
             // Process action based on type
-            if (action.type === 'RPC_CALL') {
+            if (action.type === "RPC_CALL") {
               // Dynamically import rpcClient to avoid circular dependency
-              const { rpcClient } = await import('../api/client');
+              const { rpcClient } = await import("../api/client");
 
               // Call the RPC procedure
-              await rpcClient.call(
-                action.payload.procedure,
-                action.payload.input,
-                { mutation: true }
-              );
+              await rpcClient.call(action.payload.procedure, action.payload.input, {
+                mutation: true,
+              });
             } else {
               // For backward compatibility with old action types
               // Map old types to RPC procedures
               const procedureMap: Record<string, string> = {
-                CREATE_POST: 'post.create',
-                UPDATE_PROFILE: 'user.updateProfile',
-                SEND_MESSAGE: 'message.send',
+                CREATE_POST: "post.create",
+                UPDATE_PROFILE: "user.updateProfile",
+                SEND_MESSAGE: "message.send",
               };
 
               const procedure = procedureMap[action.type];
               if (procedure) {
-                const { rpcClient } = await import('../api/client');
+                const { rpcClient } = await import("../api/client");
                 await rpcClient.call(procedure, action.payload, { mutation: true });
               }
             }
@@ -108,26 +106,28 @@ export const useOfflineStore = create<OfflineState>()(
                   a.id === action.id ? { ...a, retries: a.retries + 1 } : a
                 ),
               }));
-              console.warn(`Action ${action.id} failed, will retry (${action.retries + 1}/${maxRetries})`);
+              console.warn(
+                `Action ${action.id} failed, will retry (${action.retries + 1}/${maxRetries})`
+              );
             }
           }
         }
       },
     }),
     {
-      name: 'vrss-offline',
+      name: "vrss-offline",
       storage: createJSONStorage(() => localStorage),
     }
   )
 );
 
 // Listen for online/offline events
-if (typeof window !== 'undefined') {
-  window.addEventListener('online', () => {
+if (typeof window !== "undefined") {
+  window.addEventListener("online", () => {
     useOfflineStore.getState().setOnline(true);
   });
 
-  window.addEventListener('offline', () => {
+  window.addEventListener("offline", () => {
     useOfflineStore.getState().setOnline(false);
   });
 }

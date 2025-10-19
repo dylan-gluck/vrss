@@ -1,3 +1,4 @@
+import { dirname, join } from "node:path";
 /**
  * PostCSS Configuration for Bun Workspace Monorepo
  *
@@ -10,19 +11,17 @@
  * 2. Install dependencies directly in web package (non-hoisted)
  * 3. Create symlinks in node_modules/ (less portable)
  */
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const workspaceRoot = join(__dirname, '../..');
+const workspaceRoot = join(__dirname, "../..");
 
 // Import plugins from hoisted workspace node_modules
-const tailwindcss = await import(join(workspaceRoot, 'node_modules/tailwindcss/lib/index.js'));
-const autoprefixer = await import(join(workspaceRoot, 'node_modules/autoprefixer/lib/autoprefixer.js'));
+const tailwindcss = await import(join(workspaceRoot, "node_modules/tailwindcss/lib/index.js"));
+const autoprefixer = await import(
+  join(workspaceRoot, "node_modules/autoprefixer/lib/autoprefixer.js")
+);
 
 export default {
-  plugins: [
-    tailwindcss.default,
-    autoprefixer.default,
-  ],
+  plugins: [tailwindcss.default, autoprefixer.default],
 };

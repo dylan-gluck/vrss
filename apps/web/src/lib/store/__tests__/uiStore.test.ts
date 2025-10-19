@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useUIStore } from "../uiStore";
 
 /**
@@ -10,8 +10,7 @@ import { useUIStore } from "../uiStore";
 describe("UI Store", () => {
   beforeEach(() => {
     // Reset store to default state before each test
-    const { setTheme, setSidebarOpen, setBottomNavVisible, closeModal } =
-      useUIStore.getState();
+    const { setTheme, setSidebarOpen, setBottomNavVisible, closeModal } = useUIStore.getState();
     setTheme("system");
     setSidebarOpen(true);
     setBottomNavVisible(true);
@@ -181,8 +180,7 @@ describe("UI Store", () => {
 
   describe("Store Integration", () => {
     it("should handle multiple state updates", () => {
-      const { setTheme, setSidebarOpen, setBottomNavVisible, openModal } =
-        useUIStore.getState();
+      const { setTheme, setSidebarOpen, setBottomNavVisible, openModal } = useUIStore.getState();
 
       setTheme("dark");
       setSidebarOpen(false);

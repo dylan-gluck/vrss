@@ -13,19 +13,20 @@
  */
 
 import type {
-  RPCRequest,
-  RPCResponse,
-  RPCRequestContext,
+  AuthProcedures,
   ErrorCode,
-} from '@vrss/api-contracts';
-import { useAuthStore } from '../store/authStore';
-import { useOfflineStore } from '../store/offlineStore';
+  RPCRequest,
+  RPCRequestContext,
+  RPCResponse,
+} from "@vrss/api-contracts";
+import { useAuthStore } from "../store/authStore";
+import { useOfflineStore } from "../store/offlineStore";
 
 /**
  * Base API URL from environment variables
  * Defaults to http://localhost:3000 for development
  */
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 /**
  * Default request timeout (30 seconds)
@@ -41,7 +42,7 @@ export class RPCError extends Error {
 
   constructor(code: number, message: string, details?: unknown) {
     super(message);
-    this.name = 'RPCError';
+    this.name = "RPCError";
     this.code = code;
     this.details = details;
 
@@ -83,7 +84,17 @@ export interface RPCCallOptions {
  * Infer if a procedure is a mutation based on its name
  */
 function isMutationProcedure(procedure: string): boolean {
-  const mutationKeywords = ['create', 'update', 'delete', 'remove', 'add', 'set', 'login', 'logout', 'register'];
+  const mutationKeywords = [
+    "create",
+    "update",
+    "delete",
+    "remove",
+    "add",
+    "set",
+    "login",
+    "logout",
+    "register",
+  ];
   const procedureLower = procedure.toLowerCase();
   return mutationKeywords.some((keyword) => procedureLower.includes(keyword));
 }
@@ -94,7 +105,7 @@ function isMutationProcedure(procedure: string): boolean {
 function createTimeoutPromise(timeout: number): Promise<never> {
   return new Promise((_, reject) => {
     setTimeout(() => {
-      reject(new Error('Request timeout'));
+      reject(new Error("Request timeout"));
     }, timeout);
   });
 }
@@ -135,28 +146,26 @@ class RPCClient {
     const isOnline = useOfflineStore.getState().isOnline;
 
     // Build request
-    const requestId = crypto.randomUUID();
     const request: RPCRequest<TInput> = {
       procedure,
       input,
       context: {
-        requestId,
         ...context,
       },
     };
 
     // Build headers
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     };
 
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+      headers.Authorization = `Bearer ${token}`;
     }
 
     // Create fetch promise
     const fetchPromise = fetch(`${this.baseUrl}/api/rpc`, {
-      method: 'POST',
+      method: "POST",
       headers,
       body: JSON.stringify(request),
       signal,
@@ -173,7 +182,7 @@ class RPCClient {
       if (!response.ok || !data.success || data.error) {
         const error = data.error || {
           code: 9999,
-          message: 'Unknown error',
+          message: "Unknown error",
         };
 
         throw new RPCError(error.code, error.message, error.details);
@@ -182,9 +191,9 @@ class RPCClient {
       return data.data as TOutput;
     } catch (error) {
       // If this is a network error and we're offline and it's a mutation, queue it
-      if (!isOnline && mutation && error instanceof Error && error.message !== 'Request timeout') {
+      if (!isOnline && mutation && error instanceof Error && error.message !== "Request timeout") {
         useOfflineStore.getState().addToQueue({
-          type: 'RPC_CALL',
+          type: "RPC_CALL",
           payload: {
             procedure,
             input,
@@ -208,7 +217,7 @@ class RPCClient {
     calls: Array<{ procedure: string; input: unknown; options?: RPCCallOptions }>
   ): Promise<T[]> {
     const promises = calls.map((call) =>
-      this.call(call.procedure, call.input, call.options)
+      this.call<unknown, T>(call.procedure, call.input, call.options)
     );
 
     return Promise.all(promises);
@@ -229,26 +238,33 @@ export const api = {
    * Auth procedures
    */
   auth: {
-    login: (input: { email: string; password: string }) =>
-      rpcClient.call('auth.login', input),
+    login: (input: AuthProcedures.Login.Input) =>
+      rpcClient.call<AuthProcedures.Login.Input, AuthProcedures.Login.Output>("auth.login", input),
 
-    register: (input: { username: string; email: string; password: string }) =>
-      rpcClient.call('auth.register', input),
+    register: (input: AuthProcedures.Register.Input) =>
+      rpcClient.call<AuthProcedures.Register.Input, AuthProcedures.Register.Output>(
+        "auth.register",
+        input
+      ),
 
-    logout: () => rpcClient.call('auth.logout', {}),
+    logout: () =>
+      rpcClient.call<AuthProcedures.Logout.Input, AuthProcedures.Logout.Output>("auth.logout", {}),
 
-    getSession: () => rpcClient.call('auth.getSession', {}),
+    getSession: () =>
+      rpcClient.call<AuthProcedures.GetSession.Input, AuthProcedures.GetSession.Output>(
+        "auth.getSession",
+        {}
+      ),
   },
 
   /**
    * User procedures
    */
   user: {
-    getProfile: (input: { username: string }) =>
-      rpcClient.call('user.getProfile', input),
+    getProfile: (input: { username: string }) => rpcClient.call("user.getProfile", input),
 
     updateProfile: (input: { updates: Record<string, unknown> }) =>
-      rpcClient.call('user.updateProfile', input),
+      rpcClient.call("user.updateProfile", input),
   },
 
   /**
@@ -256,21 +272,18 @@ export const api = {
    */
   post: {
     create: (input: { content: string; media?: unknown[] }) =>
-      rpcClient.call('post.create', input, { mutation: true }),
+      rpcClient.call("post.create", input, { mutation: true }),
 
-    getById: (input: { postId: string }) => rpcClient.call('post.getById', input),
+    getById: (input: { postId: string }) => rpcClient.call("post.getById", input),
 
     update: (input: { postId: string; updates: Record<string, unknown> }) =>
-      rpcClient.call('post.update', input, { mutation: true }),
+      rpcClient.call("post.update", input, { mutation: true }),
 
-    delete: (input: { postId: string }) =>
-      rpcClient.call('post.delete', input, { mutation: true }),
+    delete: (input: { postId: string }) => rpcClient.call("post.delete", input, { mutation: true }),
 
-    like: (input: { postId: string }) =>
-      rpcClient.call('post.like', input, { mutation: true }),
+    like: (input: { postId: string }) => rpcClient.call("post.like", input, { mutation: true }),
 
-    unlike: (input: { postId: string }) =>
-      rpcClient.call('post.unlike', input, { mutation: true }),
+    unlike: (input: { postId: string }) => rpcClient.call("post.unlike", input, { mutation: true }),
   },
 
   /**
@@ -278,7 +291,7 @@ export const api = {
    */
   feed: {
     get: (input: { cursor?: number; limit?: number; algorithmId?: string }) =>
-      rpcClient.call('feed.get', input),
+      rpcClient.call("feed.get", input),
   },
 
   /**
@@ -286,15 +299,15 @@ export const api = {
    */
   social: {
     follow: (input: { userId: string }) =>
-      rpcClient.call('social.follow', input, { mutation: true }),
+      rpcClient.call("social.follow", input, { mutation: true }),
 
     unfollow: (input: { userId: string }) =>
-      rpcClient.call('social.unfollow', input, { mutation: true }),
+      rpcClient.call("social.unfollow", input, { mutation: true }),
 
     getFollowers: (input: { userId: string; cursor?: number; limit?: number }) =>
-      rpcClient.call('social.getFollowers', input),
+      rpcClient.call("social.getFollowers", input),
 
     getFollowing: (input: { userId: string; cursor?: number; limit?: number }) =>
-      rpcClient.call('social.getFollowing', input),
+      rpcClient.call("social.getFollowing", input),
   },
 };

@@ -1,7 +1,7 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { useUIStore } from "@/lib/store/uiStore";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderWithProviders, screen } from "../../../../test/utils/render";
 import { AppShell } from "../AppShell";
-import { useUIStore } from "@/lib/store/uiStore";
 
 /**
  * Mock the media query hook to control desktop/mobile rendering

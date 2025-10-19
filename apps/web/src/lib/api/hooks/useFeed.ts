@@ -5,8 +5,8 @@
  * Supports infinite scrolling with cursor-based pagination.
  */
 
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { api } from '../client';
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { api } from "../client";
 
 /**
  * Hook to get the user's feed with infinite scrolling
@@ -14,15 +14,17 @@ import { api } from '../client';
  * @example
  * const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFeed();
  */
-export function useFeed(options: {
-  algorithmId?: string;
-  limit?: number;
-  enabled?: boolean;
-} = {}) {
+export function useFeed(
+  options: {
+    algorithmId?: string;
+    limit?: number;
+    enabled?: boolean;
+  } = {}
+) {
   const { algorithmId, limit = 20, enabled = true } = options;
 
   return useInfiniteQuery({
-    queryKey: ['feed', algorithmId],
+    queryKey: ["feed", algorithmId],
     queryFn: ({ pageParam = 0 }) =>
       api.feed.get({
         cursor: pageParam,
