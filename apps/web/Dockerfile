@@ -33,8 +33,8 @@ WORKDIR /app
 # ------------------------------------------------------------------------------
 FROM base AS dependencies
 
-# Copy root package.json for workspace configuration
-COPY --chown=nodeuser:nobody ./package.json ./bun.lockb* ./
+# Copy root package.json and lockfile for workspace configuration
+COPY --chown=nodeuser:nobody ./package.json ./bun.lock* ./
 
 # Copy workspace packages
 COPY --chown=nodeuser:nobody ./packages ./packages/
