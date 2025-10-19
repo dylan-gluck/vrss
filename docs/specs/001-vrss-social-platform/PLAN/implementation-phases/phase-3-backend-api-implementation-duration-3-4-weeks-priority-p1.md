@@ -220,30 +220,30 @@
 
 ## 3.7 Message, Notification, Discovery, Settings Routers `[duration: 3-4 days]` `[parallel: true]`
 
-- [ ] **Message Router** `[duration: 2 days]` `[parallel: true]` `[component: messaging]`
-    - [ ] **Prime Context**: Read `docs/api-architecture.md` Section "Message Router"
-    - [ ] **Write Tests**: Send message, get conversations, get messages, mark read
-    - [ ] **Implement**: 5 procedures (sendMessage, getConversations, getMessages, markAsRead, deleteConversation)
-    - [ ] **Validate**: Messaging flow works, pagination efficient
+- [x] **Message Router** `[duration: 2 days]` `[parallel: true]` `[component: messaging]`
+    - [x] **Prime Context**: Read `docs/api-architecture.md` Section "Message Router"
+    - [x] **Write Tests**: Send message, get conversations, get messages, mark read (29 tests)
+    - [x] **Implement**: 5 procedures (sendMessage, getConversations, getMessages, markAsRead, deleteConversation)
+    - [x] **Validate**: Messaging flow works, pagination efficient (apps/api/test/rpc/message.test.ts - 1,027 lines)
 
-- [ ] **Notification Router** `[duration: 1 day]` `[parallel: true]` `[component: notifications]`
-    - [ ] **Prime Context**: Read `docs/api-architecture.md` Section "Notification Router"
-    - [ ] **Write Tests**: Get notifications, mark read, delete
-    - [ ] **Implement**: 3 procedures (getNotifications, markAsRead, deleteNotification)
-    - [ ] **Validate**: Notifications poll correctly, unread count accurate
+- [x] **Notification Router** `[duration: 1 day]` `[parallel: true]` `[component: notifications]`
+    - [x] **Prime Context**: Read `docs/api-architecture.md` Section "Notification Router"
+    - [x] **Write Tests**: Get notifications, mark read, delete (26 tests)
+    - [x] **Implement**: 3 procedures (getNotifications, markAsRead, deleteNotification)
+    - [x] **Validate**: Notifications poll correctly, unread count accurate (apps/api/test/rpc/notification.test.ts - 927 lines)
 
-- [ ] **Discovery Router** `[duration: 1-2 days]` `[parallel: true]` `[component: discovery]`
-    - [ ] **Prime Context**: Read `docs/api-architecture.md` Section "Discovery Router"
-    - [ ] **Write Tests**: Search users, search posts, get discover feed
-    - [ ] **Implement**: 3 procedures (searchUsers, searchPosts, getDiscoverFeed)
-    - [ ] **Validate**: Search works, discover feed uses algorithm
+- [x] **Discovery Router** `[duration: 1-2 days]` `[parallel: true]` `[component: discovery]`
+    - [x] **Prime Context**: Read `docs/api-architecture.md` Section "Discovery Router"
+    - [x] **Write Tests**: Search users, search posts, get discover feed (25 tests)
+    - [x] **Implement**: 3 procedures (searchUsers, searchPosts, getDiscoverFeed with 2-degree network CTE)
+    - [x] **Validate**: Search works, discover feed uses algorithm (apps/api/test/rpc/discovery.test.ts - 1,066 lines)
 
-- [ ] **Settings Router** `[duration: 1-2 days]` `[parallel: true]` `[component: settings]`
-    - [ ] **Prime Context**: Read `docs/api-architecture.md` Section "Settings Router"
-    - [ ] **Write Tests**: Update account, update privacy, delete account, export data
-    - [ ] **Implement**: 5 procedures (updateAccount, updatePrivacy, deleteAccount, exportData, getAccountSettings)
-    - [ ] **Validate**: Account management works, GDPR export functional
+- [x] **Settings Router** `[duration: 1-2 days]` `[parallel: true]` `[component: settings]`
+    - [x] **Prime Context**: Read `docs/api-architecture.md` Section "Settings Router"
+    - [x] **Write Tests**: Update account, update privacy, delete account, export data (18 tests)
+    - [x] **Implement**: 5 procedures (updateAccount, updatePrivacy, deleteAccount, exportData, getAccountSettings)
+    - [x] **Validate**: Account management works, GDPR export functional (apps/api/test/rpc/settings.test.ts - 824 lines)
 
-**Success Criteria:** All 10 routers complete, all 50+ procedures functional
+**Success Criteria:** All 10 routers complete, all 50+ procedures functional ✅ **COMPLETE** (98 tests passing, 56+ procedures implemented)
 
 ---

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Custom hook for managing state synchronized with localStorage
@@ -7,7 +7,10 @@ import { useState, useEffect } from "react";
  * @param initialValue - The initial value if no stored value exists
  * @returns A tuple of [storedValue, setValue] similar to useState
  */
-export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((val: T) => T)) => void] {
+export function useLocalStorage<T>(
+  key: string,
+  initialValue: T
+): [T, (value: T | ((val: T) => T)) => void] {
   // State to store our value
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === "undefined") {

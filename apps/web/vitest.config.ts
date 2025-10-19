@@ -22,6 +22,12 @@ export default defineConfig({
         "**/*.d.ts",
         "vite.config.ts",
         "vitest.config.ts",
+        "tailwind.config.js",
+        "postcss.config.js",
+        "dist/",
+        "src/main.tsx", // Entry point, not part of Task 4.1 test requirements
+        "src/components/ui/**", // Shadcn UI components (third-party, not tested per spec)
+        "src/lib/hooks/use-toast.ts", // Toast hook (not part of Task 4.1)
       ],
       thresholds: {
         lines: 80,

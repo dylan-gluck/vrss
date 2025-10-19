@@ -1,7 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./index.css";
+import "./styles/globals.css";
+
+// Initialize theme on app load
+const initializeTheme = () => {
+  const root = window.document.documentElement;
+  const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  root.classList.add(systemTheme);
+};
+
+initializeTheme();
 
 const root = document.getElementById("root");
 

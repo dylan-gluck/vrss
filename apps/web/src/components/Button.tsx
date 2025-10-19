@@ -19,7 +19,8 @@ export function Button({
   className = "",
   ...props
 }: ButtonProps) {
-  const baseStyles = "font-medium rounded focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors";
+  const baseStyles =
+    "font-medium rounded focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors";
 
   const variantStyles = {
     primary: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
@@ -58,7 +59,14 @@ export function Button({
             role="img"
             aria-label="Loading"
           >
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
             <path
               className="opacity-75"
               fill="currentColor"
