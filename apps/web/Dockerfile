@@ -68,6 +68,9 @@ COPY --chown=nodeuser:nobody ./apps/web/vite.config.ts ./
 COPY --chown=nodeuser:nobody ./apps/web/vitest.config.ts ./
 COPY --chown=nodeuser:nobody ./apps/web/tsconfig.json ./
 COPY --chown=nodeuser:nobody ./apps/web/tsconfig.node.json* ./
+COPY --chown=nodeuser:nobody ./apps/web/tailwind.config.js* ./
+COPY --chown=nodeuser:nobody ./apps/web/postcss.config.js* ./
+COPY --chown=nodeuser:nobody ./apps/web/components.json* ./
 
 # Reinstall to fix any broken symlinks after copying files (as root for permissions)
 RUN bun install && chown -R nodeuser:nobody /app/node_modules /app/apps/web/node_modules 2>/dev/null || true
