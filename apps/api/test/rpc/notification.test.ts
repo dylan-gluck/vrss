@@ -228,7 +228,7 @@ describe("Notification Router", () => {
         } as any,
         input: {
           limit: 20,
-          cursor: result.nextCursor!,
+          cursor: result.nextCursor as string,
         },
       });
 

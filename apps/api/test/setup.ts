@@ -72,7 +72,6 @@ function getDatabaseUrl(): string {
       dbHost = process.env.DB_HOST || "localhost";
       dbPort = process.env.DB_PORT || "5432";
       break;
-    case "local":
     default:
       dbHost = process.env.DB_HOST || "localhost";
       dbPort = process.env.DB_PORT || "6969";
@@ -126,7 +125,7 @@ beforeAll(async () => {
   // Verify connection
   try {
     await prisma.$connect();
-    console.log(`✅ Connected successfully`);
+    console.log("✅ Connected successfully");
   } catch (error) {
     console.error("❌ Failed to connect to test database");
 

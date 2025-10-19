@@ -111,8 +111,8 @@ jobs:
         run: bun run db:generate
         working-directory: apps/api
 
-      - name: Run database migrations
-        run: bun run db:migrate:deploy
+      - name: Push database schema
+        run: bun run db:push --accept-data-loss
         working-directory: apps/api
 
       - name: Run backend tests

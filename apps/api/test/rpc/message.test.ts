@@ -435,7 +435,7 @@ describe("Message Router", () => {
         user: { id: user.id.toString(), username: user.username, email: user.email } as any,
         input: {
           limit: 2,
-          cursor: result1.nextCursor!,
+          cursor: result1.nextCursor as string,
         },
       });
 
@@ -569,7 +569,7 @@ describe("Message Router", () => {
         input: {
           conversationId: conversation.id.toString(),
           limit: 2,
-          cursor: result1.nextCursor!,
+          cursor: result1.nextCursor as string,
         },
       });
 
@@ -733,7 +733,7 @@ describe("Message Router", () => {
         where: { id: message.id },
       });
 
-      expect(updatedMessage!.readBy).toContain(BigInt(recipient.id));
+      expect(updatedMessage?.readBy).toContain(BigInt(recipient.id));
     });
 
     it("should be idempotent when already marked as read", async () => {
@@ -784,7 +784,7 @@ describe("Message Router", () => {
         where: { id: message.id },
       });
 
-      expect(updatedMessage!.readBy.filter((id) => id === BigInt(recipient.id))).toHaveLength(1);
+      expect(updatedMessage?.readBy.filter((id) => id === BigInt(recipient.id))).toHaveLength(1);
     });
 
     it("should fail when accessing message in conversation user is not part of", async () => {
@@ -912,8 +912,8 @@ describe("Message Router", () => {
       const deletedMsg1 = await db.message.findUnique({ where: { id: msg1.id } });
       const deletedMsg2 = await db.message.findUnique({ where: { id: msg2.id } });
 
-      expect(deletedMsg1!.deletedAt).toBeTruthy();
-      expect(deletedMsg2!.deletedAt).toBeTruthy();
+      expect(deletedMsg1?.deletedAt).toBeTruthy();
+      expect(deletedMsg2?.deletedAt).toBeTruthy();
     });
 
     it("should not delete messages that are already deleted", async () => {

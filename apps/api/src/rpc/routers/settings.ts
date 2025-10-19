@@ -16,8 +16,8 @@
 
 import { PrismaClient } from "@prisma/client";
 import { ErrorCode } from "@vrss/api-contracts";
-import type { z } from "zod";
 import bcrypt from "bcrypt";
+import type { z } from "zod";
 import { auth } from "../../lib/auth";
 import type { ProcedureContext } from "../types";
 import {

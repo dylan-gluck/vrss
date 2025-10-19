@@ -142,7 +142,7 @@ describe("Settings Router", () => {
 
     it("should throw CONFLICT when username is already taken", async () => {
       // Arrange: Create two users
-      const { user: user1 } = await buildUser().username("existinguser").build();
+      const { user: _user1 } = await buildUser().username("existinguser").build();
       const { user: user2 } = await buildUser().username("otheruser").build();
 
       const ctx = createMockContext<{
@@ -212,7 +212,7 @@ describe("Settings Router", () => {
 
     it("should throw CONFLICT when email is already taken", async () => {
       // Arrange: Create two users
-      const { user: user1 } = await buildUser()
+      const { user: _user1 } = await buildUser()
         .email("existing@test.com")
         .password("Pass123!")
         .build();
@@ -742,7 +742,7 @@ describe("Settings Router", () => {
       // Arrange: Create user and post
       const { user } = await buildUser().withProfile().build();
 
-      const post = await db.post.create({
+      const _post = await db.post.create({
         data: {
           userId: user.id,
           type: "text_short",

@@ -231,7 +231,7 @@ describe("Discovery Router", () => {
           input: {
             query: "test",
             limit: 3,
-            cursor: firstPage.nextCursor!,
+            cursor: firstPage.nextCursor as string,
           },
         })
       );
@@ -581,7 +581,7 @@ describe("Discovery Router", () => {
           input: {
             query: "test",
             limit: 3,
-            cursor: firstPage.nextCursor!,
+            cursor: firstPage.nextCursor as string,
           },
         })
       );
@@ -972,7 +972,7 @@ describe("Discovery Router", () => {
           user: { id: currentUser.id.toString(), username: currentUser.username } as any,
           input: {
             limit: 3,
-            cursor: firstPage.nextCursor!,
+            cursor: firstPage.nextCursor as string,
           },
         })
       );
