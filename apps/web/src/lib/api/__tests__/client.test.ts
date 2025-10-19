@@ -13,10 +13,10 @@
 
 import { ErrorCode } from "@vrss/api-contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { server } from "../../../../test/mocks/server";
 import { useAuthStore } from "../../store/authStore";
 import { useOfflineStore } from "../../store/offlineStore";
 import { rpcClient } from "../client";
-import { server } from "../../../../test/mocks/server";
 
 // Mock fetch
 const mockFetch = vi.fn();
