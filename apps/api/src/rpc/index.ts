@@ -21,9 +21,13 @@ import { ErrorCode } from "@vrss/api-contracts";
 import { Hono } from "hono";
 import { authMiddleware } from "../middleware/auth";
 import { authRouter } from "./routers/auth";
+import { discoveryRouter } from "./routers/discovery";
 import { feedRouter } from "./routers/feed";
 import { mediaRouter } from "./routers/media";
+import { messageRouter } from "./routers/message";
+import { notificationRouter } from "./routers/notification";
 import { postRouter } from "./routers/post";
+import { settingsRouter } from "./routers/settings";
 import { socialRouter } from "./routers/social";
 import { userRouter } from "./routers/user";
 import { ProcedureContext } from "./types";
@@ -53,10 +57,9 @@ export const PUBLIC_PROCEDURES = new Set([
   // Public post procedures
   "post.getById",
 
-  // Discovery procedures (all public)
+  // Discovery procedures (search is public, feed requires auth)
   "discovery.searchUsers",
   "discovery.searchPosts",
-  "discovery.getDiscoverFeed",
 ]);
 
 // =============================================================================
@@ -74,9 +77,10 @@ const PROCEDURE_REGISTRY: Record<string, any> = {
   ...socialRouter,
   ...feedRouter,
   ...mediaRouter,
-  // Additional routers will be added here in future phases:
-  // ...discoveryRouter,
-  // etc.
+  ...messageRouter,
+  ...notificationRouter,
+  ...discoveryRouter,
+  ...settingsRouter,
 };
 
 // =============================================================================

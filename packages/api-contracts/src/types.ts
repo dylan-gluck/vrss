@@ -197,16 +197,88 @@ export interface Notification {
 
 // Settings types
 export interface AccountSettings {
-  emailNotifications: boolean;
-  pushNotifications: boolean;
-  marketingEmails: boolean;
+  username: string;
+  email: string;
+  emailVerified: boolean;
+  createdAt: Date;
 }
 
 export interface PrivacySettings {
   profileVisibility: ProfileVisibility;
   allowMessagesFrom: "everyone" | "followers" | "friends" | "nobody";
-  allowTagging: boolean;
-  showOnlineStatus: boolean;
+  showFollowers: boolean;
+}
+
+// GDPR Data Export
+export interface UserDataExport {
+  user: {
+    id: string;
+    username: string;
+    email: string;
+    emailVerified: boolean;
+    status: string;
+    createdAt: Date;
+    lastLoginAt: Date | null;
+  };
+  profile: {
+    displayName: string | null;
+    bio: string | null;
+    visibility: string;
+    age: number | null;
+    location: string | null;
+    website: string | null;
+    backgroundConfig: any;
+    musicConfig: any;
+    styleConfig: any;
+    layoutConfig: any;
+  } | null;
+  posts: Array<{
+    id: string;
+    type: string;
+    content: string | null;
+    visibility: string;
+    createdAt: Date;
+    stats: {
+      likeCount: number;
+      commentCount: number;
+      repostCount: number;
+    };
+  }>;
+  comments: Array<{
+    id: string;
+    postId: string;
+    content: string;
+    createdAt: Date;
+  }>;
+  interactions: {
+    likes: Array<{
+      postId: string;
+      createdAt: Date;
+    }>;
+    follows: Array<{
+      followingId: string;
+      followingUsername: string;
+      createdAt: Date;
+    }>;
+    followers: Array<{
+      followerId: string;
+      followerUsername: string;
+      createdAt: Date;
+    }>;
+    friendships: Array<{
+      friendId: string;
+      friendUsername: string;
+      status: string;
+      createdAt: Date;
+    }>;
+  };
+  messages: Array<{
+    id: string;
+    conversationId: string;
+    content: string;
+    sentAt: Date;
+  }>;
+  privacySettings: PrivacySettings;
 }
 
 // Pagination

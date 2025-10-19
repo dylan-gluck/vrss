@@ -3,14 +3,16 @@ description: "Commit changes"
 argument-hint: "[SCOPE]"
 ---
 
+# Assignment
+
 Follow the `Workflow` to commit changes for given `SCOPE`.
 
 ## Variables
 
-SCOPE: $ARGUMENTS
-
 MODIFIED: !`git ls-files --modified`
 DIFF: !`git diff HEAD`
+
+SCOPE: $ARGUMENTS
 
 ## Workflow
 

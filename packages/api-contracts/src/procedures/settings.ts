@@ -3,7 +3,7 @@
  * Account and privacy settings management
  */
 
-import type { AccountSettings, PrivacySettings } from "../types";
+import type { AccountSettings, PrivacySettings, UserDataExport } from "../types";
 
 export namespace SettingsProcedures {
   // settings.getAccountSettings
@@ -15,64 +15,34 @@ export namespace SettingsProcedures {
     }
   }
 
-  // settings.updateAccount
+  // settings.updateAccount - Consolidated account update (username, email, password)
   export namespace UpdateAccount {
     export interface Input {
-      emailNotifications?: boolean;
-      pushNotifications?: boolean;
-      marketingEmails?: boolean;
+      username?: string;
+      email?: string;
+      currentPassword?: string;
+      newPassword?: string;
     }
 
     export interface Output {
-      settings: AccountSettings;
-    }
-  }
-
-  // settings.getPrivacySettings
-  export namespace GetPrivacySettings {
-    export type Input = Record<string, never>;
-
-    export interface Output {
-      settings: PrivacySettings;
+      success: boolean;
+      user: {
+        username: string;
+        email: string;
+      };
     }
   }
 
   // settings.updatePrivacy
   export namespace UpdatePrivacy {
     export interface Input {
-      profileVisibility?: "public" | "private" | "followers_only";
+      profileVisibility?: "public" | "private" | "followers";
       allowMessagesFrom?: "everyone" | "followers" | "friends" | "nobody";
-      allowTagging?: boolean;
-      showOnlineStatus?: boolean;
+      showFollowers?: boolean;
     }
 
     export interface Output {
       settings: PrivacySettings;
-    }
-  }
-
-  // settings.changePassword
-  export namespace ChangePassword {
-    export interface Input {
-      currentPassword: string;
-      newPassword: string;
-    }
-
-    export interface Output {
-      success: boolean;
-    }
-  }
-
-  // settings.changeEmail
-  export namespace ChangeEmail {
-    export interface Input {
-      newEmail: string;
-      password: string;
-    }
-
-    export interface Output {
-      success: boolean;
-      verificationRequired: boolean;
     }
   }
 
@@ -85,6 +55,15 @@ export namespace SettingsProcedures {
 
     export interface Output {
       success: boolean;
+    }
+  }
+
+  // settings.exportData - GDPR-compliant data export
+  export namespace ExportData {
+    export type Input = Record<string, never>;
+
+    export interface Output {
+      data: UserDataExport;
     }
   }
 }

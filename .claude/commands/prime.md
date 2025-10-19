@@ -3,7 +3,9 @@ description: "Consolidate implementation specs into optimied task-specific conte
 argument-hint: "[PHASE_DOCUMENT] [TASK_ID]"
 ---
 
-@agent-context-prime
+MUST USE @agent-context-prime
+
+# Assignment
 
 Follow the `Workflow` to create a hyper-optimized `TASK_CONTEXT` for a coding agent
 
@@ -28,5 +30,3 @@ SUCCESS: [Task completion criteria + specification compliance]
 2. Determine the `SPEC_DIR` from the `PHASE_DOCUMENT` path. (Eg: `docs/specs/001-vrss-social-platform`)
 
 3. Analyze the `SPEC_DIR` and collect all relevant info for `TASK_ID` in `PHASE_DOCUMENT`. Expected output is `TASK_CONTEXT` with clear consolidated task context including all relevant files & line numbers.
-
-4. Save `TASK_CONTEXT` to `docs/tasks/task-[TASK_ID].md`. Return path of `TASK_CONTEXT_FILE` to orchestrator agent.

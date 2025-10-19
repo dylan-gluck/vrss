@@ -14,17 +14,20 @@ export namespace NotificationProcedures {
       unreadOnly?: boolean;
     }
 
-    export interface Output extends PaginatedResponse<Notification> {}
+    export interface Output extends PaginatedResponse<Notification> {
+      unreadCount: number;
+    }
   }
 
   // notification.markAsRead
   export namespace MarkAsRead {
     export interface Input {
-      notificationId: string;
+      notificationIds: string[];
     }
 
     export interface Output {
       success: boolean;
+      count: number;
     }
   }
 

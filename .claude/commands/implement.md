@@ -3,11 +3,15 @@ description: "Implement feature"
 argument-hint: [TASK_CONTEXT_FILE]
 ---
 
-Implement the feature defined in `TASK_CONTEXT_FILE` exactly as described. If not enough context was provided, reference the spec `SDD` or `DATA-MODEL` documents.
+MUST USE @agent-fullstack
+
+# Assignment
+
+Implement the feature defined in `TASK_CONTEXT` EXACTLY as described. If not enough context was provided, reference the spec `SDD` or `DATA-MODEL` documents.
 
 ## Variables
 
-TASK_CONTEXT_FILE: $ARGUMENTS
+TASK_CONTEXT: $ARGUMENTS
 
 ## Workflow
 

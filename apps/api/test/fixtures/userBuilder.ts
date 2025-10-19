@@ -217,10 +217,9 @@ export class UserBuilder {
     // Generate email from username if not explicitly provided
     // This ensures email matches username when custom username is used
     // Use compact format to avoid exceeding email length limit (255 chars)
-    const finalEmail = this.data.email ??
-      (this.data.username ?
-        `${finalUsername}_${uniqueCounter++}@test.com` :
-        defaults.email);
+    const finalEmail =
+      this.data.email ??
+      (this.data.username ? `${finalUsername}_${uniqueCounter++}@test.com` : defaults.email);
 
     // Merge defaults with provided data
     const userData = {
