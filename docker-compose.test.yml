@@ -1,0 +1,91 @@
+# ==============================================================================
+# VRSS Test Environment - Docker Compose Override
+# ==============================================================================
+# This file provides an isolated test environment separate from development.
+#
+# Usage:
+#   docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
+#   docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm backend bun test
+#   docker-compose -f docker-compose.yml -f docker-compose.test.yml down -v
+#
+# Features:
+# - Isolated test database (separate from dev)
+# - In-memory storage for speed (tmpfs)
+# - Faster startup (optimized health checks)
+# - Automatic cleanup
+# ==============================================================================
+
+services:
+  # Test Database (isolated from development database)
+  db-test:
+    image: postgres:16-alpine
+    container_name: vrss_db_test
+    restart: "no"  # Don't restart test containers automatically
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "1"
+    environment:
+      POSTGRES_DB: vrss_test
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_pass
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+      # Performance tuning for tests (less conservative than dev)
+      POSTGRES_SHARED_BUFFERS: 128MB
+      POSTGRES_EFFECTIVE_CACHE_SIZE: 512MB
+    tmpfs:
+      # Store database in memory for maximum speed
+      # Data is lost when container stops - perfect for tests!
+      - /var/lib/postgresql/data
+    volumes:
+      # Initialization scripts (create test schema, extensions, etc.)
+      - ./docker/db/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - vrss_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test_user -d vrss_test"]
+      interval: 5s    # Faster checks for tests
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  # Backend configured for testing
+  backend:
+    depends_on:
+      db-test:
+        condition: service_healthy
+    environment:
+      # Override for test environment
+      NODE_ENV: test
+      IS_DOCKER: "true"
+
+      # Test database configuration
+      DB_HOST: db-test
+      DB_PORT: 5432
+      DB_NAME: vrss_test
+      DB_USER: test_user
+      DB_PASSWORD: test_pass
+      DATABASE_URL: postgresql://test_user:test_pass@db-test:5432/vrss_test
+
+      # Test-specific settings
+      LOG_LEVEL: info  # Less verbose during tests
+
+      # Better-auth test configuration
+      BETTER_AUTH_SECRET: test_secret_minimum_32_chars_for_testing_purposes_only_12345
+      APP_URL: http://localhost:3030
+
+    # Override command to wait for DB and run tests
+    command: ["sh", "-c", "bun run db:migrate:deploy && bun test"]
+
+networks:
+  vrss_network:
+    name: vrss_test_network

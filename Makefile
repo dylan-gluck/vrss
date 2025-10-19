@@ -161,24 +161,66 @@ db-reset: ## Reset database (drop all tables and recreate)
 
 ##@ Testing
 
-test: ## Run all tests
-	@echo "$(BLUE)Running tests...$(NC)"
+test: test-docker-fast ## Run tests (default: fast mode using dev environment)
+
+test-local: ## Run tests locally (requires local PostgreSQL on port 6969)
+	@echo "$(BLUE)Running tests locally...$(NC)"
+	@echo "$(YELLOW)Ensure PostgreSQL is running on localhost:6969$(NC)"
 	@echo "$(YELLOW)Backend tests:$(NC)"
-	@docker-compose exec backend bun test || (echo "$(RED)Backend tests failed$(NC)" && exit 1)
-	@echo ""
-	@echo "$(YELLOW)Frontend tests:$(NC)"
-	@docker-compose exec frontend bun test || echo "$(YELLOW)Frontend tests not configured or failed$(NC)"
+	@cd apps/api && bun test
 	@echo "$(GREEN)Tests complete$(NC)"
 
-test-backend: ## Run backend tests only
-	docker-compose exec backend bun test
+test-docker: ## Run tests in isolated Docker environment (recommended for CI/CD)
+	@echo "$(BLUE)Starting isolated test environment...$(NC)"
+	@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d db-test
+	@echo "$(YELLOW)Waiting for test database to be ready...$(NC)"
+	@sleep 5
+	@echo "$(YELLOW)Running backend tests in isolated environment:$(NC)"
+	@docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm backend || \
+		(echo "$(RED)Backend tests failed$(NC)" && docker-compose -f docker-compose.yml -f docker-compose.test.yml down -v && exit 1)
+	@echo ""
+	@echo "$(YELLOW)Frontend tests:$(NC)"
+	@docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm frontend bun test || \
+		echo "$(YELLOW)Frontend tests not configured or failed$(NC)"
+	@echo "$(BLUE)Cleaning up test environment...$(NC)"
+	@docker-compose -f docker-compose.yml -f docker-compose.test.yml down -v
+	@echo "$(GREEN)Tests complete$(NC)"
 
-test-frontend: ## Run frontend tests only
-	docker-compose exec frontend bun test
+test-docker-fast: ## Run tests in dev Docker containers (fastest, shares dev database)
+	@echo "$(BLUE)Running tests in dev containers...$(NC)"
+	@echo "$(YELLOW)Backend tests:$(NC)"
+	@docker-compose exec -T backend bun test || (echo "$(RED)Backend tests failed$(NC)" && exit 1)
+	@echo ""
+	@echo "$(YELLOW)Frontend tests:$(NC)"
+	@docker-compose exec -T frontend bun test || echo "$(YELLOW)Frontend tests not configured or failed$(NC)"
+	@echo "$(GREEN)Tests complete$(NC)"
 
-test-coverage: ## Run tests with coverage report
-	docker-compose exec backend bun test --coverage
-	docker-compose exec frontend bun run test:coverage
+test-backend: ## Run backend tests only (in dev container)
+	@echo "$(YELLOW)Running backend tests...$(NC)"
+	@docker-compose exec -T backend bun test
+
+test-frontend: ## Run frontend tests only (in dev container)
+	@echo "$(YELLOW)Running frontend tests...$(NC)"
+	@docker-compose exec -T frontend bun test
+
+test-coverage: ## Generate test coverage report
+	@echo "$(BLUE)Running tests with coverage...$(NC)"
+	@docker-compose exec -T backend bun test --coverage
+	@docker-compose exec -T frontend bun test --coverage || echo "$(YELLOW)Frontend coverage not configured$(NC)"
+	@echo "$(GREEN)Coverage reports generated in apps/*/coverage/$(NC)"
+
+test-watch: ## Run tests in watch mode (requires running containers)
+	@echo "$(BLUE)Running tests in watch mode...$(NC)"
+	@echo "$(YELLOW)Press Ctrl+C to exit$(NC)"
+	@docker-compose exec backend bun test --watch
+
+test-ci: ## Run tests in CI/CD-compatible mode (isolated environment, no TTY)
+	@echo "$(BLUE)Running tests in CI mode...$(NC)"
+	@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d db-test
+	@sleep 5
+	@docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm -T backend || exit_code=$$?; \
+		docker-compose -f docker-compose.yml -f docker-compose.test.yml down -v; \
+		exit $$exit_code
 
 ##@ Code Quality
 

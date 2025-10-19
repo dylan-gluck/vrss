@@ -77,6 +77,7 @@ services:
       # Application environment
       NODE_ENV: ${NODE_ENV:-development}
       PORT: ${BACKEND_PORT:-3030}
+      IS_DOCKER: "true"
 
       # Database configuration
       DB_HOST: db

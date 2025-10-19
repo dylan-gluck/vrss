@@ -63,7 +63,9 @@ WORKDIR /app/apps/api
 
 # Copy application source code
 COPY --chown=bunuser:nobody ./apps/api/src ./src
+COPY --chown=bunuser:nobody ./apps/api/test ./test
 COPY --chown=bunuser:nobody ./apps/api/tsconfig.json ./
+COPY --chown=bunuser:nobody ./apps/api/bunfig.toml* ./
 COPY --chown=bunuser:nobody ./apps/api/biome.json* ./
 COPY --chown=bunuser:nobody ./apps/api/scripts ./scripts
 

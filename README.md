@@ -207,10 +207,16 @@ make db-migrate         # Run migrations
 make db-seed            # Seed test data
 
 # Testing
-make test               # Run all tests
-make test-backend       # Run backend tests
-make test-frontend      # Run frontend tests
+make test               # Run all tests (fast mode)
+make test-docker        # Run tests in isolated environment
+make test-local         # Run tests locally (no Docker)
+make test-backend       # Run backend tests only
+make test-frontend      # Run frontend tests only
 make test-coverage      # Run tests with coverage
+make test-watch         # Run tests in watch mode
+make test-ci            # Run tests in CI/CD mode
+
+# See docs/TESTING.md for comprehensive testing guide
 
 # Building
 make build              # Build Docker images
@@ -306,6 +312,15 @@ vrss/
   - Production deployment
   - Database management
   - Troubleshooting
+
+### Testing
+- **[Testing Guide](docs/TESTING.md)**: Complete guide for running tests
+  - Test execution modes (fast, isolated, local, CI)
+  - Environment detection and configuration
+  - Database isolation strategies
+  - Troubleshooting common issues
+  - Writing and organizing tests
+  - CI/CD integration
   - Performance optimization
   - Security considerations
 

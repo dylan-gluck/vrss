@@ -73,7 +73,17 @@ jobs:
           --health-retries 5
 
     env:
+      # Environment detection
+      CI: "true"
+      # Database configuration (matches local test environment)
       DATABASE_URL: postgresql://test_user:test_pass@localhost:5432/vrss_test
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_NAME: vrss_test
+      DB_USER: test_user
+      DB_PASSWORD: test_pass
+      # Better-auth configuration
+      BETTER_AUTH_SECRET: test_secret_minimum_32_chars_for_ci_testing_purposes_only_1234567
 
     steps:
       - name: Checkout code
@@ -96,6 +106,14 @@ jobs:
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: bun run db:generate
+        working-directory: apps/api
+
+      - name: Run database migrations
+        run: bun run db:migrate:deploy
+        working-directory: apps/api
 
       - name: Run backend tests
         run: bun run test

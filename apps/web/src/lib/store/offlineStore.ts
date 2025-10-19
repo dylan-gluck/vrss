@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 
 export interface QueuedAction {
   id: string;
-  type: 'CREATE_POST' | 'UPDATE_PROFILE' | 'SEND_MESSAGE';
+  type: 'CREATE_POST' | 'UPDATE_PROFILE' | 'SEND_MESSAGE' | 'RPC_CALL';
   payload: any;
   timestamp: number;
   retries: number;
@@ -63,20 +63,36 @@ export const useOfflineStore = create<OfflineState>()(
         // Process each action in the queue
         for (const action of queue) {
           try {
-            // TODO: In Phase 4.3, this will call the actual RPC client
-            // For now, we simulate success/failure based on retries
-            // This is a placeholder that will be replaced with real API calls
+            // Process action based on type
+            if (action.type === 'RPC_CALL') {
+              // Dynamically import rpcClient to avoid circular dependency
+              const { rpcClient } = await import('../api/client');
 
-            // Simulate API call
-            await new Promise((resolve, reject) => {
-              setTimeout(() => {
-                // Simulate success (in real implementation, this will be an actual API call)
-                resolve(true);
-              }, 100);
-            });
+              // Call the RPC procedure
+              await rpcClient.call(
+                action.payload.procedure,
+                action.payload.input,
+                { mutation: true }
+              );
+            } else {
+              // For backward compatibility with old action types
+              // Map old types to RPC procedures
+              const procedureMap: Record<string, string> = {
+                CREATE_POST: 'post.create',
+                UPDATE_PROFILE: 'user.updateProfile',
+                SEND_MESSAGE: 'message.send',
+              };
+
+              const procedure = procedureMap[action.type];
+              if (procedure) {
+                const { rpcClient } = await import('../api/client');
+                await rpcClient.call(procedure, action.payload, { mutation: true });
+              }
+            }
 
             // On success, remove from queue
             get().removeFromQueue(action.id);
+            console.log(`Successfully processed queued action ${action.id}`);
           } catch (error) {
             // On error, increment retries
             const maxRetries = 3;
@@ -92,6 +108,7 @@ export const useOfflineStore = create<OfflineState>()(
                   a.id === action.id ? { ...a, retries: a.retries + 1 } : a
                 ),
               }));
+              console.warn(`Action ${action.id} failed, will retry (${action.retries + 1}/${maxRetries})`);
             }
           }
         }

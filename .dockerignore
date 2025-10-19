@@ -62,17 +62,14 @@ packages/**/build/
 # ------------------------------------------------------------------------------
 # Test Files & Coverage Reports
 # ------------------------------------------------------------------------------
+# Note: Test files are included in dev/test Docker stages for in-container testing
+# Only exclude test outputs and coverage reports
 coverage/
 .nyc_output/
 test-results/
 playwright-report/
 e2e/test-results/
 e2e/playwright-report/
-**/__tests__/
-**/*.test.ts
-**/*.test.tsx
-**/*.spec.ts
-**/*.spec.tsx
 
 # ------------------------------------------------------------------------------
 # Logs
