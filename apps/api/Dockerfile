@@ -9,9 +9,16 @@
 FROM oven/bun:1.1-alpine AS base
 
 # Install security updates and required system packages
+# Include build tools for native modules (bcrypt, etc.)
 RUN apk update && \
     apk upgrade && \
-    apk add --no-cache curl ca-certificates && \
+    apk add --no-cache \
+        curl \
+        ca-certificates \
+        python3 \
+        make \
+        g++ \
+        git && \
     rm -rf /var/cache/apk/*
 
 # Create non-root user for security

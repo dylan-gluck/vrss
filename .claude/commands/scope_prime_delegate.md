@@ -18,4 +18,4 @@ TASK_ID: $2
 
 3. If `TASK_STATUS` is successful -> SlashCommand(`/validate [PHASE_DOCUMENT] [TASK_ID]`) => `VALIDATION_REPORT`
 
-4. If `VALIDATION_REPORT` is COMPLETE -> SlashCommand(`/commit --all`)
+4. If `VALIDATION_REPORT` is COMPLETE -> SlashCommand(`/commit -A`)

@@ -398,15 +398,19 @@ export const messageRouter = {
       deletedAt: null,
     };
 
-    // Cursor pagination based on createdAt
+    // Cursor pagination based on id
+    // NOTE: We order by id DESC instead of createdAt DESC because:
+    // 1. Message IDs are auto-incrementing and monotonic
+    // 2. Cursor pagination requires filtering by the same field as ordering
+    // 3. This avoids issues with multiple messages having identical timestamps
     if (cursor) {
       where.id = { lt: BigInt(cursor) }; // Get messages before cursor
     }
 
-    // Fetch messages
+    // Fetch messages (ordered by ID DESC = newest first)
     const messages = await prisma.message.findMany({
       where,
-      orderBy: { createdAt: "desc" },
+      orderBy: { id: "desc" },
       take: limit + 1, // Fetch one extra to determine hasMore
     });
 

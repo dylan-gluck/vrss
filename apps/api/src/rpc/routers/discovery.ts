@@ -474,15 +474,41 @@ export const discoveryRouter = {
       visibility: "public", // Only public posts in discover feed for simplicity
     };
 
-    // Add cursor if provided
+    // Add cursor-based filtering if provided
+    // NOTE: Since we order by [likesCount DESC, createdAt DESC], we must filter
+    // by the same fields. Cursor is the post ID, so we fetch that post's sort keys.
     if (cursor) {
-      where.id = { lt: BigInt(cursor) };
+      const cursorPost = await prisma.post.findUnique({
+        where: { id: BigInt(cursor) },
+        select: { likesCount: true, createdAt: true, id: true },
+      });
+
+      if (cursorPost) {
+        // Filter for posts that come AFTER the cursor in sort order:
+        // - Posts with fewer likes, OR
+        // - Posts with same likes but earlier createdAt, OR
+        // - Posts with same likes AND createdAt but lower id (for deterministic pagination)
+        where.OR = [
+          { likesCount: { lt: cursorPost.likesCount } },
+          {
+            likesCount: cursorPost.likesCount,
+            createdAt: { lt: cursorPost.createdAt },
+          },
+          {
+            likesCount: cursorPost.likesCount,
+            createdAt: cursorPost.createdAt,
+            id: { lt: cursorPost.id },
+          },
+        ];
+      }
     }
 
     // Fetch posts from network, sorted by engagement and recency
+    // NOTE: We include 'id' as a final tiebreaker to ensure deterministic ordering
+    // when posts have identical likesCount and createdAt (common in tests)
     const posts = await prisma.post.findMany({
       where,
-      orderBy: [{ likesCount: "desc" }, { createdAt: "desc" }],
+      orderBy: [{ likesCount: "desc" }, { createdAt: "desc" }, { id: "desc" }],
       take: limit + 1,
       include: {
         user: {
