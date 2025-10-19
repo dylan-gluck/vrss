@@ -50,193 +50,163 @@ function rpcError(code: number, message: string, details?: unknown) {
  * Create RPC handler function
  */
 const rpcHandler = async ({ request }: { request: Request }) => {
-    const body = (await request.json()) as any;
-    // Support both old format (method/params) and new format (procedure/input)
-    const method = body.method || body.procedure;
-    const params = body.params || body.input;
+  const body = (await request.json()) as any;
+  // Support both old format (method/params) and new format (procedure/input)
+  const method = body.method || body.procedure;
+  const params = body.params || body.input;
 
-    // Auth: Register
-    if (method === "auth.register") {
+  // Auth: Register
+  if (method === "auth.register") {
+    return rpcSuccess({
+      user: TEST_PERSONAS.CREATOR,
+      token: MOCK_AUTH_TOKENS.VALID_TOKEN,
+    });
+  }
+
+  // Auth: Login
+  if (method === "auth.login") {
+    const { email, password } = params;
+
+    if (email === TEST_PERSONAS.CREATOR.email && password === "SecurePass123!") {
       return rpcSuccess({
         user: TEST_PERSONAS.CREATOR,
         token: MOCK_AUTH_TOKENS.VALID_TOKEN,
       });
     }
 
-    // Auth: Login
-    if (method === "auth.login") {
-      const { email, password } = params;
+    return rpcError(401, "Invalid username or password");
+  }
 
-      if (email === TEST_PERSONAS.CREATOR.email && password === "SecurePass123!") {
-        return rpcSuccess({
-          user: TEST_PERSONAS.CREATOR,
-          token: MOCK_AUTH_TOKENS.VALID_TOKEN,
-        });
-      }
+  // Auth: Logout
+  if (method === "auth.logout") {
+    return rpcSuccess(null);
+  }
 
-      return rpcError(401, "Invalid username or password");
+  // Auth: Verify token
+  if (method === "auth.verify") {
+    const authHeader = request.headers.get("Authorization");
+    const token = authHeader?.replace("Bearer ", "");
+
+    if (token === MOCK_AUTH_TOKENS.VALID_TOKEN) {
+      return rpcSuccess({ user: TEST_PERSONAS.CREATOR });
     }
 
-    // Auth: Logout
-    if (method === "auth.logout") {
-      return rpcSuccess(null);
+    return rpcError(401, "Invalid token");
+  }
+
+  // ============ Feed Endpoints ============
+
+  // Feed: Get feed
+  if (method === "feed.get") {
+    const { cursor = 0, limit = 20 } = params;
+    const start = cursor;
+    const end = start + limit;
+    const posts = MOCK_POSTS.slice(start, end);
+
+    return rpcSuccess({
+      posts,
+      nextCursor: end < MOCK_POSTS.length ? end : null,
+      hasMore: end < MOCK_POSTS.length,
+    });
+  }
+
+  // Post: Get single post
+  if (method === "post.get") {
+    const { postId } = params;
+    const post = MOCK_POSTS.find((p) => p.id === postId);
+
+    if (post) {
+      return rpcSuccess(post);
     }
 
-    // Auth: Verify token
-    if (method === "auth.verify") {
-      const authHeader = request.headers.get("Authorization");
-      const token = authHeader?.replace("Bearer ", "");
+    return rpcError(404, "Post not found");
+  }
 
-      if (token === MOCK_AUTH_TOKENS.VALID_TOKEN) {
-        return rpcSuccess({ user: TEST_PERSONAS.CREATOR });
-      }
+  // Post: Create
+  if (method === "post.create") {
+    // Handle both formats: { input: {...} } and {...} directly
+    const input = params.input || params;
+    const newPost = {
+      id: `post-${Date.now()}`,
+      type: input.type || "text",
+      author: {
+        id: TEST_PERSONAS.CREATOR.id,
+        username: TEST_PERSONAS.CREATOR.username,
+        avatarUrl: TEST_PERSONAS.CREATOR.avatarUrl,
+      },
+      content: input.content,
+      media: input.mediaIds
+        ? input.mediaIds.map((id: string) => ({
+            id,
+            type: "image",
+            url: `https://example.com/media/${id}.jpg`,
+          }))
+        : [],
+      hashtags: [],
+      likesCount: 0,
+      commentsCount: 0,
+      sharesCount: 0,
+      isLiked: false,
+      isBookmarked: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
 
-      return rpcError(401, "Invalid token");
-    }
+    return rpcSuccess(newPost);
+  }
 
-    // ============ Feed Endpoints ============
+  // Post: Like
+  if (method === "post.like") {
+    return rpcSuccess({ likesCount: 46 });
+  }
 
-    // Feed: Get feed
-    if (method === "feed.get") {
-      const { cursor = 0, limit = 20 } = params;
-      const start = cursor;
-      const end = start + limit;
-      const posts = MOCK_POSTS.slice(start, end);
+  // Post: Unlike
+  if (method === "post.unlike") {
+    return rpcSuccess({ likesCount: 44 });
+  }
 
+  // Post: Bookmark
+  if (method === "post.bookmark") {
+    return rpcSuccess(null);
+  }
+
+  // Post: Unbookmark
+  if (method === "post.unbookmark") {
+    return rpcSuccess(null);
+  }
+
+  // ============ Feed Algorithm Endpoints ============
+
+  // Feed: Get algorithms
+  if (method === "feed.algorithms.list") {
+    return rpcSuccess(MOCK_ALGORITHMS);
+  }
+
+  // Feed: Create algorithm
+  if (method === "feed.algorithm.create") {
+    const { input } = params;
+    const newAlgorithm = {
+      id: `algo-${Date.now()}`,
+      name: input.name,
+      blocks: input.blocks,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    return rpcSuccess(newAlgorithm);
+  }
+
+  // ============ Profile Endpoints ============
+
+  // Profile: Get by username
+  if (method === "profile.get") {
+    const { username } = params;
+
+    const persona = Object.values(TEST_PERSONAS).find((p) => p.username === username);
+
+    if (persona) {
       return rpcSuccess({
-        posts,
-        nextCursor: end < MOCK_POSTS.length ? end : null,
-        hasMore: end < MOCK_POSTS.length,
-      });
-    }
-
-    // Post: Get single post
-    if (method === "post.get") {
-      const { postId } = params;
-      const post = MOCK_POSTS.find((p) => p.id === postId);
-
-      if (post) {
-        return rpcSuccess(post);
-      }
-
-      return rpcError(404, "Post not found");
-    }
-
-    // Post: Create
-    if (method === "post.create") {
-      // Handle both formats: { input: {...} } and {...} directly
-      const input = params.input || params;
-      const newPost = {
-        id: `post-${Date.now()}`,
-        type: input.type || "text",
-        author: {
-          id: TEST_PERSONAS.CREATOR.id,
-          username: TEST_PERSONAS.CREATOR.username,
-          avatarUrl: TEST_PERSONAS.CREATOR.avatarUrl,
-        },
-        content: input.content,
-        media: input.mediaIds
-          ? input.mediaIds.map((id: string) => ({
-              id,
-              type: "image",
-              url: `https://example.com/media/${id}.jpg`,
-            }))
-          : [],
-        hashtags: [],
-        likesCount: 0,
-        commentsCount: 0,
-        sharesCount: 0,
-        isLiked: false,
-        isBookmarked: false,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-
-      return rpcSuccess(newPost);
-    }
-
-    // Post: Like
-    if (method === "post.like") {
-      return rpcSuccess({ likesCount: 46 });
-    }
-
-    // Post: Unlike
-    if (method === "post.unlike") {
-      return rpcSuccess({ likesCount: 44 });
-    }
-
-    // Post: Bookmark
-    if (method === "post.bookmark") {
-      return rpcSuccess(null);
-    }
-
-    // Post: Unbookmark
-    if (method === "post.unbookmark") {
-      return rpcSuccess(null);
-    }
-
-    // ============ Feed Algorithm Endpoints ============
-
-    // Feed: Get algorithms
-    if (method === "feed.algorithms.list") {
-      return rpcSuccess(MOCK_ALGORITHMS);
-    }
-
-    // Feed: Create algorithm
-    if (method === "feed.algorithm.create") {
-      const { input } = params;
-      const newAlgorithm = {
-        id: `algo-${Date.now()}`,
-        name: input.name,
-        blocks: input.blocks,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-
-      return rpcSuccess(newAlgorithm);
-    }
-
-    // ============ Profile Endpoints ============
-
-    // Profile: Get by username
-    if (method === "profile.get") {
-      const { username } = params;
-
-      const persona = Object.values(TEST_PERSONAS).find((p) => p.username === username);
-
-      if (persona) {
-        return rpcSuccess({
-          ...persona,
-          styles: {
-            background: { type: "color", value: "#ffffff" },
-            colors: {
-              primary: "#000000",
-              secondary: "#666666",
-              text: "#000000",
-              accent: "#0066cc",
-            },
-            font: {
-              family: "Inter",
-              headingSize: "lg",
-              bodySize: "md",
-            },
-          },
-          layout: {
-            sections: [],
-            columnsDesktop: 1,
-            columnsMobile: 1,
-          },
-          visibility: "public",
-        });
-      }
-
-      return rpcError(404, "Profile not found");
-    }
-
-    // Profile: Get current user's profile
-    if (method === "profile.me") {
-      return rpcSuccess({
-        ...TEST_PERSONAS.CREATOR,
+        ...persona,
         styles: {
           background: { type: "color", value: "#ffffff" },
           colors: {
@@ -260,131 +230,161 @@ const rpcHandler = async ({ request }: { request: Request }) => {
       });
     }
 
-    // Profile: Update
-    if (method === "profile.update") {
-      const { updates } = params;
-      return rpcSuccess({
-        ...TEST_PERSONAS.CREATOR,
-        ...updates,
-      });
-    }
+    return rpcError(404, "Profile not found");
+  }
 
-    // Profile: Follow user
-    if (method === "user.follow") {
-      return rpcSuccess(null);
-    }
-
-    // Profile: Unfollow user
-    if (method === "user.unfollow") {
-      return rpcSuccess(null);
-    }
-
-    // ============ Notification Endpoints ============
-
-    // Notifications: Get
-    if (method === "notifications.get") {
-      return rpcSuccess({
-        notifications: MOCK_NOTIFICATIONS,
-        nextCursor: null,
-        unreadCount: MOCK_NOTIFICATIONS.filter((n) => !n.read).length,
-      });
-    }
-
-    // Notifications: Get unread count
-    if (method === "notifications.unreadCount") {
-      return rpcSuccess({
-        count: MOCK_NOTIFICATIONS.filter((n) => !n.read).length,
-      });
-    }
-
-    // Notifications: Mark as read
-    if (method === "notification.markRead") {
-      return rpcSuccess(null);
-    }
-
-    // Notifications: Mark all as read
-    if (method === "notifications.markAllRead") {
-      return rpcSuccess(null);
-    }
-
-    // ============ Search Endpoints ============
-
-    // Search: Users
-    if (method === "search.users") {
-      const { query } = params;
-      const results = Object.values(TEST_PERSONAS).filter((p) =>
-        p.username.toLowerCase().includes(query.toLowerCase())
-      );
-
-      return rpcSuccess(results);
-    }
-
-    // Search: All
-    if (method === "search") {
-      const { query } = params;
-      return rpcSuccess({
-        users: Object.values(TEST_PERSONAS).filter((p) =>
-          p.username.toLowerCase().includes(query.toLowerCase())
-        ),
-        posts: MOCK_POSTS.filter((p) => p.content.toLowerCase().includes(query.toLowerCase())),
-        hashtags: ["#indie", "#newmusic", "#albumart"],
-      });
-    }
-
-    // ============ Upload Endpoints ============
-
-    // Upload: Get signature
-    if (method === "upload.getSignature") {
-      return rpcSuccess({
-        uploadId: `upload-${Date.now()}`,
-        uploadUrl: "https://mock-s3.amazonaws.com/vrss-uploads",
-        fields: {
-          key: "test-file.jpg",
-          "Content-Type": params.mimeType,
+  // Profile: Get current user's profile
+  if (method === "profile.me") {
+    return rpcSuccess({
+      ...TEST_PERSONAS.CREATOR,
+      styles: {
+        background: { type: "color", value: "#ffffff" },
+        colors: {
+          primary: "#000000",
+          secondary: "#666666",
+          text: "#000000",
+          accent: "#0066cc",
         },
-        expiresAt: new Date(Date.now() + 3600000).toISOString(),
-      });
-    }
+        font: {
+          family: "Inter",
+          headingSize: "lg",
+          bodySize: "md",
+        },
+      },
+      layout: {
+        sections: [],
+        columnsDesktop: 1,
+        columnsMobile: 1,
+      },
+      visibility: "public",
+    });
+  }
 
-    // Upload: Confirm
-    if (method === "upload.confirm") {
-      return rpcSuccess({
-        id: `file-${Date.now()}`,
-        url: `https://example.com/uploads/file-${Date.now()}.jpg`,
-        thumbnailUrl: `https://example.com/uploads/file-${Date.now()}-thumb.jpg`,
-        size: 1024000,
-        mimeType: "image/jpeg",
-      });
-    }
+  // Profile: Update
+  if (method === "profile.update") {
+    const { updates } = params;
+    return rpcSuccess({
+      ...TEST_PERSONAS.CREATOR,
+      ...updates,
+    });
+  }
 
-    // ============ Message Endpoints ============
+  // Profile: Follow user
+  if (method === "user.follow") {
+    return rpcSuccess(null);
+  }
 
-    // Messages: Get threads
-    if (method === "messages.threads.get") {
-      return rpcSuccess({
-        threads: [],
-        nextCursor: null,
-      });
-    }
+  // Profile: Unfollow user
+  if (method === "user.unfollow") {
+    return rpcSuccess(null);
+  }
 
-    // Messages: Send message
-    if (method === "message.send") {
-      const { content } = params;
-      return rpcSuccess({
-        id: `message-${Date.now()}`,
-        threadId: `thread-${Date.now()}`,
-        senderId: TEST_PERSONAS.CREATOR.id,
-        senderUsername: TEST_PERSONAS.CREATOR.username,
-        senderAvatarUrl: TEST_PERSONAS.CREATOR.avatarUrl,
-        content,
-        attachments: [],
-        read: false,
-        createdAt: new Date().toISOString(),
-      });
-    }
+  // ============ Notification Endpoints ============
 
-    // Default: Unknown method
-    return rpcError(404, `Unknown RPC method: ${method}`);
+  // Notifications: Get
+  if (method === "notifications.get") {
+    return rpcSuccess({
+      notifications: MOCK_NOTIFICATIONS,
+      nextCursor: null,
+      unreadCount: MOCK_NOTIFICATIONS.filter((n) => !n.read).length,
+    });
+  }
+
+  // Notifications: Get unread count
+  if (method === "notifications.unreadCount") {
+    return rpcSuccess({
+      count: MOCK_NOTIFICATIONS.filter((n) => !n.read).length,
+    });
+  }
+
+  // Notifications: Mark as read
+  if (method === "notification.markRead") {
+    return rpcSuccess(null);
+  }
+
+  // Notifications: Mark all as read
+  if (method === "notifications.markAllRead") {
+    return rpcSuccess(null);
+  }
+
+  // ============ Search Endpoints ============
+
+  // Search: Users
+  if (method === "search.users") {
+    const { query } = params;
+    const results = Object.values(TEST_PERSONAS).filter((p) =>
+      p.username.toLowerCase().includes(query.toLowerCase())
+    );
+
+    return rpcSuccess(results);
+  }
+
+  // Search: All
+  if (method === "search") {
+    const { query } = params;
+    return rpcSuccess({
+      users: Object.values(TEST_PERSONAS).filter((p) =>
+        p.username.toLowerCase().includes(query.toLowerCase())
+      ),
+      posts: MOCK_POSTS.filter((p) => p.content.toLowerCase().includes(query.toLowerCase())),
+      hashtags: ["#indie", "#newmusic", "#albumart"],
+    });
+  }
+
+  // ============ Upload Endpoints ============
+
+  // Upload: Get signature
+  if (method === "upload.getSignature") {
+    return rpcSuccess({
+      uploadId: `upload-${Date.now()}`,
+      uploadUrl: "https://mock-s3.amazonaws.com/vrss-uploads",
+      fields: {
+        key: "test-file.jpg",
+        "Content-Type": params.mimeType,
+      },
+      expiresAt: new Date(Date.now() + 3600000).toISOString(),
+    });
+  }
+
+  // Upload: Confirm
+  if (method === "upload.confirm") {
+    return rpcSuccess({
+      id: `file-${Date.now()}`,
+      url: `https://example.com/uploads/file-${Date.now()}.jpg`,
+      thumbnailUrl: `https://example.com/uploads/file-${Date.now()}-thumb.jpg`,
+      size: 1024000,
+      mimeType: "image/jpeg",
+    });
+  }
+
+  // ============ Message Endpoints ============
+
+  // Messages: Get threads
+  if (method === "messages.threads.get") {
+    return rpcSuccess({
+      threads: [],
+      nextCursor: null,
+    });
+  }
+
+  // Messages: Send message
+  if (method === "message.send") {
+    const { content } = params;
+    return rpcSuccess({
+      id: `message-${Date.now()}`,
+      threadId: `thread-${Date.now()}`,
+      senderId: TEST_PERSONAS.CREATOR.id,
+      senderUsername: TEST_PERSONAS.CREATOR.username,
+      senderAvatarUrl: TEST_PERSONAS.CREATOR.avatarUrl,
+      content,
+      attachments: [],
+      read: false,
+      createdAt: new Date().toISOString(),
+    });
+  }
+
+  // Default: Unknown method
+  return rpcError(404, `Unknown RPC method: ${method}`);
 };
 
 /**
