@@ -105,7 +105,7 @@ describe("Test Infrastructure", () => {
               }),
             });
             const result = await response.json();
-            return result.result;
+            return result.data;
           },
         });
 
@@ -132,9 +132,9 @@ describe("Test Infrastructure", () => {
       });
 
       const data = await response.json();
-      expect(data.result).toBeDefined();
-      expect(data.result.posts).toBeInstanceOf(Array);
-      expect(data.result.posts.length).toBeGreaterThan(0);
+      expect(data.data).toBeDefined();
+      expect(data.data.posts).toBeInstanceOf(Array);
+      expect(data.data.posts.length).toBeGreaterThan(0);
     });
 
     it("should return mock authentication response", async () => {
@@ -151,10 +151,10 @@ describe("Test Infrastructure", () => {
       });
 
       const data = await response.json();
-      expect(data.result).toBeDefined();
-      expect(data.result.user).toBeDefined();
-      expect(data.result.token).toBeDefined();
-      expect(data.result.user.username).toBe(TEST_PERSONAS.CREATOR.username);
+      expect(data.data).toBeDefined();
+      expect(data.data.user).toBeDefined();
+      expect(data.data.token).toBeDefined();
+      expect(data.data.user.username).toBe(TEST_PERSONAS.CREATOR.username);
     });
 
     it("should return error for invalid credentials", async () => {
@@ -296,7 +296,7 @@ describe("Integration: Full RPC Flow", () => {
           }
 
           const result = await response.json();
-          return result.result;
+          return result.data;
         },
       });
 

@@ -16,14 +16,19 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useAuthStore } from "../../store/authStore";
 import { useOfflineStore } from "../../store/offlineStore";
 import { rpcClient } from "../client";
+import { server } from "../../../../test/mocks/server";
 
 // Mock fetch
-global.fetch = vi.fn();
+const mockFetch = vi.fn();
+global.fetch = mockFetch as any;
 
 describe("RPC Client", () => {
   beforeEach(() => {
+    // Disable MSW for unit tests - we want to mock fetch directly
+    server.close();
+
     // Reset mocks
-    vi.clearAllMocks();
+    mockFetch.mockClear();
 
     // Reset stores
     useAuthStore.setState({
@@ -41,6 +46,9 @@ describe("RPC Client", () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+
+    // Re-enable MSW for other tests
+    server.listen();
   });
 
   describe("Basic Request/Response", () => {
@@ -54,7 +62,7 @@ describe("RPC Client", () => {
         },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse,
       });
@@ -62,7 +70,7 @@ describe("RPC Client", () => {
       const result = await rpcClient.call("user.getProfile", { username: "testuser" });
 
       expect(result).toEqual(mockResponse.data);
-      expect(global.fetch).toHaveBeenCalledWith(
+      expect(mockFetch).toHaveBeenCalledWith(
         expect.stringContaining("/api/rpc"),
         expect.objectContaining({
           method: "POST",
@@ -80,14 +88,14 @@ describe("RPC Client", () => {
         metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse,
       });
 
       await rpcClient.call("auth.login", { email: "test@test.com", password: "password123" });
 
-      const fetchCall = (global.fetch as any).mock.calls[0];
+      const fetchCall = mockFetch.mock.calls[0];
       const requestBody = JSON.parse(fetchCall[1].body);
 
       expect(requestBody).toMatchObject({
@@ -106,7 +114,7 @@ describe("RPC Client", () => {
         metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse,
       });
@@ -117,7 +125,7 @@ describe("RPC Client", () => {
         { context: { correlationId: "test-123" } }
       );
 
-      const fetchCall = (global.fetch as any).mock.calls[0];
+      const fetchCall = mockFetch.mock.calls[0];
       const requestBody = JSON.parse(fetchCall[1].body);
 
       expect(requestBody.context).toBeDefined();
@@ -141,14 +149,14 @@ describe("RPC Client", () => {
         metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse,
       });
 
       await rpcClient.call("post.create", { content: "Test post" });
 
-      const fetchCall = (global.fetch as any).mock.calls[0];
+      const fetchCall = mockFetch.mock.calls[0];
       const headers = fetchCall[1].headers;
 
       expect(headers.Authorization).toBe("Bearer test-token-123");
@@ -161,14 +169,14 @@ describe("RPC Client", () => {
         metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse,
       });
 
       await rpcClient.call("auth.login", { email: "test@test.com", password: "pass" });
 
-      const fetchCall = (global.fetch as any).mock.calls[0];
+      const fetchCall = mockFetch.mock.calls[0];
       const headers = fetchCall[1].headers;
 
       expect(headers.Authorization).toBeUndefined();
@@ -186,7 +194,7 @@ describe("RPC Client", () => {
         metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 401,
         json: async () => errorResponse,
@@ -207,7 +215,7 @@ describe("RPC Client", () => {
         metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 403,
         json: async () => errorResponse,
@@ -228,7 +236,7 @@ describe("RPC Client", () => {
         metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 500,
         json: async () => errorResponse,
@@ -253,7 +261,7 @@ describe("RPC Client", () => {
         metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 400,
         json: async () => errorResponse,
@@ -274,7 +282,7 @@ describe("RPC Client", () => {
     });
 
     it("should handle network errors", async () => {
-      (global.fetch as any).mockRejectedValueOnce(new Error("Network error"));
+      mockFetch.mockRejectedValueOnce(new Error("Network error"));
 
       await expect(rpcClient.call("post.create", { content: "Test" })).rejects.toThrow(
         "Network error"
@@ -292,7 +300,7 @@ describe("RPC Client", () => {
         metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 404,
         json: async () => errorResponse,
@@ -317,7 +325,7 @@ describe("RPC Client", () => {
       const addToQueueSpy = vi.spyOn(useOfflineStore.getState(), "addToQueue");
 
       // Mock network failure
-      (global.fetch as any).mockRejectedValueOnce(new Error("Network error"));
+      mockFetch.mockRejectedValueOnce(new Error("Network error"));
 
       try {
         await rpcClient.call("post.create", { content: "Test post" }, { mutation: true });
@@ -339,7 +347,7 @@ describe("RPC Client", () => {
 
       const addToQueueSpy = vi.spyOn(useOfflineStore.getState(), "addToQueue");
 
-      (global.fetch as any).mockRejectedValueOnce(new Error("Network error"));
+      mockFetch.mockRejectedValueOnce(new Error("Network error"));
 
       try {
         await rpcClient.call("feed.get", { limit: 20 }, { mutation: false });
@@ -364,7 +372,7 @@ describe("RPC Client", () => {
         metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 400,
         json: async () => errorResponse,
@@ -388,7 +396,7 @@ describe("RPC Client", () => {
         metadata: { timestamp: Date.now(), requestId: "req_123" },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockResponse,
       });
@@ -399,7 +407,7 @@ describe("RPC Client", () => {
         { context: { correlationId: "custom-correlation-id" } }
       );
 
-      const fetchCall = (global.fetch as any).mock.calls[0];
+      const fetchCall = mockFetch.mock.calls[0];
       const requestBody = JSON.parse(fetchCall[1].body);
 
       expect(requestBody.context.correlationId).toBe("custom-correlation-id");
@@ -409,7 +417,7 @@ describe("RPC Client", () => {
   describe("Timeout Handling", () => {
     it("should timeout long-running requests", async () => {
       // Mock a slow fetch that takes longer than timeout
-      (global.fetch as any).mockImplementationOnce(
+      mockFetch.mockImplementationOnce(
         () =>
           new Promise((resolve) => {
             // Never resolve within timeout period

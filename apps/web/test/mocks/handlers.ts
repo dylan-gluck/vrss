@@ -124,7 +124,8 @@ const rpcHandler = async ({ request }: { request: Request }) => {
 
     // Post: Create
     if (method === "post.create") {
-      const { input } = params;
+      // Handle both formats: { input: {...} } and {...} directly
+      const input = params.input || params;
       const newPost = {
         id: `post-${Date.now()}`,
         type: input.type || "text",
