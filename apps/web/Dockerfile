@@ -56,6 +56,7 @@ WORKDIR /app/apps/web
 
 # Copy application source code and configuration
 COPY --chown=bunuser:nobody ./apps/web/src ./src
+COPY --chown=bunuser:nobody ./apps/web/test ./test
 COPY --chown=bunuser:nobody ./apps/web/public ./public/
 COPY --chown=bunuser:nobody ./apps/web/index.html ./
 COPY --chown=bunuser:nobody ./apps/web/vite.config.ts ./
@@ -66,9 +67,9 @@ COPY --chown=bunuser:nobody ./apps/web/tailwind.config.js* ./
 COPY --chown=bunuser:nobody ./apps/web/postcss.config.js* ./
 COPY --chown=bunuser:nobody ./apps/web/components.json* ./
 
-# Install web-specific dependencies and ensure they're available locally
+# Create symlink to workspace node_modules for module resolution
 WORKDIR /app/apps/web
-RUN bun install && chown -R bunuser:nobody /app/node_modules /app/apps/web/node_modules 2>/dev/null || true
+RUN ln -sf /app/node_modules ./node_modules && chown -R bunuser:nobody /app/node_modules 2>/dev/null || true
 
 # ------------------------------------------------------------------------------
 # Stage 5: Development - Hot module replacement (HMR)

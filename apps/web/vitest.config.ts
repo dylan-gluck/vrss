@@ -42,5 +42,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    // In Docker/monorepo workspaces, resolve from workspace root node_modules
+    preserveSymlinks: false,
   },
 });

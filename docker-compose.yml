@@ -197,10 +197,10 @@ services:
       - ./apps/web/index.html:/app/apps/web/index.html:ro
       - ./apps/web/package.json:/app/apps/web/package.json:ro
       - ./apps/web/vite.config.ts:/app/apps/web/vite.config.ts:ro
+      - ./apps/web/test:/app/apps/web/test:ro
       # Workspace packages for hot reload
       - ./packages:/app/packages:ro
-      # Node modules (avoid mounting from host) - mount at the app directory
-      - frontend_node_modules:/app/apps/web/node_modules
+      # Note: node_modules not mounted - using image's built-in dependencies for stability
     ports:
       - "${FRONTEND_PORT:-5050}:${FRONTEND_PORT:-5050}"
     networks:
@@ -299,7 +299,3 @@ volumes:
 
   nginx_logs:
     name: vrss_nginx_logs
-
-  # Node modules (avoid host mount)
-  frontend_node_modules:
-    name: vrss_frontend_node_modules

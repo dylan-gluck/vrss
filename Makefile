@@ -180,7 +180,7 @@ test-docker: ## Run tests in isolated Docker environment (recommended for CI/CD)
 		(echo "$(RED)Backend tests failed$(NC)" && docker-compose -f docker-compose.yml -f docker-compose.test.yml down -v && exit 1)
 	@echo ""
 	@echo "$(YELLOW)Frontend tests:$(NC)"
-	@docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm frontend bun test || \
+	@docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm frontend bun run test || \
 		echo "$(YELLOW)Frontend tests not configured or failed$(NC)"
 	@echo "$(BLUE)Cleaning up test environment...$(NC)"
 	@docker-compose -f docker-compose.yml -f docker-compose.test.yml down -v
@@ -192,7 +192,7 @@ test-docker-fast: ## Run tests in dev Docker containers (fastest, shares dev dat
 	@docker-compose exec -T backend bun test || (echo "$(RED)Backend tests failed$(NC)" && exit 1)
 	@echo ""
 	@echo "$(YELLOW)Frontend tests:$(NC)"
-	@docker-compose exec -T frontend bun test || echo "$(YELLOW)Frontend tests not configured or failed$(NC)"
+	@docker-compose exec -T frontend bun run test || echo "$(YELLOW)Frontend tests not configured or failed$(NC)"
 	@echo "$(GREEN)Tests complete$(NC)"
 
 test-backend: ## Run backend tests only (in dev container)
@@ -201,12 +201,12 @@ test-backend: ## Run backend tests only (in dev container)
 
 test-frontend: ## Run frontend tests only (in dev container)
 	@echo "$(YELLOW)Running frontend tests...$(NC)"
-	@docker-compose exec -T frontend bun test
+	@docker-compose exec -T frontend bun run test
 
 test-coverage: ## Generate test coverage report
 	@echo "$(BLUE)Running tests with coverage...$(NC)"
 	@docker-compose exec -T backend bun test --coverage
-	@docker-compose exec -T frontend bun test --coverage || echo "$(YELLOW)Frontend coverage not configured$(NC)"
+	@docker-compose exec -T frontend bun run test:coverage || echo "$(YELLOW)Frontend coverage not configured$(NC)"
 	@echo "$(GREEN)Coverage reports generated in apps/*/coverage/$(NC)"
 
 test-watch: ## Run tests in watch mode (requires running containers)
