@@ -1,6 +1,7 @@
 # ==============================================================================
 # VRSS Backend API Dockerfile (Bun + Hono)
 # Multi-stage build for development, production, and testing
+# Optimized with Turbo prune for minimal build context
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
@@ -33,22 +34,18 @@ WORKDIR /app
 # ------------------------------------------------------------------------------
 FROM base AS dependencies
 
-# Copy root package.json for workspace configuration
-COPY --chown=bunuser:nobody ./package.json ./bun.lock* ./
+WORKDIR /app
 
-# Copy workspace packages
+# Copy workspace structure for dependency resolution
+COPY --chown=bunuser:nobody ./package.json ./bun.lockb* ./
 COPY --chown=bunuser:nobody ./packages ./packages/
-
-# Copy backend app package.json
 COPY --chown=bunuser:nobody ./apps/api/package.json ./apps/api/
-
-# Copy Prisma schema (needed for prisma generate)
 COPY --chown=bunuser:nobody ./apps/api/prisma ./apps/api/prisma
 
-# Create minimal e2e directory to satisfy workspace config
+# Create empty e2e package.json to satisfy workspace structure
 RUN mkdir -p ./e2e && echo '{"name":"e2e","private":true}' > ./e2e/package.json
 
-# Install all workspace dependencies
+# Install all workspace dependencies (Bun handles workspace: protocol)
 RUN bun install
 
 # Set working directory to backend app
@@ -58,16 +55,30 @@ WORKDIR /app/apps/api
 RUN bunx prisma generate
 
 # ------------------------------------------------------------------------------
-# Stage 3: Development - Hot reload with all dev tools
+# Stage 3: Source - Copy application source code
 # ------------------------------------------------------------------------------
-FROM dependencies AS development
+FROM dependencies AS source
 
-USER bunuser
+WORKDIR /app/apps/api
 
-# Copy source code from apps/api (will be overridden by volume mount in development)
+# Copy application source code
 COPY --chown=bunuser:nobody ./apps/api/src ./src
 COPY --chown=bunuser:nobody ./apps/api/tsconfig.json ./
-COPY --chown=bunuser:nobody ./apps/api/prisma ./prisma
+COPY --chown=bunuser:nobody ./apps/api/biome.json* ./
+COPY --chown=bunuser:nobody ./apps/api/scripts ./scripts
+
+# Ensure Prisma client is generated
+RUN bunx prisma generate || true
+
+# Make scripts executable
+RUN chmod +x ./scripts/*.sh
+
+# ------------------------------------------------------------------------------
+# Stage 5: Development - Hot reload with all dev tools
+# ------------------------------------------------------------------------------
+FROM source AS development
+
+USER bunuser
 
 # Expose backend port
 EXPOSE 3030
@@ -76,26 +87,22 @@ EXPOSE 3030
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 --start-period=40s \
     CMD sh -c 'curl -f http://localhost:${BACKEND_PORT:-3030}/health || exit 1'
 
-# Run with --watch for hot reload
+# Run startup script with dev command
+ENTRYPOINT ["./scripts/start.sh"]
 CMD ["bun", "run", "dev"]
 
 # ------------------------------------------------------------------------------
-# Stage 4: Build - Compile TypeScript for production
+# Stage 6: Build - Compile TypeScript for production
 # ------------------------------------------------------------------------------
-FROM dependencies AS builder
+FROM source AS builder
 
 USER bunuser
-
-# Copy source code from apps/api
-COPY --chown=bunuser:nobody ./apps/api/src ./src
-COPY --chown=bunuser:nobody ./apps/api/tsconfig.json ./
-COPY --chown=bunuser:nobody ./apps/api/prisma ./prisma
 
 # Build application
 RUN bun run build
 
 # ------------------------------------------------------------------------------
-# Stage 5: Production - Minimal image with only runtime dependencies
+# Stage 7: Production - Minimal image with only runtime dependencies
 # ------------------------------------------------------------------------------
 FROM base AS production
 
@@ -111,6 +118,12 @@ COPY --from=dependencies --chown=bunuser:nobody /app/apps/api/package.json ./pac
 # Copy built application
 COPY --from=builder --chown=bunuser:nobody /app/apps/api/dist ./dist
 
+# Copy scripts
+COPY --from=source --chown=bunuser:nobody /app/apps/api/scripts ./scripts
+
+# Copy Prisma schema for migrations
+COPY --from=dependencies --chown=bunuser:nobody /app/apps/api/prisma ./prisma
+
 # Expose backend port
 EXPOSE 3030
 
@@ -118,21 +131,16 @@ EXPOSE 3030
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 --start-period=20s \
     CMD sh -c 'curl -f http://localhost:${BACKEND_PORT:-3030}/health || exit 1'
 
-# Run production build
+# Run startup script with production command
+ENTRYPOINT ["./scripts/start.sh"]
 CMD ["bun", "run", "start"]
 
 # ------------------------------------------------------------------------------
-# Stage 6: Test - Isolated environment for running tests
+# Stage 8: Test - Isolated environment for running tests
 # ------------------------------------------------------------------------------
-FROM dependencies AS test
+FROM source AS test
 
 USER bunuser
-
-# Copy source code and test files from apps/api
-COPY --chown=bunuser:nobody ./apps/api/src ./src
-COPY --chown=bunuser:nobody ./apps/api/test ./test
-COPY --chown=bunuser:nobody ./apps/api/tsconfig.json ./
-COPY --chown=bunuser:nobody ./apps/api/prisma ./prisma
 
 # Run tests
 CMD ["bun", "test"]

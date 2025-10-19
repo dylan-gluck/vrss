@@ -2,9 +2,9 @@
   "metadata": {
     "version": 1,
     "root": "/Users/dylan/Workspace/projects/vrss",
-    "createdAt": "2025-10-17T03:24:07.669Z",
-    "updatedAt": "2025-10-17T03:24:07.669Z",
-    "totalFiles": 78
+    "createdAt": "2025-10-19T15:26:14.727Z",
+    "updatedAt": "2025-10-19T15:26:14.727Z",
+    "totalFiles": 141
   },
   "tree": {
     "name": "vrss",
@@ -59,6 +59,10 @@
                       {
                         "name": "email.ts",
                         "type": "file"
+                      },
+                      {
+                        "name": "s3.ts",
+                        "type": "file"
                       }
                     ]
                   },
@@ -68,6 +72,16 @@
                     "children": [
                       {
                         "name": "auth.ts",
+                        "type": "file"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "routes",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "health.ts",
                         "type": "file"
                       }
                     ]
@@ -85,11 +99,31 @@
                             "type": "dir",
                             "children": [
                               {
+                                "name": "discovery.ts",
+                                "type": "file"
+                              },
+                              {
                                 "name": "feed.ts",
                                 "type": "file"
                               },
                               {
+                                "name": "media.ts",
+                                "type": "file"
+                              },
+                              {
+                                "name": "message.ts",
+                                "type": "file"
+                              },
+                              {
+                                "name": "notification.ts",
+                                "type": "file"
+                              },
+                              {
                                 "name": "post.ts",
+                                "type": "file"
+                              },
+                              {
+                                "name": "settings.ts",
                                 "type": "file"
                               },
                               {
@@ -107,11 +141,31 @@
                             "type": "file"
                           },
                           {
+                            "name": "discovery.ts",
+                            "type": "file"
+                          },
+                          {
                             "name": "feed.ts",
                             "type": "file"
                           },
                           {
+                            "name": "media.ts",
+                            "type": "file"
+                          },
+                          {
+                            "name": "message.ts",
+                            "type": "file"
+                          },
+                          {
+                            "name": "notification.ts",
+                            "type": "file"
+                          },
+                          {
                             "name": "post.ts",
+                            "type": "file"
+                          },
+                          {
+                            "name": "settings.ts",
                             "type": "file"
                           },
                           {
@@ -219,7 +273,23 @@
                     "type": "dir",
                     "children": [
                       {
+                        "name": "discovery.test.ts",
+                        "type": "file"
+                      },
+                      {
                         "name": "feed.test.ts",
+                        "type": "file"
+                      },
+                      {
+                        "name": "media.test.ts",
+                        "type": "file"
+                      },
+                      {
+                        "name": "message.test.ts",
+                        "type": "file"
+                      },
+                      {
+                        "name": "notification.test.ts",
                         "type": "file"
                       },
                       {
@@ -228,6 +298,10 @@
                       },
                       {
                         "name": "rpc-foundation.test.ts",
+                        "type": "file"
+                      },
+                      {
+                        "name": "settings.test.ts",
                         "type": "file"
                       },
                       {
@@ -285,6 +359,256 @@
                 "type": "dir",
                 "children": [
                   {
+                    "name": "__tests__",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "pwa",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "manifest.test.ts",
+                            "type": "file"
+                          },
+                          {
+                            "name": "service-worker.test.ts",
+                            "type": "file"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "components",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "layout",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "__tests__",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "AppShell.test.tsx",
+                                "type": "file"
+                              },
+                              {
+                                "name": "BottomNav.test.tsx",
+                                "type": "file"
+                              },
+                              {
+                                "name": "MobileHeader.test.tsx",
+                                "type": "file"
+                              },
+                              {
+                                "name": "NavBar.test.tsx",
+                                "type": "file"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "AppShell.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "BottomNav.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "MobileHeader.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "NavBar.tsx",
+                            "type": "file"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "ui",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "avatar.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "badge.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "button.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "card.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "dialog.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "dropdown-menu.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "input.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "label.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "scroll-area.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "separator.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "sheet.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "skeleton.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "switch.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "toast.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "toaster.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "tooltip.tsx",
+                            "type": "file"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Button.test.tsx",
+                        "type": "file"
+                      },
+                      {
+                        "name": "Button.tsx",
+                        "type": "file"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "hooks",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "useLocalStorage.test.ts",
+                        "type": "file"
+                      },
+                      {
+                        "name": "useLocalStorage.ts",
+                        "type": "file"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "lib",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "__tests__",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "queryClient.test.ts",
+                            "type": "file"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "hooks",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "use-toast.ts",
+                            "type": "file"
+                          },
+                          {
+                            "name": "useMediaQuery.ts",
+                            "type": "file"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "store",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "__tests__",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "authStore.test.ts",
+                                "type": "file"
+                              },
+                              {
+                                "name": "offlineStore.test.ts",
+                                "type": "file"
+                              },
+                              {
+                                "name": "uiStore.test.ts",
+                                "type": "file"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "authStore.ts",
+                            "type": "file"
+                          },
+                          {
+                            "name": "offlineStore.ts",
+                            "type": "file"
+                          },
+                          {
+                            "name": "uiStore.ts",
+                            "type": "file"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "utils",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "cn.ts",
+                            "type": "file"
+                          },
+                          {
+                            "name": "index.ts",
+                            "type": "file"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "queryClient.ts",
+                        "type": "file"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "App.test.tsx",
+                    "type": "file"
+                  },
+                  {
                     "name": "App.tsx",
                     "type": "file"
                   },
@@ -337,11 +661,23 @@
                 ]
               },
               {
+                "name": "postcss.config.js",
+                "type": "file"
+              },
+              {
+                "name": "tailwind.config.js",
+                "type": "file"
+              },
+              {
                 "name": "vite.config.ts",
                 "type": "file"
               },
               {
                 "name": "vitest.config.ts",
+                "type": "file"
+              },
+              {
+                "name": "vitest.d.ts",
                 "type": "file"
               }
             ]
@@ -499,6 +835,10 @@
                 "type": "file"
               },
               {
+                "name": "monorepo-setup.test.ts",
+                "type": "file"
+              },
+              {
                 "name": "network-connectivity.test.ts",
                 "type": "file"
               },
@@ -507,16 +847,6 @@
                 "type": "file"
               }
             ]
-          }
-        ]
-      },
-      {
-        "name": "tests",
-        "type": "dir",
-        "children": [
-          {
-            "name": "monorepo-setup.test.ts",
-            "type": "file"
           }
         ]
       }
@@ -528,15 +858,27 @@
     "apps/api/src/index.ts",
     "apps/api/src/lib/auth.ts",
     "apps/api/src/lib/email.ts",
+    "apps/api/src/lib/s3.ts",
     "apps/api/src/middleware/auth.ts",
+    "apps/api/src/routes/health.ts",
     "apps/api/src/rpc/index.ts",
     "apps/api/src/rpc/routers/auth.ts",
+    "apps/api/src/rpc/routers/discovery.ts",
     "apps/api/src/rpc/routers/feed.ts",
+    "apps/api/src/rpc/routers/media.ts",
+    "apps/api/src/rpc/routers/message.ts",
+    "apps/api/src/rpc/routers/notification.ts",
     "apps/api/src/rpc/routers/post.ts",
+    "apps/api/src/rpc/routers/schemas/discovery.ts",
     "apps/api/src/rpc/routers/schemas/feed.ts",
+    "apps/api/src/rpc/routers/schemas/media.ts",
+    "apps/api/src/rpc/routers/schemas/message.ts",
+    "apps/api/src/rpc/routers/schemas/notification.ts",
     "apps/api/src/rpc/routers/schemas/post.ts",
+    "apps/api/src/rpc/routers/schemas/settings.ts",
     "apps/api/src/rpc/routers/schemas/social.ts",
     "apps/api/src/rpc/routers/schemas/user.ts",
+    "apps/api/src/rpc/routers/settings.ts",
     "apps/api/src/rpc/routers/social.ts",
     "apps/api/src/rpc/routers/user.ts",
     "apps/api/src/rpc/types.ts",
@@ -554,9 +896,14 @@
     "apps/api/test/helpers/database.ts",
     "apps/api/test/helpers/request.ts",
     "apps/api/test/infrastructure.test.ts",
+    "apps/api/test/rpc/discovery.test.ts",
     "apps/api/test/rpc/feed.test.ts",
+    "apps/api/test/rpc/media.test.ts",
+    "apps/api/test/rpc/message.test.ts",
+    "apps/api/test/rpc/notification.test.ts",
     "apps/api/test/rpc/post.test.ts",
     "apps/api/test/rpc/rpc-foundation.test.ts",
+    "apps/api/test/rpc/settings.test.ts",
     "apps/api/test/rpc/social.test.ts",
     "apps/api/test/rpc/type-contracts.test.ts",
     "apps/api/test/rpc/user.test.ts",
@@ -566,8 +913,53 @@
     "apps/api/test_trigger_manual.ts",
     "apps/api/validate-auth.ts",
     "apps/api/validate-email.ts",
+    "apps/web/postcss.config.js",
+    "apps/web/src/App.test.tsx",
     "apps/web/src/App.tsx",
+    "apps/web/src/__tests__/pwa/manifest.test.ts",
+    "apps/web/src/__tests__/pwa/service-worker.test.ts",
+    "apps/web/src/components/Button.test.tsx",
+    "apps/web/src/components/Button.tsx",
+    "apps/web/src/components/layout/AppShell.tsx",
+    "apps/web/src/components/layout/BottomNav.tsx",
+    "apps/web/src/components/layout/MobileHeader.tsx",
+    "apps/web/src/components/layout/NavBar.tsx",
+    "apps/web/src/components/layout/__tests__/AppShell.test.tsx",
+    "apps/web/src/components/layout/__tests__/BottomNav.test.tsx",
+    "apps/web/src/components/layout/__tests__/MobileHeader.test.tsx",
+    "apps/web/src/components/layout/__tests__/NavBar.test.tsx",
+    "apps/web/src/components/ui/avatar.tsx",
+    "apps/web/src/components/ui/badge.tsx",
+    "apps/web/src/components/ui/button.tsx",
+    "apps/web/src/components/ui/card.tsx",
+    "apps/web/src/components/ui/dialog.tsx",
+    "apps/web/src/components/ui/dropdown-menu.tsx",
+    "apps/web/src/components/ui/input.tsx",
+    "apps/web/src/components/ui/label.tsx",
+    "apps/web/src/components/ui/scroll-area.tsx",
+    "apps/web/src/components/ui/separator.tsx",
+    "apps/web/src/components/ui/sheet.tsx",
+    "apps/web/src/components/ui/skeleton.tsx",
+    "apps/web/src/components/ui/switch.tsx",
+    "apps/web/src/components/ui/toast.tsx",
+    "apps/web/src/components/ui/toaster.tsx",
+    "apps/web/src/components/ui/tooltip.tsx",
+    "apps/web/src/hooks/useLocalStorage.test.ts",
+    "apps/web/src/hooks/useLocalStorage.ts",
+    "apps/web/src/lib/__tests__/queryClient.test.ts",
+    "apps/web/src/lib/hooks/use-toast.ts",
+    "apps/web/src/lib/hooks/useMediaQuery.ts",
+    "apps/web/src/lib/queryClient.ts",
+    "apps/web/src/lib/store/__tests__/authStore.test.ts",
+    "apps/web/src/lib/store/__tests__/offlineStore.test.ts",
+    "apps/web/src/lib/store/__tests__/uiStore.test.ts",
+    "apps/web/src/lib/store/authStore.ts",
+    "apps/web/src/lib/store/offlineStore.ts",
+    "apps/web/src/lib/store/uiStore.ts",
+    "apps/web/src/lib/utils/cn.ts",
+    "apps/web/src/lib/utils/index.ts",
     "apps/web/src/main.tsx",
+    "apps/web/tailwind.config.js",
     "apps/web/test/infrastructure.test.tsx",
     "apps/web/test/mocks/data.ts",
     "apps/web/test/mocks/handlers.ts",
@@ -576,6 +968,7 @@
     "apps/web/test/utils/render.tsx",
     "apps/web/vite.config.ts",
     "apps/web/vitest.config.ts",
+    "apps/web/vitest.d.ts",
     "e2e/fixtures/test-data.ts",
     "e2e/fixtures/test-users.ts",
     "e2e/helpers/auth-helper.ts",
@@ -598,18 +991,14 @@
     "packages/eslint-config/index.js",
     "packages/eslint-config/react.js",
     "test/infrastructure/health-checks.test.ts",
+    "test/infrastructure/monorepo-setup.test.ts",
     "test/infrastructure/network-connectivity.test.ts",
-    "test/infrastructure/volume-persistence.test.ts",
-    "tests/monorepo-setup.test.ts"
+    "test/infrastructure/volume-persistence.test.ts"
   ],
   "edges": [
     {
       "from": "apps/api/src/index.ts",
       "to": "apps/api/src/rpc/index.ts"
-    },
-    {
-      "from": "apps/api/src/middleware/auth.ts",
-      "to": "apps/api/src/lib/auth.ts"
     },
     {
       "from": "apps/api/src/rpc/index.ts",
@@ -621,11 +1010,31 @@
     },
     {
       "from": "apps/api/src/rpc/index.ts",
+      "to": "apps/api/src/rpc/routers/discovery.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/index.ts",
       "to": "apps/api/src/rpc/routers/feed.ts"
     },
     {
       "from": "apps/api/src/rpc/index.ts",
+      "to": "apps/api/src/rpc/routers/media.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/index.ts",
+      "to": "apps/api/src/rpc/routers/message.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/index.ts",
+      "to": "apps/api/src/rpc/routers/notification.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/index.ts",
       "to": "apps/api/src/rpc/routers/post.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/index.ts",
+      "to": "apps/api/src/rpc/routers/settings.ts"
     },
     {
       "from": "apps/api/src/rpc/index.ts",
@@ -644,6 +1053,14 @@
       "to": "apps/api/src/lib/auth.ts"
     },
     {
+      "from": "apps/api/src/rpc/routers/discovery.ts",
+      "to": "apps/api/src/rpc/routers/schemas/discovery.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/routers/discovery.ts",
+      "to": "apps/api/src/rpc/types.ts"
+    },
+    {
       "from": "apps/api/src/rpc/routers/feed.ts",
       "to": "apps/api/src/features/feed/feed-algorithm.ts"
     },
@@ -656,11 +1073,51 @@
       "to": "apps/api/src/rpc/types.ts"
     },
     {
+      "from": "apps/api/src/rpc/routers/media.ts",
+      "to": "apps/api/src/lib/s3.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/routers/media.ts",
+      "to": "apps/api/src/rpc/routers/schemas/media.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/routers/media.ts",
+      "to": "apps/api/src/rpc/types.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/routers/message.ts",
+      "to": "apps/api/src/rpc/routers/schemas/message.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/routers/message.ts",
+      "to": "apps/api/src/rpc/types.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/routers/notification.ts",
+      "to": "apps/api/src/rpc/routers/schemas/notification.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/routers/notification.ts",
+      "to": "apps/api/src/rpc/types.ts"
+    },
+    {
       "from": "apps/api/src/rpc/routers/post.ts",
       "to": "apps/api/src/rpc/routers/schemas/post.ts"
     },
     {
       "from": "apps/api/src/rpc/routers/post.ts",
+      "to": "apps/api/src/rpc/types.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/routers/settings.ts",
+      "to": "apps/api/src/lib/auth.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/routers/settings.ts",
+      "to": "apps/api/src/rpc/routers/schemas/settings.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/routers/settings.ts",
       "to": "apps/api/src/rpc/types.ts"
     },
     {
@@ -800,6 +1257,26 @@
       "to": "apps/api/test/setup.ts"
     },
     {
+      "from": "apps/api/test/rpc/discovery.test.ts",
+      "to": "apps/api/src/rpc/routers/discovery.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/discovery.test.ts",
+      "to": "apps/api/src/rpc/types.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/discovery.test.ts",
+      "to": "apps/api/test/fixtures/userBuilder.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/discovery.test.ts",
+      "to": "apps/api/test/helpers/database.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/discovery.test.ts",
+      "to": "apps/api/test/setup.ts"
+    },
+    {
       "from": "apps/api/test/rpc/feed.test.ts",
       "to": "apps/api/src/rpc/routers/feed.ts"
     },
@@ -828,6 +1305,66 @@
       "to": "apps/api/test/setup.ts"
     },
     {
+      "from": "apps/api/test/rpc/media.test.ts",
+      "to": "apps/api/src/rpc/routers/media.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/media.test.ts",
+      "to": "apps/api/src/rpc/types.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/media.test.ts",
+      "to": "apps/api/test/fixtures/userBuilder.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/media.test.ts",
+      "to": "apps/api/test/helpers/database.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/media.test.ts",
+      "to": "apps/api/test/setup.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/message.test.ts",
+      "to": "apps/api/src/rpc/routers/message.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/message.test.ts",
+      "to": "apps/api/src/rpc/types.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/message.test.ts",
+      "to": "apps/api/test/fixtures/userBuilder.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/message.test.ts",
+      "to": "apps/api/test/helpers/database.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/message.test.ts",
+      "to": "apps/api/test/setup.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/notification.test.ts",
+      "to": "apps/api/src/rpc/routers/notification.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/notification.test.ts",
+      "to": "apps/api/src/rpc/types.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/notification.test.ts",
+      "to": "apps/api/test/fixtures/userBuilder.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/notification.test.ts",
+      "to": "apps/api/test/helpers/database.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/notification.test.ts",
+      "to": "apps/api/test/setup.ts"
+    },
+    {
       "from": "apps/api/test/rpc/post.test.ts",
       "to": "apps/api/src/rpc/routers/post.ts"
     },
@@ -845,6 +1382,34 @@
     },
     {
       "from": "apps/api/test/rpc/post.test.ts",
+      "to": "apps/api/test/setup.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/rpc-foundation.test.ts",
+      "to": "apps/api/src/rpc/index.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/rpc-foundation.test.ts",
+      "to": "apps/api/test/helpers/database.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/settings.test.ts",
+      "to": "apps/api/src/rpc/routers/settings.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/settings.test.ts",
+      "to": "apps/api/src/rpc/types.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/settings.test.ts",
+      "to": "apps/api/test/fixtures/userBuilder.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/settings.test.ts",
+      "to": "apps/api/test/helpers/database.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/settings.test.ts",
       "to": "apps/api/test/setup.ts"
     },
     {
@@ -884,6 +1449,14 @@
       "to": "apps/api/test/setup.ts"
     },
     {
+      "from": "apps/api/test/rpc/validation.test.ts",
+      "to": "apps/api/src/rpc/index.ts"
+    },
+    {
+      "from": "apps/api/test/rpc/validation.test.ts",
+      "to": "apps/api/test/helpers/database.ts"
+    },
+    {
       "from": "apps/api/validate-auth.ts",
       "to": "apps/api/src/lib/auth.ts"
     },
@@ -892,8 +1465,96 @@
       "to": "apps/api/src/lib/email.ts"
     },
     {
+      "from": "apps/web/src/App.test.tsx",
+      "to": "apps/web/src/App.tsx"
+    },
+    {
+      "from": "apps/web/src/App.test.tsx",
+      "to": "apps/web/test/utils/render.tsx"
+    },
+    {
+      "from": "apps/web/src/components/Button.test.tsx",
+      "to": "apps/web/src/components/Button.tsx"
+    },
+    {
+      "from": "apps/web/src/components/Button.test.tsx",
+      "to": "apps/web/test/utils/render.tsx"
+    },
+    {
+      "from": "apps/web/src/components/layout/AppShell.tsx",
+      "to": "apps/web/src/components/layout/BottomNav.tsx"
+    },
+    {
+      "from": "apps/web/src/components/layout/AppShell.tsx",
+      "to": "apps/web/src/components/layout/MobileHeader.tsx"
+    },
+    {
+      "from": "apps/web/src/components/layout/AppShell.tsx",
+      "to": "apps/web/src/components/layout/NavBar.tsx"
+    },
+    {
+      "from": "apps/web/src/components/layout/__tests__/AppShell.test.tsx",
+      "to": "apps/web/src/components/layout/AppShell.tsx"
+    },
+    {
+      "from": "apps/web/src/components/layout/__tests__/AppShell.test.tsx",
+      "to": "apps/web/test/utils/render.tsx"
+    },
+    {
+      "from": "apps/web/src/components/layout/__tests__/BottomNav.test.tsx",
+      "to": "apps/web/src/components/layout/BottomNav.tsx"
+    },
+    {
+      "from": "apps/web/src/components/layout/__tests__/BottomNav.test.tsx",
+      "to": "apps/web/test/utils/render.tsx"
+    },
+    {
+      "from": "apps/web/src/components/layout/__tests__/MobileHeader.test.tsx",
+      "to": "apps/web/src/components/layout/MobileHeader.tsx"
+    },
+    {
+      "from": "apps/web/src/components/layout/__tests__/MobileHeader.test.tsx",
+      "to": "apps/web/test/utils/render.tsx"
+    },
+    {
+      "from": "apps/web/src/components/layout/__tests__/NavBar.test.tsx",
+      "to": "apps/web/src/components/layout/NavBar.tsx"
+    },
+    {
+      "from": "apps/web/src/components/layout/__tests__/NavBar.test.tsx",
+      "to": "apps/web/test/utils/render.tsx"
+    },
+    {
+      "from": "apps/web/src/hooks/useLocalStorage.test.ts",
+      "to": "apps/web/src/hooks/useLocalStorage.ts"
+    },
+    {
+      "from": "apps/web/src/lib/__tests__/queryClient.test.ts",
+      "to": "apps/web/src/lib/queryClient.ts"
+    },
+    {
+      "from": "apps/web/src/lib/store/__tests__/authStore.test.ts",
+      "to": "apps/web/src/lib/store/authStore.ts"
+    },
+    {
+      "from": "apps/web/src/lib/store/__tests__/offlineStore.test.ts",
+      "to": "apps/web/src/lib/store/offlineStore.ts"
+    },
+    {
+      "from": "apps/web/src/lib/store/__tests__/uiStore.test.ts",
+      "to": "apps/web/src/lib/store/uiStore.ts"
+    },
+    {
+      "from": "apps/web/src/lib/utils/index.ts",
+      "to": "apps/web/src/lib/utils/cn.ts"
+    },
+    {
       "from": "apps/web/src/main.tsx",
       "to": "apps/web/src/App.tsx"
+    },
+    {
+      "from": "apps/web/src/main.tsx",
+      "to": "apps/web/src/lib/queryClient.ts"
     },
     {
       "from": "apps/web/test/infrastructure.test.tsx",
@@ -1063,8 +1724,8 @@
           "from": "@prisma/client",
           "kind": "import",
           "imported": [
-            "PrismaClient",
-            "Prisma"
+            "Prisma",
+            "PrismaClient"
           ]
         }
       ],
@@ -1090,7 +1751,7 @@
               "type": "AlgorithmConfig"
             },
             {
-              "name": "userId",
+              "name": "_userId",
               "type": "string"
             }
           ],
@@ -1170,17 +1831,17 @@
           ]
         },
         {
-          "from": "hono/logger",
-          "kind": "import",
-          "imported": [
-            "logger"
-          ]
-        },
-        {
           "from": "hono/cors",
           "kind": "import",
           "imported": [
             "cors"
+          ]
+        },
+        {
+          "from": "hono/logger",
+          "kind": "import",
+          "imported": [
+            "logger"
           ]
         },
         {
@@ -1212,6 +1873,13 @@
     "apps/api/src/lib/auth.ts": {
       "imports": [
         {
+          "from": "@prisma/client",
+          "kind": "import",
+          "imported": [
+            "PrismaClient"
+          ]
+        },
+        {
           "from": "better-auth",
           "kind": "import",
           "imported": [
@@ -1224,13 +1892,6 @@
           "imported": [
             "prismaAdapter"
           ]
-        },
-        {
-          "from": "@prisma/client",
-          "kind": "import",
-          "imported": [
-            "PrismaClient"
-          ]
         }
       ],
       "dependencies": [],
@@ -1239,6 +1900,11 @@
       "constants": [
         {
           "name": "prisma",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "authSecret",
           "initKind": "unknown",
           "isExported": false
         },
@@ -1389,8 +2055,130 @@
       "classes": [],
       "constants": []
     },
+    "apps/api/src/lib/s3.ts": {
+      "imports": [
+        {
+          "from": "@aws-sdk/client-s3",
+          "kind": "import",
+          "imported": [
+            "S3Client"
+          ]
+        },
+        {
+          "from": "@aws-sdk/s3-request-presigner",
+          "kind": "import",
+          "imported": [
+            "getSignedUrl"
+          ]
+        },
+        {
+          "from": "@aws-sdk/client-s3",
+          "kind": "import",
+          "imported": [
+            "PutObjectCommand",
+            "DeleteObjectCommand"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "generatePresignedUploadUrl",
+          "params": [
+            {
+              "name": "key",
+              "type": "string"
+            },
+            {
+              "name": "contentType",
+              "type": "string"
+            },
+            {
+              "name": "expiresIn"
+            }
+          ],
+          "isAsync": true,
+          "isExported": true,
+          "returnType": "Promise<string>"
+        },
+        {
+          "name": "deleteS3Object",
+          "params": [
+            {
+              "name": "key",
+              "type": "string"
+            }
+          ],
+          "isAsync": true,
+          "isExported": true,
+          "returnType": "Promise<void>"
+        },
+        {
+          "name": "generateMediaKey",
+          "params": [
+            {
+              "name": "userId",
+              "type": "bigint"
+            },
+            {
+              "name": "mediaId",
+              "type": "string"
+            },
+            {
+              "name": "filename",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true,
+          "returnType": "string"
+        },
+        {
+          "name": "getPublicUrl",
+          "params": [
+            {
+              "name": "key",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true,
+          "returnType": "string"
+        }
+      ],
+      "classes": [],
+      "constants": [
+        {
+          "name": "S3_CONFIG",
+          "initKind": "object",
+          "isExported": false
+        },
+        {
+          "name": "s3Client",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "S3_BUCKET",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "CDN_URL",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
     "apps/api/src/middleware/auth.ts": {
       "imports": [
+        {
+          "from": "@prisma/client",
+          "kind": "import",
+          "imported": [
+            "PrismaClient"
+          ]
+        },
         {
           "from": "hono",
           "kind": "import",
@@ -1405,26 +2193,16 @@
           "imported": [
             "getCookie"
           ]
-        },
-        {
-          "from": "../lib/auth",
-          "kind": "import",
-          "imported": [
-            "auth"
-          ]
-        },
-        {
-          "from": "@prisma/client",
-          "kind": "import",
-          "imported": [
-            "PrismaClient"
-          ]
         }
       ],
-      "dependencies": [
-        "apps/api/src/lib/auth.ts"
-      ],
+      "dependencies": [],
       "functions": [
+        {
+          "name": "getAuth",
+          "params": [],
+          "isAsync": false,
+          "isExported": false
+        },
         {
           "name": "extractBearerToken",
           "params": [
@@ -1477,7 +2255,7 @@
         }
       ]
     },
-    "apps/api/src/rpc/index.ts": {
+    "apps/api/src/routes/health.ts": {
       "imports": [
         {
           "from": "hono",
@@ -1485,12 +2263,41 @@
           "imported": [
             "Hono"
           ]
-        },
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "checkDatabase",
+          "params": [],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<boolean>"
+        }
+      ],
+      "classes": [],
+      "constants": [
+        {
+          "name": "health",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/api/src/rpc/index.ts": {
+      "imports": [
         {
           "from": "@vrss/api-contracts",
           "kind": "import",
           "imported": [
             "ErrorCode"
+          ]
+        },
+        {
+          "from": "hono",
+          "kind": "import",
+          "imported": [
+            "Hono"
           ]
         },
         {
@@ -1501,13 +2308,6 @@
           ]
         },
         {
-          "from": "./types",
-          "kind": "import",
-          "imported": [
-            "ProcedureContext"
-          ]
-        },
-        {
           "from": "./routers/auth",
           "kind": "import",
           "imported": [
@@ -1515,10 +2315,38 @@
           ]
         },
         {
-          "from": "./routers/user",
+          "from": "./routers/discovery",
           "kind": "import",
           "imported": [
-            "userRouter"
+            "discoveryRouter"
+          ]
+        },
+        {
+          "from": "./routers/feed",
+          "kind": "import",
+          "imported": [
+            "feedRouter"
+          ]
+        },
+        {
+          "from": "./routers/media",
+          "kind": "import",
+          "imported": [
+            "mediaRouter"
+          ]
+        },
+        {
+          "from": "./routers/message",
+          "kind": "import",
+          "imported": [
+            "messageRouter"
+          ]
+        },
+        {
+          "from": "./routers/notification",
+          "kind": "import",
+          "imported": [
+            "notificationRouter"
           ]
         },
         {
@@ -1529,6 +2357,13 @@
           ]
         },
         {
+          "from": "./routers/settings",
+          "kind": "import",
+          "imported": [
+            "settingsRouter"
+          ]
+        },
+        {
           "from": "./routers/social",
           "kind": "import",
           "imported": [
@@ -1536,18 +2371,30 @@
           ]
         },
         {
-          "from": "./routers/feed",
+          "from": "./routers/user",
           "kind": "import",
           "imported": [
-            "feedRouter"
+            "userRouter"
+          ]
+        },
+        {
+          "from": "./types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
           ]
         }
       ],
       "dependencies": [
         "apps/api/src/middleware/auth.ts",
         "apps/api/src/rpc/routers/auth.ts",
+        "apps/api/src/rpc/routers/discovery.ts",
         "apps/api/src/rpc/routers/feed.ts",
+        "apps/api/src/rpc/routers/media.ts",
+        "apps/api/src/rpc/routers/message.ts",
+        "apps/api/src/rpc/routers/notification.ts",
         "apps/api/src/rpc/routers/post.ts",
+        "apps/api/src/rpc/routers/settings.ts",
         "apps/api/src/rpc/routers/social.ts",
         "apps/api/src/rpc/routers/user.ts",
         "apps/api/src/rpc/types.ts"
@@ -1650,17 +2497,24 @@
     "apps/api/src/rpc/routers/auth.ts": {
       "imports": [
         {
-          "from": "zod",
-          "kind": "import",
-          "imported": [
-            "z"
-          ]
-        },
-        {
           "from": "@prisma/client",
           "kind": "import",
           "imported": [
             "PrismaClient"
+          ]
+        },
+        {
+          "from": "@vrss/api-contracts",
+          "kind": "import",
+          "imported": [
+            "ErrorCode"
+          ]
+        },
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
           ]
         },
         {
@@ -1675,6 +2529,18 @@
         "apps/api/src/lib/auth.ts"
       ],
       "functions": [
+        {
+          "name": "getValidationErrorMessage",
+          "params": [
+            {
+              "name": "error",
+              "type": "z.ZodError"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "string"
+        },
         {
           "name": "hashPassword",
           "params": [
@@ -1795,8 +2661,23 @@
         }
       ]
     },
-    "apps/api/src/rpc/routers/feed.ts": {
+    "apps/api/src/rpc/routers/discovery.ts": {
       "imports": [
+        {
+          "from": "@prisma/client",
+          "kind": "import",
+          "imported": [
+            "Prisma",
+            "PrismaClient"
+          ]
+        },
+        {
+          "from": "@vrss/api-contracts",
+          "kind": "import",
+          "imported": [
+            "ErrorCode"
+          ]
+        },
         {
           "from": "zod",
           "kind": "import",
@@ -1805,11 +2686,110 @@
           ]
         },
         {
+          "from": "../types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
+          ]
+        },
+        {
+          "from": "./schemas/discovery",
+          "kind": "import",
+          "imported": [
+            "getDiscoverFeedSchema",
+            "searchPostsSchema",
+            "searchUsersSchema"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/api/src/rpc/routers/schemas/discovery.ts",
+        "apps/api/src/rpc/types.ts"
+      ],
+      "functions": [
+        {
+          "name": "getValidationError",
+          "params": [
+            {
+              "name": "validationResult",
+              "type": "any"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "{\n  message: string;\n  field: string;\n  errors: any[];\n}"
+        },
+        {
+          "name": "checkPostVisibility",
+          "params": [
+            {
+              "name": "postUserId",
+              "type": "bigint"
+            },
+            {
+              "name": "visibility",
+              "type": "string"
+            },
+            {
+              "name": "viewerUserId",
+              "type": "string | null"
+            }
+          ],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<boolean>"
+        },
+        {
+          "name": "checkProfileVisibility",
+          "params": [
+            {
+              "name": "profileUserId",
+              "type": "bigint"
+            },
+            {
+              "name": "visibility",
+              "type": "string"
+            },
+            {
+              "name": "viewerUserId",
+              "type": "string | null"
+            }
+          ],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<boolean>"
+        }
+      ],
+      "classes": [
+        {
+          "name": "RPCError",
+          "isExported": false,
+          "methods": [],
+          "properties": [],
+          "extends": "Error"
+        }
+      ],
+      "constants": [
+        {
+          "name": "prisma",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "discoveryRouter",
+          "initKind": "object",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/api/src/rpc/routers/feed.ts": {
+      "imports": [
+        {
           "from": "@prisma/client",
           "kind": "import",
           "imported": [
-            "PrismaClient",
-            "Prisma"
+            "Prisma",
+            "PrismaClient"
           ]
         },
         {
@@ -1817,6 +2797,22 @@
           "kind": "import",
           "imported": [
             "ErrorCode"
+          ]
+        },
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
+          ]
+        },
+        {
+          "from": "../../features/feed/feed-algorithm",
+          "kind": "import",
+          "imported": [
+            "AlgorithmConfig",
+            "executeFeedAlgorithm",
+            "getDefaultFeed"
           ]
         },
         {
@@ -1830,19 +2826,10 @@
           "from": "./schemas/feed",
           "kind": "import",
           "imported": [
-            "getFeedSchema",
             "createFeedSchema",
-            "updateFeedSchema",
-            "deleteFeedSchema"
-          ]
-        },
-        {
-          "from": "../../features/feed/feed-algorithm",
-          "kind": "import",
-          "imported": [
-            "executeFeedAlgorithm",
-            "getDefaultFeed",
-            "AlgorithmConfig"
+            "deleteFeedSchema",
+            "getFeedSchema",
+            "updateFeedSchema"
           ]
         }
       ],
@@ -1862,7 +2849,7 @@
           ],
           "isAsync": false,
           "isExported": false,
-          "returnType": "{ message: string; field: string; errors: any[] }"
+          "returnType": "{\n  message: string;\n  field: string;\n  errors: any[];\n}"
         },
         {
           "name": "checkFeedOwnership",
@@ -1924,8 +2911,23 @@
         }
       ]
     },
-    "apps/api/src/rpc/routers/post.ts": {
+    "apps/api/src/rpc/routers/media.ts": {
       "imports": [
+        {
+          "from": "@prisma/client",
+          "kind": "import",
+          "imported": [
+            "Prisma",
+            "PrismaClient"
+          ]
+        },
+        {
+          "from": "@vrss/api-contracts",
+          "kind": "import",
+          "imported": [
+            "ErrorCode"
+          ]
+        },
         {
           "from": "zod",
           "kind": "import",
@@ -1934,11 +2936,156 @@
           ]
         },
         {
+          "from": "node:crypto",
+          "kind": "import",
+          "imported": [
+            "randomUUID"
+          ]
+        },
+        {
+          "from": "../types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
+          ]
+        },
+        {
+          "from": "./schemas/media",
+          "kind": "import",
+          "imported": [
+            "initiateUploadSchema",
+            "completeUploadSchema",
+            "deleteMediaSchema",
+            "getStorageUsageSchema",
+            "getMaxFileSizeForType",
+            "getMediaTypeFromMimeType",
+            "ALLOWED_MEDIA_TYPES"
+          ]
+        },
+        {
+          "from": "../../lib/s3",
+          "kind": "import",
+          "imported": [
+            "generatePresignedUploadUrl",
+            "deleteS3Object",
+            "generateMediaKey",
+            "getPublicUrl"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/api/src/lib/s3.ts",
+        "apps/api/src/rpc/routers/schemas/media.ts",
+        "apps/api/src/rpc/types.ts"
+      ],
+      "functions": [
+        {
+          "name": "getValidationError",
+          "params": [
+            {
+              "name": "validationResult",
+              "type": "any"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "{\n  message: string;\n  field: string;\n  errors: any[];\n}"
+        },
+        {
+          "name": "checkStorageQuota",
+          "params": [
+            {
+              "name": "userId",
+              "type": "bigint"
+            },
+            {
+              "name": "fileSize",
+              "type": "number"
+            }
+          ],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<any>"
+        },
+        {
+          "name": "initiateUpload",
+          "params": [
+            {
+              "name": "ctx",
+              "type": "ProcedureContext<z.infer<typeof initiateUploadSchema>>"
+            }
+          ],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<any>"
+        },
+        {
+          "name": "completeUpload",
+          "params": [
+            {
+              "name": "ctx",
+              "type": "ProcedureContext<z.infer<typeof completeUploadSchema>>"
+            }
+          ],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<any>"
+        },
+        {
+          "name": "deleteMedia",
+          "params": [
+            {
+              "name": "ctx",
+              "type": "ProcedureContext<z.infer<typeof deleteMediaSchema>>"
+            }
+          ],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<any>"
+        },
+        {
+          "name": "getStorageUsage",
+          "params": [
+            {
+              "name": "ctx",
+              "type": "ProcedureContext<z.infer<typeof getStorageUsageSchema>>"
+            }
+          ],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<any>"
+        }
+      ],
+      "classes": [
+        {
+          "name": "RPCError",
+          "isExported": false,
+          "methods": [],
+          "properties": [],
+          "extends": "Error"
+        }
+      ],
+      "constants": [
+        {
+          "name": "prisma",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "mediaRouter",
+          "initKind": "object",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/api/src/rpc/routers/message.ts": {
+      "imports": [
+        {
           "from": "@prisma/client",
           "kind": "import",
           "imported": [
-            "PrismaClient",
-            "Prisma"
+            "Prisma",
+            "PrismaClient"
           ]
         },
         {
@@ -1946,6 +3093,253 @@
           "kind": "import",
           "imported": [
             "ErrorCode"
+          ]
+        },
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
+          ]
+        },
+        {
+          "from": "../types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
+          ]
+        },
+        {
+          "from": "./schemas/message",
+          "kind": "import",
+          "imported": [
+            "deleteConversationSchema",
+            "getConversationsSchema",
+            "getMessagesSchema",
+            "markAsReadSchema",
+            "sendMessageSchema"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/api/src/rpc/routers/schemas/message.ts",
+        "apps/api/src/rpc/types.ts"
+      ],
+      "functions": [
+        {
+          "name": "getValidationError",
+          "params": [
+            {
+              "name": "validationResult",
+              "type": "any"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "{\n  message: string;\n  field: string;\n  errors: any[];\n}"
+        },
+        {
+          "name": "orderParticipantIds",
+          "params": [
+            {
+              "name": "id1",
+              "type": "bigint"
+            },
+            {
+              "name": "id2",
+              "type": "bigint"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "bigint[]"
+        },
+        {
+          "name": "findConversation",
+          "params": [
+            {
+              "name": "userId1",
+              "type": "bigint"
+            },
+            {
+              "name": "userId2",
+              "type": "bigint"
+            }
+          ],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<{ id: bigint } | null>"
+        },
+        {
+          "name": "checkConversationAccess",
+          "params": [
+            {
+              "name": "conversationId",
+              "type": "bigint"
+            },
+            {
+              "name": "userId",
+              "type": "bigint"
+            }
+          ],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<boolean>"
+        },
+        {
+          "name": "getUnreadCount",
+          "params": [
+            {
+              "name": "conversationId",
+              "type": "bigint"
+            },
+            {
+              "name": "userId",
+              "type": "bigint"
+            }
+          ],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<number>"
+        }
+      ],
+      "classes": [
+        {
+          "name": "RPCError",
+          "isExported": false,
+          "methods": [],
+          "properties": [],
+          "extends": "Error"
+        }
+      ],
+      "constants": [
+        {
+          "name": "prisma",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "messageRouter",
+          "initKind": "object",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/api/src/rpc/routers/notification.ts": {
+      "imports": [
+        {
+          "from": "@prisma/client",
+          "kind": "import",
+          "imported": [
+            "Prisma",
+            "PrismaClient"
+          ]
+        },
+        {
+          "from": "@vrss/api-contracts",
+          "kind": "import",
+          "imported": [
+            "ErrorCode"
+          ]
+        },
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
+          ]
+        },
+        {
+          "from": "../types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
+          ]
+        },
+        {
+          "from": "./schemas/notification",
+          "kind": "import",
+          "imported": [
+            "deleteNotificationSchema",
+            "getNotificationsSchema",
+            "markAsReadSchema"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/api/src/rpc/routers/schemas/notification.ts",
+        "apps/api/src/rpc/types.ts"
+      ],
+      "functions": [
+        {
+          "name": "getValidationError",
+          "params": [
+            {
+              "name": "validationResult",
+              "type": "any"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "{\n  message: string;\n  field: string;\n  errors: any[];\n}"
+        },
+        {
+          "name": "getUnreadCount",
+          "params": [
+            {
+              "name": "userId",
+              "type": "bigint"
+            }
+          ],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<number>"
+        }
+      ],
+      "classes": [
+        {
+          "name": "RPCError",
+          "isExported": false,
+          "methods": [],
+          "properties": [],
+          "extends": "Error"
+        }
+      ],
+      "constants": [
+        {
+          "name": "prisma",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "notificationRouter",
+          "initKind": "object",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/api/src/rpc/routers/post.ts": {
+      "imports": [
+        {
+          "from": "@prisma/client",
+          "kind": "import",
+          "imported": [
+            "Prisma",
+            "PrismaClient"
+          ]
+        },
+        {
+          "from": "@vrss/api-contracts",
+          "kind": "import",
+          "imported": [
+            "ErrorCode"
+          ]
+        },
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
           ]
         },
         {
@@ -1959,14 +3353,14 @@
           "from": "./schemas/post",
           "kind": "import",
           "imported": [
+            "createCommentSchema",
             "createPostSchema",
-            "getPostByIdSchema",
-            "updatePostSchema",
             "deletePostSchema",
+            "getCommentsSchema",
+            "getPostByIdSchema",
             "likePostSchema",
             "unlikePostSchema",
-            "createCommentSchema",
-            "getCommentsSchema"
+            "updatePostSchema"
           ]
         }
       ],
@@ -1997,7 +3391,7 @@
           ],
           "isAsync": false,
           "isExported": false,
-          "returnType": "{ message: string; field: string; errors: any[] }"
+          "returnType": "{\n  message: string;\n  field: string;\n  errors: any[];\n}"
         },
         {
           "name": "checkPostVisibility",
@@ -2083,6 +3477,37 @@
         }
       ]
     },
+    "apps/api/src/rpc/routers/schemas/discovery.ts": {
+      "imports": [
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "searchUsersSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "searchPostsSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "getDiscoverFeedSchema",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
     "apps/api/src/rpc/routers/schemas/feed.ts": {
       "imports": [
         {
@@ -2129,6 +3554,179 @@
         },
         {
           "name": "deleteFeedSchema",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/api/src/rpc/routers/schemas/media.ts": {
+      "imports": [
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "getMaxFileSizeForType",
+          "params": [
+            {
+              "name": "contentType",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true,
+          "returnType": "number"
+        },
+        {
+          "name": "getMediaTypeFromMimeType",
+          "params": [
+            {
+              "name": "mimeType",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true,
+          "returnType": "\"image\" | \"video\" | \"audio\""
+        }
+      ],
+      "classes": [],
+      "constants": [
+        {
+          "name": "ALLOWED_IMAGE_TYPES",
+          "initKind": "array",
+          "isExported": false
+        },
+        {
+          "name": "ALLOWED_VIDEO_TYPES",
+          "initKind": "array",
+          "isExported": false
+        },
+        {
+          "name": "ALLOWED_AUDIO_TYPES",
+          "initKind": "array",
+          "isExported": false
+        },
+        {
+          "name": "ALLOWED_MEDIA_TYPES",
+          "initKind": "array",
+          "isExported": true
+        },
+        {
+          "name": "MAX_IMAGE_SIZE",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "MAX_VIDEO_SIZE",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "MAX_AUDIO_SIZE",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "STORAGE_QUOTAS",
+          "initKind": "object",
+          "isExported": true
+        },
+        {
+          "name": "initiateUploadSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "completeUploadSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "deleteMediaSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "getStorageUsageSchema",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/api/src/rpc/routers/schemas/message.ts": {
+      "imports": [
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "sendMessageSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "getConversationsSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "getMessagesSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "markAsReadSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "deleteConversationSchema",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/api/src/rpc/routers/schemas/notification.ts": {
+      "imports": [
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "getNotificationsSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "markAsReadSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "deleteNotificationSchema",
           "initKind": "unknown",
           "isExported": true
         }
@@ -2195,6 +3793,47 @@
         },
         {
           "name": "getCommentsSchema",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/api/src/rpc/routers/schemas/settings.ts": {
+      "imports": [
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "getAccountSettingsSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "updateAccountSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "updatePrivacySchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "deleteAccountSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "exportDataSchema",
           "initKind": "unknown",
           "isExported": true
         }
@@ -2307,8 +3946,22 @@
         }
       ]
     },
-    "apps/api/src/rpc/routers/social.ts": {
+    "apps/api/src/rpc/routers/settings.ts": {
       "imports": [
+        {
+          "from": "@prisma/client",
+          "kind": "import",
+          "imported": [
+            "PrismaClient"
+          ]
+        },
+        {
+          "from": "@vrss/api-contracts",
+          "kind": "import",
+          "imported": [
+            "ErrorCode"
+          ]
+        },
         {
           "from": "zod",
           "kind": "import",
@@ -2317,11 +3970,101 @@
           ]
         },
         {
+          "from": "bcrypt",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "../../lib/auth",
+          "kind": "import",
+          "imported": [
+            "auth"
+          ]
+        },
+        {
+          "from": "../types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
+          ]
+        },
+        {
+          "from": "./schemas/settings",
+          "kind": "import",
+          "imported": [
+            "deleteAccountSchema",
+            "exportDataSchema",
+            "getAccountSettingsSchema",
+            "updateAccountSchema",
+            "updatePrivacySchema"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/api/src/lib/auth.ts",
+        "apps/api/src/rpc/routers/schemas/settings.ts",
+        "apps/api/src/rpc/types.ts"
+      ],
+      "functions": [
+        {
+          "name": "hashPassword",
+          "params": [
+            {
+              "name": "password",
+              "type": "string"
+            }
+          ],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<string>"
+        },
+        {
+          "name": "verifyPassword",
+          "params": [
+            {
+              "name": "password",
+              "type": "string"
+            },
+            {
+              "name": "hash",
+              "type": "string"
+            }
+          ],
+          "isAsync": true,
+          "isExported": false,
+          "returnType": "Promise<boolean>"
+        }
+      ],
+      "classes": [
+        {
+          "name": "RPCError",
+          "isExported": false,
+          "methods": [],
+          "properties": [],
+          "extends": "Error"
+        }
+      ],
+      "constants": [
+        {
+          "name": "prisma",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "settingsRouter",
+          "initKind": "object",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/api/src/rpc/routers/social.ts": {
+      "imports": [
+        {
           "from": "@prisma/client",
           "kind": "import",
           "imported": [
-            "PrismaClient",
-            "Prisma"
+            "Prisma",
+            "PrismaClient"
           ]
         },
         {
@@ -2329,6 +4072,13 @@
           "kind": "import",
           "imported": [
             "ErrorCode"
+          ]
+        },
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
           ]
         },
         {
@@ -2343,10 +4093,10 @@
           "kind": "import",
           "imported": [
             "followUserSchema",
-            "unfollowUserSchema",
             "getFollowersSchema",
             "getFollowingSchema",
-            "getFriendsSchema"
+            "getFriendsSchema",
+            "unfollowUserSchema"
           ]
         }
       ],
@@ -2365,7 +4115,7 @@
           ],
           "isAsync": false,
           "isExported": false,
-          "returnType": "{ message: string; field: string; errors: any[] }"
+          "returnType": "{\n  message: string;\n  field: string;\n  errors: any[];\n}"
         },
         {
           "name": "encodeCursor",
@@ -2421,18 +4171,11 @@
     "apps/api/src/rpc/routers/user.ts": {
       "imports": [
         {
-          "from": "zod",
-          "kind": "import",
-          "imported": [
-            "z"
-          ]
-        },
-        {
           "from": "@prisma/client",
           "kind": "import",
           "imported": [
-            "PrismaClient",
-            "Prisma"
+            "Prisma",
+            "PrismaClient"
           ]
         },
         {
@@ -2440,6 +4183,13 @@
           "kind": "import",
           "imported": [
             "ErrorCode"
+          ]
+        },
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
           ]
         },
         {
@@ -2454,10 +4204,10 @@
           "kind": "import",
           "imported": [
             "getProfileSchema",
+            "getSectionsSchema",
             "updateProfileSchema",
-            "updateStyleSchema",
             "updateSectionsSchema",
-            "getSectionsSchema"
+            "updateStyleSchema"
           ]
         }
       ],
@@ -2546,10 +4296,10 @@
           "from": "bun:test",
           "kind": "import",
           "imported": [
+            "beforeEach",
             "describe",
-            "it",
             "expect",
-            "beforeEach"
+            "it"
           ]
         },
         {
@@ -2557,18 +4307,18 @@
           "kind": "import"
         },
         {
+          "from": "../helpers/database",
+          "kind": "import",
+          "imported": [
+            "cleanAllTables"
+          ]
+        },
+        {
           "from": "../setup",
           "kind": "import",
           "imported": [
             "getTestDatabase",
             "getTestDatabaseUrl"
-          ]
-        },
-        {
-          "from": "../helpers/database",
-          "kind": "import",
-          "imported": [
-            "cleanAllTables"
           ]
         }
       ],
@@ -2600,17 +4350,17 @@
           "from": "bun:test",
           "kind": "import",
           "imported": [
+            "beforeEach",
             "describe",
-            "test",
             "expect",
-            "beforeEach"
+            "test"
           ]
         },
         {
-          "from": "../setup",
+          "from": "../helpers/auth",
           "kind": "import",
           "imported": [
-            "getTestDatabase"
+            "hashPassword"
           ]
         },
         {
@@ -2621,10 +4371,10 @@
           ]
         },
         {
-          "from": "../helpers/auth",
+          "from": "../setup",
           "kind": "import",
           "imported": [
-            "hashPassword"
+            "getTestDatabase"
           ]
         }
       ],
@@ -2643,17 +4393,18 @@
           "from": "bun:test",
           "kind": "import",
           "imported": [
+            "beforeEach",
             "describe",
-            "test",
             "expect",
-            "beforeEach"
+            "test"
           ]
         },
         {
-          "from": "../setup",
+          "from": "../helpers/auth",
           "kind": "import",
           "imported": [
-            "getTestDatabase"
+            "hashPassword",
+            "verifyPassword"
           ]
         },
         {
@@ -2664,11 +4415,10 @@
           ]
         },
         {
-          "from": "../helpers/auth",
+          "from": "../setup",
           "kind": "import",
           "imported": [
-            "hashPassword",
-            "verifyPassword"
+            "getTestDatabase"
           ]
         }
       ],
@@ -2687,17 +4437,17 @@
           "from": "bun:test",
           "kind": "import",
           "imported": [
+            "beforeEach",
             "describe",
-            "test",
             "expect",
-            "beforeEach"
+            "test"
           ]
         },
         {
-          "from": "../setup",
+          "from": "../helpers/auth",
           "kind": "import",
           "imported": [
-            "getTestDatabase"
+            "createAuthenticatedUser"
           ]
         },
         {
@@ -2708,10 +4458,10 @@
           ]
         },
         {
-          "from": "../helpers/auth",
+          "from": "../setup",
           "kind": "import",
           "imported": [
-            "createAuthenticatedUser"
+            "getTestDatabase"
           ]
         }
       ],
@@ -2730,18 +4480,11 @@
           "from": "bun:test",
           "kind": "import",
           "imported": [
-            "describe",
-            "it",
-            "expect",
+            "afterAll",
             "beforeAll",
-            "afterAll"
-          ]
-        },
-        {
-          "from": "hono",
-          "kind": "import",
-          "imported": [
-            "Hono"
+            "describe",
+            "expect",
+            "it"
           ]
         },
         {
@@ -2749,6 +4492,13 @@
           "kind": "import",
           "imported": [
             "PrismaClient"
+          ]
+        },
+        {
+          "from": "hono",
+          "kind": "import",
+          "imported": [
+            "Hono"
           ]
         }
       ],
@@ -2833,17 +4583,17 @@
           "from": "bun:test",
           "kind": "import",
           "imported": [
+            "beforeEach",
             "describe",
-            "test",
             "expect",
-            "beforeEach"
+            "test"
           ]
         },
         {
-          "from": "../setup",
+          "from": "../helpers/auth",
           "kind": "import",
           "imported": [
-            "getTestDatabase"
+            "hashPassword"
           ]
         },
         {
@@ -2854,10 +4604,10 @@
           ]
         },
         {
-          "from": "../helpers/auth",
+          "from": "../setup",
           "kind": "import",
           "imported": [
-            "hashPassword"
+            "getTestDatabase"
           ]
         }
       ],
@@ -2876,17 +4626,18 @@
           "from": "bun:test",
           "kind": "import",
           "imported": [
+            "beforeEach",
             "describe",
-            "test",
             "expect",
-            "beforeEach"
+            "test"
           ]
         },
         {
-          "from": "../setup",
+          "from": "../helpers/auth",
           "kind": "import",
           "imported": [
-            "getTestDatabase"
+            "createAuthenticatedUser",
+            "createExpiredSession"
           ]
         },
         {
@@ -2897,11 +4648,10 @@
           ]
         },
         {
-          "from": "../helpers/auth",
+          "from": "../setup",
           "kind": "import",
           "imported": [
-            "createAuthenticatedUser",
-            "createExpiredSession"
+            "getTestDatabase"
           ]
         }
       ],
@@ -2922,8 +4672,8 @@
           "imported": [
             "CustomFeed",
             "FeedFilter",
-            "FilterType",
-            "FilterOperator"
+            "FilterOperator",
+            "FilterType"
           ]
         },
         {
@@ -3236,7 +4986,7 @@
                 }
               ],
               "isAsync": true,
-              "returnType": "Promise<Array<{\n    feed: CustomFeed;\n    filters: FeedFilter[];\n  }>>"
+              "returnType": "Promise<\n    Array<{\n      feed: CustomFeed;\n      filters: FeedFilter[];\n    }>\n  >"
             }
           ],
           "properties": [
@@ -3261,11 +5011,11 @@
           "from": "@prisma/client",
           "kind": "import",
           "imported": [
+            "MediaType",
             "Post",
             "PostMedia",
-            "PostType",
             "PostStatus",
-            "MediaType"
+            "PostType"
           ]
         },
         {
@@ -3572,7 +5322,7 @@
                 }
               ],
               "isAsync": true,
-              "returnType": "Promise<Array<{\n    post: Post;\n    media: PostMedia[];\n  }>>"
+              "returnType": "Promise<\n    Array<{\n      post: Post;\n      media: PostMedia[];\n    }>\n  >"
             }
           ],
           "properties": [
@@ -3597,18 +5347,11 @@
           "from": "@prisma/client",
           "kind": "import",
           "imported": [
+            "ProfileVisibility",
+            "StorageUsage",
             "User",
             "UserProfile",
-            "StorageUsage",
-            "UserStatus",
-            "ProfileVisibility"
-          ]
-        },
-        {
-          "from": "../setup",
-          "kind": "import",
-          "imported": [
-            "getTestDatabase"
+            "UserStatus"
           ]
         },
         {
@@ -3616,6 +5359,13 @@
           "kind": "import",
           "imported": [
             "hashPassword"
+          ]
+        },
+        {
+          "from": "../setup",
+          "kind": "import",
+          "imported": [
+            "getTestDatabase"
           ]
         }
       ],
@@ -3700,8 +5450,7 @@
               "name": "emailVerified",
               "params": [
                 {
-                  "name": "verified",
-                  "type": "boolean"
+                  "name": "verified"
                 }
               ],
               "isAsync": false,
@@ -3735,7 +5484,7 @@
               "params": [
                 {
                   "name": "data",
-                  "type": "Partial<{\n    displayName: string;\n    bio: string;\n    age: number;\n    location: string;\n    website: string;\n    visibility: ProfileVisibility;\n  }>",
+                  "type": "Partial<{\n      displayName: string;\n      bio: string;\n      age: number;\n      location: string;\n      website: string;\n      visibility: ProfileVisibility;\n    }>",
                   "optional": true
                 }
               ],
@@ -3747,7 +5496,7 @@
               "params": [
                 {
                   "name": "data",
-                  "type": "Partial<{\n    quotaBytes: bigint;\n    usedBytes: bigint;\n    imagesBytes: bigint;\n    videosBytes: bigint;\n    audioBytes: bigint;\n    otherBytes: bigint;\n  }>",
+                  "type": "Partial<{\n      quotaBytes: bigint;\n      usedBytes: bigint;\n      imagesBytes: bigint;\n      videosBytes: bigint;\n      audioBytes: bigint;\n      otherBytes: bigint;\n    }>",
                   "optional": true
                 }
               ],
@@ -3793,7 +5542,7 @@
                 }
               ],
               "isAsync": true,
-              "returnType": "Promise<Array<{\n    user: User;\n    profile?: UserProfile;\n    storage?: StorageUsage;\n  }>>"
+              "returnType": "Promise<\n    Array<{\n      user: User;\n      profile?: UserProfile;\n      storage?: StorageUsage;\n    }>\n  >"
             }
           ],
           "properties": [
@@ -3831,8 +5580,8 @@
           "from": "@prisma/client",
           "kind": "import",
           "imported": [
-            "User",
-            "Session"
+            "Session",
+            "User"
           ]
         },
         {
@@ -3880,7 +5629,7 @@
           "params": [
             {
               "name": "overrides",
-              "type": "Partial<{\n  username: string;\n  email: string;\n  password: string;\n  emailVerified: boolean;\n  status: \"active\" | \"suspended\" | \"deleted\";\n}>",
+              "type": "Partial<{\n    username: string;\n    email: string;\n    password: string;\n    emailVerified: boolean;\n    status: \"active\" | \"suspended\" | \"deleted\";\n  }>",
               "optional": true
             }
           ],
@@ -3944,13 +5693,12 @@
               "type": "number"
             },
             {
-              "name": "baseUsername",
-              "type": "string"
+              "name": "baseUsername"
             }
           ],
           "isAsync": true,
           "isExported": true,
-          "returnType": "Promise<Array<{\n  user: User;\n  session: Session;\n  token: string;\n}>>"
+          "returnType": "Promise<\n  Array<{\n    user: User;\n    session: Session;\n    token: string;\n  }>\n>"
         },
         {
           "name": "createExpiredSession",
@@ -4118,7 +5866,7 @@
           "params": [
             {
               "name": "fn",
-              "type": "(tx: Omit<PrismaClient, \"$connect\" | \"$disconnect\" | \"$on\" | \"$transaction\" | \"$use\">) => Promise<T>"
+              "type": "(\n    tx: Omit<PrismaClient, \"$connect\" | \"$disconnect\" | \"$on\" | \"$transaction\" | \"$use\">\n  ) => Promise<T>"
             }
           ],
           "isAsync": true,
@@ -4140,12 +5888,10 @@
               "type": "() => Promise<boolean> | boolean"
             },
             {
-              "name": "timeout",
-              "type": "number"
+              "name": "timeout"
             },
             {
-              "name": "interval",
-              "type": "number"
+              "name": "interval"
             }
           ],
           "isAsync": true,
@@ -4365,7 +6111,7 @@
               "returnType": "this"
             },
             {
-              "name": "headers",
+              "name": "setHeaders",
               "params": [
                 {
                   "name": "headers",
@@ -4391,7 +6137,7 @@
               "returnType": "this"
             },
             {
-              "name": "queryParams",
+              "name": "setQueryParams",
               "params": [
                 {
                   "name": "params",
@@ -4515,10 +6261,10 @@
           "from": "bun:test",
           "kind": "import",
           "imported": [
+            "beforeEach",
             "describe",
-            "it",
             "expect",
-            "beforeEach"
+            "it"
           ]
         },
         {
@@ -4526,18 +6272,27 @@
           "kind": "import"
         },
         {
-          "from": "./setup",
+          "from": "./fixtures/feedBuilder",
           "kind": "import",
           "imported": [
-            "getTestDatabase"
+            "buildFeed",
+            "createCustomFeed"
           ]
         },
         {
-          "from": "./helpers/database",
+          "from": "./fixtures/postBuilder",
           "kind": "import",
           "imported": [
-            "cleanAllTables",
-            "getTableCounts"
+            "buildPost",
+            "createTextPost"
+          ]
+        },
+        {
+          "from": "./fixtures/userBuilder",
+          "kind": "import",
+          "imported": [
+            "buildUser",
+            "createTestUser"
           ]
         },
         {
@@ -4550,27 +6305,18 @@
           ]
         },
         {
-          "from": "./fixtures/userBuilder",
+          "from": "./helpers/database",
           "kind": "import",
           "imported": [
-            "buildUser",
-            "createTestUser"
+            "cleanAllTables",
+            "getTableCounts"
           ]
         },
         {
-          "from": "./fixtures/postBuilder",
+          "from": "./setup",
           "kind": "import",
           "imported": [
-            "buildPost",
-            "createTextPost"
-          ]
-        },
-        {
-          "from": "./fixtures/feedBuilder",
-          "kind": "import",
-          "imported": [
-            "buildFeed",
-            "createCustomFeed"
+            "getTestDatabase"
           ]
         }
       ],
@@ -4586,31 +6332,38 @@
       "classes": [],
       "constants": []
     },
-    "apps/api/test/rpc/feed.test.ts": {
+    "apps/api/test/rpc/discovery.test.ts": {
       "imports": [
         {
           "from": "bun:test",
           "kind": "import",
           "imported": [
-            "describe",
-            "it",
-            "expect",
+            "afterEach",
             "beforeEach",
-            "afterEach"
+            "describe",
+            "expect",
+            "it"
           ]
         },
         {
-          "from": "../setup",
+          "from": "@vrss/api-contracts",
           "kind": "import",
           "imported": [
-            "getTestDatabase"
+            "ErrorCode"
           ]
         },
         {
-          "from": "../helpers/database",
+          "from": "../../src/rpc/routers/discovery",
           "kind": "import",
           "imported": [
-            "cleanAllTables"
+            "discoveryRouter"
+          ]
+        },
+        {
+          "from": "../../src/rpc/types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
           ]
         },
         {
@@ -4621,24 +6374,56 @@
           ]
         },
         {
-          "from": "../fixtures/postBuilder",
+          "from": "../helpers/database",
           "kind": "import",
           "imported": [
-            "buildPost"
+            "cleanAllTables"
           ]
         },
         {
-          "from": "../fixtures/feedBuilder",
+          "from": "../setup",
           "kind": "import",
           "imported": [
-            "buildFeed"
+            "getTestDatabase"
           ]
-        },
+        }
+      ],
+      "dependencies": [
+        "apps/api/src/rpc/routers/discovery.ts",
+        "apps/api/src/rpc/types.ts",
+        "apps/api/test/fixtures/userBuilder.ts",
+        "apps/api/test/helpers/database.ts",
+        "apps/api/test/setup.ts"
+      ],
+      "functions": [
         {
-          "from": "../../src/rpc/types",
+          "name": "createMockContext",
+          "params": [
+            {
+              "name": "overrides",
+              "type": "Partial<ProcedureContext<T>>",
+              "optional": true
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "ProcedureContext<T>"
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/api/test/rpc/feed.test.ts": {
+      "imports": [
+        {
+          "from": "bun:test",
           "kind": "import",
           "imported": [
-            "ProcedureContext"
+            "afterEach",
+            "beforeEach",
+            "describe",
+            "expect",
+            "it"
           ]
         },
         {
@@ -4653,6 +6438,48 @@
           "kind": "import",
           "imported": [
             "feedRouter"
+          ]
+        },
+        {
+          "from": "../../src/rpc/types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
+          ]
+        },
+        {
+          "from": "../fixtures/feedBuilder",
+          "kind": "import",
+          "imported": [
+            "buildFeed"
+          ]
+        },
+        {
+          "from": "../fixtures/postBuilder",
+          "kind": "import",
+          "imported": [
+            "buildPost"
+          ]
+        },
+        {
+          "from": "../fixtures/userBuilder",
+          "kind": "import",
+          "imported": [
+            "buildUser"
+          ]
+        },
+        {
+          "from": "../helpers/database",
+          "kind": "import",
+          "imported": [
+            "cleanAllTables"
+          ]
+        },
+        {
+          "from": "../setup",
+          "kind": "import",
+          "imported": [
+            "getTestDatabase"
           ]
         }
       ],
@@ -4683,31 +6510,38 @@
       "classes": [],
       "constants": []
     },
-    "apps/api/test/rpc/post.test.ts": {
+    "apps/api/test/rpc/media.test.ts": {
       "imports": [
         {
           "from": "bun:test",
           "kind": "import",
           "imported": [
-            "describe",
-            "it",
-            "expect",
+            "afterEach",
             "beforeEach",
-            "afterEach"
+            "describe",
+            "expect",
+            "it"
           ]
         },
         {
-          "from": "../setup",
+          "from": "@vrss/api-contracts",
           "kind": "import",
           "imported": [
-            "getTestDatabase"
+            "ErrorCode"
           ]
         },
         {
-          "from": "../helpers/database",
+          "from": "../../src/rpc/routers/media",
           "kind": "import",
           "imported": [
-            "cleanAllTables"
+            "mediaRouter"
+          ]
+        },
+        {
+          "from": "../../src/rpc/types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
           ]
         },
         {
@@ -4718,10 +6552,218 @@
           ]
         },
         {
+          "from": "../helpers/database",
+          "kind": "import",
+          "imported": [
+            "cleanAllTables"
+          ]
+        },
+        {
+          "from": "../setup",
+          "kind": "import",
+          "imported": [
+            "getTestDatabase"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/api/src/rpc/routers/media.ts",
+        "apps/api/src/rpc/types.ts",
+        "apps/api/test/fixtures/userBuilder.ts",
+        "apps/api/test/helpers/database.ts",
+        "apps/api/test/setup.ts"
+      ],
+      "functions": [
+        {
+          "name": "createMockContext",
+          "params": [
+            {
+              "name": "overrides",
+              "type": "Partial<ProcedureContext<T>>",
+              "optional": true
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "ProcedureContext<T>"
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/api/test/rpc/message.test.ts": {
+      "imports": [
+        {
+          "from": "bun:test",
+          "kind": "import",
+          "imported": [
+            "afterEach",
+            "beforeEach",
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "from": "@vrss/api-contracts",
+          "kind": "import",
+          "imported": [
+            "ErrorCode"
+          ]
+        },
+        {
+          "from": "../../src/rpc/routers/message",
+          "kind": "import",
+          "imported": [
+            "messageRouter"
+          ]
+        },
+        {
           "from": "../../src/rpc/types",
           "kind": "import",
           "imported": [
             "ProcedureContext"
+          ]
+        },
+        {
+          "from": "../fixtures/userBuilder",
+          "kind": "import",
+          "imported": [
+            "buildUser"
+          ]
+        },
+        {
+          "from": "../helpers/database",
+          "kind": "import",
+          "imported": [
+            "cleanAllTables"
+          ]
+        },
+        {
+          "from": "../setup",
+          "kind": "import",
+          "imported": [
+            "getTestDatabase"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/api/src/rpc/routers/message.ts",
+        "apps/api/src/rpc/types.ts",
+        "apps/api/test/fixtures/userBuilder.ts",
+        "apps/api/test/helpers/database.ts",
+        "apps/api/test/setup.ts"
+      ],
+      "functions": [
+        {
+          "name": "createMockContext",
+          "params": [
+            {
+              "name": "overrides",
+              "type": "Partial<ProcedureContext<T>>",
+              "optional": true
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "ProcedureContext<T>"
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/api/test/rpc/notification.test.ts": {
+      "imports": [
+        {
+          "from": "bun:test",
+          "kind": "import",
+          "imported": [
+            "afterEach",
+            "beforeEach",
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "from": "@vrss/api-contracts",
+          "kind": "import",
+          "imported": [
+            "ErrorCode"
+          ]
+        },
+        {
+          "from": "../../src/rpc/routers/notification",
+          "kind": "import",
+          "imported": [
+            "notificationRouter"
+          ]
+        },
+        {
+          "from": "../../src/rpc/types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
+          ]
+        },
+        {
+          "from": "../fixtures/userBuilder",
+          "kind": "import",
+          "imported": [
+            "buildUser"
+          ]
+        },
+        {
+          "from": "../helpers/database",
+          "kind": "import",
+          "imported": [
+            "cleanAllTables"
+          ]
+        },
+        {
+          "from": "../setup",
+          "kind": "import",
+          "imported": [
+            "getTestDatabase"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/api/src/rpc/routers/notification.ts",
+        "apps/api/src/rpc/types.ts",
+        "apps/api/test/fixtures/userBuilder.ts",
+        "apps/api/test/helpers/database.ts",
+        "apps/api/test/setup.ts"
+      ],
+      "functions": [
+        {
+          "name": "createMockContext",
+          "params": [
+            {
+              "name": "overrides",
+              "type": "Partial<ProcedureContext<T>>",
+              "optional": true
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "ProcedureContext<T>"
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/api/test/rpc/post.test.ts": {
+      "imports": [
+        {
+          "from": "bun:test",
+          "kind": "import",
+          "imported": [
+            "afterEach",
+            "beforeEach",
+            "describe",
+            "expect",
+            "it"
           ]
         },
         {
@@ -4736,6 +6778,34 @@
           "kind": "import",
           "imported": [
             "postRouter"
+          ]
+        },
+        {
+          "from": "../../src/rpc/types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
+          ]
+        },
+        {
+          "from": "../fixtures/userBuilder",
+          "kind": "import",
+          "imported": [
+            "buildUser"
+          ]
+        },
+        {
+          "from": "../helpers/database",
+          "kind": "import",
+          "imported": [
+            "cleanAllTables"
+          ]
+        },
+        {
+          "from": "../setup",
+          "kind": "import",
+          "imported": [
+            "getTestDatabase"
           ]
         }
       ],
@@ -4770,37 +6840,24 @@
           "from": "bun:test",
           "kind": "import",
           "imported": [
-            "describe",
-            "it",
-            "expect",
-            "beforeAll",
-            "afterAll"
-          ]
-        }
-      ],
-      "dependencies": [],
-      "functions": [],
-      "classes": [],
-      "constants": []
-    },
-    "apps/api/test/rpc/social.test.ts": {
-      "imports": [
-        {
-          "from": "bun:test",
-          "kind": "import",
-          "imported": [
-            "describe",
-            "it",
-            "expect",
             "beforeEach",
-            "afterEach"
+            "describe",
+            "expect",
+            "it"
           ]
         },
         {
-          "from": "../setup",
+          "from": "hono",
           "kind": "import",
           "imported": [
-            "getTestDatabase"
+            "Hono"
+          ]
+        },
+        {
+          "from": "../../src/rpc/index",
+          "kind": "import",
+          "imported": [
+            "createRPCRouter"
           ]
         },
         {
@@ -4808,6 +6865,49 @@
           "kind": "import",
           "imported": [
             "cleanAllTables"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/api/src/rpc/index.ts",
+        "apps/api/test/helpers/database.ts"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/api/test/rpc/settings.test.ts": {
+      "imports": [
+        {
+          "from": "bun:test",
+          "kind": "import",
+          "imported": [
+            "afterEach",
+            "beforeEach",
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "from": "@vrss/api-contracts",
+          "kind": "import",
+          "imported": [
+            "ErrorCode"
+          ]
+        },
+        {
+          "from": "../../src/rpc/routers/settings",
+          "kind": "import",
+          "imported": [
+            "settingsRouter"
+          ]
+        },
+        {
+          "from": "../../src/rpc/types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
           ]
         },
         {
@@ -4818,10 +6918,56 @@
           ]
         },
         {
-          "from": "../../src/rpc/types",
+          "from": "../helpers/database",
           "kind": "import",
           "imported": [
-            "ProcedureContext"
+            "cleanAllTables"
+          ]
+        },
+        {
+          "from": "../setup",
+          "kind": "import",
+          "imported": [
+            "getTestDatabase"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/api/src/rpc/routers/settings.ts",
+        "apps/api/src/rpc/types.ts",
+        "apps/api/test/fixtures/userBuilder.ts",
+        "apps/api/test/helpers/database.ts",
+        "apps/api/test/setup.ts"
+      ],
+      "functions": [
+        {
+          "name": "createMockContext",
+          "params": [
+            {
+              "name": "overrides",
+              "type": "Partial<ProcedureContext<T>>",
+              "optional": true
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "ProcedureContext<T>"
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/api/test/rpc/social.test.ts": {
+      "imports": [
+        {
+          "from": "bun:test",
+          "kind": "import",
+          "imported": [
+            "afterEach",
+            "beforeEach",
+            "describe",
+            "expect",
+            "it"
           ]
         },
         {
@@ -4836,6 +6982,34 @@
           "kind": "import",
           "imported": [
             "socialRouter"
+          ]
+        },
+        {
+          "from": "../../src/rpc/types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
+          ]
+        },
+        {
+          "from": "../fixtures/userBuilder",
+          "kind": "import",
+          "imported": [
+            "buildUser"
+          ]
+        },
+        {
+          "from": "../helpers/database",
+          "kind": "import",
+          "imported": [
+            "cleanAllTables"
+          ]
+        },
+        {
+          "from": "../setup",
+          "kind": "import",
+          "imported": [
+            "getTestDatabase"
           ]
         }
       ],
@@ -4871,17 +7045,17 @@
           "kind": "import",
           "imported": [
             "describe",
-            "it",
-            "expect"
+            "expect",
+            "it"
           ]
         },
         {
           "from": "@vrss/api-contracts",
           "kind": "import",
           "imported": [
+            "ErrorCode",
             "RPCRequest",
-            "RPCResponse",
-            "ErrorCode"
+            "RPCResponse"
           ]
         }
       ],
@@ -4896,32 +7070,18 @@
           "from": "bun:test",
           "kind": "import",
           "imported": [
-            "describe",
-            "it",
-            "expect",
+            "afterEach",
             "beforeEach",
-            "afterEach"
+            "describe",
+            "expect",
+            "it"
           ]
         },
         {
-          "from": "../setup",
+          "from": "@vrss/api-contracts",
           "kind": "import",
           "imported": [
-            "getTestDatabase"
-          ]
-        },
-        {
-          "from": "../helpers/database",
-          "kind": "import",
-          "imported": [
-            "cleanAllTables"
-          ]
-        },
-        {
-          "from": "../fixtures/userBuilder",
-          "kind": "import",
-          "imported": [
-            "buildUser"
+            "ErrorCode"
           ]
         },
         {
@@ -4932,10 +7092,24 @@
           ]
         },
         {
-          "from": "@vrss/api-contracts",
+          "from": "../fixtures/userBuilder",
           "kind": "import",
           "imported": [
-            "ErrorCode"
+            "buildUser"
+          ]
+        },
+        {
+          "from": "../helpers/database",
+          "kind": "import",
+          "imported": [
+            "cleanAllTables"
+          ]
+        },
+        {
+          "from": "../setup",
+          "kind": "import",
+          "imported": [
+            "getTestDatabase"
           ]
         }
       ],
@@ -4969,13 +7143,38 @@
           "from": "bun:test",
           "kind": "import",
           "imported": [
+            "beforeEach",
             "describe",
-            "it",
-            "expect"
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "from": "hono",
+          "kind": "import",
+          "imported": [
+            "Hono"
+          ]
+        },
+        {
+          "from": "../../src/rpc/index",
+          "kind": "import",
+          "imported": [
+            "createRPCRouter"
+          ]
+        },
+        {
+          "from": "../helpers/database",
+          "kind": "import",
+          "imported": [
+            "cleanAllTables"
           ]
         }
       ],
-      "dependencies": [],
+      "dependencies": [
+        "apps/api/src/rpc/index.ts",
+        "apps/api/test/helpers/database.ts"
+      ],
       "functions": [],
       "classes": [],
       "constants": []
@@ -4986,8 +7185,8 @@
           "from": "bun:test",
           "kind": "import",
           "imported": [
-            "beforeAll",
-            "afterAll"
+            "afterAll",
+            "beforeAll"
           ]
         },
         {
@@ -5006,6 +7205,13 @@
           "isAsync": false,
           "isExported": true,
           "returnType": "PrismaClient"
+        },
+        {
+          "name": "getTestDatabaseUrl",
+          "params": [],
+          "isAsync": false,
+          "isExported": true,
+          "returnType": "string"
         },
         {
           "name": "cleanDatabase",
@@ -5032,8 +7238,8 @@
           "kind": "import",
           "imported": [
             "describe",
-            "it",
-            "expect"
+            "expect",
+            "it"
           ]
         }
       ],
@@ -5111,8 +7317,118 @@
       "classes": [],
       "constants": []
     },
+    "apps/web/postcss.config.js": {
+      "imports": [
+        {
+          "from": "node:url",
+          "kind": "import",
+          "imported": [
+            "fileURLToPath"
+          ]
+        },
+        {
+          "from": "node:path",
+          "kind": "import",
+          "imported": [
+            "dirname",
+            "join"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "__dirname",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "workspaceRoot",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "tailwindcss",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "autoprefixer",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/App.test.tsx": {
+      "imports": [
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "from": "../test/utils/render",
+          "kind": "import",
+          "imported": [
+            "renderWithProviders",
+            "screen"
+          ]
+        },
+        {
+          "from": "./App",
+          "kind": "import",
+          "isDefault": true
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/App.tsx",
+        "apps/web/test/utils/render.tsx"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
     "apps/web/src/App.tsx": {
-      "imports": [],
+      "imports": [
+        {
+          "from": "@/components/layout/AppShell",
+          "kind": "import",
+          "imported": [
+            "AppShell"
+          ]
+        },
+        {
+          "from": "@/components/ui/badge",
+          "kind": "import",
+          "imported": [
+            "Badge"
+          ]
+        },
+        {
+          "from": "@/components/ui/button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        },
+        {
+          "from": "@/components/ui/card",
+          "kind": "import",
+          "imported": [
+            "Card",
+            "CardContent",
+            "CardDescription",
+            "CardHeader",
+            "CardTitle"
+          ]
+        }
+      ],
       "dependencies": [],
       "functions": [
         {
@@ -5122,6 +7438,1849 @@
           "isExported": false
         }
       ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/__tests__/pwa/manifest.test.ts": {
+      "imports": [
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "from": "../../../public/manifest.json",
+          "kind": "import",
+          "isDefault": true
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/__tests__/pwa/service-worker.test.ts": {
+      "imports": [
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/components/Button.test.tsx": {
+      "imports": [
+        {
+          "from": "@testing-library/user-event",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "from": "../../test/utils/render",
+          "kind": "import",
+          "imported": [
+            "renderWithProviders",
+            "screen"
+          ]
+        },
+        {
+          "from": "./Button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/components/Button.tsx",
+        "apps/web/test/utils/render.tsx"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/components/Button.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "ButtonHTMLAttributes",
+            "ReactNode"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "Button",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "ButtonProps"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/components/layout/AppShell.tsx": {
+      "imports": [
+        {
+          "from": "@/lib/hooks/useMediaQuery",
+          "kind": "import",
+          "imported": [
+            "useIsDesktop"
+          ]
+        },
+        {
+          "from": "@/lib/store/uiStore",
+          "kind": "import",
+          "imported": [
+            "useUIStore"
+          ]
+        },
+        {
+          "from": "@/lib/utils/cn",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "ReactNode"
+          ]
+        },
+        {
+          "from": "./BottomNav",
+          "kind": "import",
+          "imported": [
+            "BottomNav"
+          ]
+        },
+        {
+          "from": "./MobileHeader",
+          "kind": "import",
+          "imported": [
+            "MobileHeader"
+          ]
+        },
+        {
+          "from": "./NavBar",
+          "kind": "import",
+          "imported": [
+            "NavBar"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/components/layout/BottomNav.tsx",
+        "apps/web/src/components/layout/MobileHeader.tsx",
+        "apps/web/src/components/layout/NavBar.tsx"
+      ],
+      "functions": [
+        {
+          "name": "AppShell",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "AppShellProps"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/components/layout/BottomNav.tsx": {
+      "imports": [
+        {
+          "from": "@/components/ui/button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        },
+        {
+          "from": "@/lib/store/uiStore",
+          "kind": "import",
+          "imported": [
+            "useUIStore"
+          ]
+        },
+        {
+          "from": "@/lib/utils/cn",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        },
+        {
+          "from": "lucide-react",
+          "kind": "import",
+          "imported": [
+            "Bell",
+            "Home",
+            "Settings",
+            "User"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "BottomNav",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/components/layout/MobileHeader.tsx": {
+      "imports": [
+        {
+          "from": "@/components/ui/button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        },
+        {
+          "from": "@/lib/store/uiStore",
+          "kind": "import",
+          "imported": [
+            "useUIStore"
+          ]
+        },
+        {
+          "from": "@/lib/utils/cn",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        },
+        {
+          "from": "lucide-react",
+          "kind": "import",
+          "imported": [
+            "Moon",
+            "Sun"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "MobileHeader",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/components/layout/NavBar.tsx": {
+      "imports": [
+        {
+          "from": "@/components/ui/button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        },
+        {
+          "from": "@/components/ui/separator",
+          "kind": "import",
+          "imported": [
+            "Separator"
+          ]
+        },
+        {
+          "from": "@/lib/store/uiStore",
+          "kind": "import",
+          "imported": [
+            "useUIStore"
+          ]
+        },
+        {
+          "from": "@/lib/utils/cn",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        },
+        {
+          "from": "lucide-react",
+          "kind": "import",
+          "imported": [
+            "Bell",
+            "Home",
+            "Moon",
+            "Settings",
+            "Sun",
+            "User"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "NavBar",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/components/layout/__tests__/AppShell.test.tsx": {
+      "imports": [
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "expect",
+            "it",
+            "vi",
+            "beforeEach"
+          ]
+        },
+        {
+          "from": "../../../../test/utils/render",
+          "kind": "import",
+          "imported": [
+            "renderWithProviders",
+            "screen"
+          ]
+        },
+        {
+          "from": "../AppShell",
+          "kind": "import",
+          "imported": [
+            "AppShell"
+          ]
+        },
+        {
+          "from": "@/lib/store/uiStore",
+          "kind": "import",
+          "imported": [
+            "useUIStore"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/components/layout/AppShell.tsx",
+        "apps/web/test/utils/render.tsx"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "mockUseIsDesktop",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/layout/__tests__/BottomNav.test.tsx": {
+      "imports": [
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "expect",
+            "it",
+            "beforeEach"
+          ]
+        },
+        {
+          "from": "../../../../test/utils/render",
+          "kind": "import",
+          "imported": [
+            "renderWithProviders",
+            "screen"
+          ]
+        },
+        {
+          "from": "../BottomNav",
+          "kind": "import",
+          "imported": [
+            "BottomNav"
+          ]
+        },
+        {
+          "from": "@/lib/store/uiStore",
+          "kind": "import",
+          "imported": [
+            "useUIStore"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/components/layout/BottomNav.tsx",
+        "apps/web/test/utils/render.tsx"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/components/layout/__tests__/MobileHeader.test.tsx": {
+      "imports": [
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "expect",
+            "it",
+            "beforeEach"
+          ]
+        },
+        {
+          "from": "../../../../test/utils/render",
+          "kind": "import",
+          "imported": [
+            "renderWithProviders",
+            "screen"
+          ]
+        },
+        {
+          "from": "../MobileHeader",
+          "kind": "import",
+          "imported": [
+            "MobileHeader"
+          ]
+        },
+        {
+          "from": "@/lib/store/uiStore",
+          "kind": "import",
+          "imported": [
+            "useUIStore"
+          ]
+        },
+        {
+          "from": "@testing-library/user-event",
+          "kind": "import",
+          "isDefault": true
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/components/layout/MobileHeader.tsx",
+        "apps/web/test/utils/render.tsx"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/components/layout/__tests__/NavBar.test.tsx": {
+      "imports": [
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "expect",
+            "it",
+            "beforeEach"
+          ]
+        },
+        {
+          "from": "../../../../test/utils/render",
+          "kind": "import",
+          "imported": [
+            "renderWithProviders",
+            "screen"
+          ]
+        },
+        {
+          "from": "../NavBar",
+          "kind": "import",
+          "imported": [
+            "NavBar"
+          ]
+        },
+        {
+          "from": "@/lib/store/uiStore",
+          "kind": "import",
+          "imported": [
+            "useUIStore"
+          ]
+        },
+        {
+          "from": "@testing-library/user-event",
+          "kind": "import",
+          "isDefault": true
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/components/layout/NavBar.tsx",
+        "apps/web/test/utils/render.tsx"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/components/ui/avatar.tsx": {
+      "imports": [
+        {
+          "from": "@radix-ui/react-avatar",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "Avatar",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "AvatarImage",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "AvatarFallback",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/badge.tsx": {
+      "imports": [
+        {
+          "from": "class-variance-authority",
+          "kind": "import",
+          "imported": [
+            "VariantProps",
+            "cva"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "Badge",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "BadgeProps"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false
+        }
+      ],
+      "classes": [],
+      "constants": [
+        {
+          "name": "badgeVariants",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/button.tsx": {
+      "imports": [
+        {
+          "from": "@radix-ui/react-slot",
+          "kind": "import",
+          "imported": [
+            "Slot"
+          ]
+        },
+        {
+          "from": "class-variance-authority",
+          "kind": "import",
+          "imported": [
+            "VariantProps",
+            "cva"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "buttonVariants",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "Button",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/card.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "Card",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "CardHeader",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "CardTitle",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "CardDescription",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "CardContent",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "CardFooter",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/dialog.tsx": {
+      "imports": [
+        {
+          "from": "@radix-ui/react-dialog",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "lucide-react",
+          "kind": "import",
+          "imported": [
+            "X"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "Dialog",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DialogTrigger",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DialogPortal",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DialogClose",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DialogOverlay",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DialogContent",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DialogHeader",
+          "initKind": "function",
+          "isExported": false
+        },
+        {
+          "name": "DialogFooter",
+          "initKind": "function",
+          "isExported": false
+        },
+        {
+          "name": "DialogTitle",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DialogDescription",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/dropdown-menu.tsx": {
+      "imports": [
+        {
+          "from": "@radix-ui/react-dropdown-menu",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "lucide-react",
+          "kind": "import",
+          "imported": [
+            "Check",
+            "ChevronRight",
+            "Circle"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "DropdownMenu",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuTrigger",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuGroup",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuPortal",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuSub",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuRadioGroup",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuSubTrigger",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuSubContent",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuContent",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuItem",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuCheckboxItem",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuRadioItem",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuLabel",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuSeparator",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DropdownMenuShortcut",
+          "initKind": "function",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/input.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "Input",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/label.tsx": {
+      "imports": [
+        {
+          "from": "@radix-ui/react-label",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "class-variance-authority",
+          "kind": "import",
+          "imported": [
+            "VariantProps",
+            "cva"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "labelVariants",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "Label",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/scroll-area.tsx": {
+      "imports": [
+        {
+          "from": "@radix-ui/react-scroll-area",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "ScrollArea",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "ScrollBar",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/separator.tsx": {
+      "imports": [
+        {
+          "from": "@radix-ui/react-separator",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "Separator",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/sheet.tsx": {
+      "imports": [
+        {
+          "from": "@radix-ui/react-dialog",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "class-variance-authority",
+          "kind": "import",
+          "imported": [
+            "VariantProps",
+            "cva"
+          ]
+        },
+        {
+          "from": "lucide-react",
+          "kind": "import",
+          "imported": [
+            "X"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "Sheet",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "SheetTrigger",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "SheetClose",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "SheetPortal",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "SheetOverlay",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "sheetVariants",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "SheetContent",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "SheetHeader",
+          "initKind": "function",
+          "isExported": false
+        },
+        {
+          "name": "SheetFooter",
+          "initKind": "function",
+          "isExported": false
+        },
+        {
+          "name": "SheetTitle",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "SheetDescription",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/skeleton.tsx": {
+      "imports": [
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "Skeleton",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "React.HTMLAttributes<HTMLDivElement>"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/components/ui/switch.tsx": {
+      "imports": [
+        {
+          "from": "@radix-ui/react-switch",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "Switch",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/toast.tsx": {
+      "imports": [
+        {
+          "from": "@radix-ui/react-toast",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "class-variance-authority",
+          "kind": "import",
+          "imported": [
+            "VariantProps",
+            "cva"
+          ]
+        },
+        {
+          "from": "lucide-react",
+          "kind": "import",
+          "imported": [
+            "X"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "ToastProvider",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "ToastViewport",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "toastVariants",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "Toast",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "ToastAction",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "ToastClose",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "ToastTitle",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "ToastDescription",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/toaster.tsx": {
+      "imports": [
+        {
+          "from": "@/components/ui/toast",
+          "kind": "import",
+          "imported": [
+            "Toast",
+            "ToastClose",
+            "ToastDescription",
+            "ToastProvider",
+            "ToastTitle",
+            "ToastViewport"
+          ]
+        },
+        {
+          "from": "@/lib/hooks/use-toast",
+          "kind": "import",
+          "imported": [
+            "useToast"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "Toaster",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/components/ui/tooltip.tsx": {
+      "imports": [
+        {
+          "from": "@radix-ui/react-tooltip",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "TooltipProvider",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "Tooltip",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "TooltipTrigger",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "TooltipContent",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/hooks/useLocalStorage.test.ts": {
+      "imports": [
+        {
+          "from": "@testing-library/react",
+          "kind": "import",
+          "imported": [
+            "act",
+            "renderHook"
+          ]
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "from": "./useLocalStorage",
+          "kind": "import",
+          "imported": [
+            "useLocalStorage"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/hooks/useLocalStorage.ts"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/hooks/useLocalStorage.ts": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "useEffect",
+            "useState"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "useLocalStorage",
+          "params": [
+            {
+              "name": "key",
+              "type": "string"
+            },
+            {
+              "name": "initialValue",
+              "type": "T"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true,
+          "returnType": "[T, (value: T | ((val: T) => T)) => void]"
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/__tests__/queryClient.test.ts": {
+      "imports": [
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "it",
+            "expect",
+            "beforeEach"
+          ]
+        },
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "QueryClient"
+          ]
+        },
+        {
+          "from": "../queryClient",
+          "kind": "import",
+          "imported": [
+            "queryClient"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/queryClient.ts"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/hooks/use-toast.ts": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/components/ui/toast",
+          "kind": "import",
+          "imported": [
+            "ToastActionElement",
+            "ToastProps"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "genId",
+          "params": [],
+          "isAsync": false,
+          "isExported": false
+        },
+        {
+          "name": "dispatch",
+          "params": [
+            {
+              "name": "action",
+              "type": "Action"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false
+        },
+        {
+          "name": "toast",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "Toast"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false
+        },
+        {
+          "name": "useToast",
+          "params": [],
+          "isAsync": false,
+          "isExported": false
+        }
+      ],
+      "classes": [],
+      "constants": [
+        {
+          "name": "TOAST_LIMIT",
+          "initKind": "literal",
+          "isExported": false
+        },
+        {
+          "name": "TOAST_REMOVE_DELAY",
+          "initKind": "literal",
+          "isExported": false
+        },
+        {
+          "name": "actionTypes",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "toastTimeouts",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "addToRemoveQueue",
+          "initKind": "function",
+          "isExported": false
+        },
+        {
+          "name": "reducer",
+          "initKind": "function",
+          "isExported": true
+        },
+        {
+          "name": "listeners",
+          "initKind": "array",
+          "isExported": false,
+          "type": "Array<(state: State) => void>"
+        }
+      ]
+    },
+    "apps/web/src/lib/hooks/useMediaQuery.ts": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "useEffect",
+            "useState"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "useMediaQuery",
+          "params": [
+            {
+              "name": "query",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true,
+          "returnType": "boolean"
+        }
+      ],
+      "classes": [],
+      "constants": [
+        {
+          "name": "useIsMobile",
+          "initKind": "function",
+          "isExported": true
+        },
+        {
+          "name": "useIsDesktop",
+          "initKind": "function",
+          "isExported": true
+        },
+        {
+          "name": "useIsTablet",
+          "initKind": "function",
+          "isExported": true
+        },
+        {
+          "name": "useIsLargeScreen",
+          "initKind": "function",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/web/src/lib/queryClient.ts": {
+      "imports": [
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "QueryClient"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "queryClient",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/web/src/lib/store/__tests__/authStore.test.ts": {
+      "imports": [
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "it",
+            "expect",
+            "beforeEach",
+            "vi"
+          ]
+        },
+        {
+          "from": "../authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore",
+            "User"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/store/authStore.ts"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/store/__tests__/offlineStore.test.ts": {
+      "imports": [
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "it",
+            "expect",
+            "beforeEach",
+            "vi"
+          ]
+        },
+        {
+          "from": "../offlineStore",
+          "kind": "import",
+          "imported": [
+            "useOfflineStore",
+            "QueuedAction"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/store/offlineStore.ts"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "mockUUID",
+          "initKind": "literal",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/lib/store/__tests__/uiStore.test.ts": {
+      "imports": [
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "expect",
+            "it",
+            "beforeEach",
+            "afterEach",
+            "vi"
+          ]
+        },
+        {
+          "from": "../uiStore",
+          "kind": "import",
+          "imported": [
+            "useUIStore"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/store/uiStore.ts"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/store/authStore.ts": {
+      "imports": [
+        {
+          "from": "zustand",
+          "kind": "import",
+          "imported": [
+            "create"
+          ]
+        },
+        {
+          "from": "zustand/middleware",
+          "kind": "import",
+          "imported": [
+            "persist",
+            "createJSONStorage"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "useAuthStore",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/web/src/lib/store/offlineStore.ts": {
+      "imports": [
+        {
+          "from": "zustand",
+          "kind": "import",
+          "imported": [
+            "create"
+          ]
+        },
+        {
+          "from": "zustand/middleware",
+          "kind": "import",
+          "imported": [
+            "persist",
+            "createJSONStorage"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "useOfflineStore",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/web/src/lib/store/uiStore.ts": {
+      "imports": [
+        {
+          "from": "zustand",
+          "kind": "import",
+          "imported": [
+            "create"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "useUIStore",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/web/src/lib/utils/cn.ts": {
+      "imports": [
+        {
+          "from": "clsx",
+          "kind": "import",
+          "imported": [
+            "ClassValue",
+            "clsx"
+          ]
+        },
+        {
+          "from": "tailwind-merge",
+          "kind": "import",
+          "imported": [
+            "twMerge"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "cn",
+          "params": [
+            {
+              "name": "inputs",
+              "type": "ClassValue[]",
+              "rest": true
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/utils/index.ts": {
+      "imports": [
+        {
+          "from": "./cn",
+          "kind": "export",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/utils/cn.ts"
+      ],
+      "functions": [],
       "classes": [],
       "constants": []
     },
@@ -5138,21 +9297,48 @@
           "isDefault": true
         },
         {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "QueryClientProvider"
+          ]
+        },
+        {
+          "from": "@tanstack/react-query-devtools",
+          "kind": "import",
+          "imported": [
+            "ReactQueryDevtools"
+          ]
+        },
+        {
           "from": "./App",
           "kind": "import",
           "isDefault": true
         },
         {
-          "from": "./index.css",
+          "from": "./styles/globals.css",
           "kind": "import"
+        },
+        {
+          "from": "./lib/queryClient",
+          "kind": "import",
+          "imported": [
+            "queryClient"
+          ]
         }
       ],
       "dependencies": [
-        "apps/web/src/App.tsx"
+        "apps/web/src/App.tsx",
+        "apps/web/src/lib/queryClient.ts"
       ],
       "functions": [],
       "classes": [],
       "constants": [
+        {
+          "name": "initializeTheme",
+          "initKind": "function",
+          "isExported": false
+        },
         {
           "name": "root",
           "initKind": "unknown",
@@ -5160,27 +9346,15 @@
         }
       ]
     },
+    "apps/web/tailwind.config.js": {
+      "imports": [],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
     "apps/web/test/infrastructure.test.tsx": {
       "imports": [
-        {
-          "from": "vitest",
-          "kind": "import",
-          "imported": [
-            "describe",
-            "it",
-            "expect",
-            "beforeEach"
-          ]
-        },
-        {
-          "from": "./utils/render",
-          "kind": "import",
-          "imported": [
-            "renderWithProviders",
-            "screen",
-            "waitFor"
-          ]
-        },
         {
           "from": "@tanstack/react-query",
           "kind": "import",
@@ -5191,17 +9365,36 @@
           ]
         },
         {
-          "from": "./mocks/data",
-          "kind": "import",
-          "imported": [
-            "TEST_PERSONAS",
-            "MOCK_POSTS"
-          ]
-        },
-        {
           "from": "react",
           "kind": "import",
           "isDefault": true
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "from": "./mocks/data",
+          "kind": "import",
+          "imported": [
+            "MOCK_POSTS",
+            "TEST_PERSONAS"
+          ]
+        },
+        {
+          "from": "./utils/render",
+          "kind": "import",
+          "imported": [
+            "renderWithProviders",
+            "screen",
+            "waitFor"
+          ]
         }
       ],
       "dependencies": [
@@ -5232,7 +9425,7 @@
           "params": [
             {
               "name": "overrides",
-              "type": "Partial<typeof MOCK_POSTS[0]>"
+              "type": "Partial<(typeof MOCK_POSTS)[0]>"
             }
           ],
           "isAsync": false,
@@ -5282,11 +9475,11 @@
           "from": "./data",
           "kind": "import",
           "imported": [
-            "TEST_PERSONAS",
-            "MOCK_POSTS",
             "MOCK_ALGORITHMS",
+            "MOCK_AUTH_TOKENS",
             "MOCK_NOTIFICATIONS",
-            "MOCK_AUTH_TOKENS"
+            "MOCK_POSTS",
+            "TEST_PERSONAS"
           ]
         }
       ],
@@ -5302,8 +9495,7 @@
               "type": "T"
             },
             {
-              "name": "id",
-              "type": "string"
+              "name": "id"
             }
           ],
           "isAsync": false,
@@ -5321,8 +9513,7 @@
               "type": "string"
             },
             {
-              "name": "id",
-              "type": "string"
+              "name": "id"
             }
           ],
           "isAsync": false,
@@ -5380,19 +9571,19 @@
           "kind": "import"
         },
         {
+          "from": "@testing-library/react",
+          "kind": "import",
+          "imported": [
+            "cleanup"
+          ]
+        },
+        {
           "from": "vitest",
           "kind": "import",
           "imported": [
             "afterAll",
             "afterEach",
             "beforeAll"
-          ]
-        },
-        {
-          "from": "@testing-library/react",
-          "kind": "import",
-          "imported": [
-            "cleanup"
           ]
         },
         {
@@ -5413,19 +9604,31 @@
     "apps/web/test/utils/render.tsx": {
       "imports": [
         {
-          "from": "react",
+          "from": "@tanstack/react-query",
           "kind": "import",
-          "isDefault": true,
           "imported": [
-            "ReactElement"
+            "QueryClient",
+            "QueryClientProvider"
           ]
         },
         {
           "from": "@testing-library/react",
           "kind": "import",
           "imported": [
-            "render",
-            "RenderOptions"
+            "RenderOptions",
+            "render"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "ReactElement"
           ]
         },
         {
@@ -5433,14 +9636,6 @@
           "kind": "import",
           "imported": [
             "BrowserRouter"
-          ]
-        },
-        {
-          "from": "@tanstack/react-query",
-          "kind": "import",
-          "imported": [
-            "QueryClient",
-            "QueryClientProvider"
           ]
         },
         {
@@ -5476,7 +9671,7 @@
             },
             {
               "name": "options",
-              "type": "Omit<RenderOptions, 'wrapper'>",
+              "type": "Omit<RenderOptions, \"wrapper\">",
               "optional": true
             }
           ],
@@ -5490,11 +9685,9 @@
     "apps/web/vite.config.ts": {
       "imports": [
         {
-          "from": "vite",
+          "from": "node:path",
           "kind": "import",
-          "imported": [
-            "defineConfig"
-          ]
+          "isDefault": true
         },
         {
           "from": "@vitejs/plugin-react",
@@ -5502,16 +9695,18 @@
           "isDefault": true
         },
         {
+          "from": "vite",
+          "kind": "import",
+          "imported": [
+            "defineConfig"
+          ]
+        },
+        {
           "from": "vite-plugin-pwa",
           "kind": "import",
           "imported": [
             "VitePWA"
           ]
-        },
-        {
-          "from": "path",
-          "kind": "import",
-          "isDefault": true
         }
       ],
       "dependencies": [],
@@ -5522,11 +9717,9 @@
     "apps/web/vitest.config.ts": {
       "imports": [
         {
-          "from": "vite",
+          "from": "node:path",
           "kind": "import",
-          "imported": [
-            "defineConfig"
-          ]
+          "isDefault": true
         },
         {
           "from": "@vitejs/plugin-react",
@@ -5534,9 +9727,36 @@
           "isDefault": true
         },
         {
-          "from": "path",
+          "from": "vite",
           "kind": "import",
-          "isDefault": true
+          "imported": [
+            "defineConfig"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/vitest.d.ts": {
+      "imports": [
+        {
+          "from": "@testing-library/jest-dom/matchers",
+          "kind": "import",
+          "imported": [
+            "TestingLibraryMatchers"
+          ]
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "Assertion",
+            "AsymmetricMatchersContaining",
+            "ExpectStatic",
+            "VitestUtils"
+          ]
         }
       ],
       "dependencies": [],
@@ -5587,7 +9807,7 @@
               "params": [
                 {
                   "name": "type",
-                  "type": "'text' | 'image' | 'video' | 'music'"
+                  "type": "\"text\" | \"image\" | \"video\" | \"music\""
                 }
               ],
               "isAsync": false,
@@ -5724,7 +9944,7 @@
               "params": [
                 {
                   "name": "operator",
-                  "type": "'AND' | 'OR' | 'NOT'"
+                  "type": "\"AND\" | \"OR\" | \"NOT\""
                 }
               ],
               "isAsync": false,
@@ -5787,7 +10007,7 @@
               "params": [
                 {
                   "name": "status",
-                  "type": "'sent' | 'delivered' | 'read'"
+                  "type": "\"sent\" | \"delivered\" | \"read\""
                 }
               ],
               "isAsync": false,
@@ -5873,7 +10093,7 @@
           "params": [
             {
               "name": "profileType",
-              "type": "'creator' | 'consumer' | 'business'"
+              "type": "\"creator\" | \"consumer\" | \"business\""
             }
           ],
           "isAsync": false,
@@ -5884,8 +10104,7 @@
           "name": "generateUniqueTestUser",
           "params": [
             {
-              "name": "baseUsername",
-              "type": "string"
+              "name": "baseUsername"
             }
           ],
           "isAsync": false,
@@ -6061,8 +10280,7 @@
               "name": "waitForSession",
               "params": [
                 {
-                  "name": "timeout",
-                  "type": "number"
+                  "name": "timeout"
                 }
               ],
               "isAsync": true,
@@ -6118,8 +10336,28 @@
           "from": "@playwright/test",
           "kind": "import",
           "imported": [
-            "test",
-            "expect"
+            "expect",
+            "test"
+          ]
+        },
+        {
+          "from": "../fixtures/test-data",
+          "kind": "import",
+          "imported": [
+            "FeedBuilder",
+            "MessageBuilder",
+            "PostBuilder",
+            "SAMPLE_POSTS"
+          ]
+        },
+        {
+          "from": "../fixtures/test-users",
+          "kind": "import",
+          "imported": [
+            "JADE_CAFE",
+            "MARCUS_CONSUMER",
+            "MAYA_MUSIC",
+            "generateUniqueTestUser"
           ]
         },
         {
@@ -6127,26 +10365,6 @@
           "kind": "import",
           "imported": [
             "AuthHelper"
-          ]
-        },
-        {
-          "from": "../fixtures/test-users",
-          "kind": "import",
-          "imported": [
-            "MAYA_MUSIC",
-            "MARCUS_CONSUMER",
-            "JADE_CAFE",
-            "generateUniqueTestUser"
-          ]
-        },
-        {
-          "from": "../fixtures/test-data",
-          "kind": "import",
-          "imported": [
-            "PostBuilder",
-            "FeedBuilder",
-            "MessageBuilder",
-            "SAMPLE_POSTS"
           ]
         }
       ],
@@ -6165,8 +10383,17 @@
           "from": "@playwright/test",
           "kind": "import",
           "imported": [
-            "test",
-            "expect"
+            "expect",
+            "test"
+          ]
+        },
+        {
+          "from": "../fixtures/test-users",
+          "kind": "import",
+          "imported": [
+            "MARCUS_CONSUMER",
+            "MAYA_MUSIC",
+            "generateUniqueTestUser"
           ]
         },
         {
@@ -6174,15 +10401,6 @@
           "kind": "import",
           "imported": [
             "AuthHelper"
-          ]
-        },
-        {
-          "from": "../fixtures/test-users",
-          "kind": "import",
-          "imported": [
-            "MAYA_MUSIC",
-            "MARCUS_CONSUMER",
-            "generateUniqueTestUser"
           ]
         }
       ],
@@ -6286,9 +10504,9 @@
           "from": "../types",
           "kind": "import",
           "imported": [
-            "User",
+            "PaginatedResponse",
             "Post",
-            "PaginatedResponse"
+            "User"
           ]
         }
       ],
@@ -6305,10 +10523,10 @@
           "from": "../types",
           "kind": "import",
           "imported": [
-            "Post",
             "CustomFeed",
             "FeedFilter",
-            "PaginatedResponse"
+            "PaginatedResponse",
+            "Post"
           ]
         }
       ],
@@ -6343,8 +10561,8 @@
           "from": "../types",
           "kind": "import",
           "imported": [
-            "Message",
             "Conversation",
+            "Message",
             "PaginatedResponse"
           ]
         }
@@ -6380,11 +10598,11 @@
           "from": "../types",
           "kind": "import",
           "imported": [
-            "Post",
             "Comment",
+            "PaginatedResponse",
+            "Post",
             "PostType",
-            "PostVisibility",
-            "PaginatedResponse"
+            "PostVisibility"
           ]
         }
       ],
@@ -6402,7 +10620,8 @@
           "kind": "import",
           "imported": [
             "AccountSettings",
-            "PrivacySettings"
+            "PrivacySettings",
+            "UserDataExport"
           ]
         }
       ],
@@ -6419,11 +10638,11 @@
           "from": "../types",
           "kind": "import",
           "imported": [
-            "User",
             "Follow",
             "Friendship",
             "FriendshipStatus",
-            "PaginatedResponse"
+            "PaginatedResponse",
+            "User"
           ]
         }
       ],
@@ -6440,9 +10659,9 @@
           "from": "../types",
           "kind": "import",
           "imported": [
+            "ProfileStyles",
             "User",
-            "UserProfile",
-            "ProfileStyles"
+            "UserProfile"
           ]
         }
       ],
@@ -6488,12 +10707,12 @@
           "kind": "import",
           "imported": [
             "describe",
-            "it",
-            "expect"
+            "expect",
+            "it"
           ]
         },
         {
-          "from": "child_process",
+          "from": "node:child_process",
           "kind": "import",
           "imported": [
             "execSync"
@@ -6511,6 +10730,50 @@
         }
       ]
     },
+    "test/infrastructure/monorepo-setup.test.ts": {
+      "imports": [
+        {
+          "from": "bun:test",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "from": "node:child_process",
+          "kind": "import",
+          "imported": [
+            "execSync"
+          ]
+        },
+        {
+          "from": "node:fs",
+          "kind": "import",
+          "imported": [
+            "existsSync"
+          ]
+        },
+        {
+          "from": "node:path",
+          "kind": "import",
+          "imported": [
+            "join"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "ROOT_DIR",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
     "test/infrastructure/network-connectivity.test.ts": {
       "imports": [
         {
@@ -6518,12 +10781,12 @@
           "kind": "import",
           "imported": [
             "describe",
-            "it",
-            "expect"
+            "expect",
+            "it"
           ]
         },
         {
-          "from": "child_process",
+          "from": "node:child_process",
           "kind": "import",
           "imported": [
             "execSync"
@@ -6547,14 +10810,14 @@
           "from": "bun:test",
           "kind": "import",
           "imported": [
+            "beforeAll",
             "describe",
-            "it",
             "expect",
-            "beforeAll"
+            "it"
           ]
         },
         {
-          "from": "child_process",
+          "from": "node:child_process",
           "kind": "import",
           "imported": [
             "execSync"
@@ -6568,50 +10831,6 @@
         {
           "name": "TIMEOUT",
           "initKind": "literal",
-          "isExported": false
-        }
-      ]
-    },
-    "tests/monorepo-setup.test.ts": {
-      "imports": [
-        {
-          "from": "bun:test",
-          "kind": "import",
-          "imported": [
-            "describe",
-            "it",
-            "expect"
-          ]
-        },
-        {
-          "from": "fs",
-          "kind": "import",
-          "imported": [
-            "existsSync"
-          ]
-        },
-        {
-          "from": "path",
-          "kind": "import",
-          "imported": [
-            "join"
-          ]
-        },
-        {
-          "from": "child_process",
-          "kind": "import",
-          "imported": [
-            "execSync"
-          ]
-        }
-      ],
-      "dependencies": [],
-      "functions": [],
-      "classes": [],
-      "constants": [
-        {
-          "name": "ROOT_DIR",
-          "initKind": "unknown",
           "isExported": false
         }
       ]

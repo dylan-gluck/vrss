@@ -7,6 +7,19 @@ services:
     image: postgres:16-alpine
     container_name: vrss_db
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     environment:
       POSTGRES_DB: ${DB_NAME:-vrss}
       POSTGRES_USER: ${DB_USER:-vrss_user}
@@ -44,6 +57,19 @@ services:
         BUN_VERSION: ${BUN_VERSION:-1.1}
     container_name: vrss_backend
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     depends_on:
       db:
         condition: service_healthy
@@ -126,9 +152,22 @@ services:
       dockerfile: ./apps/web/Dockerfile
       target: development
       args:
-        NODE_VERSION: ${NODE_VERSION:-20}
+        BUN_VERSION: ${BUN_VERSION:-1.1}
     container_name: vrss_frontend
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     depends_on:
       - backend
     environment:
@@ -178,6 +217,19 @@ services:
     image: nginx:alpine
     container_name: vrss_nginx
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     depends_on:
       - backend
       - frontend

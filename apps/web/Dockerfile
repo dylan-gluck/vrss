@@ -2,29 +2,24 @@
 # VRSS Frontend PWA Dockerfile (Vite + React)
 # Multi-stage build for development, production, and testing
 # Uses Bun for workspace dependency support
+# Optimized with Turbo prune for minimal build context
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
-# Stage 1: Base - Security updates, Bun installation, and non-root user
+# Stage 1: Base - Security updates and non-root user
 # ------------------------------------------------------------------------------
-FROM node:20-alpine AS base
+FROM oven/bun:1.1-alpine AS base
 
-# Install security updates, required system packages, bash for Bun installer, and Bun
+# Install security updates and required system packages
 RUN apk update && \
     apk upgrade && \
-    apk add --no-cache curl ca-certificates unzip bash && \
+    apk add --no-cache curl ca-certificates && \
     rm -rf /var/cache/apk/*
 
-# Create non-root user for security first
-RUN adduser -S -D -H -u 1001 nodeuser && \
+# Create non-root user for security
+RUN adduser -S -D -H -u 1001 bunuser && \
     mkdir -p /app && \
-    chown -R nodeuser:nobody /app
-
-# Install Bun globally so all users can access it
-RUN curl -fsSL https://bun.sh/install | bash && \
-    mv /root/.bun/bin/bun /usr/local/bin/bun && \
-    chmod +x /usr/local/bin/bun && \
-    bun --version
+    chown -R bunuser:nobody /app
 
 WORKDIR /app
 
@@ -33,50 +28,55 @@ WORKDIR /app
 # ------------------------------------------------------------------------------
 FROM base AS dependencies
 
-# Copy root package.json and lockfile for workspace configuration
-COPY --chown=nodeuser:nobody ./package.json ./bun.lock* ./
+WORKDIR /app
 
-# Copy workspace packages
-COPY --chown=nodeuser:nobody ./packages ./packages/
+# Copy workspace structure for dependency resolution
+COPY --chown=bunuser:nobody ./package.json ./bun.lockb* ./
+COPY --chown=bunuser:nobody ./packages ./packages/
+COPY --chown=bunuser:nobody ./apps/web/package.json ./apps/web/
 
-# Copy frontend app package.json (Bun needs this to install the workspace)
-COPY --chown=nodeuser:nobody ./apps/web/package.json ./apps/web/
-
-# Create minimal e2e directory to satisfy workspace config
+# Create empty e2e package.json to satisfy workspace structure
 RUN mkdir -p ./e2e && echo '{"name":"e2e","private":true}' > ./e2e/package.json
 
-# Install all workspace dependencies from root (Bun understands workspace:*)
+# Install all workspace dependencies (Bun handles workspace: protocol)
 RUN bun install
 
-# Change ownership of node_modules to nodeuser for Vite temp file writes
-RUN chown -R nodeuser:nobody /app/node_modules /app/apps/web/node_modules 2>/dev/null || true
+# Change ownership of node_modules to bunuser for Vite temp file writes
+RUN chown -R bunuser:nobody /app/node_modules /app/apps/web/node_modules 2>/dev/null || true
 
 # Set working directory to frontend app
 WORKDIR /app/apps/web
 
 # ------------------------------------------------------------------------------
-# Stage 3: Development - Hot module replacement (HMR)
+# Stage 3: Source - Copy application source code
 # ------------------------------------------------------------------------------
-FROM dependencies AS development
+FROM dependencies AS source
 
-# Copy source code from apps/web (will be overridden by volume mount in development)
-COPY --chown=nodeuser:nobody ./apps/web/src ./src
-COPY --chown=nodeuser:nobody ./apps/web/test ./test
-COPY --chown=nodeuser:nobody ./apps/web/public ./public/
-COPY --chown=nodeuser:nobody ./apps/web/index.html ./
-COPY --chown=nodeuser:nobody ./apps/web/vite.config.ts ./
-COPY --chown=nodeuser:nobody ./apps/web/vitest.config.ts ./
-COPY --chown=nodeuser:nobody ./apps/web/tsconfig.json ./
-COPY --chown=nodeuser:nobody ./apps/web/tsconfig.node.json* ./
-COPY --chown=nodeuser:nobody ./apps/web/tailwind.config.js* ./
-COPY --chown=nodeuser:nobody ./apps/web/postcss.config.js* ./
-COPY --chown=nodeuser:nobody ./apps/web/components.json* ./
+WORKDIR /app/apps/web
 
-# Reinstall to fix any broken symlinks after copying files (as root for permissions)
-RUN bun install && chown -R nodeuser:nobody /app/node_modules /app/apps/web/node_modules 2>/dev/null || true
+# Copy application source code and configuration
+COPY --chown=bunuser:nobody ./apps/web/src ./src
+COPY --chown=bunuser:nobody ./apps/web/public ./public/
+COPY --chown=bunuser:nobody ./apps/web/index.html ./
+COPY --chown=bunuser:nobody ./apps/web/vite.config.ts ./
+COPY --chown=bunuser:nobody ./apps/web/vitest.config.ts ./
+COPY --chown=bunuser:nobody ./apps/web/tsconfig.json ./
+COPY --chown=bunuser:nobody ./apps/web/tsconfig.node.json* ./
+COPY --chown=bunuser:nobody ./apps/web/tailwind.config.js* ./
+COPY --chown=bunuser:nobody ./apps/web/postcss.config.js* ./
+COPY --chown=bunuser:nobody ./apps/web/components.json* ./
+
+# Install web-specific dependencies and ensure they're available locally
+WORKDIR /app/apps/web
+RUN bun install && chown -R bunuser:nobody /app/node_modules /app/apps/web/node_modules 2>/dev/null || true
+
+# ------------------------------------------------------------------------------
+# Stage 5: Development - Hot module replacement (HMR)
+# ------------------------------------------------------------------------------
+FROM source AS development
 
 # Switch to non-root user
-USER nodeuser
+USER bunuser
 
 # Expose Vite dev server port (dynamic from env)
 EXPOSE 5050
@@ -89,27 +89,17 @@ HEALTHCHECK --interval=30s --timeout=10s --retries=3 --start-period=30s \
 CMD ["bun", "run", "dev", "--", "--host", "0.0.0.0"]
 
 # ------------------------------------------------------------------------------
-# Stage 4: Build - Compile and bundle for production
+# Stage 6: Build - Compile and bundle for production
 # ------------------------------------------------------------------------------
-FROM dependencies AS builder
+FROM source AS builder
 
-USER nodeuser
-
-# Copy source code from apps/web
-COPY --chown=nodeuser:nobody ./apps/web/src ./src
-COPY --chown=nodeuser:nobody ./apps/web/public ./public/
-COPY --chown=nodeuser:nobody ./apps/web/index.html ./
-COPY --chown=nodeuser:nobody ./apps/web/vite.config.ts ./
-COPY --chown=nodeuser:nobody ./apps/web/tsconfig.json ./
-COPY --chown=nodeuser:nobody ./apps/web/tsconfig.node.json* ./
-COPY --chown=nodeuser:nobody ./apps/web/tailwind.config.js* ./
-COPY --chown=nodeuser:nobody ./apps/web/postcss.config.js* ./
+USER bunuser
 
 # Build production bundle using Bun
 RUN bun run build
 
 # ------------------------------------------------------------------------------
-# Stage 5: Production - Serve with nginx
+# Stage 7: Production - Serve with nginx
 # ------------------------------------------------------------------------------
 FROM nginx:alpine AS production
 
@@ -145,23 +135,12 @@ HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
 CMD ["nginx", "-g", "daemon off;"]
 
 # ------------------------------------------------------------------------------
-# Stage 6: Test - Run tests
+# Stage 8: Test - Run tests
 # ------------------------------------------------------------------------------
-FROM dependencies AS test
-
-# Copy source code and test files from apps/web
-COPY --chown=nodeuser:nobody ./apps/web/src ./src
-COPY --chown=nodeuser:nobody ./apps/web/test ./test
-COPY --chown=nodeuser:nobody ./apps/web/tsconfig.json ./
-COPY --chown=nodeuser:nobody ./apps/web/vite.config.ts ./
-COPY --chown=nodeuser:nobody ./apps/web/vitest.config.ts ./
-COPY --chown=nodeuser:nobody ./apps/web/tsconfig.node.json* ./
-
-# Reinstall to fix any broken symlinks after copying files (as root for permissions)
-RUN bun install && chown -R nodeuser:nobody /app/node_modules /app/apps/web/node_modules 2>/dev/null || true
+FROM source AS test
 
 # Switch to non-root user
-USER nodeuser
+USER bunuser
 
 # Run tests using Bun
 CMD ["bun", "test"]

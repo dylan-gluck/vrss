@@ -136,9 +136,9 @@ db-restore: ## Restore database from backup (use: make db-restore FILE=backup.sq
 	docker-compose exec -T db psql -U vrss_user vrss < $(FILE)
 	@echo "$(GREEN)Database restored$(NC)"
 
-db-migrate: ## Run database migrations (when migration system is implemented)
+db-migrate: ## Run database migrations
 	@echo "$(YELLOW)Running database migrations...$(NC)"
-	docker-compose exec backend bun run migrate
+	docker-compose exec backend bun run db:migrate:deploy
 	@echo "$(GREEN)Migrations complete$(NC)"
 
 db-seed: ## Seed database with test data
@@ -167,18 +167,18 @@ test: ## Run all tests
 	@docker-compose exec backend bun test || (echo "$(RED)Backend tests failed$(NC)" && exit 1)
 	@echo ""
 	@echo "$(YELLOW)Frontend tests:$(NC)"
-	@docker-compose exec frontend npm test || echo "$(YELLOW)Frontend tests not configured or failed$(NC)"
+	@docker-compose exec frontend bun test || echo "$(YELLOW)Frontend tests not configured or failed$(NC)"
 	@echo "$(GREEN)Tests complete$(NC)"
 
 test-backend: ## Run backend tests only
 	docker-compose exec backend bun test
 
 test-frontend: ## Run frontend tests only
-	docker-compose exec frontend npm test
+	docker-compose exec frontend bun test
 
 test-coverage: ## Run tests with coverage report
 	docker-compose exec backend bun test --coverage
-	docker-compose exec frontend npm run test:coverage
+	docker-compose exec frontend bun run test:coverage
 
 ##@ Code Quality
 
@@ -198,7 +198,7 @@ typecheck-docker: ## Run TypeScript type checking in Docker containers
 	@docker-compose exec backend bun run type-check || echo "$(RED)Backend type check failed$(NC)"
 	@echo ""
 	@echo "$(YELLOW)Frontend (Web):$(NC)"
-	@docker-compose exec frontend npm run type-check || echo "$(RED)Frontend type check failed$(NC)"
+	@docker-compose exec frontend bun run type-check || echo "$(RED)Frontend type check failed$(NC)"
 	@echo "$(GREEN)Type checks complete$(NC)"
 
 lint: ## Run linting and auto-fix issues across all packages
@@ -227,7 +227,7 @@ lint-docker: ## Run linting in Docker containers
 	@docker-compose exec backend bun run lint || echo "$(YELLOW)Backend lint failed$(NC)"
 	@echo ""
 	@echo "$(YELLOW)Frontend (Web):$(NC)"
-	@docker-compose exec frontend npm run lint || echo "$(RED)Frontend lint failed$(NC)"
+	@docker-compose exec frontend bun run lint || echo "$(RED)Frontend lint failed$(NC)"
 	@echo "$(GREEN)Linting complete$(NC)"
 
 format: ## Format code with Biome
