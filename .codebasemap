@@ -2,9 +2,9 @@
   "metadata": {
     "version": 1,
     "root": "/Users/dylan/Workspace/projects/vrss",
-    "createdAt": "2025-10-19T15:26:14.727Z",
-    "updatedAt": "2025-10-19T15:26:14.727Z",
-    "totalFiles": 141
+    "createdAt": "2025-10-19T21:49:14.836Z",
+    "updatedAt": "2025-10-19T21:49:14.836Z",
+    "totalFiles": 152
   },
   "tree": {
     "name": "vrss",
@@ -355,6 +355,34 @@
             "type": "dir",
             "children": [
               {
+                "name": "apps",
+                "type": "dir",
+                "children": [
+                  {
+                    "name": "web",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "test",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "mocks",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "server.ts",
+                                "type": "file"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
                 "name": "src",
                 "type": "dir",
                 "children": [
@@ -530,6 +558,70 @@
                         "children": [
                           {
                             "name": "queryClient.test.ts",
+                            "type": "file"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "api",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "__tests__",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "client.test.ts",
+                                "type": "file"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "hooks",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "__tests__",
+                                "type": "dir",
+                                "children": [
+                                  {
+                                    "name": "useAuth.test.ts",
+                                    "type": "file"
+                                  },
+                                  {
+                                    "name": "usePost.test.ts",
+                                    "type": "file"
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "index.ts",
+                                "type": "file"
+                              },
+                              {
+                                "name": "useAuth.ts",
+                                "type": "file"
+                              },
+                              {
+                                "name": "useFeed.ts",
+                                "type": "file"
+                              },
+                              {
+                                "name": "usePost.ts",
+                                "type": "file"
+                              },
+                              {
+                                "name": "useSocial.ts",
+                                "type": "file"
+                              },
+                              {
+                                "name": "useUser.ts",
+                                "type": "file"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "client.ts",
                             "type": "file"
                           }
                         ]
@@ -913,6 +1005,7 @@
     "apps/api/test_trigger_manual.ts",
     "apps/api/validate-auth.ts",
     "apps/api/validate-email.ts",
+    "apps/web/apps/web/test/mocks/server.ts",
     "apps/web/postcss.config.js",
     "apps/web/src/App.test.tsx",
     "apps/web/src/App.tsx",
@@ -947,6 +1040,16 @@
     "apps/web/src/hooks/useLocalStorage.test.ts",
     "apps/web/src/hooks/useLocalStorage.ts",
     "apps/web/src/lib/__tests__/queryClient.test.ts",
+    "apps/web/src/lib/api/__tests__/client.test.ts",
+    "apps/web/src/lib/api/client.ts",
+    "apps/web/src/lib/api/hooks/__tests__/useAuth.test.ts",
+    "apps/web/src/lib/api/hooks/__tests__/usePost.test.ts",
+    "apps/web/src/lib/api/hooks/index.ts",
+    "apps/web/src/lib/api/hooks/useAuth.ts",
+    "apps/web/src/lib/api/hooks/useFeed.ts",
+    "apps/web/src/lib/api/hooks/usePost.ts",
+    "apps/web/src/lib/api/hooks/useSocial.ts",
+    "apps/web/src/lib/api/hooks/useUser.ts",
     "apps/web/src/lib/hooks/use-toast.ts",
     "apps/web/src/lib/hooks/useMediaQuery.ts",
     "apps/web/src/lib/queryClient.ts",
@@ -1533,6 +1636,94 @@
       "to": "apps/web/src/lib/queryClient.ts"
     },
     {
+      "from": "apps/web/src/lib/api/__tests__/client.test.ts",
+      "to": "apps/web/src/lib/api/client.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/__tests__/client.test.ts",
+      "to": "apps/web/src/lib/store/authStore.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/__tests__/client.test.ts",
+      "to": "apps/web/src/lib/store/offlineStore.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/client.ts",
+      "to": "apps/web/src/lib/store/authStore.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/client.ts",
+      "to": "apps/web/src/lib/store/offlineStore.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/__tests__/useAuth.test.ts",
+      "to": "apps/web/src/lib/api/client.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/__tests__/useAuth.test.ts",
+      "to": "apps/web/src/lib/api/hooks/useAuth.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/__tests__/useAuth.test.ts",
+      "to": "apps/web/src/lib/store/authStore.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/__tests__/usePost.test.ts",
+      "to": "apps/web/src/lib/api/client.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/__tests__/usePost.test.ts",
+      "to": "apps/web/src/lib/api/hooks/usePost.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/index.ts",
+      "to": "apps/web/src/lib/api/hooks/useAuth.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/index.ts",
+      "to": "apps/web/src/lib/api/hooks/useFeed.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/index.ts",
+      "to": "apps/web/src/lib/api/hooks/usePost.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/index.ts",
+      "to": "apps/web/src/lib/api/hooks/useSocial.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/index.ts",
+      "to": "apps/web/src/lib/api/hooks/useUser.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/useAuth.ts",
+      "to": "apps/web/src/lib/api/client.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/useAuth.ts",
+      "to": "apps/web/src/lib/store/authStore.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/useFeed.ts",
+      "to": "apps/web/src/lib/api/client.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/usePost.ts",
+      "to": "apps/web/src/lib/api/client.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/useSocial.ts",
+      "to": "apps/web/src/lib/api/client.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/useUser.ts",
+      "to": "apps/web/src/lib/api/client.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/hooks/useUser.ts",
+      "to": "apps/web/src/lib/store/authStore.ts"
+    },
+    {
       "from": "apps/web/src/lib/store/__tests__/authStore.test.ts",
       "to": "apps/web/src/lib/store/authStore.ts"
     },
@@ -1567,10 +1758,6 @@
     {
       "from": "apps/web/test/mocks/handlers.ts",
       "to": "apps/web/test/mocks/data.ts"
-    },
-    {
-      "from": "apps/web/test/mocks/server.ts",
-      "to": "apps/web/test/mocks/handlers.ts"
     },
     {
       "from": "apps/web/test/setup.ts",
@@ -2065,18 +2252,18 @@
           ]
         },
         {
+          "from": "@aws-sdk/client-s3",
+          "kind": "import",
+          "imported": [
+            "DeleteObjectCommand",
+            "PutObjectCommand"
+          ]
+        },
+        {
           "from": "@aws-sdk/s3-request-presigner",
           "kind": "import",
           "imported": [
             "getSignedUrl"
-          ]
-        },
-        {
-          "from": "@aws-sdk/client-s3",
-          "kind": "import",
-          "imported": [
-            "PutObjectCommand",
-            "DeleteObjectCommand"
           ]
         }
       ],
@@ -2914,6 +3101,13 @@
     "apps/api/src/rpc/routers/media.ts": {
       "imports": [
         {
+          "from": "node:crypto",
+          "kind": "import",
+          "imported": [
+            "randomUUID"
+          ]
+        },
+        {
           "from": "@prisma/client",
           "kind": "import",
           "imported": [
@@ -2936,10 +3130,13 @@
           ]
         },
         {
-          "from": "node:crypto",
+          "from": "../../lib/s3",
           "kind": "import",
           "imported": [
-            "randomUUID"
+            "deleteS3Object",
+            "generateMediaKey",
+            "generatePresignedUploadUrl",
+            "getPublicUrl"
           ]
         },
         {
@@ -2953,23 +3150,13 @@
           "from": "./schemas/media",
           "kind": "import",
           "imported": [
-            "initiateUploadSchema",
+            "ALLOWED_MEDIA_TYPES",
             "completeUploadSchema",
             "deleteMediaSchema",
-            "getStorageUsageSchema",
             "getMaxFileSizeForType",
             "getMediaTypeFromMimeType",
-            "ALLOWED_MEDIA_TYPES"
-          ]
-        },
-        {
-          "from": "../../lib/s3",
-          "kind": "import",
-          "imported": [
-            "generatePresignedUploadUrl",
-            "deleteS3Object",
-            "generateMediaKey",
-            "getPublicUrl"
+            "getStorageUsageSchema",
+            "initiateUploadSchema"
           ]
         }
       ],
@@ -3963,16 +4150,16 @@
           ]
         },
         {
+          "from": "bcryptjs",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
           "from": "zod",
           "kind": "import",
           "imported": [
             "z"
           ]
-        },
-        {
-          "from": "bcrypt",
-          "kind": "import",
-          "isDefault": true
         },
         {
           "from": "../../lib/auth",
@@ -7200,6 +7387,20 @@
       "dependencies": [],
       "functions": [
         {
+          "name": "detectEnvironment",
+          "params": [],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "\"docker\" | \"ci\" | \"local\""
+        },
+        {
+          "name": "getDatabaseUrl",
+          "params": [],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "string"
+        },
+        {
           "name": "getTestDatabase",
           "params": [],
           "isAsync": false,
@@ -7317,21 +7518,34 @@
       "classes": [],
       "constants": []
     },
+    "apps/web/apps/web/test/mocks/server.ts": {
+      "imports": [],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "server",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
     "apps/web/postcss.config.js": {
       "imports": [
-        {
-          "from": "node:url",
-          "kind": "import",
-          "imported": [
-            "fileURLToPath"
-          ]
-        },
         {
           "from": "node:path",
           "kind": "import",
           "imported": [
             "dirname",
             "join"
+          ]
+        },
+        {
+          "from": "node:url",
+          "kind": "import",
+          "imported": [
+            "fileURLToPath"
           ]
         }
       ],
@@ -7772,14 +7986,21 @@
     "apps/web/src/components/layout/__tests__/AppShell.test.tsx": {
       "imports": [
         {
+          "from": "@/lib/store/uiStore",
+          "kind": "import",
+          "imported": [
+            "useUIStore"
+          ]
+        },
+        {
           "from": "vitest",
           "kind": "import",
           "imported": [
+            "beforeEach",
             "describe",
             "expect",
             "it",
-            "vi",
-            "beforeEach"
+            "vi"
           ]
         },
         {
@@ -7795,13 +8016,6 @@
           "kind": "import",
           "imported": [
             "AppShell"
-          ]
-        },
-        {
-          "from": "@/lib/store/uiStore",
-          "kind": "import",
-          "imported": [
-            "useUIStore"
           ]
         }
       ],
@@ -7822,13 +8036,20 @@
     "apps/web/src/components/layout/__tests__/BottomNav.test.tsx": {
       "imports": [
         {
+          "from": "@/lib/store/uiStore",
+          "kind": "import",
+          "imported": [
+            "useUIStore"
+          ]
+        },
+        {
           "from": "vitest",
           "kind": "import",
           "imported": [
+            "beforeEach",
             "describe",
             "expect",
-            "it",
-            "beforeEach"
+            "it"
           ]
         },
         {
@@ -7845,13 +8066,6 @@
           "imported": [
             "BottomNav"
           ]
-        },
-        {
-          "from": "@/lib/store/uiStore",
-          "kind": "import",
-          "imported": [
-            "useUIStore"
-          ]
         }
       ],
       "dependencies": [
@@ -7865,13 +8079,25 @@
     "apps/web/src/components/layout/__tests__/MobileHeader.test.tsx": {
       "imports": [
         {
+          "from": "@/lib/store/uiStore",
+          "kind": "import",
+          "imported": [
+            "useUIStore"
+          ]
+        },
+        {
+          "from": "@testing-library/user-event",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
           "from": "vitest",
           "kind": "import",
           "imported": [
+            "beforeEach",
             "describe",
             "expect",
-            "it",
-            "beforeEach"
+            "it"
           ]
         },
         {
@@ -7888,18 +8114,6 @@
           "imported": [
             "MobileHeader"
           ]
-        },
-        {
-          "from": "@/lib/store/uiStore",
-          "kind": "import",
-          "imported": [
-            "useUIStore"
-          ]
-        },
-        {
-          "from": "@testing-library/user-event",
-          "kind": "import",
-          "isDefault": true
         }
       ],
       "dependencies": [
@@ -7913,13 +8127,25 @@
     "apps/web/src/components/layout/__tests__/NavBar.test.tsx": {
       "imports": [
         {
+          "from": "@/lib/store/uiStore",
+          "kind": "import",
+          "imported": [
+            "useUIStore"
+          ]
+        },
+        {
+          "from": "@testing-library/user-event",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
           "from": "vitest",
           "kind": "import",
           "imported": [
+            "beforeEach",
             "describe",
             "expect",
-            "it",
-            "beforeEach"
+            "it"
           ]
         },
         {
@@ -7936,18 +8162,6 @@
           "imported": [
             "NavBar"
           ]
-        },
-        {
-          "from": "@/lib/store/uiStore",
-          "kind": "import",
-          "imported": [
-            "useUIStore"
-          ]
-        },
-        {
-          "from": "@testing-library/user-event",
-          "kind": "import",
-          "isDefault": true
         }
       ],
       "dependencies": [
@@ -8864,20 +9078,20 @@
     "apps/web/src/lib/__tests__/queryClient.test.ts": {
       "imports": [
         {
-          "from": "vitest",
-          "kind": "import",
-          "imported": [
-            "describe",
-            "it",
-            "expect",
-            "beforeEach"
-          ]
-        },
-        {
           "from": "@tanstack/react-query",
           "kind": "import",
           "imported": [
             "QueryClient"
+          ]
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it"
           ]
         },
         {
@@ -8892,6 +9106,708 @@
         "apps/web/src/lib/queryClient.ts"
       ],
       "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/api/__tests__/client.test.ts": {
+      "imports": [
+        {
+          "from": "@vrss/api-contracts",
+          "kind": "import",
+          "imported": [
+            "ErrorCode"
+          ]
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "afterEach",
+            "beforeEach",
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "from": "../../store/authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore"
+          ]
+        },
+        {
+          "from": "../../store/offlineStore",
+          "kind": "import",
+          "imported": [
+            "useOfflineStore"
+          ]
+        },
+        {
+          "from": "../client",
+          "kind": "import",
+          "imported": [
+            "rpcClient"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/api/client.ts",
+        "apps/web/src/lib/store/authStore.ts",
+        "apps/web/src/lib/store/offlineStore.ts"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/api/client.ts": {
+      "imports": [
+        {
+          "from": "@vrss/api-contracts",
+          "kind": "import",
+          "imported": [
+            "AuthProcedures",
+            "ErrorCode",
+            "RPCRequest",
+            "RPCRequestContext",
+            "RPCResponse"
+          ]
+        },
+        {
+          "from": "../store/authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore"
+          ]
+        },
+        {
+          "from": "../store/offlineStore",
+          "kind": "import",
+          "imported": [
+            "useOfflineStore"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/store/authStore.ts",
+        "apps/web/src/lib/store/offlineStore.ts"
+      ],
+      "functions": [
+        {
+          "name": "isMutationProcedure",
+          "params": [
+            {
+              "name": "procedure",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "boolean"
+        },
+        {
+          "name": "createTimeoutPromise",
+          "params": [
+            {
+              "name": "timeout",
+              "type": "number"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "Promise<never>"
+        }
+      ],
+      "classes": [
+        {
+          "name": "RPCError",
+          "isExported": true,
+          "methods": [],
+          "properties": [
+            {
+              "name": "code",
+              "type": "number"
+            },
+            {
+              "name": "details",
+              "type": "unknown"
+            }
+          ],
+          "extends": "Error"
+        },
+        {
+          "name": "RPCClient",
+          "isExported": false,
+          "methods": [
+            {
+              "name": "call",
+              "params": [
+                {
+                  "name": "procedure",
+                  "type": "string"
+                },
+                {
+                  "name": "input",
+                  "type": "TInput"
+                },
+                {
+                  "name": "options",
+                  "type": "RPCCallOptions"
+                }
+              ],
+              "isAsync": true,
+              "returnType": "Promise<TOutput>"
+            },
+            {
+              "name": "batch",
+              "params": [
+                {
+                  "name": "calls",
+                  "type": "Array<{ procedure: string; input: unknown; options?: RPCCallOptions }>"
+                }
+              ],
+              "isAsync": true,
+              "returnType": "Promise<T[]>"
+            }
+          ],
+          "properties": [
+            {
+              "name": "baseUrl",
+              "type": "string",
+              "isPrivate": true
+            }
+          ]
+        }
+      ],
+      "constants": [
+        {
+          "name": "API_BASE_URL",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "DEFAULT_TIMEOUT",
+          "initKind": "literal",
+          "isExported": false
+        },
+        {
+          "name": "rpcClient",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "api",
+          "initKind": "object",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/web/src/lib/api/hooks/__tests__/useAuth.test.ts": {
+      "imports": [
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "QueryClient",
+            "QueryClientProvider"
+          ]
+        },
+        {
+          "from": "@testing-library/react",
+          "kind": "import",
+          "imported": [
+            "renderHook",
+            "waitFor"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "ReactNode",
+            "createElement"
+          ]
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "from": "../../../store/authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore"
+          ]
+        },
+        {
+          "from": "../../client",
+          "kind": "import",
+          "imported": [
+            "api"
+          ]
+        },
+        {
+          "from": "../useAuth",
+          "kind": "import",
+          "imported": [
+            "useLogin",
+            "useLogout",
+            "useRegister",
+            "useSession"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/api/client.ts",
+        "apps/web/src/lib/api/hooks/useAuth.ts",
+        "apps/web/src/lib/store/authStore.ts"
+      ],
+      "functions": [
+        {
+          "name": "createWrapper",
+          "params": [],
+          "isAsync": false,
+          "isExported": false
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/api/hooks/__tests__/usePost.test.ts": {
+      "imports": [
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "QueryClient",
+            "QueryClientProvider"
+          ]
+        },
+        {
+          "from": "@testing-library/react",
+          "kind": "import",
+          "imported": [
+            "renderHook",
+            "waitFor"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "ReactNode",
+            "createElement"
+          ]
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "from": "../../client",
+          "kind": "import",
+          "imported": [
+            "api"
+          ]
+        },
+        {
+          "from": "../usePost",
+          "kind": "import",
+          "imported": [
+            "useCreatePost",
+            "useLikePost",
+            "usePost",
+            "useUnlikePost"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/api/client.ts",
+        "apps/web/src/lib/api/hooks/usePost.ts"
+      ],
+      "functions": [
+        {
+          "name": "createWrapper",
+          "params": [],
+          "isAsync": false,
+          "isExported": false
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/api/hooks/index.ts": {
+      "imports": [
+        {
+          "from": "./useAuth",
+          "kind": "export",
+          "imported": [
+            "useLogin",
+            "useRegister",
+            "useLogout",
+            "useSession",
+            "useAuth"
+          ]
+        },
+        {
+          "from": "./usePost",
+          "kind": "export",
+          "imported": [
+            "useCreatePost",
+            "usePost",
+            "useUpdatePost",
+            "useDeletePost",
+            "useLikePost",
+            "useUnlikePost"
+          ]
+        },
+        {
+          "from": "./useFeed",
+          "kind": "export",
+          "imported": [
+            "useFeed"
+          ]
+        },
+        {
+          "from": "./useUser",
+          "kind": "export",
+          "imported": [
+            "useUserProfile",
+            "useUpdateProfile"
+          ]
+        },
+        {
+          "from": "./useSocial",
+          "kind": "export",
+          "imported": [
+            "useFollow",
+            "useUnfollow",
+            "useFollowers",
+            "useFollowing"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/api/hooks/useAuth.ts",
+        "apps/web/src/lib/api/hooks/useFeed.ts",
+        "apps/web/src/lib/api/hooks/usePost.ts",
+        "apps/web/src/lib/api/hooks/useSocial.ts",
+        "apps/web/src/lib/api/hooks/useUser.ts"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/api/hooks/useAuth.ts": {
+      "imports": [
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "useMutation",
+            "useQuery",
+            "useQueryClient"
+          ]
+        },
+        {
+          "from": "@vrss/api-contracts",
+          "kind": "import",
+          "imported": [
+            "AuthProcedures"
+          ]
+        },
+        {
+          "from": "../../store/authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore"
+          ]
+        },
+        {
+          "from": "../client",
+          "kind": "import",
+          "imported": [
+            "api",
+            "rpcClient"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/api/client.ts",
+        "apps/web/src/lib/store/authStore.ts"
+      ],
+      "functions": [
+        {
+          "name": "useLogin",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "useRegister",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "useLogout",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "useSession",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "useAuth",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/api/hooks/useFeed.ts": {
+      "imports": [
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "useInfiniteQuery"
+          ]
+        },
+        {
+          "from": "../client",
+          "kind": "import",
+          "imported": [
+            "api"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/api/client.ts"
+      ],
+      "functions": [
+        {
+          "name": "useFeed",
+          "params": [
+            {
+              "name": "options",
+              "type": "{\n    algorithmId?: string;\n    limit?: number;\n    enabled?: boolean;\n  }"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/api/hooks/usePost.ts": {
+      "imports": [
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "useMutation",
+            "useQuery",
+            "useQueryClient"
+          ]
+        },
+        {
+          "from": "../client",
+          "kind": "import",
+          "imported": [
+            "api"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/api/client.ts"
+      ],
+      "functions": [
+        {
+          "name": "useCreatePost",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "usePost",
+          "params": [
+            {
+              "name": "postId",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "useUpdatePost",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "useDeletePost",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "useLikePost",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "useUnlikePost",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/api/hooks/useSocial.ts": {
+      "imports": [
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "useMutation",
+            "useQuery",
+            "useQueryClient"
+          ]
+        },
+        {
+          "from": "../client",
+          "kind": "import",
+          "imported": [
+            "api"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/api/client.ts"
+      ],
+      "functions": [
+        {
+          "name": "useFollow",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "useUnfollow",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "useFollowers",
+          "params": [
+            {
+              "name": "userId",
+              "type": "string"
+            },
+            {
+              "name": "options",
+              "type": "{ limit?: number }"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "useFollowing",
+          "params": [
+            {
+              "name": "userId",
+              "type": "string"
+            },
+            {
+              "name": "options",
+              "type": "{ limit?: number }"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/lib/api/hooks/useUser.ts": {
+      "imports": [
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "useMutation",
+            "useQuery",
+            "useQueryClient"
+          ]
+        },
+        {
+          "from": "../../store/authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore"
+          ]
+        },
+        {
+          "from": "../client",
+          "kind": "import",
+          "imported": [
+            "api"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/lib/api/client.ts",
+        "apps/web/src/lib/store/authStore.ts"
+      ],
+      "functions": [
+        {
+          "name": "useUserProfile",
+          "params": [
+            {
+              "name": "username",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        },
+        {
+          "name": "useUpdateProfile",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
       "classes": [],
       "constants": []
     },
@@ -9065,10 +9981,10 @@
           "from": "vitest",
           "kind": "import",
           "imported": [
-            "describe",
-            "it",
-            "expect",
             "beforeEach",
+            "describe",
+            "expect",
+            "it",
             "vi"
           ]
         },
@@ -9076,8 +9992,8 @@
           "from": "../authStore",
           "kind": "import",
           "imported": [
-            "useAuthStore",
-            "User"
+            "User",
+            "useAuthStore"
           ]
         }
       ],
@@ -9094,10 +10010,10 @@
           "from": "vitest",
           "kind": "import",
           "imported": [
-            "describe",
-            "it",
-            "expect",
             "beforeEach",
+            "describe",
+            "expect",
+            "it",
             "vi"
           ]
         },
@@ -9105,8 +10021,8 @@
           "from": "../offlineStore",
           "kind": "import",
           "imported": [
-            "useOfflineStore",
-            "QueuedAction"
+            "QueuedAction",
+            "useOfflineStore"
           ]
         }
       ],
@@ -9129,11 +10045,11 @@
           "from": "vitest",
           "kind": "import",
           "imported": [
+            "afterEach",
+            "beforeEach",
             "describe",
             "expect",
             "it",
-            "beforeEach",
-            "afterEach",
             "vi"
           ]
         },
@@ -9165,8 +10081,8 @@
           "from": "zustand/middleware",
           "kind": "import",
           "imported": [
-            "persist",
-            "createJSONStorage"
+            "createJSONStorage",
+            "persist"
           ]
         }
       ],
@@ -9194,8 +10110,8 @@
           "from": "zustand/middleware",
           "kind": "import",
           "imported": [
-            "persist",
-            "createJSONStorage"
+            "createJSONStorage",
+            "persist"
           ]
         }
       ],
@@ -9287,16 +10203,6 @@
     "apps/web/src/main.tsx": {
       "imports": [
         {
-          "from": "react",
-          "kind": "import",
-          "isDefault": true
-        },
-        {
-          "from": "react-dom/client",
-          "kind": "import",
-          "isDefault": true
-        },
-        {
           "from": "@tanstack/react-query",
           "kind": "import",
           "imported": [
@@ -9309,6 +10215,16 @@
           "imported": [
             "ReactQueryDevtools"
           ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "react-dom/client",
+          "kind": "import",
+          "isDefault": true
         },
         {
           "from": "./App",
@@ -9535,25 +10451,8 @@
       ]
     },
     "apps/web/test/mocks/server.ts": {
-      "imports": [
-        {
-          "from": "msw/node",
-          "kind": "import",
-          "imported": [
-            "setupServer"
-          ]
-        },
-        {
-          "from": "./handlers",
-          "kind": "import",
-          "imported": [
-            "handlers"
-          ]
-        }
-      ],
-      "dependencies": [
-        "apps/web/test/mocks/handlers.ts"
-      ],
+      "imports": [],
+      "dependencies": [],
       "functions": [],
       "classes": [],
       "constants": [

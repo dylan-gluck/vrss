@@ -118,6 +118,8 @@ describe("usePost", () => {
   it("should not fetch when postId is empty", () => {
     const { result } = renderHook(() => usePost(""), { wrapper: createWrapper() });
 
-    expect(result.current.isPending).toBe(false);
+    // Disabled queries have isPending=true but isFetching=false in TanStack Query v5
+    expect(result.current.isFetching).toBe(false);
+    expect(result.current.fetchStatus).toBe("idle");
   });
 });

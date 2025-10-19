@@ -57,7 +57,7 @@ describe("Test Infrastructure", () => {
   });
 
   describe("TanStack Query Provider Setup", () => {
-    it("should provide QueryClient context", () => {
+    it("should provide QueryClient context", async () => {
       const TestComponent = () => {
         const query = useQuery({
           queryKey: ["test"],
@@ -70,7 +70,7 @@ describe("Test Infrastructure", () => {
       renderWithProviders(<TestComponent />);
 
       // Query should eventually resolve
-      waitFor(() => {
+      await waitFor(() => {
         expect(screen.getByText("Query works")).toBeInTheDocument();
       });
     });

@@ -8,42 +8,52 @@ import {
 } from "./data";
 
 /**
- * API base URL - matches the RPC client configuration
+ * API base URLs - support multiple ports for different test environments
+ * Port 3000: Default development
+ * Port 3030: Backend API server
  */
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URLS = ["http://localhost:3000", "http://localhost:3030"];
 
 /**
  * Helper to create RPC success response
  */
-function rpcSuccess<T>(result: T, id = "test-id") {
+function rpcSuccess<T>(data: T) {
   return HttpResponse.json({
-    result,
-    id,
+    success: true,
+    data,
+    metadata: {
+      timestamp: Date.now(),
+      requestId: `test-${Date.now()}`,
+    },
   });
 }
 
 /**
  * Helper to create RPC error response
  */
-function rpcError(code: number, message: string, id = "test-id") {
+function rpcError(code: number, message: string, details?: unknown) {
   return HttpResponse.json({
+    success: false,
     error: {
       code,
       message,
+      details,
     },
-    id,
+    metadata: {
+      timestamp: Date.now(),
+      requestId: `test-${Date.now()}`,
+    },
   });
 }
 
 /**
- * MSW handlers for RPC API endpoints
+ * Create RPC handler function
  */
-export const handlers = [
-  // ============ Authentication Endpoints ============
-
-  http.post(`${API_BASE_URL}/api/rpc`, async ({ request }) => {
+const rpcHandler = async ({ request }: { request: Request }) => {
     const body = (await request.json()) as any;
-    const { method, params } = body;
+    // Support both old format (method/params) and new format (procedure/input)
+    const method = body.method || body.procedure;
+    const params = body.params || body.input;
 
     // Auth: Register
     if (method === "auth.register") {
@@ -374,5 +384,12 @@ export const handlers = [
 
     // Default: Unknown method
     return rpcError(404, `Unknown RPC method: ${method}`);
-  }),
-];
+};
+
+/**
+ * MSW handlers for RPC API endpoints
+ * Registers handlers for multiple base URLs to support different test environments
+ */
+export const handlers = API_BASE_URLS.flatMap((baseUrl) => [
+  http.post(`${baseUrl}/api/rpc`, rpcHandler),
+]);
