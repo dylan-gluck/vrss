@@ -251,7 +251,7 @@ jobs:
         working-directory: e2e
 
       - name: Start services
-        run: docker-compose up -d
+        run: docker compose up -d
         env:
           NODE_ENV: test
 
@@ -274,4 +274,4 @@ jobs:
 
       - name: Stop services
         if: always()
-        run: docker-compose down
+        run: docker compose down
