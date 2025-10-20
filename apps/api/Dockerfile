@@ -48,6 +48,9 @@ RUN mkdir -p ./e2e && echo '{"name":"e2e","private":true}' > ./e2e/package.json
 # Install all workspace dependencies (Bun handles workspace: protocol)
 RUN bun install
 
+# Build api-contracts package
+RUN cd /app/packages/api-contracts && bun run build
+
 # Set working directory to backend app
 WORKDIR /app/apps/api
 

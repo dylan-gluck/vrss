@@ -41,6 +41,9 @@ RUN mkdir -p ./e2e && echo '{"name":"e2e","private":true}' > ./e2e/package.json
 # Install all workspace dependencies (Bun handles workspace: protocol)
 RUN bun install
 
+# Build api-contracts package
+RUN cd /app/packages/api-contracts && bun run build
+
 # Change ownership of node_modules to bunuser for Vite temp file writes
 RUN chown -R bunuser:nobody /app/node_modules /app/apps/web/node_modules 2>/dev/null || true
 
