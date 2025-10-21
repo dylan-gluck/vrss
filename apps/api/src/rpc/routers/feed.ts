@@ -153,7 +153,7 @@ export const feedRouter = {
         throw new RPCError(ErrorCode.UNAUTHORIZED, "Authentication required");
       }
 
-      const result = await getDefaultFeed(ctx.user.id, { limit, cursor });
+      const result = await getDefaultFeed(ctx.user.id, { limit, cursor: cursor !== undefined ? String(cursor) : undefined });
 
       return {
         posts: result.posts,
@@ -194,7 +194,7 @@ export const feedRouter = {
     };
 
     // Execute feed algorithm
-    const result = await executeFeedAlgorithm(ctx.user.id, algorithmConfig, { limit, cursor });
+    const result = await executeFeedAlgorithm(ctx.user.id, algorithmConfig, { limit, cursor: cursor !== undefined ? String(cursor) : undefined });
 
     return {
       posts: result.posts,

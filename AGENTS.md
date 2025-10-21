@@ -1,15 +1,13 @@
 # VRSS Agent Guidelines
 
-## Commands
-- **Docker**: `make start` (dev), `make stop`, `make logs`, `make build`
-- **Local**: `bun run build` (all), `bun run build --filter=@vrss/api` (single)
-- **Lint**: `make lint` (Docker), `bun run lint` (local), `make lint-check` (check only)
-- **Format**: `make format` (Docker), `bun run format` (local)
-- **Type Check**: `make typecheck` (Docker), `bun run type-check` (local)
-- **Test**: `make test` (Docker fast), `make test-docker` (isolated), `bun run test` (local)
-- **Single Test**: `make test-backend`/`make test-frontend` (Docker), `bun test`/`npx vitest run` (local)
-- **E2E**: `bun run test:e2e` (Playwright)
-- **Database**: `make db-migrate`, `make db-seed`, `make db-shell`
+VRSS social platform. MVP build. Monorepo.
+
+## Commands (From Monorepo Root)
+- Start/Stop/Restart services: `make start`, `make stop`, `make restart`
+- Tail logs: `make logs`
+- Typecheck & Lint: `make check`
+- Tests: `make test`
+- Rebuild: `make rebuild`
 
 ## Code Style
 - **Formatter**: Biome (2 spaces, 100 char width, double quotes, semicolons)
@@ -26,3 +24,16 @@
 - API: Hono + Bun + Prisma + Better Auth
 - Web: Vite + React + TanStack Query + Zustand + Tailwind
 - Database: PostgreSQL with Docker volumes
+
+## Documentation
+Evergreen Docs (source of truth). MUST Keep updated with any changes.
+- `docs/API.md`
+- `docs/ARCHITECTURE.md`
+- `docs/AUTHENTICATION.md`
+- `docs/DATA_MODEL.md`
+- `docs/DATABASE.md`
+- `docs/DOCKER.md`
+- `docs/FRONTEND.md`
+- `docs/INFRASTRUCTURE.md`
+- `docs/TECH_STACK.md`
+- `docs/TESTING.md`
