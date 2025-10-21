@@ -224,10 +224,7 @@ export const authRouter = {
 
       // Check if signup was successful
       if (!result || !result.user) {
-        throw new RPCError(
-          ErrorCode.INTERNAL_SERVER_ERROR,
-          "Failed to create user account"
-        );
+        throw new RPCError(ErrorCode.INTERNAL_SERVER_ERROR, "Failed to create user account");
       }
 
       // Return user (without session - must verify email first)
@@ -256,11 +253,9 @@ export const authRouter = {
         }
       }
       // Generic error fallback
-      throw new RPCError(
-        ErrorCode.INTERNAL_SERVER_ERROR,
-        "Failed to create user account",
-        { originalError: error instanceof Error ? error.message : String(error) }
-      );
+      throw new RPCError(ErrorCode.INTERNAL_SERVER_ERROR, "Failed to create user account", {
+        originalError: error instanceof Error ? error.message : String(error),
+      });
     }
   },
 
@@ -333,10 +328,7 @@ export const authRouter = {
 
       // Check if login was successful
       if (!result || !result.user) {
-        throw new RPCError(
-          AuthErrorCode.AUTH_INVALID_CREDENTIALS,
-          "Invalid username or password"
-        );
+        throw new RPCError(AuthErrorCode.AUTH_INVALID_CREDENTIALS, "Invalid username or password");
       }
 
       // Update lastLoginAt
@@ -369,7 +361,11 @@ export const authRouter = {
         // Email verification is disabled for MVP, so skip that check
 
         // Check for invalid credentials
-        if (errorMessage.includes("invalid") || errorMessage.includes("incorrect") || errorMessage.includes("password")) {
+        if (
+          errorMessage.includes("invalid") ||
+          errorMessage.includes("incorrect") ||
+          errorMessage.includes("password")
+        ) {
           throw new RPCError(
             AuthErrorCode.AUTH_INVALID_CREDENTIALS,
             "Invalid username or password"
@@ -383,11 +379,9 @@ export const authRouter = {
       }
 
       // Generic error fallback - use generic message to prevent username enumeration
-      throw new RPCError(
-        AuthErrorCode.AUTH_INVALID_CREDENTIALS,
-        "Invalid username or password",
-        { originalError: error instanceof Error ? error.message : String(error) }
-      );
+      throw new RPCError(AuthErrorCode.AUTH_INVALID_CREDENTIALS, "Invalid username or password", {
+        originalError: error instanceof Error ? error.message : String(error),
+      });
     }
   },
 
@@ -496,10 +490,7 @@ export const authRouter = {
 
       // Check if verification was successful
       if (!result || !result.user) {
-        throw new RPCError(
-          AuthErrorCode.AUTH_TOKEN_INVALID,
-          "Invalid verification token"
-        );
+        throw new RPCError(AuthErrorCode.AUTH_TOKEN_INVALID, "Invalid verification token");
       }
 
       // With autoSignInAfterVerification: true, better-auth creates a session cookie
@@ -545,10 +536,7 @@ export const authRouter = {
 
         // Check for invalid token
         if (errorMessage.includes("invalid") || errorMessage.includes("not found")) {
-          throw new RPCError(
-            AuthErrorCode.AUTH_TOKEN_INVALID,
-            "Invalid verification token"
-          );
+          throw new RPCError(AuthErrorCode.AUTH_TOKEN_INVALID, "Invalid verification token");
         }
 
         // Re-throw if it's already an RPCError
@@ -558,11 +546,9 @@ export const authRouter = {
       }
 
       // Generic error fallback
-      throw new RPCError(
-        AuthErrorCode.AUTH_TOKEN_INVALID,
-        "Invalid verification token",
-        { originalError: error instanceof Error ? error.message : String(error) }
-      );
+      throw new RPCError(AuthErrorCode.AUTH_TOKEN_INVALID, "Invalid verification token", {
+        originalError: error instanceof Error ? error.message : String(error),
+      });
     }
   },
 

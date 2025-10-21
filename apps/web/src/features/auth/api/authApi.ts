@@ -6,8 +6,8 @@
  */
 
 import { api } from "@/lib/api/client";
-import type { LoginCredentials, RegisterData, AuthResponse } from "../types/auth.types";
 import type { AuthProcedures } from "@vrss/api-contracts";
+import type { AuthResponse, LoginCredentials, RegisterData } from "../types/auth.types";
 
 /**
  * Authentication API methods

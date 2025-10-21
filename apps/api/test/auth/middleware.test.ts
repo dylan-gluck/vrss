@@ -10,6 +10,7 @@
 
 import { afterAll, beforeAll, describe, expect, it } from "bun:test";
 import { PrismaClient } from "@prisma/client";
+import { hashPassword } from "better-auth/crypto";
 import { Hono } from "hono";
 
 const prisma = new PrismaClient();
@@ -30,11 +31,8 @@ async function createTestUser(emailVerified = true) {
   const username = `testuser_${timestamp}_${counter}`;
   const email = `test_${timestamp}_${counter}@example.com`;
 
-  // Hash password using Bun's bcrypt
-  const passwordHash = await Bun.password.hash("TestPassword123!", {
-    algorithm: "bcrypt",
-    cost: 12,
-  });
+  // Hash password using better-auth's crypto
+  const passwordHash = await hashPassword("TestPassword123!");
 
   const user = await prisma.user.create({
     data: {

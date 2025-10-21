@@ -40,7 +40,7 @@ export const feedFilterSchema = z
 export const getFeedSchema = z.object({
   feedId: z.string().optional(),
   limit: z.number().int().min(1).max(100).default(20),
-  cursor: z.string().optional(),
+  cursor: z.union([z.string(), z.number()]).optional(),
 });
 
 // =============================================================================

@@ -4,8 +4,8 @@
  * Page wrapper for email verification component.
  */
 
-import type React from "react";
 import { EmailVerification } from "@/features/auth/components/EmailVerification";
+import type React from "react";
 
 export const VerifyEmailPage: React.FC = () => {
   return <EmailVerification />;

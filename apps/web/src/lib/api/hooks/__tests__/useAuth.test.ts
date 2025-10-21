@@ -47,7 +47,7 @@ describe("useLogin", () => {
     const { result } = renderHook(() => useLogin(), { wrapper: createWrapper() });
 
     result.current.mutate({
-      email: "test@test.com",
+      username: "testuser",
       password: "password123",
     });
 
@@ -66,7 +66,7 @@ describe("useLogin", () => {
     const { result } = renderHook(() => useLogin(), { wrapper: createWrapper() });
 
     result.current.mutate({
-      email: "test@test.com",
+      username: "testuser",
       password: "wrong",
     });
 

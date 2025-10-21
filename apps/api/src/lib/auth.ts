@@ -81,6 +81,7 @@ const baseAuth = betterAuth({
   trustedOrigins: [
     process.env.APP_URL || "http://localhost:3000",
     process.env.WEB_URL || "http://localhost:5173",
+    process.env.FRONTEND_URL || "http://localhost:5050",
   ],
 
   // Plugins

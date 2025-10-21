@@ -10,13 +10,13 @@ import userEvent from "@testing-library/user-event";
 import { type ReactNode, createElement } from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { HomePage } from "../../../pages/HomePage";
 import { LoginPage } from "../../../pages/LoginPage";
 import { RegisterPage } from "../../../pages/RegisterPage";
-import { HomePage } from "../../../pages/HomePage";
 import { VerifyEmailPage } from "../../../pages/VerifyEmailPage";
+import * as authApi from "../api/authApi";
 import { AuthGuard } from "../components/AuthGuard";
 import { useAuthStore } from "../stores/authStore";
-import * as authApi from "../api/authApi";
 
 // Mock the auth API
 vi.mock("../api/authApi");

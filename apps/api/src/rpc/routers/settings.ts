@@ -16,6 +16,7 @@
 
 import { PrismaClient } from "@prisma/client";
 import { ErrorCode } from "@vrss/api-contracts";
+import { hashPassword, verifyPassword } from "better-auth/crypto";
 import type { z } from "zod";
 import { auth } from "../../lib/auth";
 import type { ProcedureContext } from "../types";
@@ -46,26 +47,6 @@ class RPCError extends Error {
 }
 
 // =============================================================================
-// HELPER FUNCTIONS
-// =============================================================================
-
-/**
- * Hash password using Bun's built-in bcrypt
- */
-async function hashPassword(password: string): Promise<string> {
-  return await Bun.password.hash(password, {
-    algorithm: "bcrypt",
-    cost: 12,
-  });
-}
-
-/**
- * Verify password against hash
- */
-async function verifyPassword(password: string, hash: string): Promise<boolean> {
-  return await Bun.password.verify(password, hash);
-}
-
 // =============================================================================
 // SETTINGS PROCEDURES
 // =============================================================================
@@ -164,7 +145,10 @@ export const settingsRouter = {
 
     // Verify current password if provided (required for sensitive changes)
     if (currentPassword) {
-      const isValid = await verifyPassword(currentPassword, user.passwordHash);
+      if (!user.passwordHash) {
+        throw new RPCError(ErrorCode.INVALID_CREDENTIALS, "No password set for this account");
+      }
+      const isValid = await verifyPassword({ hash: user.passwordHash, password: currentPassword });
       if (!isValid) {
         throw new RPCError(ErrorCode.INVALID_CREDENTIALS, "Current password is incorrect");
       }
@@ -367,7 +351,10 @@ export const settingsRouter = {
     }
 
     // Verify password
-    const isValid = await verifyPassword(password, user.passwordHash);
+    if (!user.passwordHash) {
+      throw new RPCError(ErrorCode.INVALID_CREDENTIALS, "No password set for this account");
+    }
+    const isValid = await verifyPassword({ hash: user.passwordHash, password });
     if (!isValid) {
       throw new RPCError(ErrorCode.INVALID_CREDENTIALS, "Password is incorrect");
     }

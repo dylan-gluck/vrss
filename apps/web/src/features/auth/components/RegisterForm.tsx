@@ -10,15 +10,7 @@
  * - Loading states
  */
 
-import type React from "react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -27,9 +19,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ROUTES } from "@/lib/constants/routes";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type React from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { z } from "zod";
 import { useAuth } from "../hooks/useAuth";
 import { PasswordStrength } from "./PasswordStrength";
-import { ROUTES } from "@/lib/constants/routes";
 
 const registerSchema = z
   .object({
@@ -37,10 +37,7 @@ const registerSchema = z
       .string()
       .min(3, "Username must be at least 3 characters")
       .max(20, "Username must be at most 20 characters")
-      .regex(
-        /^[a-zA-Z0-9_]+$/,
-        "Username can only contain letters, numbers, and underscores"
-      ),
+      .regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores"),
     email: z.string().email("Invalid email address"),
     password: z
       .string()
@@ -111,9 +108,7 @@ export const RegisterForm: React.FC = () => {
               {...register("email")}
               aria-invalid={errors.email ? "true" : "false"}
             />
-            {errors.email && (
-              <p className="text-sm text-destructive">{errors.email.message}</p>
-            )}
+            {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
           </div>
 
           <div className="space-y-2">

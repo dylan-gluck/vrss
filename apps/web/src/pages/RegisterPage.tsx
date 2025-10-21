@@ -5,8 +5,8 @@
  * Provides centered layout for authentication.
  */
 
-import type React from "react";
 import { RegisterForm } from "@/features/auth/components/RegisterForm";
+import type React from "react";
 
 export const RegisterPage: React.FC = () => {
   return (

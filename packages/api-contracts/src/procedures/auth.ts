@@ -23,7 +23,7 @@ export namespace AuthProcedures {
   // auth.login
   export namespace Login {
     export interface Input {
-      email: string;
+      username: string;
       password: string;
     }
 

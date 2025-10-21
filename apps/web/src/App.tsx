@@ -5,13 +5,13 @@
  * Sets up public and protected routes with React Router.
  */
 
-import { Route, Routes } from "react-router-dom";
-import { LoginPage } from "@/pages/LoginPage";
-import { RegisterPage } from "@/pages/RegisterPage";
-import { HomePage } from "@/pages/HomePage";
-import { VerifyEmailPage } from "@/pages/VerifyEmailPage";
 import { AuthGuard } from "@/features/auth/components/AuthGuard";
 import { ROUTES } from "@/lib/constants/routes";
+import { HomePage } from "@/pages/HomePage";
+import { LoginPage } from "@/pages/LoginPage";
+import { RegisterPage } from "@/pages/RegisterPage";
+import { VerifyEmailPage } from "@/pages/VerifyEmailPage";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (

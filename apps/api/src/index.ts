@@ -7,6 +7,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { createRPCRouter } from "./rpc";
+import { auth } from "./lib/auth";
 
 const app = new Hono();
 
@@ -36,6 +37,11 @@ app.get("/", (c) => {
     version: "0.1.0",
     description: "RPC-style API for VRSS Social Platform",
   });
+});
+
+// Mount better-auth endpoints - handle all methods at /api/auth/*
+app.all("/api/auth/*", (c) => {
+  return auth.handler(c.req.raw);
 });
 
 // Mount RPC router

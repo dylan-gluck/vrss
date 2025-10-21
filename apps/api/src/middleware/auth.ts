@@ -66,36 +66,6 @@ declare module "hono" {
 // HELPER FUNCTIONS
 // =============================================================================
 
-/**
- * Extract Bearer token from Authorization header
- *
- * Supports format: "Bearer <token>"
- *
- * @param c - Hono context
- * @returns Session token or null if not found or malformed
- */
-function extractBearerToken(c: Context): string | null {
-  const authHeader = c.req.header("Authorization");
-
-  if (!authHeader) {
-    return null;
-  }
-
-  // Check for "Bearer " prefix (note the space)
-  if (!authHeader.startsWith("Bearer ")) {
-    return null;
-  }
-
-  // Extract token after "Bearer "
-  const token = authHeader.substring(7).trim();
-
-  // Validate token is not empty and doesn't contain spaces
-  if (!token || token.includes(" ")) {
-    return null;
-  }
-
-  return token;
-}
 
 /**
  * Update session lastActivityAt timestamp and extend expiry
@@ -145,10 +115,8 @@ async function updateSessionActivity(sessionId: string): Promise<void> {
  * @param next - Next middleware/handler
  */
 export const authMiddleware: MiddlewareHandler = async (c, next) => {
-  // Extract session token from cookie or Authorization header
-  const cookieToken = getCookie(c, "vrss.session_token");
-  const bearerToken = extractBearerToken(c);
-  const sessionToken = cookieToken || bearerToken;
+  // Extract session token from cookie
+  const sessionToken = getCookie(c, "vrss.session_token");
 
   // If no token, continue without authentication (public procedure)
   if (!sessionToken) {

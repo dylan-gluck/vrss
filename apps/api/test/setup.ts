@@ -45,11 +45,10 @@ function getDatabaseUrl(): string {
 export function getTestDatabase(): PrismaClient {
   if (!prisma) {
     const databaseUrl = getDatabaseUrl();
-    const env = detectEnvironment();
 
     // Mask password in logs
     const maskedUrl = databaseUrl.replace(/:[^:]*@/, ":***@");
-    console.log(`⚠️ Initializing database connection (${env}): ${maskedUrl}`);
+    console.log(`⚠️ Initializing database connection: ${maskedUrl}`);
 
     prisma = new PrismaClient({
       datasourceUrl: databaseUrl,
@@ -66,7 +65,7 @@ beforeAll(async () => {
   const databaseUrl = getDatabaseUrl();
   const maskedUrl = databaseUrl.replace(/:[^:]*@/, ":***@");
 
-  console.log(`🔌 Connecting to test database...`);
+  console.log("🔌 Connecting to test database...");
   console.log(`📍 Connection: ${maskedUrl}`);
 
   // Initialize Prisma client

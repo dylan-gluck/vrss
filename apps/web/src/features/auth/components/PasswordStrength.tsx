@@ -106,7 +106,13 @@ const RequirementItem: React.FC<RequirementItemProps> = ({ met, text }) => (
       }`}
     >
       {met && (
-        <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-label="Requirement met">
+        <svg
+          className="h-3 w-3 text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          aria-label="Requirement met"
+        >
           <title>Requirement met</title>
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>

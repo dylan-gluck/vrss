@@ -104,6 +104,14 @@ export const unlikePostSchema = z.object({
   postId: z.string().min(1, "Post ID is required"),
 });
 
+export const bookmarkPostSchema = z.object({
+  postId: z.string().min(1, "Post ID is required"),
+});
+
+export const unbookmarkPostSchema = z.object({
+  postId: z.string().min(1, "Post ID is required"),
+});
+
 // =============================================================================
 // COMMENT SCHEMAS
 // =============================================================================

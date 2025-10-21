@@ -6,24 +6,27 @@
  */
 
 import type { Session, User } from "@prisma/client";
+import { hashPassword as betterAuthHashPassword } from "better-auth/crypto";
 import { getTestDatabase } from "../setup";
 
 /**
- * Hash a password using Bun's built-in bcrypt
+ * Hash a password using better-auth's crypto
  * Matches production password hashing
  */
 export async function hashPassword(password: string): Promise<string> {
-  return await Bun.password.hash(password, {
-    algorithm: "bcrypt",
-    cost: 10, // Lower cost for faster tests
-  });
+  return await betterAuthHashPassword(password);
 }
 
 /**
  * Verify a password against a hash
+ * Note: Better-auth's verifyPassword is used in production,
+ * but for testing we use better-auth's signup/signin APIs directly
  */
 export async function verifyPassword(password: string, hash: string): Promise<boolean> {
-  return await Bun.password.verify(password, hash);
+  // For testing, we should use better-auth's actual API instead of manually verifying
+  // This is a helper for legacy test compatibility
+  const { verifyPassword: betterAuthVerify } = await import("better-auth/crypto");
+  return await betterAuthVerify({ password, hash });
 }
 
 /**

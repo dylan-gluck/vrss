@@ -5,7 +5,6 @@
  * Shows after registration if email verification is required.
  */
 
-import type React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,9 +14,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useAuthStore } from "../stores/authStore";
 import { ROUTES } from "@/lib/constants/routes";
+import type React from "react";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../stores/authStore";
 
 export const EmailVerification: React.FC = () => {
   const user = useAuthStore((state) => state.user);
@@ -62,7 +62,10 @@ export const EmailVerification: React.FC = () => {
           <div className="text-sm text-muted-foreground">
             <p>
               Didn't receive the email? Check your spam folder or{" "}
-              <button type="button" className="text-primary hover:underline">resend verification email</button>.
+              <button type="button" className="text-primary hover:underline">
+                resend verification email
+              </button>
+              .
             </p>
           </div>
         </CardContent>

@@ -141,8 +141,6 @@ class RPCClient {
       signal,
     } = options;
 
-    // Get auth token from store
-    const token = useAuthStore.getState().token;
     const isOnline = useOfflineStore.getState().isOnline;
 
     // Build request
@@ -154,20 +152,17 @@ class RPCClient {
       },
     };
 
-    // Build headers
+    // Build headers - NO TOKEN! Better-auth handles cookies automatically
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
     };
 
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
-
-    // Create fetch promise
+    // Create fetch promise with credentials: 'include' to send cookies
     const fetchPromise = fetch(`${this.baseUrl}/api/rpc`, {
       method: "POST",
       headers,
       body: JSON.stringify(request),
+      credentials: "include", // Important: sends cookies with request
       signal,
     });
 

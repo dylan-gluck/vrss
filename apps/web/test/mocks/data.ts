@@ -1,3 +1,5 @@
+import type { Post } from "@/features/feed/hooks/useFeed";
+
 /**
  * Test Personas from TEST-SPECIFICATIONS.md
  * These personas match the specification requirements for testing
@@ -54,10 +56,10 @@ export const TEST_PERSONAS = {
 /**
  * Mock posts for testing feed functionality
  */
-export const MOCK_POSTS = [
+export const MOCK_POSTS: Post[] = [
   {
     id: "post-001",
-    type: "text",
+    type: "text" as const,
     author: {
       id: TEST_PERSONAS.CREATOR.id,
       username: TEST_PERSONAS.CREATOR.username,
@@ -76,7 +78,7 @@ export const MOCK_POSTS = [
   },
   {
     id: "post-002",
-    type: "image",
+    type: "image" as const,
     author: {
       id: TEST_PERSONAS.CREATOR.id,
       username: TEST_PERSONAS.CREATOR.username,
@@ -86,7 +88,7 @@ export const MOCK_POSTS = [
     media: [
       {
         id: "media-001",
-        type: "image",
+        type: "image" as const,
         url: "https://example.com/images/album-cover.jpg",
         thumbnailUrl: "https://example.com/images/album-cover-thumb.jpg",
         alt: "Album cover artwork",
@@ -105,7 +107,7 @@ export const MOCK_POSTS = [
   },
   {
     id: "post-003",
-    type: "text",
+    type: "text" as const,
     author: {
       id: TEST_PERSONAS.CONSUMER.id,
       username: TEST_PERSONAS.CONSUMER.username,
@@ -122,7 +124,7 @@ export const MOCK_POSTS = [
     createdAt: "2025-10-13T16:20:00Z",
     updatedAt: "2025-10-13T16:20:00Z",
   },
-] as const;
+];
 
 /**
  * Mock feed algorithms for testing feed builder

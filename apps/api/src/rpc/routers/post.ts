@@ -25,12 +25,14 @@ import { ErrorCode } from "@vrss/api-contracts";
 import type { z } from "zod";
 import type { ProcedureContext } from "../types";
 import {
+  bookmarkPostSchema,
   createCommentSchema,
   createPostSchema,
   deletePostSchema,
   getCommentsSchema,
   getPostByIdSchema,
   likePostSchema,
+  unbookmarkPostSchema,
   unlikePostSchema,
   updatePostSchema,
 } from "./schemas/post";
@@ -615,6 +617,120 @@ export const postRouter = {
     });
 
     return { success: true, wasNotLiked: false };
+  },
+
+  /**
+   * post.bookmark - Bookmark a post
+   *
+   * Creates a bookmark interaction. Database trigger automatically increments
+   * the post's bookmarksCount. Idempotent - bookmarking twice has no effect.
+   *
+   * @throws {RPCError} UNAUTHORIZED - User not authenticated
+   * @throws {RPCError} POST_NOT_FOUND - Post does not exist
+   */
+  "post.bookmark": async (ctx: ProcedureContext<z.infer<typeof bookmarkPostSchema>>) => {
+    // Check authentication
+    if (!ctx.user) {
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "Authentication required");
+    }
+
+    // Validate input
+    const validationResult = bookmarkPostSchema.safeParse(ctx.input);
+    if (!validationResult.success) {
+      const error = getValidationError(validationResult);
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, error.message, { field: error.field });
+    }
+
+    const { postId } = validationResult.data;
+    const userId = BigInt(ctx.user.id);
+
+    // Verify post exists and is not deleted
+    await getPostWithAuth(postId, ctx.user.id, { includeDeleted: false });
+
+    // Check if already bookmarked
+    const existingBookmark = await prisma.postInteraction.findUnique({
+      where: {
+        userId_postId_type: {
+          userId,
+          postId: BigInt(postId),
+          type: "bookmark",
+        },
+      },
+    });
+
+    if (existingBookmark) {
+      // Already bookmarked - idempotent operation
+      return { success: true, alreadyBookmarked: true };
+    }
+
+    // Create bookmark interaction (trigger will update counter)
+    await prisma.postInteraction.create({
+      data: {
+        userId,
+        postId: BigInt(postId),
+        type: "bookmark",
+      },
+    });
+
+    return { success: true, alreadyBookmarked: false };
+  },
+
+  /**
+   * post.unbookmark - Unbookmark a post
+   *
+   * Removes bookmark interaction. Database trigger automatically decrements
+   * the post's bookmarksCount. Idempotent - unbookmarking twice has no effect.
+   *
+   * @throws {RPCError} UNAUTHORIZED - User not authenticated
+   * @throws {RPCError} POST_NOT_FOUND - Post does not exist
+   */
+  "post.unbookmark": async (ctx: ProcedureContext<z.infer<typeof unbookmarkPostSchema>>) => {
+    // Check authentication
+    if (!ctx.user) {
+      throw new RPCError(ErrorCode.UNAUTHORIZED, "Authentication required");
+    }
+
+    // Validate input
+    const validationResult = unbookmarkPostSchema.safeParse(ctx.input);
+    if (!validationResult.success) {
+      const error = getValidationError(validationResult);
+      throw new RPCError(ErrorCode.VALIDATION_ERROR, error.message, { field: error.field });
+    }
+
+    const { postId } = validationResult.data;
+    const userId = BigInt(ctx.user.id);
+
+    // Verify post exists
+    await getPostWithAuth(postId, ctx.user.id, { includeDeleted: false });
+
+    // Check if bookmarked
+    const existingBookmark = await prisma.postInteraction.findUnique({
+      where: {
+        userId_postId_type: {
+          userId,
+          postId: BigInt(postId),
+          type: "bookmark",
+        },
+      },
+    });
+
+    if (!existingBookmark) {
+      // Not bookmarked - idempotent operation
+      return { success: true, wasNotBookmarked: true };
+    }
+
+    // Delete bookmark interaction (trigger will update counter)
+    await prisma.postInteraction.delete({
+      where: {
+        userId_postId_type: {
+          userId,
+          postId: BigInt(postId),
+          type: "bookmark",
+        },
+      },
+    });
+
+    return { success: true, wasNotBookmarked: false };
   },
 
   /**

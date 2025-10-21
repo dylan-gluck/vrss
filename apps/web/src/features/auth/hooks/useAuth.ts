@@ -1,29 +1,38 @@
 /**
- * Auth Hook - Phase 4.4
+ * Auth Hook - Better-auth Integration
  *
- * TanStack Query mutations for authentication procedures.
- * Integrates with AuthStore and provides navigation on success.
+ * Wrapper around better-auth client for authentication operations.
+ * Uses better-auth's built-in session management (cookie-based).
  */
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { authApi } from "../api/authApi";
-import { useAuthStore } from "../stores/authStore";
+import { signIn, signOut, signUp, useSession } from "@/lib/auth/client";
 import type { LoginCredentials, RegisterData } from "../types/auth.types";
 
 /**
  * Hook for authentication operations
- * Provides login, register, logout mutations with automatic state management
+ * Uses better-auth for all auth functionality
  */
 export function useAuth() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { setUser, logout: logoutStore, isAuthenticated, user } = useAuthStore();
+  const { data: session, isPending: isSessionLoading } = useSession();
 
   const loginMutation = useMutation({
-    mutationFn: (credentials: LoginCredentials) => authApi.login(credentials),
-    onSuccess: (data) => {
-      setUser(data.user, data.token);
+    mutationFn: async (credentials: LoginCredentials) => {
+      const result = await signIn.username({
+        username: credentials.username,
+        password: credentials.password,
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message || "Login failed");
+      }
+
+      return result;
+    },
+    onSuccess: () => {
       // Navigate to home after successful login
       navigate("/");
     },
@@ -33,11 +42,22 @@ export function useAuth() {
   });
 
   const registerMutation = useMutation({
-    mutationFn: (data: RegisterData) => authApi.register(data),
-    onSuccess: (data) => {
-      setUser(data.user, data.token);
+    mutationFn: async (data: RegisterData) => {
+      const result = await signUp.email({
+        email: data.email,
+        password: data.password,
+        name: data.username,
+        username: data.username,
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message || "Registration failed");
+      }
+
+      return result;
+    },
+    onSuccess: () => {
       // After registration, navigate to home
-      // Email verification will be handled by backend if required
       navigate("/");
     },
     onError: (error: Error) => {
@@ -46,16 +66,16 @@ export function useAuth() {
   });
 
   const logoutMutation = useMutation({
-    mutationFn: () => authApi.logout(),
+    mutationFn: async () => {
+      await signOut();
+    },
     onSuccess: () => {
-      logoutStore();
       queryClient.clear();
       navigate("/login");
     },
     onError: (error: Error) => {
       console.error("Logout failed:", error);
-      // Even if API call fails, clear local state
-      logoutStore();
+      // Even if API call fails, clear local state and navigate
       queryClient.clear();
       navigate("/login");
     },
@@ -76,8 +96,9 @@ export function useAuth() {
     loginError: loginMutation.error,
     registerError: registerMutation.error,
 
-    // Auth state
-    isAuthenticated,
-    user,
+    // Auth state from better-auth session
+    isAuthenticated: !!session?.user,
+    user: session?.user || null,
+    isSessionLoading,
   };
 }
