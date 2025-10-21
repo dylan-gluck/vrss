@@ -2,9 +2,9 @@
   "metadata": {
     "version": 1,
     "root": "/Users/dylan/Workspace/projects/vrss",
-    "createdAt": "2025-10-19T21:49:14.836Z",
-    "updatedAt": "2025-10-19T21:49:14.836Z",
-    "totalFiles": 152
+    "createdAt": "2025-10-21T06:38:05.209Z",
+    "updatedAt": "2025-10-21T06:38:05.209Z",
+    "totalFiles": 170
   },
   "tree": {
     "name": "vrss",
@@ -535,6 +535,106 @@
                     ]
                   },
                   {
+                    "name": "features",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "auth",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "__tests__",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "auth-integration.test.tsx",
+                                "type": "file"
+                              },
+                              {
+                                "name": "AuthGuard.test.tsx",
+                                "type": "file"
+                              },
+                              {
+                                "name": "LoginForm.test.tsx",
+                                "type": "file"
+                              },
+                              {
+                                "name": "RegisterForm.test.tsx",
+                                "type": "file"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "api",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "authApi.ts",
+                                "type": "file"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "components",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "AuthGuard.tsx",
+                                "type": "file"
+                              },
+                              {
+                                "name": "EmailVerification.tsx",
+                                "type": "file"
+                              },
+                              {
+                                "name": "LoginForm.tsx",
+                                "type": "file"
+                              },
+                              {
+                                "name": "PasswordStrength.tsx",
+                                "type": "file"
+                              },
+                              {
+                                "name": "RegisterForm.tsx",
+                                "type": "file"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "hooks",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "useAuth.ts",
+                                "type": "file"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "stores",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "authStore.ts",
+                                "type": "file"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "types",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "auth.types.ts",
+                                "type": "file"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
                     "name": "hooks",
                     "type": "dir",
                     "children": [
@@ -627,6 +727,16 @@
                         ]
                       },
                       {
+                        "name": "constants",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "routes.ts",
+                            "type": "file"
+                          }
+                        ]
+                      },
+                      {
                         "name": "hooks",
                         "type": "dir",
                         "children": [
@@ -692,6 +802,28 @@
                       },
                       {
                         "name": "queryClient.ts",
+                        "type": "file"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "pages",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "HomePage.tsx",
+                        "type": "file"
+                      },
+                      {
+                        "name": "LoginPage.tsx",
+                        "type": "file"
+                      },
+                      {
+                        "name": "RegisterPage.tsx",
+                        "type": "file"
+                      },
+                      {
+                        "name": "VerifyEmailPage.tsx",
                         "type": "file"
                       }
                     ]
@@ -1037,6 +1169,19 @@
     "apps/web/src/components/ui/toast.tsx",
     "apps/web/src/components/ui/toaster.tsx",
     "apps/web/src/components/ui/tooltip.tsx",
+    "apps/web/src/features/auth/__tests__/AuthGuard.test.tsx",
+    "apps/web/src/features/auth/__tests__/LoginForm.test.tsx",
+    "apps/web/src/features/auth/__tests__/RegisterForm.test.tsx",
+    "apps/web/src/features/auth/__tests__/auth-integration.test.tsx",
+    "apps/web/src/features/auth/api/authApi.ts",
+    "apps/web/src/features/auth/components/AuthGuard.tsx",
+    "apps/web/src/features/auth/components/EmailVerification.tsx",
+    "apps/web/src/features/auth/components/LoginForm.tsx",
+    "apps/web/src/features/auth/components/PasswordStrength.tsx",
+    "apps/web/src/features/auth/components/RegisterForm.tsx",
+    "apps/web/src/features/auth/hooks/useAuth.ts",
+    "apps/web/src/features/auth/stores/authStore.ts",
+    "apps/web/src/features/auth/types/auth.types.ts",
     "apps/web/src/hooks/useLocalStorage.test.ts",
     "apps/web/src/hooks/useLocalStorage.ts",
     "apps/web/src/lib/__tests__/queryClient.test.ts",
@@ -1050,6 +1195,7 @@
     "apps/web/src/lib/api/hooks/usePost.ts",
     "apps/web/src/lib/api/hooks/useSocial.ts",
     "apps/web/src/lib/api/hooks/useUser.ts",
+    "apps/web/src/lib/constants/routes.ts",
     "apps/web/src/lib/hooks/use-toast.ts",
     "apps/web/src/lib/hooks/useMediaQuery.ts",
     "apps/web/src/lib/queryClient.ts",
@@ -1062,6 +1208,10 @@
     "apps/web/src/lib/utils/cn.ts",
     "apps/web/src/lib/utils/index.ts",
     "apps/web/src/main.tsx",
+    "apps/web/src/pages/HomePage.tsx",
+    "apps/web/src/pages/LoginPage.tsx",
+    "apps/web/src/pages/RegisterPage.tsx",
+    "apps/web/src/pages/VerifyEmailPage.tsx",
     "apps/web/tailwind.config.js",
     "apps/web/test/infrastructure.test.tsx",
     "apps/web/test/mocks/data.ts",
@@ -1154,6 +1304,10 @@
     {
       "from": "apps/api/src/rpc/routers/auth.ts",
       "to": "apps/api/src/lib/auth.ts"
+    },
+    {
+      "from": "apps/api/src/rpc/routers/auth.ts",
+      "to": "apps/api/src/rpc/types.ts"
     },
     {
       "from": "apps/api/src/rpc/routers/discovery.ts",
@@ -1573,6 +1727,10 @@
     },
     {
       "from": "apps/web/src/App.test.tsx",
+      "to": "apps/web/src/lib/store/authStore.ts"
+    },
+    {
+      "from": "apps/web/src/App.test.tsx",
       "to": "apps/web/test/utils/render.tsx"
     },
     {
@@ -1628,6 +1786,86 @@
       "to": "apps/web/test/utils/render.tsx"
     },
     {
+      "from": "apps/web/src/features/auth/__tests__/AuthGuard.test.tsx",
+      "to": "apps/web/src/features/auth/components/AuthGuard.tsx"
+    },
+    {
+      "from": "apps/web/src/features/auth/__tests__/AuthGuard.test.tsx",
+      "to": "apps/web/src/features/auth/stores/authStore.ts"
+    },
+    {
+      "from": "apps/web/src/features/auth/__tests__/LoginForm.test.tsx",
+      "to": "apps/web/src/features/auth/components/LoginForm.tsx"
+    },
+    {
+      "from": "apps/web/src/features/auth/__tests__/LoginForm.test.tsx",
+      "to": "apps/web/src/features/auth/hooks/useAuth.ts"
+    },
+    {
+      "from": "apps/web/src/features/auth/__tests__/RegisterForm.test.tsx",
+      "to": "apps/web/src/features/auth/components/RegisterForm.tsx"
+    },
+    {
+      "from": "apps/web/src/features/auth/__tests__/RegisterForm.test.tsx",
+      "to": "apps/web/src/features/auth/hooks/useAuth.ts"
+    },
+    {
+      "from": "apps/web/src/features/auth/__tests__/auth-integration.test.tsx",
+      "to": "apps/web/src/features/auth/api/authApi.ts"
+    },
+    {
+      "from": "apps/web/src/features/auth/__tests__/auth-integration.test.tsx",
+      "to": "apps/web/src/features/auth/components/AuthGuard.tsx"
+    },
+    {
+      "from": "apps/web/src/features/auth/__tests__/auth-integration.test.tsx",
+      "to": "apps/web/src/features/auth/stores/authStore.ts"
+    },
+    {
+      "from": "apps/web/src/features/auth/__tests__/auth-integration.test.tsx",
+      "to": "apps/web/src/pages/HomePage.tsx"
+    },
+    {
+      "from": "apps/web/src/features/auth/__tests__/auth-integration.test.tsx",
+      "to": "apps/web/src/pages/LoginPage.tsx"
+    },
+    {
+      "from": "apps/web/src/features/auth/__tests__/auth-integration.test.tsx",
+      "to": "apps/web/src/pages/RegisterPage.tsx"
+    },
+    {
+      "from": "apps/web/src/features/auth/__tests__/auth-integration.test.tsx",
+      "to": "apps/web/src/pages/VerifyEmailPage.tsx"
+    },
+    {
+      "from": "apps/web/src/features/auth/components/AuthGuard.tsx",
+      "to": "apps/web/src/features/auth/stores/authStore.ts"
+    },
+    {
+      "from": "apps/web/src/features/auth/components/EmailVerification.tsx",
+      "to": "apps/web/src/features/auth/stores/authStore.ts"
+    },
+    {
+      "from": "apps/web/src/features/auth/components/LoginForm.tsx",
+      "to": "apps/web/src/features/auth/hooks/useAuth.ts"
+    },
+    {
+      "from": "apps/web/src/features/auth/components/RegisterForm.tsx",
+      "to": "apps/web/src/features/auth/components/PasswordStrength.tsx"
+    },
+    {
+      "from": "apps/web/src/features/auth/components/RegisterForm.tsx",
+      "to": "apps/web/src/features/auth/hooks/useAuth.ts"
+    },
+    {
+      "from": "apps/web/src/features/auth/hooks/useAuth.ts",
+      "to": "apps/web/src/features/auth/api/authApi.ts"
+    },
+    {
+      "from": "apps/web/src/features/auth/hooks/useAuth.ts",
+      "to": "apps/web/src/features/auth/stores/authStore.ts"
+    },
+    {
       "from": "apps/web/src/hooks/useLocalStorage.test.ts",
       "to": "apps/web/src/hooks/useLocalStorage.ts"
     },
@@ -1646,6 +1884,10 @@
     {
       "from": "apps/web/src/lib/api/__tests__/client.test.ts",
       "to": "apps/web/src/lib/store/offlineStore.ts"
+    },
+    {
+      "from": "apps/web/src/lib/api/__tests__/client.test.ts",
+      "to": "apps/web/test/mocks/server.ts"
     },
     {
       "from": "apps/web/src/lib/api/client.ts",
@@ -1758,6 +2000,10 @@
     {
       "from": "apps/web/test/mocks/handlers.ts",
       "to": "apps/web/test/mocks/data.ts"
+    },
+    {
+      "from": "apps/web/test/mocks/server.ts",
+      "to": "apps/web/test/mocks/handlers.ts"
     },
     {
       "from": "apps/web/test/setup.ts",
@@ -2078,6 +2324,13 @@
           "kind": "import",
           "imported": [
             "prismaAdapter"
+          ]
+        },
+        {
+          "from": "better-auth/plugins",
+          "kind": "import",
+          "imported": [
+            "username"
           ]
         }
       ],
@@ -2710,10 +2963,18 @@
           "imported": [
             "auth"
           ]
+        },
+        {
+          "from": "../types",
+          "kind": "import",
+          "imported": [
+            "ProcedureContext"
+          ]
         }
       ],
       "dependencies": [
-        "apps/api/src/lib/auth.ts"
+        "apps/api/src/lib/auth.ts",
+        "apps/api/src/rpc/types.ts"
       ],
       "functions": [
         {
@@ -2727,68 +2988,6 @@
           "isAsync": false,
           "isExported": false,
           "returnType": "string"
-        },
-        {
-          "name": "hashPassword",
-          "params": [
-            {
-              "name": "password",
-              "type": "string"
-            }
-          ],
-          "isAsync": true,
-          "isExported": false,
-          "returnType": "Promise<string>"
-        },
-        {
-          "name": "verifyPassword",
-          "params": [
-            {
-              "name": "password",
-              "type": "string"
-            },
-            {
-              "name": "hash",
-              "type": "string"
-            }
-          ],
-          "isAsync": true,
-          "isExported": false,
-          "returnType": "Promise<boolean>"
-        },
-        {
-          "name": "generateVerificationToken",
-          "params": [],
-          "isAsync": false,
-          "isExported": false,
-          "returnType": "string"
-        },
-        {
-          "name": "generateSessionToken",
-          "params": [],
-          "isAsync": false,
-          "isExported": false,
-          "returnType": "string"
-        },
-        {
-          "name": "sendVerificationEmail",
-          "params": [
-            {
-              "name": "email",
-              "type": "string"
-            },
-            {
-              "name": "username",
-              "type": "string"
-            },
-            {
-              "name": "token",
-              "type": "string"
-            }
-          ],
-          "isAsync": true,
-          "isExported": false,
-          "returnType": "Promise<void>"
         }
       ],
       "classes": [
@@ -4148,11 +4347,6 @@
           "imported": [
             "ErrorCode"
           ]
-        },
-        {
-          "from": "bcryptjs",
-          "kind": "import",
-          "isDefault": true
         },
         {
           "from": "zod",
@@ -5612,6 +5806,17 @@
               "returnType": "this"
             },
             {
+              "name": "name",
+              "params": [
+                {
+                  "name": "name",
+                  "type": "string"
+                }
+              ],
+              "isAsync": false,
+              "returnType": "this"
+            },
+            {
               "name": "email",
               "params": [
                 {
@@ -5735,7 +5940,7 @@
           "properties": [
             {
               "name": "data",
-              "type": "Partial<{\n    username: string;\n    email: string;\n    password: string;\n    emailVerified: boolean;\n    status: UserStatus;\n  }>",
+              "type": "Partial<{\n    username: string;\n    name: string;\n    email: string;\n    password: string;\n    emailVerified: boolean;\n    status: UserStatus;\n  }>",
               "isPrivate": true
             },
             {
@@ -7387,13 +7592,6 @@
       "dependencies": [],
       "functions": [
         {
-          "name": "detectEnvironment",
-          "params": [],
-          "isAsync": false,
-          "isExported": false,
-          "returnType": "\"docker\" | \"ci\" | \"local\""
-        },
-        {
           "name": "getDatabaseUrl",
           "params": [],
           "isAsync": false,
@@ -7581,6 +7779,7 @@
           "from": "vitest",
           "kind": "import",
           "imported": [
+            "beforeEach",
             "describe",
             "expect",
             "it"
@@ -7598,10 +7797,18 @@
           "from": "./App",
           "kind": "import",
           "isDefault": true
+        },
+        {
+          "from": "./lib/store/authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore"
+          ]
         }
       ],
       "dependencies": [
         "apps/web/src/App.tsx",
+        "apps/web/src/lib/store/authStore.ts",
         "apps/web/test/utils/render.tsx"
       ],
       "functions": [],
@@ -7611,35 +7818,53 @@
     "apps/web/src/App.tsx": {
       "imports": [
         {
-          "from": "@/components/layout/AppShell",
+          "from": "react-router-dom",
           "kind": "import",
           "imported": [
-            "AppShell"
+            "Route",
+            "Routes"
           ]
         },
         {
-          "from": "@/components/ui/badge",
+          "from": "@/pages/LoginPage",
           "kind": "import",
           "imported": [
-            "Badge"
+            "LoginPage"
           ]
         },
         {
-          "from": "@/components/ui/button",
+          "from": "@/pages/RegisterPage",
           "kind": "import",
           "imported": [
-            "Button"
+            "RegisterPage"
           ]
         },
         {
-          "from": "@/components/ui/card",
+          "from": "@/pages/HomePage",
           "kind": "import",
           "imported": [
-            "Card",
-            "CardContent",
-            "CardDescription",
-            "CardHeader",
-            "CardTitle"
+            "HomePage"
+          ]
+        },
+        {
+          "from": "@/pages/VerifyEmailPage",
+          "kind": "import",
+          "imported": [
+            "VerifyEmailPage"
+          ]
+        },
+        {
+          "from": "@/features/auth/components/AuthGuard",
+          "kind": "import",
+          "imported": [
+            "AuthGuard"
+          ]
+        },
+        {
+          "from": "@/lib/constants/routes",
+          "kind": "import",
+          "imported": [
+            "ROUTES"
           ]
         }
       ],
@@ -9006,6 +9231,862 @@
         }
       ]
     },
+    "apps/web/src/features/auth/__tests__/AuthGuard.test.tsx": {
+      "imports": [
+        {
+          "from": "@testing-library/react",
+          "kind": "import",
+          "imported": [
+            "render",
+            "screen"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "createElement"
+          ]
+        },
+        {
+          "from": "react-router-dom",
+          "kind": "import",
+          "imported": [
+            "MemoryRouter",
+            "Route",
+            "Routes"
+          ]
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "from": "../components/AuthGuard",
+          "kind": "import",
+          "imported": [
+            "AuthGuard"
+          ]
+        },
+        {
+          "from": "../stores/authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/auth/components/AuthGuard.tsx",
+        "apps/web/src/features/auth/stores/authStore.ts"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/auth/__tests__/LoginForm.test.tsx": {
+      "imports": [
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "QueryClient",
+            "QueryClientProvider"
+          ]
+        },
+        {
+          "from": "@testing-library/react",
+          "kind": "import",
+          "imported": [
+            "render",
+            "screen",
+            "waitFor"
+          ]
+        },
+        {
+          "from": "@testing-library/user-event",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "ReactNode",
+            "createElement"
+          ]
+        },
+        {
+          "from": "react-router-dom",
+          "kind": "import",
+          "imported": [
+            "MemoryRouter"
+          ]
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "from": "../components/LoginForm",
+          "kind": "import",
+          "imported": [
+            "LoginForm"
+          ]
+        },
+        {
+          "from": "../hooks/useAuth",
+          "kind": "import",
+          "isNamespace": true
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/auth/components/LoginForm.tsx",
+        "apps/web/src/features/auth/hooks/useAuth.ts"
+      ],
+      "functions": [
+        {
+          "name": "createWrapper",
+          "params": [],
+          "isAsync": false,
+          "isExported": false
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/auth/__tests__/RegisterForm.test.tsx": {
+      "imports": [
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "QueryClient",
+            "QueryClientProvider"
+          ]
+        },
+        {
+          "from": "@testing-library/react",
+          "kind": "import",
+          "imported": [
+            "render",
+            "screen",
+            "waitFor"
+          ]
+        },
+        {
+          "from": "@testing-library/user-event",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "ReactNode",
+            "createElement"
+          ]
+        },
+        {
+          "from": "react-router-dom",
+          "kind": "import",
+          "imported": [
+            "MemoryRouter"
+          ]
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "from": "../components/RegisterForm",
+          "kind": "import",
+          "imported": [
+            "RegisterForm"
+          ]
+        },
+        {
+          "from": "../hooks/useAuth",
+          "kind": "import",
+          "isNamespace": true
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/auth/components/RegisterForm.tsx",
+        "apps/web/src/features/auth/hooks/useAuth.ts"
+      ],
+      "functions": [
+        {
+          "name": "createWrapper",
+          "params": [],
+          "isAsync": false,
+          "isExported": false
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/auth/__tests__/auth-integration.test.tsx": {
+      "imports": [
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "QueryClient",
+            "QueryClientProvider"
+          ]
+        },
+        {
+          "from": "@testing-library/react",
+          "kind": "import",
+          "imported": [
+            "render",
+            "screen",
+            "waitFor"
+          ]
+        },
+        {
+          "from": "@testing-library/user-event",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "ReactNode",
+            "createElement"
+          ]
+        },
+        {
+          "from": "react-router-dom",
+          "kind": "import",
+          "imported": [
+            "MemoryRouter",
+            "Route",
+            "Routes"
+          ]
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "beforeEach",
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "from": "../../../pages/LoginPage",
+          "kind": "import",
+          "imported": [
+            "LoginPage"
+          ]
+        },
+        {
+          "from": "../../../pages/RegisterPage",
+          "kind": "import",
+          "imported": [
+            "RegisterPage"
+          ]
+        },
+        {
+          "from": "../../../pages/HomePage",
+          "kind": "import",
+          "imported": [
+            "HomePage"
+          ]
+        },
+        {
+          "from": "../../../pages/VerifyEmailPage",
+          "kind": "import",
+          "imported": [
+            "VerifyEmailPage"
+          ]
+        },
+        {
+          "from": "../components/AuthGuard",
+          "kind": "import",
+          "imported": [
+            "AuthGuard"
+          ]
+        },
+        {
+          "from": "../stores/authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore"
+          ]
+        },
+        {
+          "from": "../api/authApi",
+          "kind": "import",
+          "isNamespace": true
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/auth/api/authApi.ts",
+        "apps/web/src/features/auth/components/AuthGuard.tsx",
+        "apps/web/src/features/auth/stores/authStore.ts",
+        "apps/web/src/pages/HomePage.tsx",
+        "apps/web/src/pages/LoginPage.tsx",
+        "apps/web/src/pages/RegisterPage.tsx",
+        "apps/web/src/pages/VerifyEmailPage.tsx"
+      ],
+      "functions": [
+        {
+          "name": "createWrapper",
+          "params": [
+            {
+              "name": "initialRoute"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false
+        }
+      ],
+      "classes": [],
+      "constants": [
+        {
+          "name": "TestApp",
+          "initKind": "function",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/features/auth/api/authApi.ts": {
+      "imports": [
+        {
+          "from": "@/lib/api/client",
+          "kind": "import",
+          "imported": [
+            "api"
+          ]
+        },
+        {
+          "from": "../types/auth.types",
+          "kind": "import",
+          "imported": [
+            "LoginCredentials",
+            "RegisterData",
+            "AuthResponse"
+          ]
+        },
+        {
+          "from": "@vrss/api-contracts",
+          "kind": "import",
+          "imported": [
+            "AuthProcedures"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "authApi",
+          "initKind": "object",
+          "isExported": true
+        }
+      ]
+    },
+    "apps/web/src/features/auth/components/AuthGuard.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "react-router-dom",
+          "kind": "import",
+          "imported": [
+            "Navigate",
+            "useLocation"
+          ]
+        },
+        {
+          "from": "../stores/authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore"
+          ]
+        },
+        {
+          "from": "@/lib/constants/routes",
+          "kind": "import",
+          "imported": [
+            "ROUTES"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/auth/stores/authStore.ts"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "AuthGuard",
+          "initKind": "function",
+          "isExported": true,
+          "type": "React.FC<AuthGuardProps>"
+        }
+      ]
+    },
+    "apps/web/src/features/auth/components/EmailVerification.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "@/components/ui/button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        },
+        {
+          "from": "@/components/ui/card",
+          "kind": "import",
+          "imported": [
+            "Card",
+            "CardContent",
+            "CardDescription",
+            "CardFooter",
+            "CardHeader",
+            "CardTitle"
+          ]
+        },
+        {
+          "from": "../stores/authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore"
+          ]
+        },
+        {
+          "from": "@/lib/constants/routes",
+          "kind": "import",
+          "imported": [
+            "ROUTES"
+          ]
+        },
+        {
+          "from": "react-router-dom",
+          "kind": "import",
+          "imported": [
+            "Link"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/auth/stores/authStore.ts"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "EmailVerification",
+          "initKind": "function",
+          "isExported": true,
+          "type": "React.FC"
+        }
+      ]
+    },
+    "apps/web/src/features/auth/components/LoginForm.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "react-hook-form",
+          "kind": "import",
+          "imported": [
+            "useForm"
+          ]
+        },
+        {
+          "from": "@hookform/resolvers/zod",
+          "kind": "import",
+          "imported": [
+            "zodResolver"
+          ]
+        },
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
+          ]
+        },
+        {
+          "from": "react-router-dom",
+          "kind": "import",
+          "imported": [
+            "Link"
+          ]
+        },
+        {
+          "from": "@/components/ui/button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        },
+        {
+          "from": "@/components/ui/input",
+          "kind": "import",
+          "imported": [
+            "Input"
+          ]
+        },
+        {
+          "from": "@/components/ui/label",
+          "kind": "import",
+          "imported": [
+            "Label"
+          ]
+        },
+        {
+          "from": "@/components/ui/card",
+          "kind": "import",
+          "imported": [
+            "Card",
+            "CardContent",
+            "CardDescription",
+            "CardFooter",
+            "CardHeader",
+            "CardTitle"
+          ]
+        },
+        {
+          "from": "../hooks/useAuth",
+          "kind": "import",
+          "imported": [
+            "useAuth"
+          ]
+        },
+        {
+          "from": "@/lib/constants/routes",
+          "kind": "import",
+          "imported": [
+            "ROUTES"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/auth/hooks/useAuth.ts"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "loginSchema",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "LoginForm",
+          "initKind": "function",
+          "isExported": true,
+          "type": "React.FC"
+        }
+      ]
+    },
+    "apps/web/src/features/auth/components/PasswordStrength.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "../types/auth.types",
+          "kind": "import",
+          "imported": [
+            "PasswordStrengthType"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "calculatePasswordStrength",
+          "params": [
+            {
+              "name": "password",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "PasswordStrengthType"
+        },
+        {
+          "name": "getStrengthColor",
+          "params": [
+            {
+              "name": "score",
+              "type": "number"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "string"
+        },
+        {
+          "name": "getStrengthLabel",
+          "params": [
+            {
+              "name": "score",
+              "type": "number"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "string"
+        }
+      ],
+      "classes": [],
+      "constants": [
+        {
+          "name": "PasswordStrength",
+          "initKind": "function",
+          "isExported": true,
+          "type": "React.FC<PasswordStrengthProps>"
+        },
+        {
+          "name": "RequirementItem",
+          "initKind": "function",
+          "isExported": false,
+          "type": "React.FC<RequirementItemProps>"
+        }
+      ]
+    },
+    "apps/web/src/features/auth/components/RegisterForm.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "useState"
+          ]
+        },
+        {
+          "from": "react-hook-form",
+          "kind": "import",
+          "imported": [
+            "useForm"
+          ]
+        },
+        {
+          "from": "@hookform/resolvers/zod",
+          "kind": "import",
+          "imported": [
+            "zodResolver"
+          ]
+        },
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
+          ]
+        },
+        {
+          "from": "react-router-dom",
+          "kind": "import",
+          "imported": [
+            "Link"
+          ]
+        },
+        {
+          "from": "@/components/ui/button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        },
+        {
+          "from": "@/components/ui/input",
+          "kind": "import",
+          "imported": [
+            "Input"
+          ]
+        },
+        {
+          "from": "@/components/ui/label",
+          "kind": "import",
+          "imported": [
+            "Label"
+          ]
+        },
+        {
+          "from": "@/components/ui/card",
+          "kind": "import",
+          "imported": [
+            "Card",
+            "CardContent",
+            "CardDescription",
+            "CardFooter",
+            "CardHeader",
+            "CardTitle"
+          ]
+        },
+        {
+          "from": "../hooks/useAuth",
+          "kind": "import",
+          "imported": [
+            "useAuth"
+          ]
+        },
+        {
+          "from": "./PasswordStrength",
+          "kind": "import",
+          "imported": [
+            "PasswordStrength"
+          ]
+        },
+        {
+          "from": "@/lib/constants/routes",
+          "kind": "import",
+          "imported": [
+            "ROUTES"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/auth/components/PasswordStrength.tsx",
+        "apps/web/src/features/auth/hooks/useAuth.ts"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "registerSchema",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "RegisterForm",
+          "initKind": "function",
+          "isExported": true,
+          "type": "React.FC"
+        }
+      ]
+    },
+    "apps/web/src/features/auth/hooks/useAuth.ts": {
+      "imports": [
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "useMutation",
+            "useQueryClient"
+          ]
+        },
+        {
+          "from": "react-router-dom",
+          "kind": "import",
+          "imported": [
+            "useNavigate"
+          ]
+        },
+        {
+          "from": "../api/authApi",
+          "kind": "import",
+          "imported": [
+            "authApi"
+          ]
+        },
+        {
+          "from": "../stores/authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore"
+          ]
+        },
+        {
+          "from": "../types/auth.types",
+          "kind": "import",
+          "imported": [
+            "LoginCredentials",
+            "RegisterData"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/auth/api/authApi.ts",
+        "apps/web/src/features/auth/stores/authStore.ts"
+      ],
+      "functions": [
+        {
+          "name": "useAuth",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/auth/stores/authStore.ts": {
+      "imports": [
+        {
+          "from": "@/lib/store/authStore",
+          "kind": "export",
+          "imported": [
+            "useAuthStore",
+            "User"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/auth/types/auth.types.ts": {
+      "imports": [],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
     "apps/web/src/hooks/useLocalStorage.test.ts": {
       "imports": [
         {
@@ -9131,6 +10212,13 @@
           ]
         },
         {
+          "from": "../../../../test/mocks/server",
+          "kind": "import",
+          "imported": [
+            "server"
+          ]
+        },
+        {
           "from": "../../store/authStore",
           "kind": "import",
           "imported": [
@@ -9155,11 +10243,18 @@
       "dependencies": [
         "apps/web/src/lib/api/client.ts",
         "apps/web/src/lib/store/authStore.ts",
-        "apps/web/src/lib/store/offlineStore.ts"
+        "apps/web/src/lib/store/offlineStore.ts",
+        "apps/web/test/mocks/server.ts"
       ],
       "functions": [],
       "classes": [],
-      "constants": []
+      "constants": [
+        {
+          "name": "mockFetch",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
     },
     "apps/web/src/lib/api/client.ts": {
       "imports": [
@@ -9811,6 +10906,19 @@
       "classes": [],
       "constants": []
     },
+    "apps/web/src/lib/constants/routes.ts": {
+      "imports": [],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "ROUTES",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
     "apps/web/src/lib/hooks/use-toast.ts": {
       "imports": [
         {
@@ -10227,6 +11335,13 @@
           "isDefault": true
         },
         {
+          "from": "react-router-dom",
+          "kind": "import",
+          "imported": [
+            "BrowserRouter"
+          ]
+        },
+        {
           "from": "./App",
           "kind": "import",
           "isDefault": true
@@ -10259,6 +11374,146 @@
           "name": "root",
           "initKind": "unknown",
           "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/pages/HomePage.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "@/components/layout/AppShell",
+          "kind": "import",
+          "imported": [
+            "AppShell"
+          ]
+        },
+        {
+          "from": "@/components/ui/badge",
+          "kind": "import",
+          "imported": [
+            "Badge"
+          ]
+        },
+        {
+          "from": "@/components/ui/button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        },
+        {
+          "from": "@/components/ui/card",
+          "kind": "import",
+          "imported": [
+            "Card",
+            "CardContent",
+            "CardDescription",
+            "CardHeader",
+            "CardTitle"
+          ]
+        },
+        {
+          "from": "@/features/auth/hooks/useAuth",
+          "kind": "import",
+          "imported": [
+            "useAuth"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "HomePage",
+          "initKind": "function",
+          "isExported": true,
+          "type": "React.FC"
+        }
+      ]
+    },
+    "apps/web/src/pages/LoginPage.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "@/features/auth/components/LoginForm",
+          "kind": "import",
+          "imported": [
+            "LoginForm"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "LoginPage",
+          "initKind": "function",
+          "isExported": true,
+          "type": "React.FC"
+        }
+      ]
+    },
+    "apps/web/src/pages/RegisterPage.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "@/features/auth/components/RegisterForm",
+          "kind": "import",
+          "imported": [
+            "RegisterForm"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "RegisterPage",
+          "initKind": "function",
+          "isExported": true,
+          "type": "React.FC"
+        }
+      ]
+    },
+    "apps/web/src/pages/VerifyEmailPage.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "@/features/auth/components/EmailVerification",
+          "kind": "import",
+          "imported": [
+            "EmailVerification"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "VerifyEmailPage",
+          "initKind": "function",
+          "isExported": true,
+          "type": "React.FC"
         }
       ]
     },
@@ -10407,11 +11662,8 @@
           "name": "rpcSuccess",
           "params": [
             {
-              "name": "result",
+              "name": "data",
               "type": "T"
-            },
-            {
-              "name": "id"
             }
           ],
           "isAsync": false,
@@ -10429,7 +11681,9 @@
               "type": "string"
             },
             {
-              "name": "id"
+              "name": "details",
+              "type": "unknown",
+              "optional": true
             }
           ],
           "isAsync": false,
@@ -10439,20 +11693,42 @@
       "classes": [],
       "constants": [
         {
-          "name": "API_BASE_URL",
-          "initKind": "literal",
+          "name": "API_BASE_URLS",
+          "initKind": "array",
+          "isExported": false
+        },
+        {
+          "name": "rpcHandler",
+          "initKind": "function",
           "isExported": false
         },
         {
           "name": "handlers",
-          "initKind": "array",
+          "initKind": "unknown",
           "isExported": true
         }
       ]
     },
     "apps/web/test/mocks/server.ts": {
-      "imports": [],
-      "dependencies": [],
+      "imports": [
+        {
+          "from": "msw/node",
+          "kind": "import",
+          "imported": [
+            "setupServer"
+          ]
+        },
+        {
+          "from": "./handlers",
+          "kind": "import",
+          "imported": [
+            "handlers"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/test/mocks/handlers.ts"
+      ],
       "functions": [],
       "classes": [],
       "constants": [

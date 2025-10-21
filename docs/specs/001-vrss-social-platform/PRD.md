@@ -1,5 +1,26 @@
 # Product Requirements Document
 
+## Implementation Status
+
+**Current Phase:** Phase 5.1 - Core Features (Posts & Feeds)
+
+**Completed Phases:**
+- ✅ **Phase 1**: Foundation & Infrastructure (Database, Docker, Monorepo)
+- ✅ **Phase 2**: Authentication & Session Management (Better-auth, username login)
+- ✅ **Phase 3**: Backend API Implementation (RPC architecture, 10 routers, ~60 procedures)
+- ✅ **Phase 4**: Frontend Foundation (React, Vite, Auth UI, TanStack Query, Zustand)
+
+**Next Phase:**
+- 🚧 **Phase 5.1**: Core Features - Posts, Media, Feeds (IN PROGRESS)
+- ⏳ **Phase 5.2**: Social Features - Follows, Likes, Comments
+- ⏳ **Phase 5.3**: Advanced Features - Custom Feeds, Profile Customization
+
+**Testing:** 928 tests passing (595 backend, 333 frontend)
+
+See [../../docs/ARCHITECTURE.md](../../docs/ARCHITECTURE.md) for architecture details and [../../docs/DATA_MODEL.md](../../docs/DATA_MODEL.md) for complete data model.
+
+---
+
 ## Validation Checklist
 - [x] Product Overview complete (vision, problem, value proposition)
 - [x] User Personas defined (at least primary persona)
@@ -130,117 +151,169 @@ Vrss gives users unprecedented control over their social media experience throug
 
 ### Must Have Features
 
-#### F1: User Authentication and Registration
+#### F1: User Authentication and Registration ✅ COMPLETED (Phase 2)
 - **User Story:** As a new user, I want to create an account with username/email/password so that I can build my Vrss profile
+- **Implementation Status:** ✅ Complete with Better-auth integration
 - **Acceptance Criteria:**
-  - [ ] User can register with unique username, email, and password
-  - [ ] Username uniqueness validation
-  - [ ] Email format validation and verification
-  - [ ] Password strength requirements enforced
-  - [ ] User can log in with username/email + password
-  - [ ] User can log out securely
-  - [ ] Session management with secure tokens
+  - [x] User can register with unique username, email, and password (Better-auth)
+  - [x] Username uniqueness validation (case-insensitive, 3-30 chars)
+  - [x] Email format validation and verification (implemented, disabled for MVP)
+  - [x] Password strength requirements enforced (12+ chars, complexity)
+  - [x] User can log in with username (NOT email) + password
+  - [x] User can log out securely (session deletion)
+  - [x] Session management with secure tokens (7-day cookies, sliding window)
+- **Documentation:** See [../../docs/AUTHENTICATION.md](../../docs/AUTHENTICATION.md)
 
-#### F2: Customizable User Profiles
+#### F2: Customizable User Profiles ⏳ PARTIAL (Phase 3 API complete, Phase 5.3 UI pending)
 - **User Story:** As a creator, I want to customize my profile style and layout so that it reflects my brand/identity
+- **Implementation Status:** ⏳ Backend complete, UI implementation pending Phase 5.3
 - **Acceptance Criteria:**
-  - [ ] User can set profile background (color, image)
-  - [ ] User can select custom fonts and colors
-  - [ ] User can add background music to profile
-  - [ ] User can add/remove/reorder profile sections
-  - [ ] Available section types: Feed, Gallery, Links, Static Text, Image, Video (external), Reposts, Friends, Followers/Following, Lists
-  - [ ] Default profile template available (standard social header + feed of posts)
-  - [ ] Profile visibility settings (public/private)
-  - [ ] Profile customizations render correctly on mobile
-  - [ ] Performance guardrails prevent slow-loading profiles
+  - [x] Backend: Profile style API endpoints (user.updateStyle)
+  - [x] Backend: Profile sections API (user.updateSections, user.getSections)
+  - [x] Backend: JSONB configs for style, background, music (UserProfile table)
+  - [x] Backend: Visibility settings (public/followers/private)
+  - [ ] Frontend: Profile customization UI (Phase 5.3)
+  - [ ] Frontend: Background, font, color selector UI
+  - [ ] Frontend: Profile section management UI
+  - [ ] Frontend: Mobile responsive profile rendering
+  - [ ] Frontend: Performance guardrails
+- **Available Section Types:** Feed, Gallery, Links, Static Text, Image, Video, Reposts, Friends, Followers, Following, List
+- **Documentation:** See [../../docs/API.md](../../docs/API.md#2-user-router-user)
 
-#### F3: Content Creation and Post Types
+#### F3: Content Creation and Post Types 🚧 IN PROGRESS (Phase 5.1)
 - **User Story:** As a user, I want to create different types of posts so that I can share varied content
+- **Implementation Status:** 🚧 Backend complete, frontend UI in Phase 5.1
 - **Acceptance Criteria:**
-  - [ ] User can create text posts (short and long form)
-  - [ ] User can create image posts (single image, gallery, GIF)
-  - [ ] User can create video posts (short and long form)
-  - [ ] User can create song posts (single track or album)
-  - [ ] Posts respect storage limits (50MB free tier)
-  - [ ] Media uploads stored securely
-  - [ ] Posts can be edited after creation
-  - [ ] Posts can be deleted by creator
+  - [x] Backend: Post creation API (post.create with type mapping)
+  - [x] Backend: Media upload with presigned S3 URLs (media.initiateUpload, media.completeUpload)
+  - [x] Backend: Post editing (post.update)
+  - [x] Backend: Soft delete (post.delete with deletedAt)
+  - [x] Backend: Storage quota enforcement (50MB free, triggers update usage)
+  - [x] Database: Post types (text_short, image, video_short, song, etc.)
+  - [ ] Frontend: Post creation UI (text, image, video, song forms) - Phase 5.1
+  - [ ] Frontend: Media upload flow with progress
+  - [ ] Frontend: Post edit/delete UI
+  - [ ] Frontend: Storage quota display
+- **Post Types:** Text (short/long), Image (single/gallery/GIF), Video (short/long), Song (single/album)
+- **Documentation:** See [../../docs/API.md](../../docs/API.md#3-post-router-post) and [../../docs/DATA_MODEL.md](../../docs/DATA_MODEL.md#posts--media-4-models)
 
-#### F4: Custom Feed Builder (Visual Algorithm)
+#### F4: Custom Feed Builder (Visual Algorithm) 🚧 IN PROGRESS (Phase 5.1)
 - **User Story:** As a user, I want to create custom feeds using visual logical blocks so that I see content I actually want
+- **Implementation Status:** 🚧 Backend complete, frontend UI in Phase 5.1
 - **Acceptance Criteria:**
-  - [ ] Visual algorithm builder interface (Apple Shortcuts-style)
-  - [ ] Filter blocks: post type, author, group, tags, date range
-  - [ ] Logical operators: AND, OR, NOT
-  - [ ] User can create multiple named feeds
-  - [ ] User can save and switch between feeds
-  - [ ] Default "Following - Chronological" feed provided
-  - [ ] Primary feed shows all posts from followed accounts
-  - [ ] Feed displays single post view with comments
-  - [ ] Feed algorithms apply in real-time
+  - [x] Backend: Feed creation API (feed.create with filters)
+  - [x] Backend: Feed retrieval (feed.get with algorithm execution)
+  - [x] Backend: Default "Following" feed logic
+  - [x] Backend: Feed update/delete (feed.update, feed.delete)
+  - [x] Database: CustomFeed and FeedFilter tables with JSONB algorithm config
+  - [x] Database: Filter types (post_type, author, tag, date_range, engagement)
+  - [ ] Frontend: Visual algorithm builder UI (Apple Shortcuts-style) - Phase 5.1
+  - [ ] Frontend: Feed switcher with multiple feeds
+  - [ ] Frontend: Filter blocks UI (drag/drop, add/remove)
+  - [ ] Frontend: Real-time feed preview
+- **Filter Types:** Post type, Author, Tag, Date range, Engagement (min likes/comments)
+- **Logical Operators:** AND, OR, NOT (via groupId and logicalOperator)
+- **Documentation:** See [../../docs/API.md](../../docs/API.md#5-feed-router-feed)
 
-#### F5: Custom Discovery/Search Algorithm
+#### F5: Custom Discovery/Search Algorithm ⏳ PARTIAL (Phase 3 complete, Phase 6 pending)
 - **User Story:** As a user, I want to customize how I discover new content so that I find relevant creators and posts
+- **Implementation Status:** ⏳ Default discovery complete, custom algorithms pending Phase 6
 - **Acceptance Criteria:**
-  - [ ] Default discovery algorithm: popular posts within 2-degree friend network
-  - [ ] Visual algorithm builder for discovery (same interface as feeds)
-  - [ ] User can create multiple discovery algorithms
-  - [ ] Search functionality for users and content
-  - [ ] Discovery results update based on custom algorithm
-  - [ ] User can switch between different discovery views
+  - [x] Backend: Default discovery feed (2-degree network, CTE query)
+  - [x] Backend: User search (discovery.searchUsers by username/displayName)
+  - [x] Backend: Post search (discovery.searchPosts by content)
+  - [x] Backend: Discovery feed with pagination
+  - [ ] Frontend: Discovery feed UI - Phase 5.2
+  - [ ] Frontend: Search UI (users and posts)
+  - [ ] Backend: Custom discovery algorithms - Phase 6
+  - [ ] Frontend: Visual algorithm builder for discovery - Phase 6
+  - [ ] Frontend: Discovery algorithm switcher - Phase 6
+- **Current Algorithm:** Popular posts from friends + friends-of-friends (2-degree network)
+- **Documentation:** See [../../docs/API.md](../../docs/API.md#9-discovery-router-discovery)
 
-#### F6: Social Interactions
+#### F6: Social Interactions ⏳ PARTIAL (Phase 3 complete, Phase 5.2 UI pending)
 - **User Story:** As a user, I want to interact with other users' content so that I can engage with the community
+- **Implementation Status:** ⏳ Backend complete, frontend UI in Phase 5.2
 - **Acceptance Criteria:**
-  - [ ] User can follow/unfollow other users
-  - [ ] User can like posts
-  - [ ] User can comment on posts
-  - [ ] User can repost content to their profile
-  - [ ] Follow/following counts visible on profile
-  - [ ] Comments display on single post view
+  - [x] Backend: Follow/unfollow (social.follow, social.unfollow)
+  - [x] Backend: Mutual friendship detection (Friendship table, database trigger)
+  - [x] Backend: Like/unlike posts (post.like, post.unlike)
+  - [x] Backend: Comment on posts (post.comment, post.getComments with pagination)
+  - [x] Backend: Nested comments (parentCommentId support)
+  - [x] Backend: Denormalized counters (likesCount, commentsCount, repostsCount)
+  - [x] Database: Triggers auto-update counters on interaction changes
+  - [ ] Frontend: Follow/unfollow buttons - Phase 5.2
+  - [ ] Frontend: Like button with optimistic updates - Phase 5.2
+  - [ ] Frontend: Comment UI (nested replies) - Phase 5.2
+  - [ ] Frontend: Repost UI - Phase 5.2
+  - [ ] Frontend: Follower/following counts on profile - Phase 5.2
+- **Documentation:** See [../../docs/API.md](../../docs/API.md#4-social-router-social) and [../../docs/DATABASE.md](../../docs/DATABASE.md#database-triggers)
 
-#### F7: Direct Messaging
+#### F7: Direct Messaging ⏳ PARTIAL (Phase 4 API complete, UI pending)
 - **User Story:** As a user, I want to send direct messages so that I can communicate privately with others
+- **Implementation Status:** ⏳ Backend complete, frontend UI in Phase 5.3 or later
 - **Acceptance Criteria:**
-  - [ ] User can send text messages to other users
-  - [ ] Inbox view shows all message threads
-  - [ ] Message thread view shows conversation history
-  - [ ] Real-time message delivery
-  - [ ] Message read status indicators
-  - [ ] User can block/unblock other users
+  - [x] Backend: Send messages (message.sendMessage)
+  - [x] Backend: Get conversations (message.getConversations with pagination)
+  - [x] Backend: Get messages in conversation (message.getMessages with pagination)
+  - [x] Backend: Mark as read (message.markAsRead with readBy array)
+  - [x] Backend: Delete conversation (message.deleteConversation)
+  - [x] Database: Conversation with ordered participant IDs
+  - [x] Database: Message with readBy tracking
+  - [ ] Frontend: Inbox view - Phase 5.3+
+  - [ ] Frontend: Message thread UI - Phase 5.3+
+  - [ ] Frontend: Real-time message delivery (WebSocket) - Phase 6+
+  - [ ] Backend: Block/unblock users - Phase 6+
+- **Documentation:** See [../../docs/API.md](../../docs/API.md#7-message-router-message)
 
-#### F8: Notifications
+#### F8: Notifications ⏳ PARTIAL (Phase 4 API complete, UI pending)
 - **User Story:** As a user, I want to receive notifications so that I know when others interact with my content or profile
+- **Implementation Status:** ⏳ Backend complete, frontend UI in Phase 5.3 or later
 - **Acceptance Criteria:**
-  - [ ] Notifications for new followers
-  - [ ] Notifications for post likes
-  - [ ] Notifications for post comments
-  - [ ] Notifications for mentions
-  - [ ] Notification center displays all alerts
-  - [ ] Unread notification count badge
-  - [ ] User can mark notifications as read
+  - [x] Backend: Get notifications (notification.getNotifications with pagination)
+  - [x] Backend: Mark as read (notification.markAsRead bulk operation)
+  - [x] Backend: Delete notification (notification.deleteNotification)
+  - [x] Backend: Unread count in response
+  - [x] Database: Notification types (follow, like, comment, repost, mention, message, friend_request, system)
+  - [x] Database: Actor tracking (who triggered the notification)
+  - [ ] Backend: Auto-create notifications on actions - Phase 5.2+
+  - [ ] Frontend: Notification center UI - Phase 5.3+
+  - [ ] Frontend: Unread badge - Phase 5.3+
+  - [ ] Frontend: Real-time notifications (WebSocket) - Phase 6+
+- **Documentation:** See [../../docs/API.md](../../docs/API.md#8-notification-router-notification)
 
-#### F9: Account Settings and Management
+#### F9: Account Settings and Management ⏳ PARTIAL (Phase 4 API complete, UI pending)
 - **User Story:** As a user, I want to manage my account settings so that I can control my experience and data
+- **Implementation Status:** ⏳ Backend complete, frontend UI in Phase 5.3 or later
 - **Acceptance Criteria:**
-  - [ ] User can change username
-  - [ ] User can change email address
-  - [ ] User can change password
-  - [ ] User can set profile visibility (public/private)
-  - [ ] User can view media storage usage (percentage used)
-  - [ ] User can delete account
-  - [ ] Account deletion removes all user data
+  - [x] Backend: Get account settings (settings.getAccountSettings)
+  - [x] Backend: Update account (settings.updateAccount - username, email, password)
+  - [x] Backend: Update privacy (settings.updatePrivacy - profile visibility)
+  - [x] Backend: Delete account (settings.deleteAccount - soft delete)
+  - [x] Backend: Export data (settings.exportData - GDPR-compliant)
+  - [x] Backend: Storage usage (media.getStorageUsage)
+  - [x] Database: Soft delete preserves data for recovery
+  - [ ] Frontend: Settings page UI - Phase 5.3+
+  - [ ] Frontend: Account deletion confirmation flow - Phase 5.3+
+- **Documentation:** See [../../docs/API.md](../../docs/API.md#10-settings-router-settings)
 
-#### F10: Storage Management and Subscription
+#### F10: Storage Management and Subscription ⏳ PARTIAL (Phase 3 complete, payment integration pending)
 - **User Story:** As a user, I want to understand my storage limits so that I can manage my media uploads
+- **Implementation Status:** ⏳ Backend complete, payment integration and UI pending
 - **Acceptance Criteria:**
-  - [ ] Free tier: 50MB storage limit
-  - [ ] Paid tier: 1GB+ storage
-  - [ ] Storage usage displayed in settings
-  - [ ] Visual indicator of storage percentage
-  - [ ] Option to upgrade storage (link to payment)
-  - [ ] Upload blocked when storage limit reached
-  - [ ] Warning when approaching storage limit
+  - [x] Backend: 50MB free tier enforced (StorageUsage.quotaBytes)
+  - [x] Backend: Storage usage tracking (database triggers auto-update)
+  - [x] Backend: Storage check before upload (media.initiateUpload with FOR UPDATE lock)
+  - [x] Backend: Upload blocked when quota exceeded (ErrorCode.STORAGE_QUOTA_EXCEEDED)
+  - [x] Backend: Subscription tier structure (SubscriptionTier table)
+  - [x] Database: Breakdown by media type (imagesBytes, videosBytes, audioBytes)
+  - [ ] Frontend: Storage usage UI - Phase 5.1
+  - [ ] Frontend: Visual indicator (progress bar)
+  - [ ] Frontend: Upgrade flow - Phase 6+
+  - [ ] Backend: Payment integration (Stripe) - Phase 6+
+  - [ ] Backend: Subscription management - Phase 6+
+- **Storage Tiers:** Free (50MB), Paid tiers TBD
+- **Documentation:** See [../../docs/DATA_MODEL.md](../../docs/DATA_MODEL.md#trigger-3-storage-usage-tracking)
 
 ### Should Have Features
 

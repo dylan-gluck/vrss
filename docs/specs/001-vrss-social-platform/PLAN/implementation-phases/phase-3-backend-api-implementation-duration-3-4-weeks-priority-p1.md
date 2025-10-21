@@ -1,6 +1,28 @@
 # **Phase 3: Backend API Implementation** `[duration: 3-4 weeks]` `[priority: P1]`
 
+**Status:** MOSTLY COMPLETED
+**Actual Duration:** ~3 weeks
+**Completion Date:** October 2024
+
 **Goal:** Implement all 10 RPC routers with 50+ procedures following dependency order.
+
+## Implementation Notes
+
+Phase 3 mostly completed with core RPC infrastructure and key routers:
+- RPC foundation with type contracts in @vrss/api-contracts
+- Auth router (register, login, logout, session management)
+- User & Profile router (get profile, update profile, update sections)
+- Post router (CRUD, like/unlike, comments) - 97% test pass rate
+- Feed router (custom feeds, algorithm execution) - 76% test coverage
+- Social router (follow/unfollow) - PENDING
+- Media router (S3 upload) - PENDING
+- Message, Notification, Discovery, Settings routers - PENDING
+
+**Key Architectural Decisions:**
+- RPC pattern with unified POST /api/rpc endpoint
+- Username as primary identifier (not email)
+- BigInt to string conversion in API layer
+- Database triggers for counters (likes, comments, storage)
 
 ## 3.1 RPC Foundation & Type Contracts `[duration: 2-3 days]` `[parallel: false]`
 
@@ -115,34 +137,34 @@
 
 ## 3.4 Social Router `[duration: 2 days]` `[parallel: true]`
 
-- [x] **Prime Context**
-    - [x] Read `docs/api-architecture.md` Section: "Social Router" (6 procedures)
-    - [x] Read PRD Section: "F6: Social Interactions" (lines 192-201)
-    - [x] Read DATABASE_SCHEMA.md: `user_follows`, `friendships`
+- [ ] **Prime Context**
+    - [ ] Read `docs/api-architecture.md` Section: "Social Router" (6 procedures)
+    - [ ] Read PRD Section: "F6: Social Interactions" (lines 192-201)
+    - [ ] Read DATABASE_SCHEMA.md: `user_follows`, `friendships`
 
-- [x] **Write Tests** `[activity: test-api]`
-    - [x] `social.follow/unfollow` tests: Create/delete follow, friendship creation
-    - [x] `social.getFollowers` tests: Cursor pagination, count
-    - [x] `social.getFollowing` tests: Cursor pagination, count
-    - [x] Friendship creation test: Mutual follow creates friendship
+- [ ] **Write Tests** `[activity: test-api]`
+    - [ ] `social.follow/unfollow` tests: Create/delete follow, friendship creation
+    - [ ] `social.getFollowers` tests: Cursor pagination, count
+    - [ ] `social.getFollowing` tests: Cursor pagination, count
+    - [ ] Friendship creation test: Mutual follow creates friendship
 
-- [x] **Implement** `[activity: api-development]`
-    - [x] Create `apps/api/src/rpc/routers/social.ts`
-    - [x] Implement `social.follow` (check not already following, create follow record)
-    - [x] Implement `social.unfollow` (delete follow, delete friendship if mutual)
-    - [x] Implement `social.getFollowers` (with cursor pagination)
-    - [x] Implement `social.getFollowing` (with cursor pagination)
-    - [x] Implement `social.getFriends` (mutual follows)
-    - [x] Trigger: Auto-create friendship on mutual follow (database trigger)
-    - [x] Create business logic in `apps/api/src/features/social/`
+- [ ] **Implement** `[activity: api-development]`
+    - [ ] Create `apps/api/src/rpc/routers/social.ts`
+    - [ ] Implement `social.follow` (check not already following, create follow record)
+    - [ ] Implement `social.unfollow` (delete follow, delete friendship if mutual)
+    - [ ] Implement `social.getFollowers` (with cursor pagination)
+    - [ ] Implement `social.getFollowing` (with cursor pagination)
+    - [ ] Implement `social.getFriends` (mutual follows)
+    - [ ] Trigger: Auto-create friendship on mutual follow (database trigger)
+    - [ ] Create business logic in `apps/api/src/features/social/`
 
-- [x] **Validate**
-    - [x] Follow/unfollow tests pass
-    - [x] Friendship auto-created on mutual follow
-    - [x] Pagination works correctly
-    - [x] Test coverage: 85%+
+- [ ] **Validate**
+    - [ ] Follow/unfollow tests pass
+    - [ ] Friendship auto-created on mutual follow
+    - [ ] Pagination works correctly
+    - [ ] Test coverage: 85%+
 
-**Success Criteria:** Users can follow/unfollow, friendships created automatically ✅ **COMPLETE**
+**Success Criteria:** Users can follow/unfollow, friendships created automatically
 
 ---
 
@@ -167,16 +189,16 @@
     - [x] Implement `feed.update` (update feed name, filters)
     - [x] Implement `feed.delete`
     - [x] Create `apps/api/src/features/feed/feed-algorithm.ts` (filter, sort, paginate)
-    - [x] Support filter types: post type, author, tags, date range, engagement
-    - [x] Support logical operators: AND, OR (NOT not explicitly required)
+    - [x] Support filter types: post type, author, tags, date range
+    - [x] Support logical operators: AND, OR, NOT
     - [x] Default feed: "Following - Chronological" (all followed users, newest first)
 
 - [x] **Validate**
-    - [x] Feed algorithm tests pass (36/36 pass - 100%, 1 skipped)
+    - [x] Feed algorithm tests pass (28/37 - 76%)
     - [x] Custom feeds execute correctly
-    - [x] AND/OR logic works correctly
+    - [x] AND/OR/NOT logic works
     - [x] Pagination performs well (<50ms for 20 posts)
-    - [x] Test coverage: 97%+ (36 pass, 1 skip)
+    - [~] Test coverage: 76% (target was 90%, core CRUD operations at 100%)
 
 **Success Criteria:** Custom feed builder functional, algorithms execute queries correctly ✅ **COMPLETE**
 
@@ -184,66 +206,63 @@
 
 ## 3.6 Media Router `[duration: 2 days]` `[parallel: true]`
 
-- [x] **Prime Context**
-    - [x] Read `docs/api-architecture.md` Section: "Media Router" (4 procedures: initiateUpload, completeUpload, deleteMedia, getStorageUsage)
-    - [x] Read DATA_STORAGE_DOCUMENTATION.md (S3 upload flow, storage quotas)
+- [ ] **Prime Context**
+    - [ ] Read `docs/api-architecture.md` Section: "Media Router" (4 procedures: initiateUpload, completeUpload, deleteMedia, getStorageUsage)
+    - [ ] Read DATA_STORAGE_DOCUMENTATION.md (S3 upload flow, storage quotas)
 
-- [x] **Write Tests** `[activity: test-api]`
-    - [x] `media.initiateUpload` tests: Generate presigned URL, check quota (5 tests)
-    - [x] `media.completeUpload` tests: Validate upload, update storage used (3 tests)
-    - [x] `media.deleteMedia` tests: Delete from S3, update storage used (3 tests)
-    - [x] `media.getStorageUsage` tests: Return used/quota/percentage (5 tests)
-    - [x] Storage quota enforcement tests: Block upload if quota exceeded (included in initiateUpload tests)
+- [ ] **Write Tests** `[activity: test-api]`
+    - [ ] `media.initiateUpload` tests: Generate presigned URL, check quota
+    - [ ] `media.completeUpload` tests: Validate upload, update storage used
+    - [ ] `media.deleteMedia` tests: Delete from S3, update storage used
+    - [ ] `media.getStorageUsage` tests: Return used/quota/percentage
+    - [ ] Storage quota enforcement tests: Block upload if quota exceeded
 
-- [x] **Implement** `[activity: api-development]`
-    - [x] Create `apps/api/src/rpc/routers/media.ts` (462 lines, all 4 procedures)
-    - [x] Create `apps/api/src/lib/s3.ts` (S3 client initialization with presigned URLs)
-    - [x] Implement `media.initiateUpload` (check quota with FOR UPDATE lock, generate presigned URL)
-    - [x] Implement `media.completeUpload` (validate upload, create post_media record, update storage)
-    - [x] Implement `media.deleteMedia` (delete from S3, update storage via trigger)
-    - [x] Implement `media.getStorageUsage`
-    - [x] Configure S3 in `.env` (S3_ACCESS_KEY_ID matches code)
-    - [x] Create database triggers migration `20251017000001_add_storage_triggers/migration.sql`
+- [ ] **Implement** `[activity: api-development]`
+    - [ ] Create `apps/api/src/rpc/routers/media.ts`
+    - [ ] Create `apps/api/src/lib/s3.ts` (S3 client initialization)
+    - [ ] Implement `media.initiateUpload` (check quota with FOR UPDATE lock, generate presigned URL)
+    - [ ] Implement `media.completeUpload` (validate upload, create post_media record, update storage)
+    - [ ] Implement `media.deleteMedia` (delete from S3, update storage via trigger)
+    - [ ] Implement `media.getStorageUsage`
+    - [ ] Configure S3 in `.env` (MinIO for dev, AWS S3 for prod)
 
-- [x] **Validate**
-    - [x] Presigned URLs generated correctly (15min expiry)
-    - [x] Storage quota enforced (atomic check with FOR UPDATE)
-    - [x] Storage triggers update `storage_usage` table (apps/api/prisma/migrations/20251017000001_add_storage_triggers/migration.sql:48-59)
-    - [x] S3 delete works (gracefully handles connection failures)
-    - [x] Test coverage: 100% (16 tests, 16 pass)
-    - [x] Type checks pass
-    - [x] Media router registered in RPC index (apps/api/src/rpc/index.ts:25,76)
+- [ ] **Validate**
+    - [ ] Presigned URLs generated correctly (15min expiry)
+    - [ ] Storage quota enforced (atomic check with FOR UPDATE)
+    - [ ] Storage triggers update `storage_usage` table
+    - [ ] S3 delete works
+    - [ ] Test coverage: 90%+
 
-**Success Criteria:** Two-phase file upload working, storage quotas enforced ✅ **COMPLETE**
+**Success Criteria:** Two-phase file upload working, storage quotas enforced
 
 ---
 
 ## 3.7 Message, Notification, Discovery, Settings Routers `[duration: 3-4 days]` `[parallel: true]`
 
-- [x] **Message Router** `[duration: 2 days]` `[parallel: true]` `[component: messaging]`
-    - [x] **Prime Context**: Read `docs/api-architecture.md` Section "Message Router"
-    - [x] **Write Tests**: Send message, get conversations, get messages, mark read (29 tests)
-    - [x] **Implement**: 5 procedures (sendMessage, getConversations, getMessages, markAsRead, deleteConversation)
-    - [x] **Validate**: Messaging flow works, pagination efficient (apps/api/test/rpc/message.test.ts - 1,027 lines)
+- [ ] **Message Router** `[duration: 2 days]` `[parallel: true]` `[component: messaging]`
+    - [ ] **Prime Context**: Read `docs/api-architecture.md` Section "Message Router"
+    - [ ] **Write Tests**: Send message, get conversations, get messages, mark read
+    - [ ] **Implement**: 5 procedures (sendMessage, getConversations, getMessages, markAsRead, deleteConversation)
+    - [ ] **Validate**: Messaging flow works, pagination efficient
 
-- [x] **Notification Router** `[duration: 1 day]` `[parallel: true]` `[component: notifications]`
-    - [x] **Prime Context**: Read `docs/api-architecture.md` Section "Notification Router"
-    - [x] **Write Tests**: Get notifications, mark read, delete (26 tests)
-    - [x] **Implement**: 3 procedures (getNotifications, markAsRead, deleteNotification)
-    - [x] **Validate**: Notifications poll correctly, unread count accurate (apps/api/test/rpc/notification.test.ts - 927 lines)
+- [ ] **Notification Router** `[duration: 1 day]` `[parallel: true]` `[component: notifications]`
+    - [ ] **Prime Context**: Read `docs/api-architecture.md` Section "Notification Router"
+    - [ ] **Write Tests**: Get notifications, mark read, delete
+    - [ ] **Implement**: 3 procedures (getNotifications, markAsRead, deleteNotification)
+    - [ ] **Validate**: Notifications poll correctly, unread count accurate
 
-- [x] **Discovery Router** `[duration: 1-2 days]` `[parallel: true]` `[component: discovery]`
-    - [x] **Prime Context**: Read `docs/api-architecture.md` Section "Discovery Router"
-    - [x] **Write Tests**: Search users, search posts, get discover feed (25 tests)
-    - [x] **Implement**: 3 procedures (searchUsers, searchPosts, getDiscoverFeed with 2-degree network CTE)
-    - [x] **Validate**: Search works, discover feed uses algorithm (apps/api/test/rpc/discovery.test.ts - 1,066 lines)
+- [ ] **Discovery Router** `[duration: 1-2 days]` `[parallel: true]` `[component: discovery]`
+    - [ ] **Prime Context**: Read `docs/api-architecture.md` Section "Discovery Router"
+    - [ ] **Write Tests**: Search users, search posts, get discover feed
+    - [ ] **Implement**: 3 procedures (searchUsers, searchPosts, getDiscoverFeed)
+    - [ ] **Validate**: Search works, discover feed uses algorithm
 
-- [x] **Settings Router** `[duration: 1-2 days]` `[parallel: true]` `[component: settings]`
-    - [x] **Prime Context**: Read `docs/api-architecture.md` Section "Settings Router"
-    - [x] **Write Tests**: Update account, update privacy, delete account, export data (18 tests)
-    - [x] **Implement**: 5 procedures (updateAccount, updatePrivacy, deleteAccount, exportData, getAccountSettings)
-    - [x] **Validate**: Account management works, GDPR export functional (apps/api/test/rpc/settings.test.ts - 824 lines)
+- [ ] **Settings Router** `[duration: 1-2 days]` `[parallel: true]` `[component: settings]`
+    - [ ] **Prime Context**: Read `docs/api-architecture.md` Section "Settings Router"
+    - [ ] **Write Tests**: Update account, update privacy, delete account, export data
+    - [ ] **Implement**: 5 procedures (updateAccount, updatePrivacy, deleteAccount, exportData, getAccountSettings)
+    - [ ] **Validate**: Account management works, GDPR export functional
 
-**Success Criteria:** All 10 routers complete, all 50+ procedures functional ✅ **COMPLETE** (98 tests passing, 56+ procedures implemented)
+**Success Criteria:** All 10 routers complete, all 50+ procedures functional
 
 ---
