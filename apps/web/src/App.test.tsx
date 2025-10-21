@@ -1,33 +1,51 @@
-import { describe, expect, it } from "vitest";
+/**
+ * App Component Tests - Phase 4.4
+ *
+ * Tests for the main routing and navigation.
+ */
+
+import { beforeEach, describe, expect, it } from "vitest";
 import { renderWithProviders, screen } from "../test/utils/render";
 import App from "./App";
+import { useAuthStore } from "./lib/store/authStore";
 
-/**
- * Tests for the main App component
- */
 describe("App Component", () => {
-  it("should render the app title", () => {
+  beforeEach(() => {
+    // Reset auth store before each test
+    useAuthStore.setState({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      isLoading: false,
+    });
+  });
+
+  it("should redirect to login when not authenticated", () => {
     renderWithProviders(<App />);
+    // Should show login page
+    expect(screen.getByText("Welcome back")).toBeInTheDocument();
+    expect(screen.getByLabelText("Email")).toBeInTheDocument();
+  });
+
+  it("should show home page when authenticated", () => {
+    // Set authenticated state
+    useAuthStore.setState({
+      user: {
+        id: "1",
+        username: "testuser",
+        email: "test@example.com",
+        avatarUrl: null,
+      },
+      token: "token-123",
+      isAuthenticated: true,
+      isLoading: false,
+    });
+
+    renderWithProviders(<App />);
+
+    // Should show home page content
     expect(screen.getByText("VRSS Social Platform")).toBeInTheDocument();
-  });
-
-  it("should render the welcome message", () => {
-    renderWithProviders(<App />);
-    expect(
-      screen.getByText("Welcome to VRSS - Your customizable social network")
-    ).toBeInTheDocument();
-  });
-
-  it("should show development status section", () => {
-    renderWithProviders(<App />);
-    expect(screen.getByText("Development Status")).toBeInTheDocument();
-    expect(screen.getByText("Phase 4.1: PWA Setup & Core UI")).toBeInTheDocument();
-  });
-
-  it("should have proper styling applied", () => {
-    renderWithProviders(<App />);
-    const heading = screen.getByText("VRSS Social Platform");
-    expect(heading.tagName).toBe("H1");
+    expect(screen.getByText(/welcome back, testuser/i)).toBeInTheDocument();
   });
 
   it("should render without crashing", () => {
