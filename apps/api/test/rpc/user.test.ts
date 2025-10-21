@@ -12,7 +12,7 @@
  * Following TDD: These tests are written BEFORE implementation.
  *
  * @see docs/specs/001-vrss-social-platform/PLAN.md Phase 3.1
- * @see docs/api-architecture.md lines 182-220 (UserProcedures type definitions)
+ * @see docs/API.md (User Router procedures)
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md lines 130-171 (user_profiles schema)
  */
 

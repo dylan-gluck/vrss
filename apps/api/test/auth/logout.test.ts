@@ -10,7 +10,7 @@
  * 3. Session invalidation verification
  *
  * @see docs/specs/001-vrss-social-platform/PLAN.md Phase 2.2
- * @see docs/SECURITY_DESIGN.md for session management
+ * @see docs/AUTHENTICATION.md for session management
  */
 
 import { beforeEach, describe, expect, test } from "bun:test";

@@ -26,8 +26,8 @@ Phase 5 is the next priority phase. Phase 5.1 (Feed System) is the immediate nex
 ## 5.1 Feed System `[duration: 4-5 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
-    - [ ] Read `docs/frontend-implementation-guide.md` Phase 4 Section: "Feed System"
-    - [ ] Read `docs/component-specifications.md` Section: "Feed Components"
+    - [ ] Read `docs/FRONTEND.md` Section: "Feed System"
+    - [ ] Read `docs/FRONTEND.md` Section: "Feed Components"
     - [ ] Read PRD Section: "F4: Custom Feed Builder"
 
 - [ ] **Write Tests** `[activity: test-frontend]`
@@ -68,7 +68,7 @@ Phase 5 is the next priority phase. Phase 5.1 (Feed System) is the immediate nex
 ## 5.2 Profile Display & Editing `[duration: 4-5 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
-    - [ ] Read `docs/component-specifications.md` Section: "Profile Editor Components"
+    - [ ] Read `docs/FRONTEND.md` Section: "Profile Editor Components"
     - [ ] Read PRD Section: "F2: Customizable User Profiles"
 
 - [ ] **Write Tests** `[activity: test-frontend]`
@@ -114,7 +114,7 @@ Phase 5 is the next priority phase. Phase 5.1 (Feed System) is the immediate nex
 ## 5.3 Messaging `[duration: 3-4 days]` `[parallel: true]`
 
 - [ ] **Prime Context**
-    - [ ] Read `docs/frontend-implementation-guide.md` Phase 4 Section: "Messaging"
+    - [ ] Read `docs/FRONTEND.md` Section: "Messaging"
     - [ ] Read PRD Section: "F7: Direct Messaging"
 
 - [ ] **Write Tests** `[activity: test-frontend]`
@@ -148,7 +148,7 @@ Phase 5 is the next priority phase. Phase 5.1 (Feed System) is the immediate nex
 ## 5.4 Notifications `[duration: 2 days]` `[parallel: true]`
 
 - [ ] **Prime Context**
-    - [ ] Read `docs/frontend-implementation-guide.md` Phase 4 Section: "Notifications"
+    - [ ] Read `docs/FRONTEND.md` Section: "Notifications"
     - [ ] Read PRD Section: "F8: Notifications"
 
 - [ ] **Write Tests** `[activity: test-frontend]`

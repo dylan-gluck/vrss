@@ -10,7 +10,7 @@
  * Following TDD: These tests are written AFTER implementation.
  *
  * @see docs/specs/001-vrss-social-platform/PLAN.md Phase 3.6
- * @see docs/api-architecture.md lines 460-501 (MediaProcedures type definitions)
+ * @see docs/API.md (Media Router procedures)
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md lines 234-270, 604-632
  * @see docs/specs/001-vrss-social-platform/DATA_STORAGE_DOCUMENTATION.md lines 1140-1520
  */

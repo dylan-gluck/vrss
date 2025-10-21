@@ -11,8 +11,8 @@
  * 3. Session Table Validation - Verify required database tables exist
  * 4. Configuration Validation - Verify environment and config settings
  *
- * @see docs/SECURITY_DESIGN.md for auth architecture
- * @see docs/TESTING-STRATEGY.md for test patterns
+ * @see docs/AUTHENTICATION.md for auth architecture
+ * @see docs/TESTING.md for test patterns
  */
 
 import { beforeEach, describe, expect, it } from "bun:test";

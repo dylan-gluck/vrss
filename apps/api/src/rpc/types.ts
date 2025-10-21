@@ -4,7 +4,7 @@
  * Core type definitions for the VRSS RPC infrastructure.
  * Defines the procedure context that all RPC handlers receive.
  *
- * @see docs/api-architecture.md for RPC patterns
+ * @see docs/API.md for RPC patterns
  * @see docs/specs/001-vrss-social-platform/PLAN.md Phase 2.3
  */
 

@@ -5,7 +5,7 @@
 ## 7.1 Performance Optimization `[duration: 3-4 days]` `[parallel: true]`
 
 - [ ] **Prime Context**
-    - [ ] Read `docs/frontend-implementation-guide.md` Phase 7: "Performance Optimization"
+    - [ ] Read `docs/FRONTEND.md` Section: "Performance Optimization"
 
 - [ ] **Implement - Frontend Optimization** `[activity: performance-optimization]`
     - [ ] Virtual scrolling for feeds (already using `@tanstack/react-virtual`)

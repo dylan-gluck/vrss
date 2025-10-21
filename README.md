@@ -325,9 +325,7 @@ vrss/
   - Security considerations
 
 ### API
-- **API Architecture**: Located in `docs/api-architecture.md`
-- **Implementation Guide**: Located in `docs/api-implementation-guide.md`
-- **Quick Reference**: Located in `docs/api-quick-reference.md`
+- **API Documentation**: Located in `docs/API.md` (complete RPC patterns, procedures, and examples)
 
 ### Product Specifications
 - **Product Requirements**: `docs/specs/001-vrss-social-platform/PRD.md`

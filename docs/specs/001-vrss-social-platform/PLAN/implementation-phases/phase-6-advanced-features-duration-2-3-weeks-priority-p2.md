@@ -5,8 +5,8 @@
 ## 6.1 Visual Feed Algorithm Builder `[duration: 4-5 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
-    - [ ] Read `docs/component-specifications.md` Section: "Feed Algorithm Builder"
-    - [ ] Read `docs/frontend-implementation-guide.md` Phase 5 Section: "Complex Components"
+    - [ ] Read `docs/FRONTEND.md` Section: "Feed Algorithm Builder"
+    - [ ] Read `docs/FRONTEND.md` Section: "Complex Components"
 
 - [ ] **Write Tests** `[activity: test-frontend]`
     - [ ] AlgorithmBuilder render tests
@@ -40,7 +40,7 @@
 ## 6.2 Search & Discovery `[duration: 2-3 days]` `[parallel: true]`
 
 - [ ] **Prime Context**
-    - [ ] Read `docs/frontend-implementation-guide.md` Phase 4 Section: "Search & Discovery"
+    - [ ] Read `docs/FRONTEND.md` Section: "Search & Discovery"
     - [ ] Read PRD Section: "F5: Custom Discovery/Search Algorithm"
 
 - [ ] **Write Tests** `[activity: test-frontend]`
@@ -70,8 +70,8 @@
 ## 6.3 PWA Offline Capabilities `[duration: 3-4 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
-    - [ ] Read `docs/frontend-architecture.md` Section: "Offline-First Strategy"
-    - [ ] Read `docs/frontend-implementation-guide.md` Phase 6: "PWA Offline Capabilities"
+    - [ ] Read `docs/FRONTEND.md` Section: "Offline-First Strategy"
+    - [ ] Read `docs/FRONTEND.md` Section: "PWA Offline Capabilities"
 
 - [ ] **Write Tests** `[activity: test-frontend]`
     - [ ] Service worker caching tests

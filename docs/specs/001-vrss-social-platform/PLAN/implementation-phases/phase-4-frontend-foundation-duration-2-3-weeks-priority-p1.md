@@ -28,8 +28,8 @@ Phase 4 successfully completed with frontend foundation in place:
 ## 4.1 PWA Setup & Core UI `[duration: 2-3 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
-    - [ ] Read `docs/frontend-architecture.md` (PWA design, service worker strategy)
-    - [ ] Read `docs/frontend-implementation-guide.tribes` Phase 1 & 2
+    - [ ] Read `docs/FRONTEND.md` (PWA design, service worker strategy)
+    - [ ] Read `docs/FRONTEND.md` Phase 1 & 2
     - [ ] Read SDD Section: "Frontend PWA" directory structure
 
 - [ ] **Write Tests** `[activity: test-frontend]`
@@ -72,8 +72,8 @@ Phase 4 successfully completed with frontend foundation in place:
 ## 4.2 State Management Setup `[duration: 2 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
-    - [ ] Read `docs/frontend-architecture.md` Section: "State Management Layers"
-    - [ ] Read `docs/frontend-data-models.md` (Zustand stores, TanStack Query patterns)
+    - [ ] Read `docs/FRONTEND.md` Section: "State Management Layers"
+    - [ ] Read `docs/DATA_MODEL.md` (Zustand stores, TanStack Query patterns)
 
 - [ ] **Write Tests** `[activity: test-frontend]`
     - [ ] AuthStore persistence test (localStorage)
@@ -104,7 +104,7 @@ Phase 4 successfully completed with frontend foundation in place:
 ## 4.3 RPC Client & API Integration `[duration: 2 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
-    - [ ] Read `docs/frontend-architecture.md` Section: "API Client Layer"
+    - [ ] Read `docs/FRONTEND.md` Section: "API Client Layer"
     - [ ] Read `packages/api-contracts/src/` (type contracts for all procedures)
 
 - [ ] **Write Tests** `[activity: test-frontend]`
@@ -136,7 +136,7 @@ Phase 4 successfully completed with frontend foundation in place:
 ## 4.4 Authentication UI `[duration: 2-3 days]` `[parallel: false]`
 
 - [ ] **Prime Context**
-    - [ ] Read `docs/frontend-implementation-guide.md` Phase 4 Section: "Authentication Module"
+    - [ ] Read `docs/FRONTEND.md` Section: "Authentication Module"
     - [ ] Read PRD Section: "F1: User Authentication and Registration"
 
 - [ ] **Write Tests** `[activity: test-frontend]`

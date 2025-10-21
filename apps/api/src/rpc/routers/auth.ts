@@ -14,8 +14,8 @@
  * - auth.resendVerification: Resend verification email
  *
  * @see docs/specs/001-vrss-social-platform/PLAN.md Phase 2.2
- * @see docs/SECURITY_DESIGN.md for authentication architecture
- * @see docs/api-architecture.md for RPC patterns
+ * @see docs/AUTHENTICATION.md for authentication architecture
+ * @see docs/API.md for RPC patterns
  */
 
 import { PrismaClient } from "@prisma/client";

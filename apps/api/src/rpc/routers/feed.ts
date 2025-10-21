@@ -11,7 +11,7 @@
  * - feed.delete: Delete custom feed (soft delete preserves data)
  *
  * @see docs/specs/001-vrss-social-platform/PLAN.md Phase 3.4
- * @see docs/api-architecture.md (Feed Procedures type definitions)
+ * @see docs/API.md (Feed Router procedures)
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md (custom_feeds, feed_filters)
  */
 

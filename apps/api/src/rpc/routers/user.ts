@@ -12,7 +12,7 @@
  * - user.getSections: Retrieve profile sections with visibility filtering
  *
  * @see docs/specs/001-vrss-social-platform/PLAN.md Phase 3.1
- * @see docs/api-architecture.md lines 818-916 (Example User Router)
+ * @see docs/API.md (User Router procedures)
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md lines 130-171 (user_profiles)
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md lines 394-425 (profile_sections)
  */

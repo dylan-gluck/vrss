@@ -28,7 +28,7 @@
  * - SENDGRID_FROM: From email address (e.g., "noreply@vrss.dev")
  *
  * @see docs/specs/001-vrss-social-platform/PLAN.md Phase 2.3
- * @see docs/SECURITY_DESIGN.md for email verification flow
+ * @see docs/AUTHENTICATION.md for email verification flow
  */
 
 // =============================================================================

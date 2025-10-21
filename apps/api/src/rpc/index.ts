@@ -13,7 +13,7 @@
  * 6. Route to appropriate procedure handler
  * 7. Return standardized response with metadata
  *
- * @see docs/api-architecture.md for RPC patterns
+ * @see docs/API.md for RPC patterns
  * @see docs/specs/001-vrss-social-platform/SDD.md for error codes
  */
 

@@ -4,7 +4,7 @@
  * Provides session validation, public/protected procedures, and sliding window
  * session refresh for the VRSS Social Platform API.
  *
- * @see docs/SECURITY_DESIGN.md lines 260-361 for architecture details
+ * @see docs/AUTHENTICATION.md for architecture details
  */
 
 import { PrismaClient } from "@prisma/client";

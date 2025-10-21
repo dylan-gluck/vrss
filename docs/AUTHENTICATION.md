@@ -644,7 +644,7 @@ Authentication errors use the 1000-1099 range:
 - **Data Model**: See `/docs/DATA_MODEL.md` for User, Account, Session schemas
 - **API Documentation**: See `/docs/API.md` for auth RPC procedures
 - **Testing**: See `/docs/TESTING.md` for auth test patterns
-- **Security**: See `/docs/SECURITY_DESIGN.md` for security architecture (if exists)
+- **Architecture**: See `/docs/ARCHITECTURE.md` for overall system architecture
 
 ---
 

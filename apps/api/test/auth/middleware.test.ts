@@ -5,7 +5,7 @@
  * handles public vs protected procedures, implements session refresh, and
  * enforces email verification.
  *
- * @see docs/SECURITY_DESIGN.md lines 260-361 for middleware specifications
+ * @see docs/AUTHENTICATION.md for middleware specifications
  */
 
 import { afterAll, beforeAll, describe, expect, it } from "bun:test";

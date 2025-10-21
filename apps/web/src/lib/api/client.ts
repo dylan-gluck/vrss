@@ -9,7 +9,7 @@
  * - Offline queue integration
  * - Request timeout support
  *
- * @see docs/frontend-architecture.md Section: "API Client Layer"
+ * @see docs/FRONTEND.md Section: "API Client Layer"
  */
 
 import type {

@@ -293,31 +293,31 @@ interfaces:
     why: "Application data models, storage quotas (50MB free, 1GB+ paid), and S3 integration"
 
   - name: "RPC API Architecture"
-    doc: @docs/api-architecture.md
+    doc: @docs/API.md
     relevance: CRITICAL
     sections: [all_procedures, type_contracts, error_handling, file_uploads]
     why: "Single endpoint RPC pattern with 50+ procedures across 10 routers"
 
   - name: "Integration Points"
-    doc: @docs/INTEGRATION_POINTS.md
+    doc: @docs/ARCHITECTURE.md
     relevance: CRITICAL
     sections: [component_communication, s3_uploads, better_auth_integration, data_flows]
     why: "System boundaries, inter-component communication, and external service integrations"
 
   - name: "Frontend Data Models"
-    doc: @docs/frontend-data-models.md
+    doc: @docs/DATA_MODEL.md
     relevance: HIGH
     sections: [zustand_stores, tanstack_queries, component_interfaces, state_patterns]
     why: "Frontend state management with Zustand and TanStack Query, component prop interfaces"
 
   - name: "Frontend Architecture"
-    doc: @docs/frontend-architecture.md
+    doc: @docs/FRONTEND.md
     relevance: HIGH
     sections: [pwa_setup, state_management, routing, offline_strategy]
     why: "Complete PWA architecture with React, TypeScript, and offline-first patterns"
 
   - name: "Security Design"
-    doc: @docs/SECURITY_DESIGN.md
+    doc: @docs/AUTHENTICATION.md
     relevance: CRITICAL
     sections: [authentication_flows, session_management, authorization, data_protection]
     why: "Better-auth integration with session-based authentication and security patterns"
@@ -549,7 +549,7 @@ Public Procedures (no auth):
   - discovery.searchUsers, discovery.getDiscoverFeed
 
 # Reference comprehensive API documentation
-api_doc: @docs/api-architecture.md
+api_doc: @docs/API.md
 ```
 
 ### Application Data Models
@@ -766,7 +766,7 @@ MODEL: Profile (TanStack Query, NEW)
 
 # Reference domain model documentation
 backend_doc: @docs/specs/001-vrss-social-platform/DATA_STORAGE_DOCUMENTATION.md
-frontend_doc: @docs/frontend-data-models.md
+frontend_doc: @docs/DATA_MODEL.md
 ```
 
 ### Integration Points
@@ -787,7 +787,7 @@ To: Backend_API (Bun + Hono)
 From: Backend_API
 To: Frontend_PWA
   - protocol: HTTP Response (JSON)
-  - doc: @docs/INTEGRATION_POINTS.md
+  - doc: @docs/ARCHITECTURE.md
   - data_flow: "Database result → Business logic → JSON response → State update → Re-render"
   - caching: "TanStack Query with stale-while-revalidate"
   - optimistic_updates: "Local state updates before server confirmation"
@@ -795,7 +795,7 @@ To: Frontend_PWA
 From: Frontend_PWA
 To: Service_Worker
   - protocol: Service Worker API
-  - doc: @docs/frontend-architecture.md
+  - doc: @docs/FRONTEND.md
   - offline_support: "NetworkFirst for API, CacheFirst for static assets"
   - background_sync: "Queue failed operations for retry when online"
 
@@ -810,7 +810,7 @@ To: PostgreSQL
 # External System Integration (third-party services)
 
 S3_Compatible_Storage:
-  - doc: @docs/INTEGRATION_POINTS.md
+  - doc: @docs/ARCHITECTURE.md
   - sections: [presigned_urls, two_phase_upload, cdn_integration]
   - integration: "Backend generates presigned URL → Frontend uploads directly to S3 → Backend validates completion"
   - critical_data: [media files (images, videos, audio), metadata (size, mime_type, dimensions)]
@@ -818,7 +818,7 @@ S3_Compatible_Storage:
   - cdn: "CloudFront for global delivery with cache headers"
 
 Better_Auth:
-  - doc: @docs/SECURITY_DESIGN.md
+  - doc: @docs/AUTHENTICATION.md
   - sections: [authentication_flows, session_management, password_hashing]
   - integration: "Database-backed session authentication with secure HTTP-only cookies"
   - critical_data: [user sessions, password hashes (bcrypt), session tokens]
@@ -852,7 +852,7 @@ Pattern: Real-Time_Notifications (Polling)
   5. Backend: Update read status → Return success
 
 # Integration Documentation
-integration_doc: @docs/INTEGRATION_POINTS.md
+integration_doc: @docs/ARCHITECTURE.md
 ```
 
 ## Implementation Examples

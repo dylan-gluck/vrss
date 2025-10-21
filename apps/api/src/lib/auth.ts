@@ -4,7 +4,7 @@
  * Core authentication setup for VRSS Social Platform.
  * Uses Better-auth with Prisma adapter for PostgreSQL.
  *
- * @see docs/SECURITY_DESIGN.md for architecture details
+ * @see docs/AUTHENTICATION.md for architecture details
  */
 
 import { PrismaClient } from "@prisma/client";

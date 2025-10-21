@@ -14,7 +14,7 @@
  * Following TDD: These tests are written BEFORE implementation.
  *
  * @see docs/specs/001-vrss-social-platform/PLAN.md Phase 3.3
- * @see docs/api-architecture.md lines 222-276 (PostProcedures type definitions)
+ * @see docs/API.md (Post Router procedures)
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md lines 180-270 (posts schema)
  */
 

@@ -6,7 +6,7 @@
  *
  * @see docs/specs/001-vrss-social-platform/PLAN.md Phase 3.4
  * @see docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md lines 277-317 (user_follows & friendships)
- * @see docs/api-architecture.md lines 313-375 (SocialProcedures type definitions)
+ * @see docs/API.md (Social Router procedures)
  */
 
 import { z } from "zod";

@@ -27,8 +27,8 @@ Phase 3 mostly completed with core RPC infrastructure and key routers:
 ## 3.1 RPC Foundation & Type Contracts `[duration: 2-3 days]` `[parallel: false]`
 
 - [x] **Prime Context**
-    - [x] Read `docs/api-architecture.md` (complete RPC pattern, all procedures)
-    - [x] Read `docs/api-implementation-guide.md` (implementation examples)
+    - [x] Read `docs/API.md` (complete RPC pattern, all procedures)
+    - [x] Read `docs/API.md` (implementation examples)
     - [x] Read SDD Section: "Internal API Changes" (lines 1185-1285)
 
 - [x] **Write Tests** `[activity: test-api]`

@@ -33,37 +33,29 @@
   why: "Source of truth for MVP requirements and tech stack"
 
 # API and integration documentation
-- doc: docs/api-architecture.md
+- doc: docs/API.md
   relevance: CRITICAL
   why: "RPC API design with 50+ procedures, type contracts, error handling"
 
-- doc: docs/api-implementation-guide.md
+- doc: docs/API.md
   relevance: HIGH
-  why: "Implementation examples and testing patterns"
-
-- doc: docs/api-quick-reference.md
-  relevance: MEDIUM
-  why: "Daily reference for API usage"
+  why: "Implementation examples and testing patterns, daily reference for API usage"
 
 # Frontend architecture
-- doc: docs/frontend-architecture.md
+- doc: docs/FRONTEND.md
   relevance: CRITICAL
   why: "PWA design, state management, component patterns"
 
-- doc: docs/component-specifications.md
+- doc: docs/FRONTEND.md
   relevance: HIGH
-  why: "Detailed component specs (Feed Builder, Profile Editor)"
-
-- doc: docs/frontend-implementation-guide.md
-  relevance: HIGH
-  why: "7-phase implementation roadmap"
+  why: "Detailed component specs, implementation roadmap"
 
 # Security documentation
-- doc: docs/SECURITY_DESIGN.md
+- doc: docs/AUTHENTICATION.md
   relevance: CRITICAL
   why: "Better-auth integration, security patterns, authorization"
 
-- doc: docs/SECURITY_TESTING.md
+- doc: docs/TESTING.md
   relevance: HIGH
   why: "Security test cases and attack scenarios"
 
@@ -77,7 +69,7 @@
   relevance: HIGH
   why: "Docker Compose setup, containerization strategy"
 
-- doc: docs/INFRASTRUCTURE_SPEC.md
+- doc: docs/INFRASTRUCTURE.md
   relevance: HIGH
   why: "Complete infrastructure specification"
 
@@ -231,10 +223,10 @@ This is a greenfield MVP implementation. All code will be created from scratch.
 - **Standards to Follow**:
   - Type safety enforced throughout (TypeScript strict mode)
   - Test coverage requirements (80%+ overall, 100% critical paths)
-  - Security patterns from `/docs/SECURITY_DESIGN.md`
-  - API contracts defined in `/docs/api-architecture.md`
+  - Security patterns from `/docs/AUTHENTICATION.md`
+  - API contracts defined in `/docs/API.md`
   - Database schema from `/docs/specs/001-vrss-social-platform/DATABASE_SCHEMA.md`
-  - Component patterns from `/docs/frontend-architecture.md`
+  - Component patterns from `/docs/FRONTEND.md`
 
 ## External Interfaces
 
@@ -271,7 +263,7 @@ inbound:
     format: RPC (JSON)
     endpoint: "POST /api/rpc"
     authentication: Session (Better-auth cookies)
-    doc: @docs/api-architecture.md
+    doc: @docs/API.md
     data_flow: "All user actions - RPC procedure calls"
     rate_limits: "100 req/min per user, 1000 req/min per procedure"
 
@@ -279,7 +271,7 @@ inbound:
     type: Local HTTP
     format: Cached responses
     authentication: Service Worker Cache
-    doc: @docs/frontend-architecture.md
+    doc: @docs/FRONTEND.md
     data_flow: "Offline content access, sync queue"
 
 # Outbound Interfaces (what this system calls)
@@ -301,7 +293,7 @@ outbound:
     type: SMTP/HTTPS
     format: Email/API
     authentication: SMTP credentials or API key
-    doc: @docs/SECURITY_DESIGN.md
+    doc: @docs/AUTHENTICATION.md
     data_flow: "Email verification, password reset notifications"
     criticality: MEDIUM
     operations:
@@ -325,7 +317,7 @@ data:
   - name: "Better-auth Session Store"
     type: PostgreSQL (sessions table)
     connection: Better-auth library
-    doc: @docs/SECURITY_DESIGN.md
+    doc: @docs/AUTHENTICATION.md
     data_flow: "User sessions (7-day expiry, sliding window)"
 
   - name: "S3-Compatible Storage (File System)"
