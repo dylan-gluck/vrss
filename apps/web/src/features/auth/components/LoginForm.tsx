@@ -29,7 +29,7 @@ import { useAuth } from "../hooks/useAuth";
 import { ROUTES } from "@/lib/constants/routes";
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  username: z.string().min(3, "Username must be at least 3 characters"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
@@ -65,16 +65,16 @@ export const LoginForm: React.FC = () => {
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="username">Username</Label>
             <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              {...register("email")}
-              aria-invalid={errors.email ? "true" : "false"}
+              id="username"
+              type="text"
+              placeholder="your_username"
+              {...register("username")}
+              aria-invalid={errors.username ? "true" : "false"}
             />
-            {errors.email && (
-              <p className="text-sm text-destructive">{errors.email.message}</p>
+            {errors.username && (
+              <p className="text-sm text-destructive">{errors.username.message}</p>
             )}
           </div>
 

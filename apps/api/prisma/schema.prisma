@@ -33,11 +33,13 @@ enum ProfileVisibility {
 
 // Users & Authentication
 model User {
-  id            BigInt  @id @default(autoincrement())
-  username      String  @unique @db.VarChar(30)
-  email         String  @unique @db.VarChar(255)
-  emailVerified Boolean @default(false) @map("email_verified")
-  passwordHash  String  @map("password_hash") @db.VarChar(255)
+  id              BigInt  @id @default(autoincrement())
+  username        String  @unique @db.VarChar(30)
+  name            String  @db.VarChar(100) // Display name (better-auth compatibility)
+  displayUsername String? @map("display_username") @db.VarChar(30) // Original username casing
+  email           String  @unique @db.VarChar(255)
+  emailVerified   Boolean @default(false) @map("email_verified")
+  passwordHash    String? @map("password_hash") @db.VarChar(255) // Optional - better-auth uses Account table
 
   // Account status
   status UserStatus @default(active)
@@ -51,6 +53,7 @@ model User {
   // Relations - Phase 1
   profile      UserProfile?
   storageUsage StorageUsage?
+  accounts     Account[] // Better-auth accounts
   sessions     Session[]
 
   // Relations - Phase 2 (Content & Social)
@@ -154,6 +157,27 @@ model StorageUsage {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("storage_usage")
+}
+
+// Better-auth Account Management (stores authentication credentials)
+model Account {
+  id            BigInt   @id @default(autoincrement())
+  userId        BigInt   @map("user_id")
+  accountId     String   @unique @map("account_id") @db.VarChar(255)
+  providerId    String   @map("provider_id") @db.VarChar(50)
+  accessToken   String?  @map("access_token") @db.Text
+  refreshToken  String?  @map("refresh_token") @db.Text
+  idToken       String?  @map("id_token") @db.Text
+  expiresAt     DateTime? @map("expires_at") @db.Timestamptz(6)
+  password      String?  @db.VarChar(255) // Hashed password for email/password auth
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "idx_accounts_user")
+  @@map("account")
 }
 
 // Better-auth Session Management

@@ -10,6 +10,7 @@
 import { PrismaClient } from "@prisma/client";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { username } from "better-auth/plugins";
 
 const prisma = new PrismaClient();
 
@@ -29,10 +30,26 @@ const baseAuth = betterAuth({
   // Email/Password authentication
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true,
+    requireEmailVerification: false, // Disabled for MVP
     minPasswordLength: 12,
     maxPasswordLength: 128,
   },
+
+  // Email verification configuration (disabled for MVP)
+  // emailVerification: {
+  //   sendOnSignUp: true, // Automatically send verification email on signup
+  //   autoSignInAfterVerification: true, // Auto-login after email verification
+  //   expiresIn: 60 * 60 * 24, // 24 hours (86400 seconds)
+  //   sendVerificationEmail: async ({ user, token }) => {
+  //     // Import email service to send verification email
+  //     const { sendVerificationEmail } = await import("./email");
+  //     // Extract username from user (better-auth username plugin adds username field)
+  //     const username = (user as any).username || user.name || user.email;
+  //     // Send verification email using existing email service
+  //     // Note: We use our custom email service which expects a token, not a URL
+  //     await sendVerificationEmail(user.email, username, token);
+  //   },
+  // },
 
   // Session configuration
   session: {
@@ -49,7 +66,9 @@ const baseAuth = betterAuth({
     cookieSameSite: "lax",
     cookieSecure: process.env.NODE_ENV === "production",
     cookiePrefix: "vrss",
-    generateId: false, // Use database auto-increment
+    database: {
+      generateId: false, // Use database auto-increment
+    },
   },
 
   // Base URL for email links
@@ -62,6 +81,14 @@ const baseAuth = betterAuth({
   trustedOrigins: [
     process.env.APP_URL || "http://localhost:3000",
     process.env.WEB_URL || "http://localhost:5173",
+  ],
+
+  // Plugins
+  plugins: [
+    username({
+      minUsernameLength: 3,
+      maxUsernameLength: 30,
+    }),
   ],
 });
 

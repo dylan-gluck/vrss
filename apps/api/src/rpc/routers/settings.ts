@@ -16,7 +16,6 @@
 
 import { PrismaClient } from "@prisma/client";
 import { ErrorCode } from "@vrss/api-contracts";
-import bcrypt from "bcryptjs";
 import type { z } from "zod";
 import { auth } from "../../lib/auth";
 import type { ProcedureContext } from "../types";
@@ -51,19 +50,20 @@ class RPCError extends Error {
 // =============================================================================
 
 /**
- * Hash password using bcrypt
- * NOTE: We handle password hashing manually here for account updates.
- * User registration uses better-auth's internal password hashing.
+ * Hash password using Bun's built-in bcrypt
  */
 async function hashPassword(password: string): Promise<string> {
-  return bcrypt.hash(password, 10);
+  return await Bun.password.hash(password, {
+    algorithm: "bcrypt",
+    cost: 12,
+  });
 }
 
 /**
- * Verify password using bcrypt
+ * Verify password against hash
  */
 async function verifyPassword(password: string, hash: string): Promise<boolean> {
-  return bcrypt.compare(password, hash);
+  return await Bun.password.verify(password, hash);
 }
 
 // =============================================================================
