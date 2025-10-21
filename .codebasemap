@@ -2,9 +2,9 @@
   "metadata": {
     "version": 1,
     "root": "/Users/dylan/Workspace/projects/vrss",
-    "createdAt": "2025-10-21T06:38:05.209Z",
-    "updatedAt": "2025-10-21T06:38:05.209Z",
-    "totalFiles": 170
+    "createdAt": "2025-10-21T16:18:32.856Z",
+    "updatedAt": "2025-10-21T16:18:32.856Z",
+    "totalFiles": 186
   },
   "tree": {
     "name": "vrss",
@@ -491,6 +491,10 @@
                             "type": "file"
                           },
                           {
+                            "name": "progress.tsx",
+                            "type": "file"
+                          },
+                          {
                             "name": "scroll-area.tsx",
                             "type": "file"
                           },
@@ -508,6 +512,10 @@
                           },
                           {
                             "name": "switch.tsx",
+                            "type": "file"
+                          },
+                          {
+                            "name": "textarea.tsx",
                             "type": "file"
                           },
                           {
@@ -631,6 +639,72 @@
                             ]
                           }
                         ]
+                      },
+                      {
+                        "name": "feed",
+                        "type": "dir",
+                        "children": [
+                          {
+                            "name": "components",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "CreatePost",
+                                "type": "dir",
+                                "children": [
+                                  {
+                                    "name": "index.tsx",
+                                    "type": "file"
+                                  },
+                                  {
+                                    "name": "MediaUpload.tsx",
+                                    "type": "file"
+                                  },
+                                  {
+                                    "name": "PostComposer.tsx",
+                                    "type": "file"
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "PostCard",
+                                "type": "dir",
+                                "children": [
+                                  {
+                                    "name": "index.tsx",
+                                    "type": "file"
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "FeedView.tsx",
+                                "type": "file"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "hooks",
+                            "type": "dir",
+                            "children": [
+                              {
+                                "name": "useBookmarkPost.ts",
+                                "type": "file"
+                              },
+                              {
+                                "name": "useFeed.ts",
+                                "type": "file"
+                              },
+                              {
+                                "name": "useLikePost.ts",
+                                "type": "file"
+                              }
+                            ]
+                          },
+                          {
+                            "name": "index.ts",
+                            "type": "file"
+                          }
+                        ]
                       }
                     ]
                   },
@@ -720,6 +794,16 @@
                               }
                             ]
                           },
+                          {
+                            "name": "client.ts",
+                            "type": "file"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "auth",
+                        "type": "dir",
+                        "children": [
                           {
                             "name": "client.ts",
                             "type": "file"
@@ -846,6 +930,28 @@
                 "name": "test",
                 "type": "dir",
                 "children": [
+                  {
+                    "name": "feed",
+                    "type": "dir",
+                    "children": [
+                      {
+                        "name": "CreatePost.test.tsx",
+                        "type": "file"
+                      },
+                      {
+                        "name": "FeedView.test.tsx",
+                        "type": "file"
+                      },
+                      {
+                        "name": "OptimisticUpdates.test.tsx",
+                        "type": "file"
+                      },
+                      {
+                        "name": "PostCard.test.tsx",
+                        "type": "file"
+                      }
+                    ]
+                  },
                   {
                     "name": "mocks",
                     "type": "dir",
@@ -1161,11 +1267,13 @@
     "apps/web/src/components/ui/dropdown-menu.tsx",
     "apps/web/src/components/ui/input.tsx",
     "apps/web/src/components/ui/label.tsx",
+    "apps/web/src/components/ui/progress.tsx",
     "apps/web/src/components/ui/scroll-area.tsx",
     "apps/web/src/components/ui/separator.tsx",
     "apps/web/src/components/ui/sheet.tsx",
     "apps/web/src/components/ui/skeleton.tsx",
     "apps/web/src/components/ui/switch.tsx",
+    "apps/web/src/components/ui/textarea.tsx",
     "apps/web/src/components/ui/toast.tsx",
     "apps/web/src/components/ui/toaster.tsx",
     "apps/web/src/components/ui/tooltip.tsx",
@@ -1182,6 +1290,15 @@
     "apps/web/src/features/auth/hooks/useAuth.ts",
     "apps/web/src/features/auth/stores/authStore.ts",
     "apps/web/src/features/auth/types/auth.types.ts",
+    "apps/web/src/features/feed/components/CreatePost/MediaUpload.tsx",
+    "apps/web/src/features/feed/components/CreatePost/PostComposer.tsx",
+    "apps/web/src/features/feed/components/CreatePost/index.tsx",
+    "apps/web/src/features/feed/components/FeedView.tsx",
+    "apps/web/src/features/feed/components/PostCard/index.tsx",
+    "apps/web/src/features/feed/hooks/useBookmarkPost.ts",
+    "apps/web/src/features/feed/hooks/useFeed.ts",
+    "apps/web/src/features/feed/hooks/useLikePost.ts",
+    "apps/web/src/features/feed/index.ts",
     "apps/web/src/hooks/useLocalStorage.test.ts",
     "apps/web/src/hooks/useLocalStorage.ts",
     "apps/web/src/lib/__tests__/queryClient.test.ts",
@@ -1195,6 +1312,7 @@
     "apps/web/src/lib/api/hooks/usePost.ts",
     "apps/web/src/lib/api/hooks/useSocial.ts",
     "apps/web/src/lib/api/hooks/useUser.ts",
+    "apps/web/src/lib/auth/client.ts",
     "apps/web/src/lib/constants/routes.ts",
     "apps/web/src/lib/hooks/use-toast.ts",
     "apps/web/src/lib/hooks/useMediaQuery.ts",
@@ -1213,6 +1331,10 @@
     "apps/web/src/pages/RegisterPage.tsx",
     "apps/web/src/pages/VerifyEmailPage.tsx",
     "apps/web/tailwind.config.js",
+    "apps/web/test/feed/CreatePost.test.tsx",
+    "apps/web/test/feed/FeedView.test.tsx",
+    "apps/web/test/feed/OptimisticUpdates.test.tsx",
+    "apps/web/test/feed/PostCard.test.tsx",
     "apps/web/test/infrastructure.test.tsx",
     "apps/web/test/mocks/data.ts",
     "apps/web/test/mocks/handlers.ts",
@@ -1249,6 +1371,10 @@
     "test/infrastructure/volume-persistence.test.ts"
   ],
   "edges": [
+    {
+      "from": "apps/api/src/index.ts",
+      "to": "apps/api/src/lib/auth.ts"
+    },
     {
       "from": "apps/api/src/index.ts",
       "to": "apps/api/src/rpc/index.ts"
@@ -1838,10 +1964,6 @@
       "to": "apps/web/src/pages/VerifyEmailPage.tsx"
     },
     {
-      "from": "apps/web/src/features/auth/components/AuthGuard.tsx",
-      "to": "apps/web/src/features/auth/stores/authStore.ts"
-    },
-    {
       "from": "apps/web/src/features/auth/components/EmailVerification.tsx",
       "to": "apps/web/src/features/auth/stores/authStore.ts"
     },
@@ -1858,12 +1980,72 @@
       "to": "apps/web/src/features/auth/hooks/useAuth.ts"
     },
     {
-      "from": "apps/web/src/features/auth/hooks/useAuth.ts",
-      "to": "apps/web/src/features/auth/api/authApi.ts"
+      "from": "apps/web/src/features/feed/components/CreatePost/PostComposer.tsx",
+      "to": "apps/web/src/features/feed/components/CreatePost/MediaUpload.tsx"
     },
     {
-      "from": "apps/web/src/features/auth/hooks/useAuth.ts",
-      "to": "apps/web/src/features/auth/stores/authStore.ts"
+      "from": "apps/web/src/features/feed/components/CreatePost/index.tsx",
+      "to": "apps/web/src/features/feed/components/CreatePost/MediaUpload.tsx"
+    },
+    {
+      "from": "apps/web/src/features/feed/components/CreatePost/index.tsx",
+      "to": "apps/web/src/features/feed/components/CreatePost/PostComposer.tsx"
+    },
+    {
+      "from": "apps/web/src/features/feed/components/FeedView.tsx",
+      "to": "apps/web/src/features/feed/components/CreatePost/index.tsx"
+    },
+    {
+      "from": "apps/web/src/features/feed/components/FeedView.tsx",
+      "to": "apps/web/src/features/feed/components/PostCard/index.tsx"
+    },
+    {
+      "from": "apps/web/src/features/feed/components/FeedView.tsx",
+      "to": "apps/web/src/features/feed/hooks/useFeed.ts"
+    },
+    {
+      "from": "apps/web/src/features/feed/components/PostCard/index.tsx",
+      "to": "apps/web/src/features/feed/hooks/useBookmarkPost.ts"
+    },
+    {
+      "from": "apps/web/src/features/feed/components/PostCard/index.tsx",
+      "to": "apps/web/src/features/feed/hooks/useFeed.ts"
+    },
+    {
+      "from": "apps/web/src/features/feed/components/PostCard/index.tsx",
+      "to": "apps/web/src/features/feed/hooks/useLikePost.ts"
+    },
+    {
+      "from": "apps/web/src/features/feed/hooks/useBookmarkPost.ts",
+      "to": "apps/web/src/features/feed/hooks/useFeed.ts"
+    },
+    {
+      "from": "apps/web/src/features/feed/hooks/useLikePost.ts",
+      "to": "apps/web/src/features/feed/hooks/useFeed.ts"
+    },
+    {
+      "from": "apps/web/src/features/feed/index.ts",
+      "to": "apps/web/src/features/feed/components/CreatePost/index.tsx"
+    },
+    {
+      "from": "apps/web/src/features/feed/index.ts",
+      "to": "apps/web/src/features/feed/components/FeedView.tsx"
+    },
+    {
+      "from": "apps/web/src/features/feed/index.ts",
+      "to": "apps/web/src/features/feed/components/PostCard/index.tsx"
+    },
+    {
+      "from": "apps/web/src/features/feed/index.ts",
+      "to": "apps/web/src/features/feed/hooks/useBookmarkPost.ts"
+    },
+    {
+      "from": "apps/web/src/features/feed/index.ts",
+      "to": "apps/web/src/features/feed/hooks/useFeed.ts"
+    },
+    {
+      "from": "apps/web/src/features/feed/index.ts",
+      "to": "apps/web/src/features/feed/hooks/useLikePost.ts"
     },
     {
       "from": "apps/web/src/hooks/useLocalStorage.test.ts",
@@ -1988,6 +2170,30 @@
     {
       "from": "apps/web/src/main.tsx",
       "to": "apps/web/src/lib/queryClient.ts"
+    },
+    {
+      "from": "apps/web/test/feed/CreatePost.test.tsx",
+      "to": "apps/web/test/utils/render.tsx"
+    },
+    {
+      "from": "apps/web/test/feed/FeedView.test.tsx",
+      "to": "apps/web/test/utils/render.tsx"
+    },
+    {
+      "from": "apps/web/test/feed/OptimisticUpdates.test.tsx",
+      "to": "apps/web/test/mocks/data.ts"
+    },
+    {
+      "from": "apps/web/test/feed/OptimisticUpdates.test.tsx",
+      "to": "apps/web/test/utils/render.tsx"
+    },
+    {
+      "from": "apps/web/test/feed/PostCard.test.tsx",
+      "to": "apps/web/test/mocks/data.ts"
+    },
+    {
+      "from": "apps/web/test/feed/PostCard.test.tsx",
+      "to": "apps/web/test/utils/render.tsx"
     },
     {
       "from": "apps/web/test/infrastructure.test.tsx",
@@ -2283,9 +2489,17 @@
           "imported": [
             "createRPCRouter"
           ]
+        },
+        {
+          "from": "./lib/auth",
+          "kind": "import",
+          "imported": [
+            "auth"
+          ]
         }
       ],
       "dependencies": [
+        "apps/api/src/lib/auth.ts",
         "apps/api/src/rpc/index.ts"
       ],
       "functions": [],
@@ -2642,18 +2856,6 @@
           "params": [],
           "isAsync": false,
           "isExported": false
-        },
-        {
-          "name": "extractBearerToken",
-          "params": [
-            {
-              "name": "c",
-              "type": "Context"
-            }
-          ],
-          "isAsync": false,
-          "isExported": false,
-          "returnType": "string | null"
         },
         {
           "name": "updateSessionActivity",
@@ -3739,12 +3941,14 @@
           "from": "./schemas/post",
           "kind": "import",
           "imported": [
+            "bookmarkPostSchema",
             "createCommentSchema",
             "createPostSchema",
             "deletePostSchema",
             "getCommentsSchema",
             "getPostByIdSchema",
             "likePostSchema",
+            "unbookmarkPostSchema",
             "unlikePostSchema",
             "updatePostSchema"
           ]
@@ -4173,6 +4377,16 @@
           "isExported": true
         },
         {
+          "name": "bookmarkPostSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
+          "name": "unbookmarkPostSchema",
+          "initKind": "unknown",
+          "isExported": true
+        },
+        {
           "name": "createCommentSchema",
           "initKind": "unknown",
           "isExported": true
@@ -4349,6 +4563,14 @@
           ]
         },
         {
+          "from": "better-auth/crypto",
+          "kind": "import",
+          "imported": [
+            "hashPassword",
+            "verifyPassword"
+          ]
+        },
+        {
           "from": "zod",
           "kind": "import",
           "imported": [
@@ -4386,36 +4608,7 @@
         "apps/api/src/rpc/routers/schemas/settings.ts",
         "apps/api/src/rpc/types.ts"
       ],
-      "functions": [
-        {
-          "name": "hashPassword",
-          "params": [
-            {
-              "name": "password",
-              "type": "string"
-            }
-          ],
-          "isAsync": true,
-          "isExported": false,
-          "returnType": "Promise<string>"
-        },
-        {
-          "name": "verifyPassword",
-          "params": [
-            {
-              "name": "password",
-              "type": "string"
-            },
-            {
-              "name": "hash",
-              "type": "string"
-            }
-          ],
-          "isAsync": true,
-          "isExported": false,
-          "returnType": "Promise<boolean>"
-        }
-      ],
+      "functions": [],
       "classes": [
         {
           "name": "RPCError",
@@ -4873,6 +5066,13 @@
           "kind": "import",
           "imported": [
             "PrismaClient"
+          ]
+        },
+        {
+          "from": "better-auth/crypto",
+          "kind": "import",
+          "imported": [
+            "hashPassword"
           ]
         },
         {
@@ -5974,6 +6174,13 @@
           "imported": [
             "Session",
             "User"
+          ]
+        },
+        {
+          "from": "better-auth/crypto",
+          "kind": "import",
+          "imported": [
+            "betterAuthHashPassword"
           ]
         },
         {
@@ -7818,11 +8025,24 @@
     "apps/web/src/App.tsx": {
       "imports": [
         {
-          "from": "react-router-dom",
+          "from": "@/features/auth/components/AuthGuard",
           "kind": "import",
           "imported": [
-            "Route",
-            "Routes"
+            "AuthGuard"
+          ]
+        },
+        {
+          "from": "@/lib/constants/routes",
+          "kind": "import",
+          "imported": [
+            "ROUTES"
+          ]
+        },
+        {
+          "from": "@/pages/HomePage",
+          "kind": "import",
+          "imported": [
+            "HomePage"
           ]
         },
         {
@@ -7840,13 +8060,6 @@
           ]
         },
         {
-          "from": "@/pages/HomePage",
-          "kind": "import",
-          "imported": [
-            "HomePage"
-          ]
-        },
-        {
           "from": "@/pages/VerifyEmailPage",
           "kind": "import",
           "imported": [
@@ -7854,17 +8067,11 @@
           ]
         },
         {
-          "from": "@/features/auth/components/AuthGuard",
+          "from": "react-router-dom",
           "kind": "import",
           "imported": [
-            "AuthGuard"
-          ]
-        },
-        {
-          "from": "@/lib/constants/routes",
-          "kind": "import",
-          "imported": [
-            "ROUTES"
+            "Route",
+            "Routes"
           ]
         }
       ],
@@ -8844,6 +9051,37 @@
         }
       ]
     },
+    "apps/web/src/components/ui/progress.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@radix-ui/react-progress",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "Progress",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
     "apps/web/src/components/ui/scroll-area.tsx": {
       "imports": [
         {
@@ -9065,6 +9303,32 @@
       "constants": [
         {
           "name": "Switch",
+          "initKind": "unknown",
+          "isExported": false
+        }
+      ]
+    },
+    "apps/web/src/components/ui/textarea.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isNamespace": true
+        },
+        {
+          "from": "@/lib/utils",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "Textarea",
           "initKind": "unknown",
           "isExported": false
         }
@@ -9500,6 +9764,13 @@
           ]
         },
         {
+          "from": "../../../pages/HomePage",
+          "kind": "import",
+          "imported": [
+            "HomePage"
+          ]
+        },
+        {
           "from": "../../../pages/LoginPage",
           "kind": "import",
           "imported": [
@@ -9514,18 +9785,16 @@
           ]
         },
         {
-          "from": "../../../pages/HomePage",
-          "kind": "import",
-          "imported": [
-            "HomePage"
-          ]
-        },
-        {
           "from": "../../../pages/VerifyEmailPage",
           "kind": "import",
           "imported": [
             "VerifyEmailPage"
           ]
+        },
+        {
+          "from": "../api/authApi",
+          "kind": "import",
+          "isNamespace": true
         },
         {
           "from": "../components/AuthGuard",
@@ -9540,11 +9809,6 @@
           "imported": [
             "useAuthStore"
           ]
-        },
-        {
-          "from": "../api/authApi",
-          "kind": "import",
-          "isNamespace": true
         }
       ],
       "dependencies": [
@@ -9587,19 +9851,19 @@
           ]
         },
         {
-          "from": "../types/auth.types",
-          "kind": "import",
-          "imported": [
-            "LoginCredentials",
-            "RegisterData",
-            "AuthResponse"
-          ]
-        },
-        {
           "from": "@vrss/api-contracts",
           "kind": "import",
           "imported": [
             "AuthProcedures"
+          ]
+        },
+        {
+          "from": "../types/auth.types",
+          "kind": "import",
+          "imported": [
+            "AuthResponse",
+            "LoginCredentials",
+            "RegisterData"
           ]
         }
       ],
@@ -9617,6 +9881,20 @@
     "apps/web/src/features/auth/components/AuthGuard.tsx": {
       "imports": [
         {
+          "from": "@/lib/constants/routes",
+          "kind": "import",
+          "imported": [
+            "ROUTES"
+          ]
+        },
+        {
+          "from": "@/lib/auth/client",
+          "kind": "import",
+          "imported": [
+            "useSession"
+          ]
+        },
+        {
           "from": "react",
           "kind": "import",
           "isDefault": true
@@ -9628,25 +9906,9 @@
             "Navigate",
             "useLocation"
           ]
-        },
-        {
-          "from": "../stores/authStore",
-          "kind": "import",
-          "imported": [
-            "useAuthStore"
-          ]
-        },
-        {
-          "from": "@/lib/constants/routes",
-          "kind": "import",
-          "imported": [
-            "ROUTES"
-          ]
         }
       ],
-      "dependencies": [
-        "apps/web/src/features/auth/stores/authStore.ts"
-      ],
+      "dependencies": [],
       "functions": [],
       "classes": [],
       "constants": [
@@ -9660,11 +9922,6 @@
     },
     "apps/web/src/features/auth/components/EmailVerification.tsx": {
       "imports": [
-        {
-          "from": "react",
-          "kind": "import",
-          "isDefault": true
-        },
         {
           "from": "@/components/ui/button",
           "kind": "import",
@@ -9685,13 +9942,6 @@
           ]
         },
         {
-          "from": "../stores/authStore",
-          "kind": "import",
-          "imported": [
-            "useAuthStore"
-          ]
-        },
-        {
           "from": "@/lib/constants/routes",
           "kind": "import",
           "imported": [
@@ -9699,10 +9949,22 @@
           ]
         },
         {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
           "from": "react-router-dom",
           "kind": "import",
           "imported": [
             "Link"
+          ]
+        },
+        {
+          "from": "../stores/authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore"
           ]
         }
       ],
@@ -9723,43 +9985,22 @@
     "apps/web/src/features/auth/components/LoginForm.tsx": {
       "imports": [
         {
-          "from": "react",
-          "kind": "import",
-          "isDefault": true
-        },
-        {
-          "from": "react-hook-form",
-          "kind": "import",
-          "imported": [
-            "useForm"
-          ]
-        },
-        {
-          "from": "@hookform/resolvers/zod",
-          "kind": "import",
-          "imported": [
-            "zodResolver"
-          ]
-        },
-        {
-          "from": "zod",
-          "kind": "import",
-          "imported": [
-            "z"
-          ]
-        },
-        {
-          "from": "react-router-dom",
-          "kind": "import",
-          "imported": [
-            "Link"
-          ]
-        },
-        {
           "from": "@/components/ui/button",
           "kind": "import",
           "imported": [
             "Button"
+          ]
+        },
+        {
+          "from": "@/components/ui/card",
+          "kind": "import",
+          "imported": [
+            "Card",
+            "CardContent",
+            "CardDescription",
+            "CardFooter",
+            "CardHeader",
+            "CardTitle"
           ]
         },
         {
@@ -9777,15 +10018,43 @@
           ]
         },
         {
-          "from": "@/components/ui/card",
+          "from": "@/lib/constants/routes",
           "kind": "import",
           "imported": [
-            "Card",
-            "CardContent",
-            "CardDescription",
-            "CardFooter",
-            "CardHeader",
-            "CardTitle"
+            "ROUTES"
+          ]
+        },
+        {
+          "from": "@hookform/resolvers/zod",
+          "kind": "import",
+          "imported": [
+            "zodResolver"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "react-hook-form",
+          "kind": "import",
+          "imported": [
+            "useForm"
+          ]
+        },
+        {
+          "from": "react-router-dom",
+          "kind": "import",
+          "imported": [
+            "Link"
+          ]
+        },
+        {
+          "from": "zod",
+          "kind": "import",
+          "imported": [
+            "z"
           ]
         },
         {
@@ -9793,13 +10062,6 @@
           "kind": "import",
           "imported": [
             "useAuth"
-          ]
-        },
-        {
-          "from": "@/lib/constants/routes",
-          "kind": "import",
-          "imported": [
-            "ROUTES"
           ]
         }
       ],
@@ -9895,6 +10157,53 @@
     "apps/web/src/features/auth/components/RegisterForm.tsx": {
       "imports": [
         {
+          "from": "@/components/ui/button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        },
+        {
+          "from": "@/components/ui/card",
+          "kind": "import",
+          "imported": [
+            "Card",
+            "CardContent",
+            "CardDescription",
+            "CardFooter",
+            "CardHeader",
+            "CardTitle"
+          ]
+        },
+        {
+          "from": "@/components/ui/input",
+          "kind": "import",
+          "imported": [
+            "Input"
+          ]
+        },
+        {
+          "from": "@/components/ui/label",
+          "kind": "import",
+          "imported": [
+            "Label"
+          ]
+        },
+        {
+          "from": "@/lib/constants/routes",
+          "kind": "import",
+          "imported": [
+            "ROUTES"
+          ]
+        },
+        {
+          "from": "@hookform/resolvers/zod",
+          "kind": "import",
+          "imported": [
+            "zodResolver"
+          ]
+        },
+        {
           "from": "react",
           "kind": "import",
           "isDefault": true
@@ -9914,20 +10223,6 @@
           ]
         },
         {
-          "from": "@hookform/resolvers/zod",
-          "kind": "import",
-          "imported": [
-            "zodResolver"
-          ]
-        },
-        {
-          "from": "zod",
-          "kind": "import",
-          "imported": [
-            "z"
-          ]
-        },
-        {
           "from": "react-router-dom",
           "kind": "import",
           "imported": [
@@ -9935,36 +10230,10 @@
           ]
         },
         {
-          "from": "@/components/ui/button",
+          "from": "zod",
           "kind": "import",
           "imported": [
-            "Button"
-          ]
-        },
-        {
-          "from": "@/components/ui/input",
-          "kind": "import",
-          "imported": [
-            "Input"
-          ]
-        },
-        {
-          "from": "@/components/ui/label",
-          "kind": "import",
-          "imported": [
-            "Label"
-          ]
-        },
-        {
-          "from": "@/components/ui/card",
-          "kind": "import",
-          "imported": [
-            "Card",
-            "CardContent",
-            "CardDescription",
-            "CardFooter",
-            "CardHeader",
-            "CardTitle"
+            "z"
           ]
         },
         {
@@ -9979,13 +10248,6 @@
           "kind": "import",
           "imported": [
             "PasswordStrength"
-          ]
-        },
-        {
-          "from": "@/lib/constants/routes",
-          "kind": "import",
-          "imported": [
-            "ROUTES"
           ]
         }
       ],
@@ -10027,17 +10289,13 @@
           ]
         },
         {
-          "from": "../api/authApi",
+          "from": "@/lib/auth/client",
           "kind": "import",
           "imported": [
-            "authApi"
-          ]
-        },
-        {
-          "from": "../stores/authStore",
-          "kind": "import",
-          "imported": [
-            "useAuthStore"
+            "signIn",
+            "signOut",
+            "signUp",
+            "useSession"
           ]
         },
         {
@@ -10049,10 +10307,7 @@
           ]
         }
       ],
-      "dependencies": [
-        "apps/web/src/features/auth/api/authApi.ts",
-        "apps/web/src/features/auth/stores/authStore.ts"
-      ],
+      "dependencies": [],
       "functions": [
         {
           "name": "useAuth",
@@ -10083,6 +10338,582 @@
     "apps/web/src/features/auth/types/auth.types.ts": {
       "imports": [],
       "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/feed/components/CreatePost/MediaUpload.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "useState",
+            "useCallback"
+          ]
+        },
+        {
+          "from": "react-dropzone",
+          "kind": "import",
+          "imported": [
+            "useDropzone"
+          ]
+        },
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "useMutation"
+          ]
+        },
+        {
+          "from": "@/components/ui/button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        },
+        {
+          "from": "@/components/ui/progress",
+          "kind": "import",
+          "imported": [
+            "Progress"
+          ]
+        },
+        {
+          "from": "lucide-react",
+          "kind": "import",
+          "imported": [
+            "Upload",
+            "X",
+            "FileImage",
+            "FileVideo",
+            "FileAudio",
+            "Loader2"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "MediaUpload",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "MediaUploadProps"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/feed/components/CreatePost/PostComposer.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "imported": [
+            "useState"
+          ]
+        },
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "useMutation",
+            "useQueryClient"
+          ]
+        },
+        {
+          "from": "@/lib/api/client",
+          "kind": "import",
+          "imported": [
+            "api"
+          ]
+        },
+        {
+          "from": "@/lib/store/authStore",
+          "kind": "import",
+          "imported": [
+            "useAuthStore"
+          ]
+        },
+        {
+          "from": "@/lib/store/offlineStore",
+          "kind": "import",
+          "imported": [
+            "useOfflineStore"
+          ]
+        },
+        {
+          "from": "./MediaUpload",
+          "kind": "import",
+          "imported": [
+            "MediaUpload"
+          ]
+        },
+        {
+          "from": "@/components/ui/button",
+          "kind": "import",
+          "imported": [
+            "Button"
+          ]
+        },
+        {
+          "from": "@/components/ui/textarea",
+          "kind": "import",
+          "imported": [
+            "Textarea"
+          ]
+        },
+        {
+          "from": "@/components/ui/card",
+          "kind": "import",
+          "imported": [
+            "Card"
+          ]
+        },
+        {
+          "from": "lucide-react",
+          "kind": "import",
+          "imported": [
+            "FileText",
+            "Image",
+            "Video",
+            "Music",
+            "Loader2",
+            "Send"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/feed/components/CreatePost/MediaUpload.tsx"
+      ],
+      "functions": [
+        {
+          "name": "PostComposer",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "PostComposerProps"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/feed/components/CreatePost/index.tsx": {
+      "imports": [
+        {
+          "from": "./PostComposer",
+          "kind": "export",
+          "imported": [
+            "PostComposer"
+          ]
+        },
+        {
+          "from": "./MediaUpload",
+          "kind": "export",
+          "imported": [
+            "MediaUpload"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/feed/components/CreatePost/MediaUpload.tsx",
+        "apps/web/src/features/feed/components/CreatePost/PostComposer.tsx"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/feed/components/FeedView.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "@tanstack/react-virtual",
+          "kind": "import",
+          "imported": [
+            "useVirtualizer"
+          ]
+        },
+        {
+          "from": "../hooks/useFeed",
+          "kind": "import",
+          "imported": [
+            "useFeed"
+          ]
+        },
+        {
+          "from": "./PostCard",
+          "kind": "import",
+          "imported": [
+            "PostCard"
+          ]
+        },
+        {
+          "from": "./CreatePost",
+          "kind": "import",
+          "imported": [
+            "PostComposer"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/feed/components/CreatePost/index.tsx",
+        "apps/web/src/features/feed/components/PostCard/index.tsx",
+        "apps/web/src/features/feed/hooks/useFeed.ts"
+      ],
+      "functions": [
+        {
+          "name": "FeedView",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "FeedViewProps"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/feed/components/PostCard/index.tsx": {
+      "imports": [
+        {
+          "from": "@/lib/utils/cn",
+          "kind": "import",
+          "imported": [
+            "cn"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "../../hooks/useBookmarkPost",
+          "kind": "import",
+          "imported": [
+            "useBookmarkPost"
+          ]
+        },
+        {
+          "from": "../../hooks/useFeed",
+          "kind": "import",
+          "imported": [
+            "Post"
+          ]
+        },
+        {
+          "from": "../../hooks/useLikePost",
+          "kind": "import",
+          "imported": [
+            "useLikePost"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/feed/hooks/useBookmarkPost.ts",
+        "apps/web/src/features/feed/hooks/useFeed.ts",
+        "apps/web/src/features/feed/hooks/useLikePost.ts"
+      ],
+      "functions": [
+        {
+          "name": "formatTimestamp",
+          "params": [
+            {
+              "name": "timestamp",
+              "type": "string"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false,
+          "returnType": "string"
+        },
+        {
+          "name": "ImageMedia",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "{ media: Post[\"media\"][0] }"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false
+        },
+        {
+          "name": "VideoMedia",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "{ media: Post[\"media\"][0] }"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false
+        },
+        {
+          "name": "AudioMedia",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "{ media: Post[\"media\"][0] }"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false
+        },
+        {
+          "name": "PostCard",
+          "params": [
+            {
+              "name": "unknown",
+              "type": "PostCardProps"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/feed/hooks/useBookmarkPost.ts": {
+      "imports": [
+        {
+          "from": "@/lib/api/client",
+          "kind": "import",
+          "imported": [
+            "api",
+            "rpcClient"
+          ]
+        },
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "useMutation",
+            "useQueryClient"
+          ]
+        },
+        {
+          "from": "./useFeed",
+          "kind": "import",
+          "imported": [
+            "Post"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/feed/hooks/useFeed.ts"
+      ],
+      "functions": [
+        {
+          "name": "updatePostInCache",
+          "params": [
+            {
+              "name": "feedData",
+              "type": "any"
+            },
+            {
+              "name": "postId",
+              "type": "string"
+            },
+            {
+              "name": "isBookmarked",
+              "type": "boolean"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false
+        },
+        {
+          "name": "useBookmarkPost",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/feed/hooks/useFeed.ts": {
+      "imports": [
+        {
+          "from": "@/lib/api/client",
+          "kind": "import",
+          "imported": [
+            "api"
+          ]
+        },
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "useInfiniteQuery"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [
+        {
+          "name": "useFeed",
+          "params": [
+            {
+              "name": "options",
+              "type": "UseFeedOptions"
+            }
+          ],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/feed/hooks/useLikePost.ts": {
+      "imports": [
+        {
+          "from": "@/lib/api/client",
+          "kind": "import",
+          "imported": [
+            "api"
+          ]
+        },
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "useMutation",
+            "useQueryClient"
+          ]
+        },
+        {
+          "from": "./useFeed",
+          "kind": "import",
+          "imported": [
+            "Post"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/feed/hooks/useFeed.ts"
+      ],
+      "functions": [
+        {
+          "name": "updatePostInCache",
+          "params": [
+            {
+              "name": "feedData",
+              "type": "any"
+            },
+            {
+              "name": "postId",
+              "type": "string"
+            },
+            {
+              "name": "isLiked",
+              "type": "boolean"
+            },
+            {
+              "name": "likesCount",
+              "type": "number"
+            }
+          ],
+          "isAsync": false,
+          "isExported": false
+        },
+        {
+          "name": "useLikePost",
+          "params": [],
+          "isAsync": false,
+          "isExported": true
+        }
+      ],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/src/features/feed/index.ts": {
+      "imports": [
+        {
+          "from": "./components/FeedView",
+          "kind": "export",
+          "imported": [
+            "FeedView"
+          ]
+        },
+        {
+          "from": "./components/PostCard",
+          "kind": "export",
+          "imported": [
+            "PostCard"
+          ]
+        },
+        {
+          "from": "./components/CreatePost",
+          "kind": "export",
+          "imported": [
+            "PostComposer",
+            "MediaUpload"
+          ]
+        },
+        {
+          "from": "./hooks/useFeed",
+          "kind": "export",
+          "imported": [
+            "useFeed"
+          ]
+        },
+        {
+          "from": "./hooks/useLikePost",
+          "kind": "export",
+          "imported": [
+            "useLikePost"
+          ]
+        },
+        {
+          "from": "./hooks/useBookmarkPost",
+          "kind": "export",
+          "imported": [
+            "useBookmarkPost"
+          ]
+        },
+        {
+          "from": "./hooks/useFeed",
+          "kind": "export",
+          "imported": [
+            "Post",
+            "UseFeedOptions"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/src/features/feed/components/CreatePost/index.tsx",
+        "apps/web/src/features/feed/components/FeedView.tsx",
+        "apps/web/src/features/feed/components/PostCard/index.tsx",
+        "apps/web/src/features/feed/hooks/useBookmarkPost.ts",
+        "apps/web/src/features/feed/hooks/useFeed.ts",
+        "apps/web/src/features/feed/hooks/useLikePost.ts"
+      ],
       "functions": [],
       "classes": [],
       "constants": []
@@ -10906,6 +11737,39 @@
       "classes": [],
       "constants": []
     },
+    "apps/web/src/lib/auth/client.ts": {
+      "imports": [
+        {
+          "from": "better-auth/react",
+          "kind": "import",
+          "imported": [
+            "createAuthClient"
+          ]
+        },
+        {
+          "from": "better-auth/client/plugins",
+          "kind": "import",
+          "imported": [
+            "usernameClient"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": [
+        {
+          "name": "API_BASE_URL",
+          "initKind": "unknown",
+          "isExported": false
+        },
+        {
+          "name": "authClient",
+          "initKind": "unknown",
+          "isExported": true
+        }
+      ]
+    },
     "apps/web/src/lib/constants/routes.ts": {
       "imports": [],
       "dependencies": [],
@@ -11380,22 +12244,10 @@
     "apps/web/src/pages/HomePage.tsx": {
       "imports": [
         {
-          "from": "react",
-          "kind": "import",
-          "isDefault": true
-        },
-        {
           "from": "@/components/layout/AppShell",
           "kind": "import",
           "imported": [
             "AppShell"
-          ]
-        },
-        {
-          "from": "@/components/ui/badge",
-          "kind": "import",
-          "imported": [
-            "Badge"
           ]
         },
         {
@@ -11406,22 +12258,23 @@
           ]
         },
         {
-          "from": "@/components/ui/card",
-          "kind": "import",
-          "imported": [
-            "Card",
-            "CardContent",
-            "CardDescription",
-            "CardHeader",
-            "CardTitle"
-          ]
-        },
-        {
           "from": "@/features/auth/hooks/useAuth",
           "kind": "import",
           "imported": [
             "useAuth"
           ]
+        },
+        {
+          "from": "@/features/feed/components/FeedView",
+          "kind": "import",
+          "imported": [
+            "FeedView"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
         }
       ],
       "dependencies": [],
@@ -11439,16 +12292,16 @@
     "apps/web/src/pages/LoginPage.tsx": {
       "imports": [
         {
-          "from": "react",
-          "kind": "import",
-          "isDefault": true
-        },
-        {
           "from": "@/features/auth/components/LoginForm",
           "kind": "import",
           "imported": [
             "LoginForm"
           ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
         }
       ],
       "dependencies": [],
@@ -11466,16 +12319,16 @@
     "apps/web/src/pages/RegisterPage.tsx": {
       "imports": [
         {
-          "from": "react",
-          "kind": "import",
-          "isDefault": true
-        },
-        {
           "from": "@/features/auth/components/RegisterForm",
           "kind": "import",
           "imported": [
             "RegisterForm"
           ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
         }
       ],
       "dependencies": [],
@@ -11493,16 +12346,16 @@
     "apps/web/src/pages/VerifyEmailPage.tsx": {
       "imports": [
         {
-          "from": "react",
-          "kind": "import",
-          "isDefault": true
-        },
-        {
           "from": "@/features/auth/components/EmailVerification",
           "kind": "import",
           "imported": [
             "EmailVerification"
           ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
         }
       ],
       "dependencies": [],
@@ -11520,6 +12373,188 @@
     "apps/web/tailwind.config.js": {
       "imports": [],
       "dependencies": [],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/test/feed/CreatePost.test.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "from": "../utils/render",
+          "kind": "import",
+          "imported": [
+            "renderWithProviders",
+            "screen",
+            "waitFor"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/test/utils/render.tsx"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/test/feed/FeedView.test.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "from": "@/features/feed/components/FeedView",
+          "kind": "import",
+          "imported": [
+            "FeedView"
+          ]
+        },
+        {
+          "from": "../utils/render",
+          "kind": "import",
+          "imported": [
+            "renderWithProviders",
+            "screen",
+            "waitFor"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/test/utils/render.tsx"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/test/feed/OptimisticUpdates.test.tsx": {
+      "imports": [
+        {
+          "from": "@tanstack/react-query",
+          "kind": "import",
+          "imported": [
+            "QueryClient",
+            "useMutation",
+            "useQuery",
+            "useQueryClient"
+          ]
+        },
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "expect",
+            "it",
+            "vi"
+          ]
+        },
+        {
+          "from": "../mocks/data",
+          "kind": "import",
+          "imported": [
+            "MOCK_POSTS"
+          ]
+        },
+        {
+          "from": "../utils/render",
+          "kind": "import",
+          "imported": [
+            "renderWithProviders",
+            "screen",
+            "waitFor"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/test/mocks/data.ts",
+        "apps/web/test/utils/render.tsx"
+      ],
+      "functions": [],
+      "classes": [],
+      "constants": []
+    },
+    "apps/web/test/feed/PostCard.test.tsx": {
+      "imports": [
+        {
+          "from": "react",
+          "kind": "import",
+          "isDefault": true
+        },
+        {
+          "from": "vitest",
+          "kind": "import",
+          "imported": [
+            "describe",
+            "expect",
+            "it"
+          ]
+        },
+        {
+          "from": "@/features/feed/components/PostCard",
+          "kind": "import",
+          "imported": [
+            "PostCard"
+          ]
+        },
+        {
+          "from": "@/features/feed/hooks/useFeed",
+          "kind": "import",
+          "imported": [
+            "Post"
+          ]
+        },
+        {
+          "from": "../mocks/data",
+          "kind": "import",
+          "imported": [
+            "MOCK_POSTS",
+            "TEST_PERSONAS"
+          ]
+        },
+        {
+          "from": "../utils/render",
+          "kind": "import",
+          "imported": [
+            "renderWithProviders",
+            "screen",
+            "waitFor"
+          ]
+        }
+      ],
+      "dependencies": [
+        "apps/web/test/mocks/data.ts",
+        "apps/web/test/utils/render.tsx"
+      ],
       "functions": [],
       "classes": [],
       "constants": []
@@ -11577,7 +12612,15 @@
       "constants": []
     },
     "apps/web/test/mocks/data.ts": {
-      "imports": [],
+      "imports": [
+        {
+          "from": "@/features/feed/hooks/useFeed",
+          "kind": "import",
+          "imported": [
+            "Post"
+          ]
+        }
+      ],
       "dependencies": [],
       "functions": [
         {
@@ -11612,8 +12655,9 @@
         },
         {
           "name": "MOCK_POSTS",
-          "initKind": "unknown",
-          "isExported": true
+          "initKind": "array",
+          "isExported": true,
+          "type": "Post[]"
         },
         {
           "name": "MOCK_ALGORITHMS",
