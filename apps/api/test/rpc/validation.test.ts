@@ -323,7 +323,7 @@ describe("RPC Validation Middleware", () => {
           body: JSON.stringify({
             procedure: "auth.login",
             input: {
-              email: "test@example.com",
+              username: "testuser",
               // password missing (required)
             },
           }),

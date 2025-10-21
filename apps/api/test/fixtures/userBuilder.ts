@@ -24,6 +24,7 @@ let uniqueCounter = 0;
 export class UserBuilder {
   private data: Partial<{
     username: string;
+    name: string;
     email: string;
     password: string;
     emailVerified: boolean;
@@ -60,6 +61,14 @@ export class UserBuilder {
    */
   username(username: string): this {
     this.data.username = username;
+    return this;
+  }
+
+  /**
+   * Set name (display name)
+   */
+  name(name: string): this {
+    this.data.name = name;
     return this;
   }
 
@@ -224,6 +233,7 @@ export class UserBuilder {
     // Merge defaults with provided data
     const userData = {
       username: finalUsername,
+      name: this.data.name ?? finalUsername, // Use username as default display name
       email: finalEmail,
       emailVerified: this.data.emailVerified ?? defaults.emailVerified,
       status: this.data.status ?? defaults.status,

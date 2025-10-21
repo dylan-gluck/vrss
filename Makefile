@@ -161,35 +161,10 @@ db-reset: ## Reset database (drop all tables and recreate)
 
 ##@ Testing
 
-test: test-docker-fast ## Run tests (default: fast mode using dev environment)
-
-test-local: ## Run tests locally (requires local PostgreSQL on port 6969)
-	@echo "$(BLUE)Running tests locally...$(NC)"
-	@echo "$(YELLOW)Ensure PostgreSQL is running on localhost:6969$(NC)"
+test: ## Run tests in dev containers (recommended - fast and reliable)
+	@echo "$(BLUE)Running tests...$(NC)"
 	@echo "$(YELLOW)Backend tests:$(NC)"
-	@cd apps/api && bun test
-	@echo "$(GREEN)Tests complete$(NC)"
-
-test-docker: ## Run tests in isolated Docker environment (recommended for CI/CD)
-	@echo "$(BLUE)Starting isolated test environment...$(NC)"
-	@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d db-test
-	@echo "$(YELLOW)Waiting for test database to be ready...$(NC)"
-	@sleep 5
-	@echo "$(YELLOW)Running backend tests in isolated environment:$(NC)"
-	@docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm backend || \
-		(echo "$(RED)Backend tests failed$(NC)" && docker-compose -f docker-compose.yml -f docker-compose.test.yml down -v && exit 1)
-	@echo ""
-	@echo "$(YELLOW)Frontend tests:$(NC)"
-	@docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm frontend bun run test || \
-		echo "$(YELLOW)Frontend tests not configured or failed$(NC)"
-	@echo "$(BLUE)Cleaning up test environment...$(NC)"
-	@docker-compose -f docker-compose.yml -f docker-compose.test.yml down -v
-	@echo "$(GREEN)Tests complete$(NC)"
-
-test-docker-fast: ## Run tests in dev Docker containers (fastest, shares dev database)
-	@echo "$(BLUE)Running tests in dev containers...$(NC)"
-	@echo "$(YELLOW)Backend tests:$(NC)"
-	@docker-compose exec -T backend bun test || (echo "$(RED)Backend tests failed$(NC)" && exit 1)
+	@docker-compose exec -T backend sh -c "cd /app/apps/api && bun test" || (echo "$(RED)Backend tests failed$(NC)" && exit 1)
 	@echo ""
 	@echo "$(YELLOW)Frontend tests:$(NC)"
 	@docker-compose exec -T frontend bun run test || echo "$(YELLOW)Frontend tests not configured or failed$(NC)"
@@ -197,7 +172,7 @@ test-docker-fast: ## Run tests in dev Docker containers (fastest, shares dev dat
 
 test-backend: ## Run backend tests only (in dev container)
 	@echo "$(YELLOW)Running backend tests...$(NC)"
-	@docker-compose exec -T backend bun test
+	@docker-compose exec -T backend sh -c "cd /app/apps/api && bun test"
 
 test-frontend: ## Run frontend tests only (in dev container)
 	@echo "$(YELLOW)Running frontend tests...$(NC)"

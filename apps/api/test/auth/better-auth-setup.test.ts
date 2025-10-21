@@ -168,6 +168,7 @@ describe("Better-auth Setup: Prisma Adapter", () => {
     const testUser = await db.user.create({
       data: {
         username: "testuser_adapter",
+        name: "testuser_adapter",
         email: "adapter@test.com",
         passwordHash: "test_hash_123",
         emailVerified: false,
@@ -204,6 +205,7 @@ describe("Better-auth Setup: Session Tables", () => {
     const user = await db.user.create({
       data: {
         username: "testuser_schema",
+        name: "testuser_schema",
         email: "schema@test.com",
         passwordHash: "test_hash",
         emailVerified: false,
@@ -225,6 +227,7 @@ describe("Better-auth Setup: Session Tables", () => {
     const user = await db.user.create({
       data: {
         username: "unique_username_test",
+        name: "unique_username_test",
         email: "username@test.com",
         passwordHash: "hash",
         emailVerified: false,
@@ -238,6 +241,7 @@ describe("Better-auth Setup: Session Tables", () => {
       await db.user.create({
         data: {
           username: "unique_username_test",
+          name: "unique_username_test",
           email: "different@test.com",
           passwordHash: "hash",
           emailVerified: false,
@@ -252,6 +256,7 @@ describe("Better-auth Setup: Session Tables", () => {
     const user = await db.user.create({
       data: {
         username: "password_test_user",
+        name: "password_test_user",
         email: "password@test.com",
         passwordHash: "$2a$10$examplehashedpassword123456",
         emailVerified: false,
@@ -269,6 +274,7 @@ describe("Better-auth Setup: Session Tables", () => {
     const user = await db.user.create({
       data: {
         username: "session_test_user",
+        name: "session_test_user",
         email: "session@test.com",
         passwordHash: "hash",
         emailVerified: false,
@@ -306,6 +312,7 @@ describe("Better-auth Setup: Session Tables", () => {
     const user = await db.user.create({
       data: {
         username: "verification_user",
+        name: "verification_user",
         email: "verify@test.com",
         passwordHash: "hash",
         emailVerified: false,
@@ -329,6 +336,7 @@ describe("Better-auth Setup: Session Tables", () => {
     const user = await db.user.create({
       data: {
         username: "expiry_test_user",
+        name: "expiry_test_user",
         email: "expiry@test.com",
         passwordHash: "hash",
         emailVerified: false,

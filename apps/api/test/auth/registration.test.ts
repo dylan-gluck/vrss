@@ -53,6 +53,7 @@ describe("auth.register", () => {
     const user = await db.user.create({
       data: {
         username: registrationData.username,
+        name: registrationData.username,
         email: registrationData.email,
         passwordHash,
         emailVerified: false, // Must be false initially
@@ -152,6 +153,7 @@ describe("auth.register", () => {
     await db.user.create({
       data: {
         username: existingUsername,
+        name: existingUsername,
         email: "existing@example.com",
         passwordHash: await hashPassword("ExistingPass123!"),
         emailVerified: false,
@@ -175,6 +177,7 @@ describe("auth.register", () => {
       await db.user.create({
         data: {
           username: registrationData.username,
+          name: registrationData.username,
           email: registrationData.email,
           passwordHash,
           emailVerified: false,
@@ -202,6 +205,7 @@ describe("auth.register", () => {
     await db.user.create({
       data: {
         username: "existinguser",
+        name: "existinguser",
         email: existingEmail,
         passwordHash: await hashPassword("ExistingPass123!"),
         emailVerified: false,
@@ -225,6 +229,7 @@ describe("auth.register", () => {
       await db.user.create({
         data: {
           username: registrationData.username,
+          name: registrationData.username,
           email: registrationData.email,
           passwordHash,
           emailVerified: false,
@@ -329,6 +334,7 @@ describe("auth.register", () => {
     const user = await db.user.create({
       data: {
         username: registrationData.username,
+        name: registrationData.username,
         email: registrationData.email,
         passwordHash: await hashPassword(registrationData.password),
         emailVerified: false,
@@ -389,6 +395,7 @@ describe("auth.register", () => {
     const user = await db.user.create({
       data: {
         username: trimmedUsername,
+        name: trimmedUsername,
         email: trimmedEmail,
         passwordHash: await hashPassword(registrationData.password),
         emailVerified: false,

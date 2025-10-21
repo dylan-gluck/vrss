@@ -38,6 +38,7 @@ describe("auth.verifyEmail", () => {
     const user = await db.user.create({
       data: {
         username: "testuser",
+        name: "testuser",
         email: "test@example.com",
         passwordHash: await hashPassword("ValidPassword123!"),
         emailVerified: false, // Not verified yet
@@ -101,6 +102,7 @@ describe("auth.verifyEmail", () => {
     const user = await db.user.create({
       data: {
         username: "testuser",
+        name: "testuser",
         email: "test@example.com",
         passwordHash: await hashPassword("ValidPassword123!"),
         emailVerified: false,
@@ -147,6 +149,7 @@ describe("auth.verifyEmail", () => {
     const user = await db.user.create({
       data: {
         username: "testuser",
+        name: "testuser",
         email: "test@example.com",
         passwordHash: await hashPassword("ValidPassword123!"),
         emailVerified: false,
@@ -181,6 +184,7 @@ describe("auth.verifyEmail", () => {
     const user = await db.user.create({
       data: {
         username: "testuser",
+        name: "testuser",
         email: "test@example.com",
         passwordHash: await hashPassword("ValidPassword123!"),
         emailVerified: true, // Already verified
@@ -220,6 +224,7 @@ describe("auth.verifyEmail", () => {
     const user = await db.user.create({
       data: {
         username: "testuser",
+        name: "testuser",
         email: "test@example.com",
         passwordHash: await hashPassword("ValidPassword123!"),
         emailVerified: false,
@@ -284,6 +289,7 @@ describe("auth.verifyEmail", () => {
     const user = await db.user.create({
       data: {
         username: "testuser",
+        name: "testuser",
         email: "test@example.com",
         passwordHash: await hashPassword("ValidPassword123!"),
         emailVerified: true, // Already verified
@@ -337,6 +343,7 @@ describe("auth.verifyEmail", () => {
     const user = await db.user.create({
       data: {
         username: "testuser",
+        name: "testuser",
         email: "test@example.com",
         passwordHash: await hashPassword("ValidPassword123!"),
         emailVerified: false,
@@ -372,6 +379,7 @@ describe("auth.verifyEmail", () => {
     const user = await db.user.create({
       data: {
         username: "testuser",
+        name: "testuser",
         email: "test@example.com",
         passwordHash: await hashPassword("ValidPassword123!"),
         emailVerified: false,
@@ -407,6 +415,7 @@ describe("auth.verifyEmail", () => {
     const user = await db.user.create({
       data: {
         username: "testuser",
+        name: "testuser",
         email: "test@example.com",
         passwordHash: await hashPassword("ValidPassword123!"),
         emailVerified: false,
@@ -453,6 +462,7 @@ describe("auth.verifyEmail", () => {
     const user = await db.user.create({
       data: {
         username: "testuser",
+        name: "testuser",
         email: "test@example.com",
         passwordHash: await hashPassword("ValidPassword123!"),
         emailVerified: false,

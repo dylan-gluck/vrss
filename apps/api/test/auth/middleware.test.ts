@@ -39,6 +39,7 @@ async function createTestUser(emailVerified = true) {
   const user = await prisma.user.create({
     data: {
       username,
+      name: username, // Use username as display name
       email,
       passwordHash,
       emailVerified,

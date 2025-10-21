@@ -58,6 +58,7 @@ export async function createAuthenticatedUser(
   const user = await db.user.create({
     data: {
       username,
+      name: username, // Use username as default display name
       email,
       emailVerified: overrides?.emailVerified ?? true,
       passwordHash,
